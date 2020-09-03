@@ -52,6 +52,10 @@ export default class App extends React.Component {
     const { ccTransactions, dueToFromTransactions } = this.state;
     return (
       <div>
+        <label htmlFor='start'>Specify start date:</label>
+        <input type='date' id='start' />
+        <label htmlFor='start'>Specify end date:</label>
+        <input type='date' id='end' />
         <div>
           {JSON.stringify(ccTransactions)}
         </div>
