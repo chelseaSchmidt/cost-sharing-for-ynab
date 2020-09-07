@@ -1,14 +1,17 @@
 import React from 'react';
 import { getCCTransactions, getDTFTransactions } from '../../utilities/http';
+import { getFiveDaysAgo, convertDateToString } from '../../utilities/dateHelpers';
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      sinceDate: this.getFiveDaysAgo(),
+      sinceDate: getFiveDaysAgo(),
+      endDate: new Date(),
       ccTransactions: [],
       dueToFromTransactions: [],
     };
+    this.handleDateInput = this.handleDateInput.bind(this);
   }
 
   componentDidMount() {
@@ -28,19 +31,39 @@ export default class App extends React.Component {
       .catch((err) => { console.error(err); });
   }
 
-  getFiveDaysAgo() {
-    const day = new Date();
-    return new Date(day.setDate(day.getDate() - 5));
+  handleDateInput(e) {
+    // TO DO
+    console.log(e.target.value);
   }
 
   render() {
-    const { ccTransactions, dueToFromTransactions } = this.state;
+    const {
+      ccTransactions,
+      dueToFromTransactions,
+      sinceDate,
+      endDate,
+    } = this.state;
+
     return (
       <div>
-        <label htmlFor="start">Specify start date:</label>
-        <input type="date" id="start" />
-        <label htmlFor="start">Specify end date:</label>
-        <input type="date" id="end" />
+        <label htmlFor="start">
+          Specify start date:
+          <input
+            type="date"
+            id="start"
+            value={convertDateToString(sinceDate)}
+            onChange={this.handleDateInput}
+          />
+        </label>
+        <label htmlFor="start">
+          Specify end date:
+          <input
+            type="date"
+            id="end"
+            value={convertDateToString(endDate)}
+            onChange={this.handleDateInput}
+          />
+        </label>
         <div>
           {JSON.stringify(ccTransactions)}
         </div>
