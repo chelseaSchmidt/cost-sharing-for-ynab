@@ -1,6 +1,6 @@
 import React from 'react';
 import { getCCTransactions, getDTFTransactions } from '../../utilities/http';
-import { getFiveDaysAgo, convertDateToString } from '../../utilities/dateHelpers';
+import { getFiveDaysAgo, convertDateToString, convertStringToDate } from '../../utilities/dateHelpers';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -32,8 +32,11 @@ export default class App extends React.Component {
   }
 
   handleDateInput(e) {
-    // TO DO
-    console.log(e.target.value);
+    if (e.target.id === 'start') {
+      this.setState({ sinceDate: convertStringToDate(e.target.value) });
+    } else {
+      this.setState({ endDate: convertStringToDate(e.target.value, false) });
+    }
   }
 
   render() {
