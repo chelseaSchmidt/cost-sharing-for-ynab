@@ -8,6 +8,7 @@ import {
 } from 'prop-types';
 
 const Transaction = ({
+  type,
   transaction: {
     date,
     amount,
@@ -18,9 +19,10 @@ const Transaction = ({
     category_name,
   },
 }) => {
+  const editable = type === 'Credit Card Account';
   return (
     <div>
-      <input type="checkbox" />
+      {editable && <input type="checkbox" />}
       <span>
         {`${date} | $${amount / 1000} | ${memo} | ${cleared} | ${approved} | ${payee_name} | ${category_name}`}
       </span>
@@ -29,6 +31,7 @@ const Transaction = ({
 };
 
 Transaction.propTypes = {
+  type: string.isRequired,
   transaction: shape({
     date: string,
     amount: number,

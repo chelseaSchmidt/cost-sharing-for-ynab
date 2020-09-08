@@ -8,7 +8,13 @@ const TransactionWindow = ({ title, transactions }) => {
   return (
     <div className="transaction-window">
       <h2>{title}</h2>
-      {!noTransactions && transactions.map((txn) => <Transaction transaction={txn} key={txn.id} />)}
+      {!noTransactions && transactions.map((txn) => (
+        <Transaction
+          transaction={txn}
+          type={title}
+          key={txn.id}
+        />
+      ))}
       {noTransactions && <span><em>No transactions</em></span>}
     </div>
   );
