@@ -1,4 +1,5 @@
 import React from 'react';
+import TransactionWindow from './TransactionWindow';
 import { getCCTransactions, getDTFTransactions } from '../../utilities/http';
 import {
   getFiveDaysAgo,
@@ -95,10 +96,10 @@ export default class App extends React.Component {
           <button type="submit" onClick={this.handleDateSubmit}>Update Transactions</button>
         </form>
         <div>
-          {JSON.stringify(ccTransactions)}
+          <TransactionWindow transactions={ccTransactions} />
         </div>
         <div>
-          {JSON.stringify(dueToFromTransactions)}
+          <TransactionWindow transactions={dueToFromTransactions} />
         </div>
       </div>
     );
