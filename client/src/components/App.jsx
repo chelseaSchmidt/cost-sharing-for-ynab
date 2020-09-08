@@ -98,10 +98,10 @@ export default class App extends React.Component {
         </form>
         <div id="transaction-area">
           <div>
-            <TransactionWindow transactions={ccTransactions} />
+            <TransactionWindow title="Credit Card Account" transactions={ccTransactions} />
           </div>
           <div>
-            <TransactionWindow transactions={dueToFromTransactions} />
+            <TransactionWindow title="Due To/From Account" transactions={dueToFromTransactions} />
           </div>
         </div>
       </div>

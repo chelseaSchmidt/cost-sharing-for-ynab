@@ -20,7 +20,10 @@ const Transaction = ({
 }) => {
   return (
     <div>
-      {`${date} | $${amount / 1000} | ${memo} | ${cleared} | ${approved} | ${payee_name} | ${category_name}`}
+      <input type="checkbox" />
+      <span>
+        {`${date} | $${amount / 1000} | ${memo} | ${cleared} | ${approved} | ${payee_name} | ${category_name}`}
+      </span>
     </div>
   );
 };
