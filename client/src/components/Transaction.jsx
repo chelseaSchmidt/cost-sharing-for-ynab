@@ -5,11 +5,16 @@ import {
   string,
   number,
   bool,
+  func,
 } from 'prop-types';
 
 const Transaction = ({
   type,
-  transaction: {
+  handleSelectTransaction,
+  transaction,
+}) => {
+  const editable = type === 'Credit Card Account';
+  const {
     date,
     amount,
     memo,
@@ -17,12 +22,10 @@ const Transaction = ({
     approved,
     payee_name,
     category_name,
-  },
-}) => {
-  const editable = type === 'Credit Card Account';
+  } = transaction;
   return (
     <div>
-      {editable && <input type="checkbox" />}
+      {editable && <input type="checkbox" onChange={(e) => handleSelectTransaction(e, transaction)} />}
       <span>
         {`${date} | $${amount / 1000} | ${memo} | ${cleared} | ${approved} | ${payee_name} | ${category_name}`}
       </span>
@@ -32,6 +35,7 @@ const Transaction = ({
 
 Transaction.propTypes = {
   type: string.isRequired,
+  handleSelectTransaction: func.isRequired,
   transaction: shape({
     date: string,
     amount: number,
