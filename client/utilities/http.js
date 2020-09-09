@@ -27,3 +27,12 @@ export const getDTFTransactions = (sinceDate) => (
     },
   })
 );
+
+export const createSplitTransaction = (transaction) => (
+  axios({
+    method: 'post',
+    headers: { Authorization: `Bearer ${token}` },
+    url: `https://api.youneedabudget.com/v1/budgets/${budgetId}/transactions`,
+    data: { transaction },
+  })
+);

@@ -1,14 +1,18 @@
 import React from 'react';
 import _ from 'lodash';
 import TransactionWindow from './TransactionWindow';
-import { getCCTransactions, getDTFTransactions } from '../../utilities/http';
-import { dueToFromId } from '../../../identifiers';
+import {
+  getCCTransactions,
+  getDTFTransactions,
+  createSplitTransaction,
+} from '../../utilities/http';
 import {
   getFiveDaysAgo,
   convertDateToString,
   convertStringToDate,
   checkIfDateInRange,
 } from '../../utilities/dateHelpers';
+import { dueToFromId } from '../../../identifiers';
 import '../styles/App.css';
 
 export default class App extends React.Component {
@@ -121,7 +125,9 @@ export default class App extends React.Component {
       })),
     };
     console.log(checkedTransactions, summaryTransaction);
-    // post transaction to YNAB
+    createSplitTransaction(summaryTransaction)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
   }
 
   render() {
