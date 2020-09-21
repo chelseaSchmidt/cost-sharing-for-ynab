@@ -66,11 +66,11 @@ export default class App extends React.Component {
 
     getCCTransactions(sinceDate)
       .then(({ data: { data: { transactions } } }) => {
-        ccTransactions = transactions.filter((txn) => checkIfDateInRange(txn.date, endDate));
+        ccTransactions = transactions.filter((txn) => checkIfDateInRange(txn.date, endDate) && txn.approved);
         return getDTFTransactions(sinceDate);
       })
       .then(({ data: { data: { transactions } } }) => {
-        dueToFromTransactions = transactions.filter((txn) => checkIfDateInRange(txn.date, endDate));
+        dueToFromTransactions = transactions.filter((txn) => checkIfDateInRange(txn.date, endDate) && txn.approved);
         this.setState({ ccTransactions, dueToFromTransactions });
       })
       .catch((err) => { console.error(err); });
@@ -104,27 +104,32 @@ export default class App extends React.Component {
       }
       return totals;
     }, {});
+    _.each(halvedCostsByCategory, (val, key) => {
+      halvedCostsByCategory[key] = Number(val.toFixed(2))
+    });
     const summaryTransaction = {
       account_id: dueToFromId,
       date: convertDateToString(splitDate),
       amount: _.reduce(halvedCostsByCategory, (sum, amt) => sum + amt) * 1000,
       payee_id: null,
       payee_name: null,
-      category_id: '7607479b-f7f2-eef4-a7bb-fadb5821307d',
+      category_id: null,
       memo: null,
       cleared: 'uncleared',
       approved: true,
       flag_color: null,
       import_id: null,
-      subTransactions: _.map(halvedCostsByCategory, (amt, catId) => ({
+      subtransactions: _.map(halvedCostsByCategory, (amt, catId) => ({
         amount: amt * 1000,
         payee_id: null,
-        payee_name: null,
+        payee_name: 'Shared Costs',
         category_id: catId,
         memo: null,
       })),
     };
-    console.log(checkedTransactions, summaryTransaction);
+    console.log(halvedCostsByCategory);
+    console.log(checkedTransactions);
+    console.log(summaryTransaction);
     createSplitTransaction(summaryTransaction)
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
