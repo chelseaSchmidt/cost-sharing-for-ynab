@@ -19,68 +19,37 @@ import '../styles/App.css';
 const App = (props) => {
   const [sinceDate, setSinceDate] = useState(getFiveDaysAgo());
   const [endDate, setEndDate] = useState(new Date());
+  const [checkedTransactions, setCheckedTransactions] = useState([]);
+  const [splitDate, setSplitDate] = useState(new Date());
   const [transactions, setTransactions] = useState({
     ccTransactions: [],
     dueToFromTransactions: [],
   });
-  const [checkedTransactions, setCheckedTransactions] = useState([]);
-  const [splitDate, setSplitDate] = useState(new Date());
 
   useEffect(() => {
-    let ccTransactions = [];
-
-    getCCTransactions(sinceDate)
-      .then(({ data: { data } }) => {
-        ccTransactions = data.transactions.filter((txn) => (
-          checkIfDateInRange(txn.date, endDate) && txn.approved && !txn.transfer_account_id
-        ));
-        return getDTFTransactions(sinceDate);
-      })
-      .then(({ data: { data } }) => {
-        const dueToFromTransactions = data.transactions.filter((txn) => (
-          checkIfDateInRange(txn.date, endDate) && txn.approved && !txn.transfer_account_id
-        ));
-        setTransactions({
-          ccTransactions,
-          dueToFromTransactions,
-        });
-      })
-      .catch((err) => { console.error(err); });
+    getTransactions();
   }, [props]);
 
-  function handleDateInput({ target: { id, value } }) {
-    if (id === 'start') {
-      setSinceDate(convertStringToDate(value));
-    } else {
-      setEndDate(convertStringToDate(value, false));
-    }
-  }
-
-  function handleDateSubmit(e) {
+  function getTransactions(e = { preventDefault: () => {} }) {
     e.preventDefault();
-    let ccTransactions = [];
-
+    const newTxns = {
+      ccTransactions: [],
+      dueToFromTransactions: [],
+    };
     getCCTransactions(sinceDate)
       .then(({ data: { data } }) => {
-        ccTransactions = data.transactions.filter((txn) => (
+        newTxns.ccTransactions = data.transactions.filter((txn) => (
           checkIfDateInRange(txn.date, endDate) && txn.approved && !txn.transfer_account_id
         ));
         return getDTFTransactions(sinceDate);
       })
       .then(({ data: { data } }) => {
-        const dueToFromTransactions = data.transactions.filter((txn) => (
+        newTxns.dueToFromTransactions = data.transactions.filter((txn) => (
           checkIfDateInRange(txn.date, endDate) && txn.approved && !txn.transfer_account_id
         ));
-        setTransactions({
-          ccTransactions,
-          dueToFromTransactions,
-        });
+        setTransactions(newTxns);
       })
       .catch((err) => { console.error(err); });
-  }
-
-  function handleSplitDateInput({ target: { value } }) {
-    setSplitDate(convertStringToDate(value));
   }
 
   function handleSelectTransaction({ target: { checked } }, transaction) {
@@ -141,7 +110,7 @@ const App = (props) => {
       .catch((err) => console.error(err));
   }
 
-  const transactionsSelected = checkedTransactions.length > 0;
+  const transactionsAreSelected = checkedTransactions.length > 0;
 
   return (
     <div>
@@ -152,7 +121,7 @@ const App = (props) => {
             type="date"
             id="start"
             value={convertDateToString(sinceDate)}
-            onChange={handleDateInput}
+            onChange={(e) => setSinceDate(convertStringToDate(e.target.value))}
           />
         </label>
         <label htmlFor="start">
@@ -161,13 +130,13 @@ const App = (props) => {
             type="date"
             id="end"
             value={convertDateToString(endDate)}
-            onChange={handleDateInput}
+            onChange={(e) => setEndDate(convertStringToDate(e.target.value, false))}
           />
         </label>
-        <button type="submit" onClick={handleDateSubmit}>Update Transactions</button>
+        <button type="submit" onClick={getTransactions}>Update Transactions</button>
       </form>
       {
-        transactionsSelected
+        transactionsAreSelected
         && (
           <div>
             <form>
@@ -178,7 +147,7 @@ const App = (props) => {
                 type="date"
                 id="split-date"
                 value={convertDateToString(splitDate)}
-                onChange={handleSplitDateInput}
+                onChange={(e) => setSplitDate(convertStringToDate(e.target.value))}
               />
             </form>
           </div>
