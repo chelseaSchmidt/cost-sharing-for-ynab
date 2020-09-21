@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import React from 'react';
 import _ from 'lodash';
 import TransactionWindow from './TransactionWindow';
@@ -109,7 +110,8 @@ export default class App extends React.Component {
       return totals;
     }, {});
     _.each(halvedCostsByCategory, (val, key) => {
-      halvedCostsByCategory[key] = Number(val.toFixed(2)) // TO DO: why is this conversion needed a second time?
+      halvedCostsByCategory[key] = Number(val.toFixed(2));
+      // TO DO: why is this conversion needed a second time?
     });
     const summaryTransaction = {
       account_id: dueToFromId,
@@ -131,12 +133,9 @@ export default class App extends React.Component {
         memo: null,
       })),
     };
-    console.log(halvedCostsByCategory);
-    console.log(checkedTransactions);
-    console.log(summaryTransaction);
     createSplitTransaction(summaryTransaction)
       .then((res) => console.log(res))
-      .catch((err) => console.log(err));
+      .catch((err) => console.error(err));
   }
 
   render() {
