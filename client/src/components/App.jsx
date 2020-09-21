@@ -66,11 +66,15 @@ export default class App extends React.Component {
 
     getCCTransactions(sinceDate)
       .then(({ data: { data: { transactions } } }) => {
-        ccTransactions = transactions.filter((txn) => checkIfDateInRange(txn.date, endDate) && txn.approved);
+        ccTransactions = transactions.filter((txn) => (
+          checkIfDateInRange(txn.date, endDate) && txn.approved && !txn.transfer_account_id
+        ));
         return getDTFTransactions(sinceDate);
       })
       .then(({ data: { data: { transactions } } }) => {
-        dueToFromTransactions = transactions.filter((txn) => checkIfDateInRange(txn.date, endDate) && txn.approved);
+        dueToFromTransactions = transactions.filter((txn) => (
+          checkIfDateInRange(txn.date, endDate) && txn.approved && !txn.transfer_account_id
+        ));
         this.setState({ ccTransactions, dueToFromTransactions });
       })
       .catch((err) => { console.error(err); });
@@ -105,7 +109,7 @@ export default class App extends React.Component {
       return totals;
     }, {});
     _.each(halvedCostsByCategory, (val, key) => {
-      halvedCostsByCategory[key] = Number(val.toFixed(2))
+      halvedCostsByCategory[key] = Number(val.toFixed(2)) // TO DO: why is this conversion needed a second time?
     });
     const summaryTransaction = {
       account_id: dueToFromId,
