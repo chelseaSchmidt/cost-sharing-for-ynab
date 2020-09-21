@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import _ from 'lodash';
 import TransactionWindow from './TransactionWindow';
 import {
@@ -16,54 +16,18 @@ import {
 import { dueToFromId } from '../../../identifiers';
 import '../styles/App.css';
 
-export default class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      sinceDate: getFiveDaysAgo(),
-      endDate: new Date(),
-      ccTransactions: [],
-      dueToFromTransactions: [],
-      checkedTransactions: [],
-      splitDate: new Date(),
-    };
-    this.handleDateInput = this.handleDateInput.bind(this);
-    this.handleDateSubmit = this.handleDateSubmit.bind(this);
-    this.handleSelectTransaction = this.handleSelectTransaction.bind(this);
-    this.createSplitEntry = this.createSplitEntry.bind(this);
-    this.handleSplitDateInput = this.handleSplitDateInput.bind(this);
-  }
+const App = (props) => {
+  const [sinceDate, setSinceDate] = useState(getFiveDaysAgo());
+  const [endDate, setEndDate] = useState(new Date());
+  const [transactions, setTransactions] = useState({
+    ccTransactions: [],
+    dueToFromTransactions: [],
+  });
+  const [checkedTransactions, setCheckedTransactions] = useState([]);
+  const [splitDate, setSplitDate] = useState(new Date());
 
-  componentDidMount() {
-    const { sinceDate } = this.state;
+  useEffect(() => {
     let ccTransactions = [];
-    let dueToFromTransactions = [];
-
-    getCCTransactions(sinceDate)
-      .then(({ data: { data: { transactions } } }) => {
-        ccTransactions = transactions;
-        return getDTFTransactions(sinceDate);
-      })
-      .then(({ data: { data: { transactions } } }) => {
-        dueToFromTransactions = transactions;
-        this.setState({ ccTransactions, dueToFromTransactions });
-      })
-      .catch((err) => { console.error(err); });
-  }
-
-  handleDateInput(e) {
-    if (e.target.id === 'start') {
-      this.setState({ sinceDate: convertStringToDate(e.target.value) });
-    } else {
-      this.setState({ endDate: convertStringToDate(e.target.value, false) });
-    }
-  }
-
-  handleDateSubmit(e) {
-    e.preventDefault();
-    const { sinceDate, endDate } = this.state;
-    let ccTransactions = [];
-    let dueToFromTransactions = [];
 
     getCCTransactions(sinceDate)
       .then(({ data: { data: { transactions } } }) => {
@@ -73,34 +37,73 @@ export default class App extends React.Component {
         return getDTFTransactions(sinceDate);
       })
       .then(({ data: { data: { transactions } } }) => {
-        dueToFromTransactions = transactions.filter((txn) => (
+        transactions = transactions.filter((txn) => (
           checkIfDateInRange(txn.date, endDate) && txn.approved && !txn.transfer_account_id
         ));
-        this.setState({ ccTransactions, dueToFromTransactions });
+        setTransactions({
+          ccTransactions,
+          dueToFromTransactions: transactions,
+        });
+      })
+      .catch((err) => { console.error(err); });
+  }, [props]);
+
+  function handleDateInput({ target: { id, value } }) {
+    if (id === 'start') {
+      setSinceDate(convertStringToDate(value));
+    } else {
+      setEndDate(convertStringToDate(value, false));
+    }
+  }
+
+  function handleDateSubmit(e) {
+    e.preventDefault();
+    let ccTransactions = [];
+
+    getCCTransactions(sinceDate)
+      .then(({ data: { data: { transactions } } }) => {
+        ccTransactions = transactions.filter((txn) => (
+          checkIfDateInRange(txn.date, endDate) && txn.approved && !txn.transfer_account_id
+        ));
+        return getDTFTransactions(sinceDate);
+      })
+      .then(({ data: { data: { transactions } } }) => {
+        transactions = transactions.filter((txn) => (
+          checkIfDateInRange(txn.date, endDate) && txn.approved && !txn.transfer_account_id
+        ));
+        setTransactions({
+          ccTransactions,
+          dueToFromTransactions: transactions,
+        });
       })
       .catch((err) => { console.error(err); });
   }
 
-  handleSplitDateInput(e) {
-    this.setState({ splitDate: convertStringToDate(e.target.value) });
+  function handleSplitDateInput({ target: { value } }) {
+    setSplitDate(convertStringToDate(value));
   }
 
-  handleSelectTransaction(e, transaction) {
-    const { checkedTransactions } = this.state;
-    if (e.target.checked) {
-      checkedTransactions.push(transaction);
+  function handleSelectTransaction({ target: { checked } }, transaction) {
+    if (checked) {
+      setCheckedTransactions((prevTxns) => {
+        const newTxns = [...prevTxns];
+        newTxns.push(transaction);
+        return newTxns;
+      });
     } else {
-      const deletionIndex = checkedTransactions.reduce((finalIdx, txn, currIdx) => (
-        txn.id === transaction.id ? currIdx : finalIdx
-      ), null);
-      checkedTransactions.splice(deletionIndex, 1);
+      setCheckedTransactions((prevTxns) => {
+        const newTxns = [...prevTxns];
+        const deletionIndex = newTxns.reduce((finalIdx, txn, currIdx) => (
+          txn.id === transaction.id ? currIdx : finalIdx
+        ), null);
+        newTxns.splice(deletionIndex, 1);
+        return newTxns;
+      });
     }
-    this.setState({ checkedTransactions });
   }
 
-  createSplitEntry(e) {
+  function createSplitEntry(e) {
     e.preventDefault();
-    const { checkedTransactions, splitDate } = this.state;
     const halvedCostsByCategory = checkedTransactions.reduce((totals, txn) => {
       if (txn.category_id in totals) {
         totals[txn.category_id] += Number((txn.amount / 1000 / 2).toFixed(2));
@@ -138,76 +141,263 @@ export default class App extends React.Component {
       .catch((err) => console.error(err));
   }
 
-  render() {
-    const {
-      ccTransactions,
-      dueToFromTransactions,
-      sinceDate,
-      endDate,
-      checkedTransactions,
-      splitDate,
-    } = this.state;
+  const transactionsSelected = checkedTransactions.length > 0;
 
-    const transactionsSelected = checkedTransactions.length > 0;
-
-    return (
-      <div>
-        <form>
-          <label htmlFor="start">
-            Specify start date:
-            <input
-              type="date"
-              id="start"
-              value={convertDateToString(sinceDate)}
-              onChange={this.handleDateInput}
-            />
-          </label>
-          <label htmlFor="start">
-            Specify end date:
-            <input
-              type="date"
-              id="end"
-              value={convertDateToString(endDate)}
-              onChange={this.handleDateInput}
-            />
-          </label>
-          <button type="submit" onClick={this.handleDateSubmit}>Update Transactions</button>
-        </form>
-        {
-          transactionsSelected
-          && (
-            <div>
-              <form>
-                <button type="submit" onClick={this.createSplitEntry}>
-                  Split Selected Transactions On Date
-                </button>
-                <input
-                  type="date"
-                  id="split-date"
-                  value={convertDateToString(splitDate)}
-                  onChange={this.handleSplitDateInput}
-                />
-              </form>
-            </div>
-          )
-        }
-        <div id="transaction-area">
+  return (
+    <div>
+      <form>
+        <label htmlFor="start">
+          Specify start date:
+          <input
+            type="date"
+            id="start"
+            value={convertDateToString(sinceDate)}
+            onChange={handleDateInput}
+          />
+        </label>
+        <label htmlFor="start">
+          Specify end date:
+          <input
+            type="date"
+            id="end"
+            value={convertDateToString(endDate)}
+            onChange={handleDateInput}
+          />
+        </label>
+        <button type="submit" onClick={handleDateSubmit}>Update Transactions</button>
+      </form>
+      {
+        transactionsSelected
+        && (
           <div>
-            <TransactionWindow
-              title="Credit Card Account"
-              transactions={ccTransactions}
-              handleSelectTransaction={this.handleSelectTransaction}
-            />
+            <form>
+              <button type="submit" onClick={createSplitEntry}>
+                Split Selected Transactions On Date
+              </button>
+              <input
+                type="date"
+                id="split-date"
+                value={convertDateToString(splitDate)}
+                onChange={handleSplitDateInput}
+              />
+            </form>
           </div>
-          <div>
-            <TransactionWindow
-              title="Due To/From Account"
-              transactions={dueToFromTransactions}
-              handleSelectTransaction={this.handleSelectTransaction}
-            />
-          </div>
+        )
+      }
+      <div id="transaction-area">
+        <div>
+          <TransactionWindow
+            title="Credit Card Account"
+            transactions={transactions.ccTransactions}
+            handleSelectTransaction={handleSelectTransaction}
+          />
+        </div>
+        <div>
+          <TransactionWindow
+            title="Due To/From Account"
+            transactions={transactions.dueToFromTransactions}
+            handleSelectTransaction={handleSelectTransaction}
+          />
         </div>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
+
+export default App;
+
+// export default class App extends React.Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {
+//       sinceDate: getFiveDaysAgo(),
+//       endDate: new Date(),
+//       ccTransactions: [],
+//       dueToFromTransactions: [],
+//       checkedTransactions: [],
+//       splitDate: new Date(),
+//     };
+//     this.handleDateInput = this.handleDateInput.bind(this);
+//     this.handleDateSubmit = this.handleDateSubmit.bind(this);
+//     this.handleSelectTransaction = this.handleSelectTransaction.bind(this);
+//     this.createSplitEntry = this.createSplitEntry.bind(this);
+//     this.handleSplitDateInput = this.handleSplitDateInput.bind(this);
+//   }
+
+//   componentDidMount() {
+//     const { sinceDate } = this.state;
+//     let ccTransactions = [];
+//     let dueToFromTransactions = [];
+
+//     getCCTransactions(sinceDate)
+//       .then(({ data: { data: { transactions } } }) => {
+//         ccTransactions = transactions;
+//         return getDTFTransactions(sinceDate);
+//       })
+//       .then(({ data: { data: { transactions } } }) => {
+//         dueToFromTransactions = transactions;
+//         this.setState({ ccTransactions, dueToFromTransactions });
+//       })
+//       .catch((err) => { console.error(err); });
+//   }
+
+//   handleDateInput(e) {
+//     if (e.target.id === 'start') {
+//       this.setState({ sinceDate: convertStringToDate(e.target.value) });
+//     } else {
+//       this.setState({ endDate: convertStringToDate(e.target.value, false) });
+//     }
+//   }
+
+//   handleDateSubmit(e) {
+//     e.preventDefault();
+//     const { sinceDate, endDate } = this.state;
+//     let ccTransactions = [];
+//     let dueToFromTransactions = [];
+
+//     getCCTransactions(sinceDate)
+//       .then(({ data: { data: { transactions } } }) => {
+//         ccTransactions = transactions.filter((txn) => (
+//           checkIfDateInRange(txn.date, endDate) && txn.approved && !txn.transfer_account_id
+//         ));
+//         return getDTFTransactions(sinceDate);
+//       })
+//       .then(({ data: { data: { transactions } } }) => {
+//         dueToFromTransactions = transactions.filter((txn) => (
+//           checkIfDateInRange(txn.date, endDate) && txn.approved && !txn.transfer_account_id
+//         ));
+//         this.setState({ ccTransactions, dueToFromTransactions });
+//       })
+//       .catch((err) => { console.error(err); });
+//   }
+
+//   handleSplitDateInput(e) {
+//     this.setState({ splitDate: convertStringToDate(e.target.value) });
+//   }
+
+//   handleSelectTransaction(e, transaction) {
+//     const { checkedTransactions } = this.state;
+//     if (e.target.checked) {
+//       checkedTransactions.push(transaction);
+//     } else {
+//       const deletionIndex = checkedTransactions.reduce((finalIdx, txn, currIdx) => (
+//         txn.id === transaction.id ? currIdx : finalIdx
+//       ), null);
+//       checkedTransactions.splice(deletionIndex, 1);
+//     }
+//     this.setState({ checkedTransactions });
+//   }
+
+//   createSplitEntry(e) {
+//     e.preventDefault();
+//     const { checkedTransactions, splitDate } = this.state;
+//     const halvedCostsByCategory = checkedTransactions.reduce((totals, txn) => {
+//       if (txn.category_id in totals) {
+//         totals[txn.category_id] += Number((txn.amount / 1000 / 2).toFixed(2));
+//       } else {
+//         totals[txn.category_id] = Number((txn.amount / 1000 / 2).toFixed(2));
+//       }
+//       return totals;
+//     }, {});
+//     _.each(halvedCostsByCategory, (val, key) => {
+//       halvedCostsByCategory[key] = Number(val.toFixed(2));
+//       // TO DO: why is this conversion needed a second time?
+//     });
+//     const summaryTransaction = {
+//       account_id: dueToFromId,
+//       date: convertDateToString(splitDate),
+//       amount: _.reduce(halvedCostsByCategory, (sum, amt) => sum + amt) * 1000,
+//       payee_id: null,
+//       payee_name: null,
+//       category_id: null,
+//       memo: null,
+//       cleared: 'uncleared',
+//       approved: true,
+//       flag_color: null,
+//       import_id: null,
+//       subtransactions: _.map(halvedCostsByCategory, (amt, catId) => ({
+//         amount: amt * 1000,
+//         payee_id: null,
+//         payee_name: 'Shared Costs',
+//         category_id: catId,
+//         memo: null,
+//       })),
+//     };
+//     createSplitTransaction(summaryTransaction)
+//       .then((res) => console.log(res))
+//       .catch((err) => console.error(err));
+//   }
+
+//   render() {
+//     const {
+//       ccTransactions,
+//       dueToFromTransactions,
+//       sinceDate,
+//       endDate,
+//       checkedTransactions,
+//       splitDate,
+//     } = this.state;
+
+//     const transactionsSelected = checkedTransactions.length > 0;
+
+//     return (
+//       <div>
+//         <form>
+//           <label htmlFor="start">
+//             Specify start date:
+//             <input
+//               type="date"
+//               id="start"
+//               value={convertDateToString(sinceDate)}
+//               onChange={this.handleDateInput}
+//             />
+//           </label>
+//           <label htmlFor="start">
+//             Specify end date:
+//             <input
+//               type="date"
+//               id="end"
+//               value={convertDateToString(endDate)}
+//               onChange={this.handleDateInput}
+//             />
+//           </label>
+//           <button type="submit" onClick={this.handleDateSubmit}>Update Transactions</button>
+//         </form>
+//         {
+//           transactionsSelected
+//           && (
+//             <div>
+//               <form>
+//                 <button type="submit" onClick={this.createSplitEntry}>
+//                   Split Selected Transactions On Date
+//                 </button>
+//                 <input
+//                   type="date"
+//                   id="split-date"
+//                   value={convertDateToString(splitDate)}
+//                   onChange={this.handleSplitDateInput}
+//                 />
+//               </form>
+//             </div>
+//           )
+//         }
+//         <div id="transaction-area">
+//           <div>
+//             <TransactionWindow
+//               title="Credit Card Account"
+//               transactions={ccTransactions}
+//               handleSelectTransaction={this.handleSelectTransaction}
+//             />
+//           </div>
+//           <div>
+//             <TransactionWindow
+//               title="Due To/From Account"
+//               transactions={dueToFromTransactions}
+//               handleSelectTransaction={this.handleSelectTransaction}
+//             />
+//           </div>
+//         </div>
+//       </div>
+//     );
+//   }
+// }
