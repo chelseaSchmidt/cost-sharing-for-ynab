@@ -2,10 +2,12 @@
 import React, { useState, useEffect } from 'react';
 import _ from 'lodash';
 import TransactionWindow from './TransactionWindow';
+import AccountSelector from './AccountSelector';
 import {
   getCCTransactions,
   getDTFTransactions,
   createSplitTransaction,
+  getUserData,
 } from '../../utilities/http';
 import {
   getFiveDaysAgo,
@@ -17,6 +19,7 @@ import { dueToFromId } from '../../../identifiers';
 import '../styles/App.css';
 
 const App = (props) => {
+  const [user, setUser] = useState(null);
   const [sinceDate, setSinceDate] = useState(getFiveDaysAgo());
   const [endDate, setEndDate] = useState(new Date());
   const [checkedTransactions, setCheckedTransactions] = useState([]);
@@ -25,10 +28,27 @@ const App = (props) => {
     ccTransactions: [],
     dueToFromTransactions: [],
   });
+  const [userData, setUserData] = useState({
+    sharedAccounts: [],
+    sharedCategories: [],
+  });
 
   useEffect(() => {
     getTransactions();
   }, [props]);
+
+  useEffect(() => {
+    if (user) {
+      getUserData(user)
+        .then((res) => console.log(res))
+        .catch((err) => console.error(err));
+    }
+    // get user accounts
+    // get user budget categories
+    // cross reference with stored user data
+    // pass props down to <AccountSelector />
+    // <AccountSelector /> should show selected accounts (GET) & allow new selections (PATCH)
+  }, [user]);
 
   function getTransactions(e = { preventDefault: () => {} }) {
     e.preventDefault();
@@ -112,8 +132,24 @@ const App = (props) => {
 
   const transactionsAreSelected = checkedTransactions.length > 0;
 
+  if (!user) {
+    const requestUsername = () => {
+      const username = prompt('Please enter your username');
+      if (!username) {
+        return requestUsername();
+      }
+      if (username.length === 0) {
+        return requestUsername();
+      } else {
+        setUser(username);
+      }
+    };
+    requestUsername();
+  }
+
   return (
     <div>
+      <AccountSelector username={user} />
       <form>
         <label htmlFor="start">
           Specify start date:

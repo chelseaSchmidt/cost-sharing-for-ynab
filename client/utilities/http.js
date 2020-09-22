@@ -36,3 +36,5 @@ export const createSplitTransaction = (transaction) => (
     data: { transaction },
   })
 );
+
+export const getUserData = (username) => axios.get(`/${username}`);
