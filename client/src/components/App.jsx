@@ -43,11 +43,11 @@ const App = (props) => {
         .then((res) => console.log(res))
         .catch((err) => console.error(err));
     }
-    // get user accounts
-    // get user budget categories
-    // cross reference with stored user data
+    // get user accounts from YNAB
+    // get user budget categories from YNAB
+    // cross reference with stored user data from this app's database
     // pass props down to <AccountSelector />
-    // <AccountSelector /> should show selected accounts (GET) & allow new selections (PATCH)
+    // <AccountSelector /> should show saved selections (GET) & allow new selections (PATCH)
   }, [user]);
 
   function getTransactions(e = { preventDefault: () => {} }) {
