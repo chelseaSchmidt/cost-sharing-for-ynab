@@ -1,0 +1,11 @@
+.acct-btn, .cat-btn {
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 12px;
+  margin: 2px;
+}
+
+.active-btn {
+  background-color: black;
+  color: white;
+}

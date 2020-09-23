@@ -6,6 +6,8 @@ import AccountSelector from './AccountSelector';
 import {
   getCCTransactions,
   getDTFTransactions,
+  getAccounts,
+  getCategories,
   createSplitTransaction,
   getUserData,
 } from '../../utilities/http';
@@ -31,6 +33,8 @@ const App = (props) => {
   const [userData, setUserData] = useState({
     sharedAccounts: [],
     sharedCategories: [],
+    budgetAccounts: [{ name: '', id: '' }],
+    budgetCategories: [{ name: '', id: '' }],
   });
 
   useEffect(() => {
@@ -39,16 +43,40 @@ const App = (props) => {
 
   useEffect(() => {
     if (user) {
+      const userObj = {
+        sharedAccounts: [],
+        sharedCategories: [],
+        budgetAccounts: [],
+        budgetCategories: [],
+      };
       getUserData(user)
-        .then((res) => console.log(res))
+        .then(({ data }) => {
+          if (data.length > 0) {
+            userObj.sharedAccounts = data[0].sharedAccounts;
+            userObj.sharedCategories = data[0].sharedCategories;
+          }
+          return getAccounts();
+        })
+        .then(({ data: { data: { accounts } } }) => {
+          userObj.budgetAccounts = accounts
+            .filter(({ closed }) => !closed)
+            .map(({ name, id }) => { return { name, id } });
+          return getCategories();
+        })
+        .then(({ data: { data: { category_groups } } }) => {
+          userObj.budgetCategories = _.flatten(category_groups
+            .filter(({ hidden }) => !hidden)
+            .map(({ categories }) => categories
+              .filter(({ hidden}) => !hidden)
+              .map(({ name, id }) => { return { name, id } }))
+          );
+          setUserData(userObj);
+        })
         .catch((err) => console.error(err));
     }
-    // get user accounts from YNAB
-    // get user budget categories from YNAB
-    // cross reference with stored user data from this app's database
-    // pass props down to <AccountSelector />
-    // <AccountSelector /> should show saved selections (GET) & allow new selections (PATCH)
   }, [user]);
+
+  // TO DO: add another effect for when userData changes (re-retrieve transactions based on selections)
 
   function getTransactions(e = { preventDefault: () => {} }) {
     e.preventDefault();
@@ -149,7 +177,7 @@ const App = (props) => {
 
   return (
     <div>
-      <AccountSelector username={user} />
+      <AccountSelector userData={userData} />
       <form>
         <label htmlFor="start">
           Specify start date:

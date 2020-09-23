@@ -28,6 +28,22 @@ export const getDTFTransactions = (sinceDate) => (
   })
 );
 
+export const getAccounts = () => (
+  axios({
+    method: 'get',
+    headers: { Authorization: `Bearer ${token}` },
+    url: `https://api.youneedabudget.com/v1/budgets/${budgetId}/accounts`,
+  })
+);
+
+export const getCategories = () => (
+  axios({
+    method: 'get',
+    headers: { Authorization: `Bearer ${token}` },
+    url: `https://api.youneedabudget.com/v1/budgets/${budgetId}/categories`,
+  })
+);
+
 export const createSplitTransaction = (transaction) => (
   axios({
     method: 'post',
