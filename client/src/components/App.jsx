@@ -231,6 +231,13 @@ const App = (props) => {
         </div>
         <div>
           <TransactionWindow
+            title="Transactions in Shared Categories"
+            transactions={[]}
+            handleSelectTransaction={handleSelectTransaction}
+          />
+        </div>
+        <div>
+          <TransactionWindow
             title="Due To/From Account"
             transactions={transactions.dueToFromTransactions}
             handleSelectTransaction={handleSelectTransaction}
