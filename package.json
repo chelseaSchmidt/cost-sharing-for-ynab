@@ -23,6 +23,7 @@
   "homepage": "https://github.com/chelseaSchmidt/share-a-credit-card#readme",
   "dependencies": {
     "axios": "^0.20.0",
+    "body-parser": "^1.19.0",
     "css-loader": "^4.3.0",
     "express": "^4.17.1",
     "lodash": "^4.17.20",

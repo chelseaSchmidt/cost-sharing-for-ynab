@@ -1,12 +1,24 @@
 const mongoose = require('mongoose');
 
 const sharedAccountSchema = mongoose.Schema({
-  name: String,
-  accountId: String,
+  name: {
+    type: String,
+    required: true,
+  },
+  accountId: {
+    type: String,
+    required: true,
+  },
 });
 const sharedCategorySchema = mongoose.Schema({
-  name: String,
-  categoryId: String,
+  name: {
+    type: String,
+    required: true,
+  },
+  categoryId: {
+    type: String,
+    required: true,
+  },
 });
 const userSchema = mongoose.Schema({
   name: String,

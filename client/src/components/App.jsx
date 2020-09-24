@@ -21,7 +21,7 @@ import { dueToFromId } from '../../../identifiers';
 import '../styles/App.css';
 
 const App = (props) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState('');
   const [sinceDate, setSinceDate] = useState(getFiveDaysAgo());
   const [endDate, setEndDate] = useState(new Date());
   const [checkedTransactions, setCheckedTransactions] = useState([]);
@@ -42,7 +42,7 @@ const App = (props) => {
   }, [props]);
 
   useEffect(() => {
-    if (user) {
+    if (user.length) {
       const userObj = {
         sharedAccounts: [],
         sharedCategories: [],
@@ -160,7 +160,7 @@ const App = (props) => {
 
   const transactionsAreSelected = checkedTransactions.length > 0;
 
-  if (!user) {
+  if (!user.length) {
     const requestUsername = () => {
       const username = prompt('Please enter your username');
       if (!username) {
@@ -177,7 +177,11 @@ const App = (props) => {
 
   return (
     <div>
-      <AccountSelector userData={userData} />
+      <AccountSelector
+        userData={userData}
+        setUserData={setUserData}
+        username={user}
+      />
       <form>
         <label htmlFor="start">
           Specify start date:

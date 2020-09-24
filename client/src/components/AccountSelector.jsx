@@ -1,54 +1,106 @@
-import React from 'react';
-import { arrayOf, objectOf, string } from 'prop-types';
-import { getUserData } from '../../utilities/http';
+import React, { useState, useEffect } from 'react';
+import { arrayOf, objectOf, string, func } from 'prop-types';
+import { getUserData, updateUserData } from '../../utilities/http';
 import '../styles/AccountSelector.css';
 
-const AccountSelector = ({ userData }) => {
-  console.log(userData);
-  // cross reference YNAB data with stored user data from this app
-  // <AccountSelector /> should show saved selections (GET) & allow new selections (PATCH)
+const AccountSelector = ({ userData, setUserData, username }) => {
+  const [sharedAccounts, setSharedAccounts] = useState(userData.sharedAccounts);
+  const [sharedCategories, setSharedCategories] = useState(userData.sharedCategories);
+  const budgetAccounts = [...userData.budgetAccounts];
+  const budgetCategories = [...userData.budgetCategories];
+
+  useEffect(() => {
+    setSharedAccounts(userData.sharedAccounts);
+  }, [userData.sharedAccounts]);
+
+  useEffect(() => {
+    setSharedCategories(userData.sharedCategories);
+  }, [userData.sharedCategories]);
+
+  function addAccount({ target: { id, innerHTML } }) {
+    if (sharedAccounts.filter((acct) => acct.accountId === id).length) {
+      const copyAccounts = sharedAccounts.filter((acct) => acct.accountId !== id);
+      setSharedAccounts(copyAccounts);
+    } else {
+      const copyAccounts = [...sharedAccounts];
+      copyAccounts.push({ name: innerHTML, accountId: id });
+      setSharedAccounts(copyAccounts);
+    }
+  }
+
+  function addCategory({ target: { id, innerHTML } }) {
+    if (sharedCategories.filter((cat) => cat.categoryId === id).length) {
+      const copyCats = sharedCategories.filter((cat) => cat.categoryId !== id);
+      setSharedCategories(copyCats);
+    } else {
+      const copyCats = [...sharedCategories];
+      copyCats.push({ name: innerHTML, categoryId: id });
+      setSharedCategories(copyCats);
+    }
+  }
+
+  function save() {
+    updateUserData(username, sharedAccounts, sharedCategories);
+    setUserData({
+      budgetAccounts,
+      budgetCategories,
+      sharedAccounts,
+      sharedCategories,
+    });
+  }
+
   return (
     <>
       <p>What banking accounts in your YNAB budget are used for shared expenses?</p>
-      {userData.budgetAccounts.map(({ name, id }) => (
-        <button
-          type="button"
-          id={id}
-          className="acct-btn"
-          key={id}
-        >
-          {name}
-        </button>
-      ))}
-      {/*
-        * Get list of all this user's banking accounts from YNAB
-        * Map to buttons
-        * On save, add selected accounts to user's info in database
-      */}
+      {userData.budgetAccounts.map(({ name, id }) => {
+        let toggleClass = 'acct-btn';
+        if (sharedAccounts.map((acct) => acct.accountId).indexOf(id) > -1) {
+          toggleClass += ' active-btn';
+        }
+        return (
+          <button
+            type="button"
+            id={id}
+            className={toggleClass}
+            onClick={addAccount}
+            key={id}
+          >
+            {name}
+          </button>
+      )})}
       <p>What budget categories in your YNAB budget are used for shared expenses?</p>
-      {userData.budgetCategories.map(({ name, id }) => (
-        <button
-          type="button"
-          id={id}
-          className="cat-btn"
-          key={id}
-        >
-          {name}
-        </button>
-      ))}
-      {/*
-        * Get list of all this user's budget categories from YNAB
-        * Map to buttons
-        * On save, add selected categories to user's info in database
-      */}
+      {userData.budgetCategories.map(({ name, id }) => {
+        let toggleClass = 'cat-btn';
+        if (sharedCategories.map((cat) => cat.categoryId).indexOf(id) > -1) {
+          toggleClass += ' active-btn';
+        }
+        return (
+          <button
+            type="button"
+            id={id}
+            className={toggleClass}
+            onClick={addCategory}
+            key={id}
+          >
+            {name}
+          </button>
+      )})}
       <div />
-      <button type="button" id="save-btn">Save</button>
+      <button
+        type="button"
+        id="save-btn"
+        onClick={save}
+      >
+        Save
+      </button>
     </>
   );
 };
 
 AccountSelector.propTypes = {
   userData: objectOf(arrayOf(objectOf(string))).isRequired,
+  setUserData: func.isRequired,
+  username: string.isRequired,
 };
 
 export default AccountSelector;
