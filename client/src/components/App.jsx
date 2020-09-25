@@ -25,7 +25,10 @@ const App = (props) => {
   const [user, setUser] = useState('');
   const [sinceDate, setSinceDate] = useState(getFiveDaysAgo());
   const [endDate, setEndDate] = useState(new Date());
-  const [checkedTransactions, setCheckedTransactions] = useState([]);
+  const [checkedTransactions, setCheckedTransactions] = useState({
+    transactions: [],
+    checkmarks: [],
+  });
   const [splitDate, setSplitDate] = useState(new Date());
   const [transactions, setTransactions] = useState({
     bankTransactions: [],
@@ -122,20 +125,40 @@ const App = (props) => {
       .catch((err) => { console.error(err); });
   }
 
-  function handleSelectTransaction({ target: { checked } }, transaction) {
+  function handleSelectTransaction({ target: { checked } }, transaction, number) {
     if (checked) {
       setCheckedTransactions((prevTxns) => {
-        const newTxns = [...prevTxns];
-        newTxns.push(transaction);
+        const newTxns = { ...prevTxns };
+        newTxns.transactions.push(transaction);
+        newTxns.checkmarks[number] = 1;
         return newTxns;
       });
     } else {
       setCheckedTransactions((prevTxns) => {
-        const newTxns = [...prevTxns];
-        const deletionIndex = newTxns.reduce((finalIdx, txn, currIdx) => (
+        const newTxns = { ...prevTxns };
+        const deletionIndex = newTxns.transactions.reduce((finalIdx, txn, currIdx) => (
           txn.id === transaction.id ? currIdx : finalIdx
         ), null);
-        newTxns.splice(deletionIndex, 1);
+        newTxns.transactions.splice(deletionIndex, 1);
+        newTxns.checkmarks[number] = 0;
+        return newTxns;
+      });
+    }
+  }
+
+  function selectAll({ target: { checked } }) {
+    if (checked) {
+      setCheckedTransactions((prevTxns) => {
+        const newTxns = { ...prevTxns };
+        newTxns.transactions = [...transactions.catTransactions];
+        newTxns.checkmarks = _.range(1, newTxns.transactions.length + 1, 0);
+        return newTxns;
+      });
+    } else {
+      setCheckedTransactions((prevTxns) => {
+        const newTxns = { ...prevTxns };
+        newTxns.transactions = [];
+        newTxns.checkmarks = [];
         return newTxns;
       });
     }
@@ -249,7 +272,9 @@ const App = (props) => {
             title="Transactions in Shared Categories"
             transactions={transactions.catTransactions}
             isolatedTransactions={transactions.isolatedTransactions}
+            checkmarks={checkedTransactions.checkmarks}
             handleSelectTransaction={handleSelectTransaction}
+            selectAll={selectAll}
           />
         </div>
         <div>
