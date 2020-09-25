@@ -6,11 +6,22 @@ import {
   dueToFromId,
 } from '../../identifiers';
 
-export const getCCTransactions = (sinceDate) => (
+export const getBankTransactions = (sinceDate) => (
   axios({
     method: 'get',
     headers: { Authorization: `Bearer ${token}` },
     url: `https://api.youneedabudget.com/v1/budgets/${budgetId}/accounts/${ccId}/transactions`,
+    params: {
+      since_date: `${sinceDate}`,
+    },
+  })
+);
+
+export const getAllTransactions = (sinceDate) => (
+  axios({
+    method: 'get',
+    headers: { Authorization: `Bearer ${token}` },
+    url: `https://api.youneedabudget.com/v1/budgets/${budgetId}/transactions`,
     params: {
       since_date: `${sinceDate}`,
     },

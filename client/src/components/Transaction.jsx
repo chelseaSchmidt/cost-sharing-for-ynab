@@ -13,7 +13,7 @@ const Transaction = ({
   handleSelectTransaction,
   transaction,
 }) => {
-  const editable = type === 'Credit Card Account';
+  const editable = type.slice(0, 22) === 'Transactions in Shared';
   const {
     date,
     amount,

@@ -4,7 +4,8 @@ import _ from 'lodash';
 import TransactionWindow from './TransactionWindow';
 import AccountSelector from './AccountSelector';
 import {
-  getCCTransactions,
+  getBankTransactions,
+  getAllTransactions,
   getDTFTransactions,
   getAccounts,
   getCategories,
@@ -27,7 +28,8 @@ const App = (props) => {
   const [checkedTransactions, setCheckedTransactions] = useState([]);
   const [splitDate, setSplitDate] = useState(new Date());
   const [transactions, setTransactions] = useState({
-    ccTransactions: [],
+    bankTransactions: [],
+    catTransactions: [],
     dueToFromTransactions: [],
   });
   const [userData, setUserData] = useState({
@@ -39,7 +41,7 @@ const App = (props) => {
 
   useEffect(() => {
     getTransactions();
-  }, [props]);
+  }, [userData]);
 
   useEffect(() => {
     if (user.length) {
@@ -81,19 +83,31 @@ const App = (props) => {
   function getTransactions(e = { preventDefault: () => {} }) {
     e.preventDefault();
     const newTxns = {
-      ccTransactions: [],
+      bankTransactions: [],
+      catTransactions: [],
       dueToFromTransactions: [],
     };
-    getCCTransactions(sinceDate)
+    getAllTransactions(sinceDate)
       .then(({ data: { data } }) => {
-        newTxns.ccTransactions = data.transactions.filter((txn) => (
-          checkIfDateInRange(txn.date, endDate) && txn.approved && !txn.transfer_account_id
+        newTxns.bankTransactions = data.transactions.filter((txn) => (
+          checkIfDateInRange(txn.date, endDate)
+          && txn.approved
+          && !txn.transfer_account_id
+          && userData.sharedAccounts.map((acct) => acct.accountId).indexOf(txn.account_id) > -1
+        ));
+        newTxns.catTransactions = data.transactions.filter((txn) => (
+          checkIfDateInRange(txn.date, endDate)
+          && txn.approved
+          && !txn.transfer_account_id
+          && userData.sharedCategories.map((cat) => cat.categoryId).indexOf(txn.category_id) > -1
         ));
         return getDTFTransactions(sinceDate);
       })
       .then(({ data: { data } }) => {
         newTxns.dueToFromTransactions = data.transactions.filter((txn) => (
-          checkIfDateInRange(txn.date, endDate) && txn.approved && !txn.transfer_account_id
+          checkIfDateInRange(txn.date, endDate)
+          && txn.approved
+          && !txn.transfer_account_id
         ));
         setTransactions(newTxns);
       })
@@ -224,15 +238,15 @@ const App = (props) => {
       <div id="transaction-area">
         <div>
           <TransactionWindow
-            title="Credit Card Account"
-            transactions={transactions.ccTransactions}
+            title="Transactions in Shared Banking Accounts"
+            transactions={transactions.bankTransactions}
             handleSelectTransaction={handleSelectTransaction}
           />
         </div>
         <div>
           <TransactionWindow
             title="Transactions in Shared Categories"
-            transactions={[]}
+            transactions={transactions.catTransactions}
             handleSelectTransaction={handleSelectTransaction}
           />
         </div>
