@@ -79,8 +79,6 @@ const App = (props) => {
     }
   }, [user]);
 
-  // TO DO: add another effect for when userData changes (re-retrieve transactions based on selections)
-
   function getTransactions(e = { preventDefault: () => {} }) {
     e.preventDefault();
     const newTxns = {
@@ -246,17 +244,19 @@ const App = (props) => {
         )
       }
       <div id="transaction-area">
-        <div>
+      <div>
           <TransactionWindow
-            title="Transactions in Shared Banking Accounts"
-            transactions={transactions.bankTransactions}
+            title="Transactions in Shared Categories"
+            transactions={transactions.catTransactions}
+            isolatedTransactions={transactions.isolatedTransactions}
             handleSelectTransaction={handleSelectTransaction}
           />
         </div>
         <div>
           <TransactionWindow
-            title="Transactions in Shared Categories"
-            transactions={transactions.catTransactions}
+            title="Transactions in Shared Banking Accounts"
+            transactions={transactions.bankTransactions}
+            isolatedTransactions={transactions.isolatedTransactions}
             handleSelectTransaction={handleSelectTransaction}
           />
         </div>
@@ -264,6 +264,7 @@ const App = (props) => {
           <TransactionWindow
             title="Due To/From Account"
             transactions={transactions.dueToFromTransactions}
+            isolatedTransactions={transactions.isolatedTransactions}
             handleSelectTransaction={handleSelectTransaction}
           />
         </div>

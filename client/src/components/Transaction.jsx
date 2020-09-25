@@ -12,8 +12,9 @@ const Transaction = ({
   type,
   handleSelectTransaction,
   transaction,
+  isIsolated,
 }) => {
-  const editable = type.slice(0, 22) === 'Transactions in Shared';
+  const editable = type === 'Transactions in Shared Categories';
   const {
     date,
     amount,
@@ -26,6 +27,8 @@ const Transaction = ({
   } = transaction;
   return (
     <div>
+      {isIsolated && <span className="warning-symbol" />}
+      {!isIsolated && <span className="validated-symbol" />}
       {editable && <input type="checkbox" onChange={(e) => handleSelectTransaction(e, transaction)} />}
       <span>
         {`${date} | $${amount / 1000} | ${memo} | ${cleared} | ${approved} | ${payee_name} | ${category_name} | ${account_name}`}
@@ -37,6 +40,7 @@ const Transaction = ({
 Transaction.propTypes = {
   type: string.isRequired,
   handleSelectTransaction: func.isRequired,
+  isIsolated: bool.isRequired,
   transaction: shape({
     date: string,
     amount: number,
