@@ -30,6 +30,7 @@ const App = (props) => {
   const [transactions, setTransactions] = useState({
     bankTransactions: [],
     catTransactions: [],
+    isolatedTransactions: [],
     dueToFromTransactions: [],
   });
   const [userData, setUserData] = useState({
@@ -85,22 +86,31 @@ const App = (props) => {
     const newTxns = {
       bankTransactions: [],
       catTransactions: [],
+      isolatedTransactions: [],
       dueToFromTransactions: [],
     };
+    const sharedAccountIds = userData.sharedAccounts.map((acct) => acct.accountId);
+    const sharedCatIds = userData.sharedCategories.map((cat) => cat.categoryId);
     getAllTransactions(sinceDate)
       .then(({ data: { data } }) => {
-        newTxns.bankTransactions = data.transactions.filter((txn) => (
+        data.transactions.filter((txn) => (
           checkIfDateInRange(txn.date, endDate)
           && txn.approved
           && !txn.transfer_account_id
-          && userData.sharedAccounts.map((acct) => acct.accountId).indexOf(txn.account_id) > -1
-        ));
-        newTxns.catTransactions = data.transactions.filter((txn) => (
-          checkIfDateInRange(txn.date, endDate)
-          && txn.approved
-          && !txn.transfer_account_id
-          && userData.sharedCategories.map((cat) => cat.categoryId).indexOf(txn.category_id) > -1
-        ));
+        )).forEach((txn) => {
+          let count = 0;
+          if (sharedAccountIds.indexOf(txn.account_id) > -1) {
+            newTxns.bankTransactions.push(txn);
+            count += 1;
+          }
+          if (sharedCatIds.indexOf(txn.category_id) > -1) {
+            newTxns.catTransactions.push(txn);
+            count += 1;
+          }
+          if (count === 1) {
+            newTxns.isolatedTransactions.push(txn);
+          }
+        });
         return getDTFTransactions(sinceDate);
       })
       .then(({ data: { data } }) => {

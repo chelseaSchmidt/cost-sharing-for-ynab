@@ -22,12 +22,13 @@ const Transaction = ({
     approved,
     payee_name,
     category_name,
+    account_name,
   } = transaction;
   return (
     <div>
       {editable && <input type="checkbox" onChange={(e) => handleSelectTransaction(e, transaction)} />}
       <span>
-        {`${date} | $${amount / 1000} | ${memo} | ${cleared} | ${approved} | ${payee_name} | ${category_name}`}
+        {`${date} | $${amount / 1000} | ${memo} | ${cleared} | ${approved} | ${payee_name} | ${category_name} | ${account_name}`}
       </span>
     </div>
   );
