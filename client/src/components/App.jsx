@@ -1,10 +1,9 @@
-/* eslint-disable no-param-reassign */
+/* eslint-disable no-param-reassign, camelcase */
 import React, { useState, useEffect } from 'react';
 import _ from 'lodash';
 import TransactionWindow from './TransactionWindow';
 import AccountSelector from './AccountSelector';
 import {
-  getBankTransactions,
   getAllTransactions,
   getDTFTransactions,
   getAccounts,
@@ -21,7 +20,7 @@ import {
 import { dueToFromId } from '../../../identifiers';
 import '../styles/App.css';
 
-const App = (props) => {
+const App = () => {
   const [user, setUser] = useState('');
   const [sinceDate, setSinceDate] = useState(getFiveDaysAgo());
   const [endDate, setEndDate] = useState(new Date());
@@ -66,15 +65,15 @@ const App = (props) => {
         .then(({ data: { data: { accounts } } }) => {
           userObj.budgetAccounts = accounts
             .filter(({ closed }) => !closed)
-            .map(({ name, id }) => { return { name, id } });
+            .map(({ name, id }) => { return { name, id }; }); // eslint-disable-line
           return getCategories();
         })
         .then(({ data: { data: { category_groups } } }) => {
           userObj.budgetCategories = _.flatten(category_groups
             .filter(({ hidden }) => !hidden)
             .map(({ categories }) => categories
-              .filter(({ hidden}) => !hidden)
-              .map(({ name, id }) => { return { name, id } }))
+              .filter(({ hidden }) => !hidden)
+              .map(({ name, id }) => { return { name, id }; })) // eslint-disable-line
           );
           setUserData(userObj);
         })
@@ -125,12 +124,12 @@ const App = (props) => {
       .catch((err) => { console.error(err); });
   }
 
-  function handleSelectTransaction({ target: { checked } }, transaction, number) {
+  function handleSelectTransaction({ target: { checked } }, transaction, txnNumber) {
     if (checked) {
       setCheckedTransactions((prevTxns) => {
         const newTxns = { ...prevTxns };
         newTxns.transactions.push(transaction);
-        newTxns.checkmarks[number] = 1;
+        newTxns.checkmarks[txnNumber] = 1;
         return newTxns;
       });
     } else {
@@ -140,7 +139,7 @@ const App = (props) => {
           txn.id === transaction.id ? currIdx : finalIdx
         ), null);
         newTxns.transactions.splice(deletionIndex, 1);
-        newTxns.checkmarks[number] = 0;
+        newTxns.checkmarks[txnNumber] = 0;
         return newTxns;
       });
     }
@@ -213,9 +212,8 @@ const App = (props) => {
       }
       if (username.length === 0) {
         return requestUsername();
-      } else {
-        setUser(username);
       }
+      setUser(username);
     };
     requestUsername();
   }
@@ -267,7 +265,7 @@ const App = (props) => {
         )
       }
       <div id="transaction-area">
-      <div>
+        <div>
           <TransactionWindow
             title="Transactions in Shared Categories"
             transactions={transactions.catTransactions}

@@ -35,7 +35,7 @@ const TransactionWindow = ({
         }
         return (
           <Transaction
-            number={i}
+            txnNumber={i}
             checked={checkmarks[i]}
             transaction={txn}
             type={title}
@@ -43,7 +43,8 @@ const TransactionWindow = ({
             isIsolated={isIsolated}
             key={txn.id}
           />
-      )})}
+        );
+      })}
       {noTransactions && <span><em>No transactions</em></span>}
     </div>
   );
@@ -52,10 +53,10 @@ const TransactionWindow = ({
 TransactionWindow.propTypes = {
   transactions: arrayOf(shape({ id: string })).isRequired,
   isolatedTransactions: arrayOf(shape({ id: string })).isRequired,
-  checkmarks: arrayOf(number).isRequired,
+  checkmarks: arrayOf(number),
   title: string.isRequired,
   handleSelectTransaction: func.isRequired,
-  selectAll: func.isRequired,
+  selectAll: func,
 };
 
 export default TransactionWindow;

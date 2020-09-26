@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { arrayOf, objectOf, string, func } from 'prop-types';
-import { getUserData, updateUserData } from '../../utilities/http';
+import {
+  arrayOf,
+  objectOf,
+  string,
+  func,
+} from 'prop-types';
+import { updateUserData } from '../../utilities/http';
 import '../styles/AccountSelector.css';
 
 const AccountSelector = ({ userData, setUserData, username }) => {
@@ -67,7 +72,8 @@ const AccountSelector = ({ userData, setUserData, username }) => {
           >
             {name}
           </button>
-      )})}
+        );
+      })}
       <p>What budget categories in your YNAB budget are used for shared expenses?</p>
       {userData.budgetCategories.map(({ name, id }) => {
         let toggleClass = 'cat-btn';
@@ -84,7 +90,8 @@ const AccountSelector = ({ userData, setUserData, username }) => {
           >
             {name}
           </button>
-      )})}
+        );
+      })}
       <div />
       <button
         type="button"

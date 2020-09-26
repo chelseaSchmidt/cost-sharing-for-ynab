@@ -19,7 +19,7 @@ app.get('/:username', (req, res) => {
       res.status(200);
       res.send(result);
     })
-    .catch((err) => {
+    .catch(() => {
       res.sendStatus(500);
     });
 });

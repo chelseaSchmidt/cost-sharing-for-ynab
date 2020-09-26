@@ -8,7 +8,7 @@
     "start": "nodemon server",
     "build": "webpack",
     "watch": "webpack -w",
-    "linter": "npx eslint ./ && npx eslint ./ --ext .jsx"
+    "linter": "npx eslint ./ --ext .js,.jsx"
   },
   "repository": {
     "type": "git",
