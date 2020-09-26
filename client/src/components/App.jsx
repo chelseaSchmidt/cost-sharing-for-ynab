@@ -165,7 +165,7 @@ const App = () => {
 
   function createSplitEntry(e) {
     e.preventDefault();
-    const halvedCostsByCategory = checkedTransactions.reduce((totals, txn) => {
+    const halvedCostsByCategory = checkedTransactions.transactions.reduce((totals, txn) => {
       if (txn.category_id in totals) {
         totals[txn.category_id] += Number((txn.amount / 1000 / 2).toFixed(2));
       } else {
@@ -180,7 +180,10 @@ const App = () => {
     const summaryTransaction = {
       account_id: dueToFromId,
       date: convertDateToString(splitDate),
-      amount: _.reduce(halvedCostsByCategory, (sum, amt) => sum + amt) * 1000,
+      amount: Number(
+        (_.reduce(halvedCostsByCategory, (sum, amt) => sum + amt) * 1000)
+          .toFixed(2)
+      ) * -1,
       payee_id: null,
       payee_name: null,
       category_id: null,
@@ -190,7 +193,7 @@ const App = () => {
       flag_color: null,
       import_id: null,
       subtransactions: _.map(halvedCostsByCategory, (amt, catId) => ({
-        amount: amt * 1000,
+        amount: amt * -1000,
         payee_id: null,
         payee_name: 'Shared Costs',
         category_id: catId,
@@ -202,7 +205,7 @@ const App = () => {
       .catch((err) => console.error(err));
   }
 
-  const transactionsAreSelected = checkedTransactions.length > 0;
+  const transactionsAreSelected = checkedTransactions.transactions.length > 0;
 
   if (!user.length) {
     const requestUsername = () => {
