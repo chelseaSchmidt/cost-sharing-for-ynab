@@ -1,5 +1,7 @@
 /* eslint-disable camelcase */
 import React from 'react';
+import moment from 'moment';
+import formatCurrency from 'format-currency';
 import {
   shape,
   string,
@@ -17,6 +19,7 @@ const Transaction = ({
   checked = 0,
 }) => {
   const editable = type === 'Transactions in Shared Categories';
+  const currencyOpts = { format: '%s%v', symbol: '$' };
   const {
     date,
     amount,
@@ -28,13 +31,30 @@ const Transaction = ({
     account_name,
   } = transaction;
   return (
-    <div>
+    <div className="transaction">
       {isIsolated && <span className="warning-symbol" />}
       {!isIsolated && <span className="validated-symbol" />}
       {editable && <input type="checkbox" checked={!!checked} onChange={(e) => handleSelectTransaction(e, transaction, txnNumber)} />}
-      <span>
-        {`${date} | $${amount / 1000} | ${memo} | ${cleared} | ${approved} | ${payee_name} | ${category_name} | ${account_name}`}
-      </span>
+      <div className="txn-date">
+        {moment(date).format('MMM DD, YYYY')}
+      </div>
+      <div className="txn-amt">
+        {formatCurrency(amount / 1000 * -1, currencyOpts)}
+      </div>
+      <div className="txn-details">
+        <div className="txn-cat">
+          {category_name}
+        </div>
+        <div className="txn-payee">
+          {payee_name}
+        </div>
+        <div className="txn-acct">
+          {account_name}
+        </div>
+        <div className="txn-more">
+          <a href="#">More</a>
+        </div>
+      </div>
     </div>
   );
 };

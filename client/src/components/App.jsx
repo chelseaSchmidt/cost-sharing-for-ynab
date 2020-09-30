@@ -268,32 +268,26 @@ const App = () => {
         )
       }
       <div id="transaction-area">
-        <div>
-          <TransactionWindow
-            title="Transactions in Shared Categories"
-            transactions={transactions.catTransactions}
-            isolatedTransactions={transactions.isolatedTransactions}
-            checkmarks={checkedTransactions.checkmarks}
-            handleSelectTransaction={handleSelectTransaction}
-            selectAll={selectAll}
-          />
-        </div>
-        <div>
-          <TransactionWindow
-            title="Transactions in Shared Banking Accounts"
-            transactions={transactions.bankTransactions}
-            isolatedTransactions={transactions.isolatedTransactions}
-            handleSelectTransaction={handleSelectTransaction}
-          />
-        </div>
-        <div>
-          <TransactionWindow
-            title="Due To/From Account"
-            transactions={transactions.dueToFromTransactions}
-            isolatedTransactions={transactions.isolatedTransactions}
-            handleSelectTransaction={handleSelectTransaction}
-          />
-        </div>
+        <TransactionWindow
+          title="Transactions in Shared Categories"
+          transactions={transactions.catTransactions}
+          isolatedTransactions={transactions.isolatedTransactions}
+          checkmarks={checkedTransactions.checkmarks}
+          handleSelectTransaction={handleSelectTransaction}
+          selectAll={selectAll}
+        />
+        <TransactionWindow
+          title="Transactions in Shared Banking Accounts"
+          transactions={transactions.bankTransactions}
+          isolatedTransactions={transactions.isolatedTransactions}
+          handleSelectTransaction={handleSelectTransaction}
+        />
+        <TransactionWindow
+          title="Due To/From Account"
+          transactions={transactions.dueToFromTransactions}
+          isolatedTransactions={transactions.isolatedTransactions}
+          handleSelectTransaction={handleSelectTransaction}
+        />
       </div>
     </div>
   );
