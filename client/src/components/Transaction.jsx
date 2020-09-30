@@ -25,7 +25,6 @@ const Transaction = ({
     amount,
     memo,
     cleared,
-    approved,
     payee_name,
     category_name,
     account_name,
@@ -39,7 +38,7 @@ const Transaction = ({
         {moment(date).format('MMM DD, YYYY')}
       </div>
       <div className="txn-amt">
-        {formatCurrency(amount / 1000 * -1, currencyOpts)}
+        {formatCurrency(amount / -1000, currencyOpts)}
       </div>
       <div className="txn-details">
         <div className="txn-cat">

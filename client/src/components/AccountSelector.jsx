@@ -4,15 +4,16 @@ import {
   objectOf,
   string,
   func,
+  shape,
 } from 'prop-types';
-import { updateUserData } from '../../utilities/http';
+import { deCaseDeSpace } from '../../utilities/general';
 import '../styles/AccountSelector.css';
 
-const AccountSelector = ({ userData, setUserData, username }) => {
+const AccountSelector = ({ userData, budgetData, setUserData }) => {
   const [sharedAccounts, setSharedAccounts] = useState(userData.sharedAccounts);
   const [sharedCategories, setSharedCategories] = useState(userData.sharedCategories);
-  const budgetAccounts = [...userData.budgetAccounts];
-  const budgetCategories = [...userData.budgetCategories];
+  const budgetAccounts = [...budgetData.budgetAccounts];
+  const budgetCategories = [...budgetData.budgetCategories];
 
   useEffect(() => {
     setSharedAccounts(userData.sharedAccounts);
@@ -38,17 +39,17 @@ const AccountSelector = ({ userData, setUserData, username }) => {
       const copyCats = sharedCategories.filter((cat) => cat.categoryId !== id);
       setSharedCategories(copyCats);
     } else {
+      const subCategories = budgetCategories
+        .filter((catGroup) => catGroup.id === id)
+        .map((catGroup) => catGroup.categories)[0];
       const copyCats = [...sharedCategories];
-      copyCats.push({ name: innerHTML, categoryId: id });
+      copyCats.push({ name: innerHTML, categoryId: id, subCategories });
       setSharedCategories(copyCats);
     }
   }
 
   function save() {
-    updateUserData(username, sharedAccounts, sharedCategories);
     setUserData({
-      budgetAccounts,
-      budgetCategories,
       sharedAccounts,
       sharedCategories,
     });
@@ -57,7 +58,7 @@ const AccountSelector = ({ userData, setUserData, username }) => {
   return (
     <>
       <p>What banking accounts in your YNAB budget are used for shared expenses?</p>
-      {userData.budgetAccounts.map(({ name, id }) => {
+      {budgetAccounts.map(({ name, id }) => {
         let toggleClass = 'acct-btn';
         if (sharedAccounts.map((acct) => acct.accountId).indexOf(id) > -1) {
           toggleClass += ' active-btn';
@@ -74,8 +75,8 @@ const AccountSelector = ({ userData, setUserData, username }) => {
           </button>
         );
       })}
-      <p>What budget categories in your YNAB budget are used for shared expenses?</p>
-      {userData.budgetCategories.map(({ name, id }) => {
+      <p>What Category Groups in your YNAB budget are used for shared expenses?</p>
+      {budgetCategories.map(({ name, id }) => {
         let toggleClass = 'cat-btn';
         if (sharedCategories.map((cat) => cat.categoryId).indexOf(id) > -1) {
           toggleClass += ' active-btn';
@@ -92,6 +93,20 @@ const AccountSelector = ({ userData, setUserData, username }) => {
           </button>
         );
       })}
+      <p>What banking account in your YNAB budget should receive the split transaction?</p>
+      <select>
+        {budgetAccounts.map(({ name, id }) => {
+          return (
+            <option
+              id={`split-${id}`}
+              key={`split-${id}`}
+              value={deCaseDeSpace(name)}
+            >
+              {name}
+            </option>
+          );
+        })}
+      </select>
       <div />
       <button
         type="button"
@@ -105,9 +120,28 @@ const AccountSelector = ({ userData, setUserData, username }) => {
 };
 
 AccountSelector.propTypes = {
-  userData: objectOf(arrayOf(objectOf(string))).isRequired,
+  userData: shape({
+    sharedAccounts: arrayOf(objectOf(string)),
+    sharedCategories: arrayOf(shape({
+      name: string,
+      categoryId: string,
+      subCategories: arrayOf(shape({
+        id: string,
+      })),
+    })),
+    splitAccount: objectOf(string),
+  }).isRequired,
+  budgetData: shape({
+    budgetAccounts: arrayOf(objectOf(string)),
+    budgetCategories: arrayOf(shape({
+      name: string,
+      id: string,
+      categories: arrayOf(shape({
+        id: string,
+      })),
+    })),
+  }).isRequired,
   setUserData: func.isRequired,
-  username: string.isRequired,
 };
 
 export default AccountSelector;

@@ -63,13 +63,3 @@ export const createSplitTransaction = (transaction) => (
     data: { transaction },
   })
 );
-
-export const getUserData = (username) => axios.get(`/${username}`);
-
-export const updateUserData = (username, sharedAccounts, sharedCategories) => (
-  axios({
-    method: 'patch',
-    url: `/${username}`,
-    data: { sharedAccounts, sharedCategories },
-  })
-);

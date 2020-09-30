@@ -2,6 +2,19 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+#save-btn {
+  margin: 10px 0 10px 0;
+  font-size: 17px;
+  background-color: white;
+  border-radius: 12px;
+  border: 3px solid black;
+}
+
+#save-btn:hover {
+  cursor: pointer;
+  background-color: lightgray;
+}
+
 #transaction-area {
   display: flex;
   flex-direction: row;

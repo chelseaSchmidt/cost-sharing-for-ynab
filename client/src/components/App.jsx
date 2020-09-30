@@ -9,7 +9,6 @@ import {
   getAccounts,
   getCategories,
   createSplitTransaction,
-  getUserData,
 } from '../../utilities/http';
 import {
   getFiveDaysAgo,
@@ -20,8 +19,7 @@ import {
 import { dueToFromId } from '../../../identifiers';
 import '../styles/App.css';
 
-const App = () => {
-  const [user, setUser] = useState('');
+const App = (props) => {
   const [sinceDate, setSinceDate] = useState(getFiveDaysAgo());
   const [endDate, setEndDate] = useState(new Date());
   const [checkedTransactions, setCheckedTransactions] = useState({
@@ -35,11 +33,14 @@ const App = () => {
     isolatedTransactions: [],
     dueToFromTransactions: [],
   });
+  const [budgetData, setBudgetData] = useState({
+    budgetAccounts: [{ name: '', id: '' }],
+    budgetCategories: [{ name: '', id: '' }],
+  });
   const [userData, setUserData] = useState({
     sharedAccounts: [],
     sharedCategories: [],
-    budgetAccounts: [{ name: '', id: '' }],
-    budgetCategories: [{ name: '', id: '' }],
+    splitAccount: { name: '', id: '' },
   });
 
   useEffect(() => {
@@ -47,39 +48,25 @@ const App = () => {
   }, [userData]);
 
   useEffect(() => {
-    if (user.length) {
-      const userObj = {
-        sharedAccounts: [],
-        sharedCategories: [],
-        budgetAccounts: [],
-        budgetCategories: [],
-      };
-      getUserData(user)
-        .then(({ data }) => {
-          if (data.length > 0) {
-            userObj.sharedAccounts = data[0].sharedAccounts;
-            userObj.sharedCategories = data[0].sharedCategories;
-          }
-          return getAccounts();
-        })
-        .then(({ data: { data: { accounts } } }) => {
-          userObj.budgetAccounts = accounts
-            .filter(({ closed }) => !closed)
-            .map(({ name, id }) => { return { name, id }; }); // eslint-disable-line
-          return getCategories();
-        })
-        .then(({ data: { data: { category_groups } } }) => {
-          userObj.budgetCategories = _.flatten(category_groups
-            .filter(({ hidden }) => !hidden)
-            .map(({ categories }) => categories
-              .filter(({ hidden }) => !hidden)
-              .map(({ name, id }) => { return { name, id }; })) // eslint-disable-line
-          );
-          setUserData(userObj);
-        })
-        .catch((err) => console.error(err));
-    }
-  }, [user]);
+    const budgetObj = {
+      budgetAccounts: [],
+      budgetCategories: [],
+    };
+    getAccounts()
+      .then(({ data: { data: { accounts } } }) => {
+        budgetObj.budgetAccounts = accounts
+          .filter(({ closed }) => !closed)
+          .map(({ name, id }) => { return { name, id }; }); // eslint-disable-line
+        return getCategories();
+      })
+      .then(({ data: { data: { category_groups } } }) => {
+        budgetObj.budgetCategories = _.flatten(category_groups
+          .filter(({ hidden }) => !hidden)
+          .map(({ name, id, categories }) => { return { name, id, categories }; })); // eslint-disable-line
+        setBudgetData(budgetObj);
+      })
+      .catch((err) => console.error(err));
+  }, [props]);
 
   function getTransactions(e = { preventDefault: () => {} }) {
     e.preventDefault();
@@ -90,7 +77,9 @@ const App = () => {
       dueToFromTransactions: [],
     };
     const sharedAccountIds = userData.sharedAccounts.map((acct) => acct.accountId);
-    const sharedCatIds = userData.sharedCategories.map((cat) => cat.categoryId);
+    const sharedCatIds = _.flatten(userData.sharedCategories
+      .map((catGroup) => catGroup.subCategories))
+      .map((cat) => cat.id);
     getAllTransactions(sinceDate)
       .then(({ data: { data } }) => {
         data.transactions.filter((txn) => (
@@ -207,26 +196,12 @@ const App = () => {
 
   const transactionsAreSelected = checkedTransactions.transactions.length > 0;
 
-  if (!user.length) {
-    const requestUsername = () => {
-      const username = prompt('Please enter your username');
-      if (!username) {
-        return requestUsername();
-      }
-      if (username.length === 0) {
-        return requestUsername();
-      }
-      setUser(username);
-    };
-    requestUsername();
-  }
-
   return (
     <div>
       <AccountSelector
         userData={userData}
+        budgetData={budgetData}
         setUserData={setUserData}
-        username={user}
       />
       <form>
         <label htmlFor="start">
@@ -283,7 +258,7 @@ const App = () => {
           handleSelectTransaction={handleSelectTransaction}
         />
         <TransactionWindow
-          title="Due To/From Account"
+          title="Account Receiving Split Transaction"
           transactions={transactions.dueToFromTransactions}
           isolatedTransactions={transactions.isolatedTransactions}
           handleSelectTransaction={handleSelectTransaction}
