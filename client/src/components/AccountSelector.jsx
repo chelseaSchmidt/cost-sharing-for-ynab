@@ -6,7 +6,6 @@ import {
   func,
   shape,
 } from 'prop-types';
-import { deCaseDeSpace } from '../../utilities/general';
 import '../styles/AccountSelector.css';
 
 const AccountSelector = ({ userData, budgetData, setUserData }) => {
@@ -102,21 +101,20 @@ const AccountSelector = ({ userData, budgetData, setUserData }) => {
       <p>What banking account in your YNAB budget should receive the split transaction?</p>
       <select
         onChange={(e) => setSplitAccount(e.target.value)}
+        defaultValue="select-an-account"
       >
-        <option selected value="">
+        <option value="select-an-account">
           -- select an account --
         </option>
-        {budgetAccounts.map(({ name, id }) => {
-          return (
-            <option
-              id={`split-${id}`}
-              key={`split-${id}`}
-              value={id}
-            >
-              {name}
-            </option>
-          );
-        })}
+        {budgetAccounts.map(({ name, id }) => (
+          <option
+            id={`split-${id}`}
+            key={`split-${id}`}
+            value={id}
+          >
+            {name}
+          </option>
+        ))}
       </select>
       <div />
       <button

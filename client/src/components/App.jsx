@@ -15,7 +15,6 @@ import {
   convertStringToDate,
   checkIfDateInRange,
 } from '../../utilities/dateHelpers';
-import { dueToFromId } from '../../../identifiers';
 import '../styles/App.css';
 
 const App = (props) => {
@@ -184,7 +183,7 @@ const App = (props) => {
       })),
     };
     createSplitTransaction(summaryTransaction)
-      .then(getTransactions)
+      .then(() => getTransactions())
       .catch((err) => console.error(err));
   }
 

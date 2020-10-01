@@ -2,8 +2,6 @@ import axios from 'axios';
 import {
   token,
   budgetId,
-  ccId,
-  dueToFromId,
 } from '../../identifiers';
 
 export const getAllTransactions = (sinceDate) => (

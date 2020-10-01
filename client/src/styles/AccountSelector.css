@@ -5,6 +5,11 @@
   margin: 2px;
 }
 
+.acct-btn:hover, .cat-btn:hover {
+  cursor: pointer;
+  background-color: lightgray;
+}
+
 .active-btn {
   background-color: black;
   color: white;
