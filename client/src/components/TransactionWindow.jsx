@@ -18,16 +18,19 @@ const TransactionWindow = ({
   checkmarks = [],
 }) => {
   const noTransactions = transactions.length === 0;
+  const isEditable = title === "Transactions in Shared Categories";
   const isolatedTransactionIds = isolatedTransactions.map((txn) => txn.id);
   return (
     <div className="transaction-window">
       <h2>{title}</h2>
-      {!noTransactions && (
-        <div>
-          <input type="checkbox" onChange={selectAll} />
-          Select All
-        </div>
-      )}
+      <div className="select-all-area">
+        {!noTransactions && isEditable && (
+          <label htmlFor="select-all-input">
+            <input type="checkbox" onChange={selectAll} id="select-all-input" />
+              Select All
+          </label>
+        )}
+      </div>
       {!noTransactions && transactions.map((txn, i) => {
         let isIsolated = false;
         if (isolatedTransactionIds.indexOf(txn.id) > -1) {

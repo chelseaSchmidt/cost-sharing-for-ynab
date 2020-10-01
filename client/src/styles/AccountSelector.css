@@ -1,6 +1,6 @@
 .acct-btn, .cat-btn {
   background-color: white;
-  border: 1px solid black;
+  border: 1px solid gray;
   border-radius: 12px;
   margin: 2px;
 }

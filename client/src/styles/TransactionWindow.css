@@ -3,13 +3,18 @@
   margin: 10px;
 }
 
+.select-all-area {
+  height: 15px;
+  margin-bottom: 15px;
+}
+
 .transaction {
   display: flex;
   align-items: center;
   border: 1px solid lightgray;
   border-radius: 12px;
   margin-bottom: 5px;
-  padding: 3px;
+  padding: 5px;
 }
 
 .txn-date {

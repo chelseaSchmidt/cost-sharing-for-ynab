@@ -80,6 +80,7 @@ const AccountSelector = ({ userData, budgetData, setUserData }) => {
           </button>
         );
       })}
+      <div className="divider" />
       <p>What Category Groups in your YNAB budget are used for shared expenses?</p>
       {budgetCategories.map(({ name, id }) => {
         let toggleClass = 'cat-btn';
@@ -98,6 +99,7 @@ const AccountSelector = ({ userData, budgetData, setUserData }) => {
           </button>
         );
       })}
+      <div className="divider" />
       <p>What banking account in your YNAB budget should receive the split transaction?</p>
       <select
         onChange={(e) => setSplitAccount(e.target.value)}
@@ -116,7 +118,7 @@ const AccountSelector = ({ userData, budgetData, setUserData }) => {
           </option>
         ))}
       </select>
-      <div />
+      <div className="divider" />
       <button
         type="button"
         id="save-btn"
@@ -124,6 +126,7 @@ const AccountSelector = ({ userData, budgetData, setUserData }) => {
       >
         Save
       </button>
+      <div className="divider" />
     </>
   );
 };

@@ -191,6 +191,35 @@ const App = (props) => {
 
   return (
     <div>
+      <div id="instructions">
+        Instructions:
+        <ol>
+          <li>Reconcile your YNAB accounts.</li>
+          <li>
+            Select one or more banking accounts below that contain shared expenses, such as a credit card that you share with a significant other or roommate.
+          </li>
+          <li>
+            Select one or more category groups below where you track shared expenses before splitting them with the other person.
+          </li>
+          <li>
+            Select the banking account where you track what is owed back to you by the other person.
+          </li>
+          <li>Hit save.</li>
+          <li>
+            Specify a date range, such as a one-month period, that you want to split transactions for, and then hit "Update Transactions." For example, you might have the other person pay you back for shared costs every week, two weeks, or once a month.
+          </li>
+          <li>
+            Select all the transactions in shared budget categories that you want included in the split transaction. If a transaction is present in a shared category but did not come from a shared banking account, or vice versa, you'll notice a yellow warning symbol. Use these warnings to review if anything is missing or incorrect.
+          </li>
+          <li>
+            If everything looks good, choose a date you want to create the transaction in YNAB that will halve costs between you and the other person, and hit "Split Selected Transactions On Date". The transaction will be split across all the original categories, so you can continue to have visibility into where your shared dollars are being spent.
+          </li>
+          <li>
+            You should see the new transaction appear in the "Account Receiving" column below, as well as in YNAB. Nice job!
+          </li>
+        </ol>
+      </div>
+      <div className="divider" />
       <AccountSelector
         userData={userData}
         budgetData={budgetData}
