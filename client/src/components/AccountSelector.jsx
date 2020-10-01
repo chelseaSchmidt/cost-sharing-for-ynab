@@ -60,6 +60,12 @@ const AccountSelector = ({ userData, budgetData, setUserData }) => {
     });
   }
 
+  const excludedCategories = [
+    'Internal Master Category',
+    'Credit Card Payments',
+    'Hidden Categories'
+  ];
+
   return (
     <div id="account-selector-container" className="section-container">
       <div id="account-selector-area">
@@ -93,6 +99,9 @@ const AccountSelector = ({ userData, budgetData, setUserData }) => {
           </p>
           <div className="tag-area">
             {budgetCategories.map(({ name, id }) => {
+              if (excludedCategories.indexOf(name) > -1) {
+                return <span key={id} />;
+              }
               let toggleClass = 'cat-btn';
               if (sharedCategories.map((cat) => cat.categoryId).indexOf(id) > -1) {
                 toggleClass += ' active-btn';
@@ -120,7 +129,7 @@ const AccountSelector = ({ userData, budgetData, setUserData }) => {
             defaultValue="select-an-account"
             id="split-acct-dropdown"
           >
-            <option value="select-an-account">
+            <option disabled value="select-an-account">
               -- select an account --
             </option>
             {budgetAccounts.map(({ name, id }) => (

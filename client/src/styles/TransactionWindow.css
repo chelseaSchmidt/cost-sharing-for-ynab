@@ -1,3 +1,9 @@
+/*
+=================
+CONTAINERS
+=================
+*/
+
 .transaction-window {
   overflow: scroll;
   margin: 10px;
@@ -5,10 +11,22 @@
   padding: 15px;
 }
 
+/*
+=================
+SELECT-ALL AREA
+=================
+*/
+
 .select-all-area {
   height: 15px;
   margin-bottom: 15px;
 }
+
+/*
+=================
+TRANSACTIONS
+=================
+*/
 
 .transaction {
   display: flex;

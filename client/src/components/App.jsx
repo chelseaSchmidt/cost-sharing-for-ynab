@@ -187,7 +187,7 @@ const App = (props) => {
       .catch((err) => console.error(err));
   }
 
-  const transactionsAreSelected = checkedTransactions.transactions.length > 0;
+  const splitIsAllowed = checkedTransactions.transactions.length && userData.splitAccount.length;
 
   return (
     <div className="app-container">
@@ -201,7 +201,7 @@ const App = (props) => {
       />
       <div id="date-range-area" className="section-container">
         <p>
-          Specify a date range, such as a one-month period, that you want to split transactions for, and then hit "Update Transactions." For example, you might have the other person pay you back for shared costs every week, two weeks, or once a month.
+          Specify a date range, such as a one-month period, that you want to split transactions for, and then hit "Refresh Transactions." For example, you might have the other person pay you back for shared costs every week, two weeks, or once a month.
         </p>
         <form>
           <label htmlFor="start">
@@ -228,37 +228,38 @@ const App = (props) => {
             id="update-txn-btn"
             className="update-btn"
           >
-            Update Transactions
+            Refresh Transactions
           </button>
         </form>
       </div>
-      {
-        transactionsAreSelected
-        && (
-          <div id="split-btn-area" className="section-container">
-            <form>
-              <button
-                type="submit"
-                onClick={createSplitEntry}
-                id="split-txn-btn"
-                className="update-btn"
-              >
-                Split Selected Transactions On Date
-              </button>
-              <input
-                type="date"
-                id="split-date"
-                value={convertDateToString(splitDate)}
-                onChange={(e) => setSplitDate(convertStringToDate(e.target.value))}
-              />
-              <p>
-                Choose a date you want to create the transaction in YNAB that will halve costs between you and the other person, and hit "Split Selected Transactions On Date". The transaction will be split across all the original categories, so you can continue to have visibility into where your shared dollars are being spent.
-              </p>
-            </form>
-          </div>
-        )
-      }
-      <section id="transaction-section" className="section-container">
+      <div id="split-btn-area" className="section-container">
+        <form>
+          <p>
+            Choose a date you want to create the transaction in YNAB that will halve costs between you and the other person, and hit "Split Selected Transactions On Date". The new transaction will be split across all the original categories, so you can continue to have visibility into where your shared dollars are being spent.
+          </p>
+          <input
+            type="date"
+            id="split-date"
+            value={convertDateToString(splitDate)}
+            onChange={(e) => setSplitDate(convertStringToDate(e.target.value))}
+          />
+          <button
+            type="submit"
+            onClick={createSplitEntry}
+            id="split-txn-btn"
+            className="update-btn"
+            disabled={!splitIsAllowed}
+          >
+            Split Selected Transactions On Date
+          </button>
+          {!splitIsAllowed && (
+            <span className="caution-text">
+              Please select one or more transactions to split and choose an account to receive the split transaction
+            </span>
+          )}
+        </form>
+      </div>
+      <section id="transaction-container" className="section-container">
         <p>
           Select all the transactions in shared budget categories that you want included in the split transaction. If a transaction is present in a shared category but did not come from a shared banking account, or vice versa, you'll notice a yellow warning symbol. Use these warnings to review if anything is missing or incorrect.
         </p>

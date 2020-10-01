@@ -1,3 +1,9 @@
+/*
+==============
+CONTAINERS
+==============
+*/
+
 #account-selector-container {
   border-radius: 12px;
   padding: 15px;
@@ -8,9 +14,21 @@
   align-items: center;
 }
 
+/*
+==============
+SECTIONS
+==============
+*/
+
 #account-selector-area {
   display: flex;
 }
+
+/*
+==============
+SUB-SECTIONS
+==============
+*/
 
 #bank-tags {
   display: flex;
@@ -28,6 +46,12 @@
   justify-content: center;
 }
 
+/*
+==============
+TAGS
+==============
+*/
+
 .tag-area {
   padding: 10px;
 }
@@ -44,6 +68,7 @@
 .acct-btn:hover, .cat-btn:hover {
   cursor: pointer;
   background-color: #a1bcd6;
+  color: white;
 }
 
 .active-btn {
@@ -54,6 +79,12 @@
 .active-btn:hover {
   color: black;
 }
+
+/*
+==============
+DROPDOWN
+==============
+*/
 
 #split-acct-dropdown {
   height: 25px;
