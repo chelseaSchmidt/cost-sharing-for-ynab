@@ -1,10 +1,57 @@
 body {
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 12px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 13px;
+  color: #464b46;
+  background-color: #1669B8;
+  /* background: linear-gradient(#1669B8, #73a0ca); */
+  /* border: 10px solid #73a0ca; */
+  margin: 0;
+  padding: 40px;
+  height: 100vh;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.section-container {
+  background-color: white;
+  /* border: 2px solid #00990a; */
+  box-shadow: 0 1px 2px 0 #0a3a68;
+  max-width: 1290px;
 }
 
 #instructions {
-  font-size: 12px;
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+#date-range-area {
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+#transaction-section {
+  border-radius: 12px;
+  padding: 15px;
+}
+
+#split-btn-area {
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+#transaction-area {
+  display: flex;
+  flex-direction: row;
+  border-radius: 12px;
+  padding: 15px;
 }
 
 .divider {
@@ -12,20 +59,18 @@ body {
   margin: 10px 2px 10px 2px;
 }
 
-#save-btn {
-  margin: 10px 0 10px 0;
-  font-size: 17px;
-  background-color: white;
-  border-radius: 12px;
-  border: 3px solid black;
+.update-btn {
+  background-color: black;
+  color: white;
+  border-radius: 8px;
+  height: 25px;
+  margin: 0 10px 0 10px;
+  font-size: 14px;
+  border: 1px solid white;
+  box-shadow: 0 1px 2px 0 #515852;
 }
 
-#save-btn:hover {
+.update-btn:hover {
   cursor: pointer;
   background-color: lightgray;
-}
-
-#transaction-area {
-  display: flex;
-  flex-direction: row;
 }

@@ -190,68 +190,59 @@ const App = (props) => {
   const transactionsAreSelected = checkedTransactions.transactions.length > 0;
 
   return (
-    <div>
-      <div id="instructions">
-        Instructions:
-        <ol>
-          <li>Reconcile your YNAB accounts.</li>
-          <li>
-            Select one or more banking accounts below that contain shared expenses, such as a credit card that you share with a significant other or roommate.
-          </li>
-          <li>
-            Select one or more category groups below where you track shared expenses before splitting them with the other person.
-          </li>
-          <li>
-            Select the banking account where you track what is owed back to you by the other person.
-          </li>
-          <li>Hit save.</li>
-          <li>
-            Specify a date range, such as a one-month period, that you want to split transactions for, and then hit "Update Transactions." For example, you might have the other person pay you back for shared costs every week, two weeks, or once a month.
-          </li>
-          <li>
-            Select all the transactions in shared budget categories that you want included in the split transaction. If a transaction is present in a shared category but did not come from a shared banking account, or vice versa, you'll notice a yellow warning symbol. Use these warnings to review if anything is missing or incorrect.
-          </li>
-          <li>
-            If everything looks good, choose a date you want to create the transaction in YNAB that will halve costs between you and the other person, and hit "Split Selected Transactions On Date". The transaction will be split across all the original categories, so you can continue to have visibility into where your shared dollars are being spent.
-          </li>
-          <li>
-            You should see the new transaction appear in the "Account Receiving" column below, as well as in YNAB. Nice job!
-          </li>
-        </ol>
+    <div className="app-container">
+      <div id="instructions" className="section-container">
+        Remember to reconcile your accounts in YNAB before starting.
       </div>
-      <div className="divider" />
       <AccountSelector
         userData={userData}
         budgetData={budgetData}
         setUserData={setUserData}
       />
-      <form>
-        <label htmlFor="start">
-          Specify start date:
-          <input
-            type="date"
-            id="start"
-            value={convertDateToString(sinceDate)}
-            onChange={(e) => setSinceDate(convertStringToDate(e.target.value))}
-          />
-        </label>
-        <label htmlFor="start">
-          Specify end date:
-          <input
-            type="date"
-            id="end"
-            value={convertDateToString(endDate)}
-            onChange={(e) => setEndDate(convertStringToDate(e.target.value, false))}
-          />
-        </label>
-        <button type="submit" onClick={getTransactions}>Update Transactions</button>
-      </form>
+      <div id="date-range-area" className="section-container">
+        <p>
+          Specify a date range, such as a one-month period, that you want to split transactions for, and then hit "Update Transactions." For example, you might have the other person pay you back for shared costs every week, two weeks, or once a month.
+        </p>
+        <form>
+          <label htmlFor="start">
+            Start date:
+            <input
+              type="date"
+              id="start"
+              value={convertDateToString(sinceDate)}
+              onChange={(e) => setSinceDate(convertStringToDate(e.target.value))}
+            />
+          </label>
+          <label htmlFor="start">
+            End date:
+            <input
+              type="date"
+              id="end"
+              value={convertDateToString(endDate)}
+              onChange={(e) => setEndDate(convertStringToDate(e.target.value, false))}
+            />
+          </label>
+          <button
+            type="submit"
+            onClick={getTransactions}
+            id="update-txn-btn"
+            className="update-btn"
+          >
+            Update Transactions
+          </button>
+        </form>
+      </div>
       {
         transactionsAreSelected
         && (
-          <div>
+          <div id="split-btn-area" className="section-container">
             <form>
-              <button type="submit" onClick={createSplitEntry}>
+              <button
+                type="submit"
+                onClick={createSplitEntry}
+                id="split-txn-btn"
+                className="update-btn"
+              >
                 Split Selected Transactions On Date
               </button>
               <input
@@ -260,32 +251,40 @@ const App = (props) => {
                 value={convertDateToString(splitDate)}
                 onChange={(e) => setSplitDate(convertStringToDate(e.target.value))}
               />
+              <p>
+                Choose a date you want to create the transaction in YNAB that will halve costs between you and the other person, and hit "Split Selected Transactions On Date". The transaction will be split across all the original categories, so you can continue to have visibility into where your shared dollars are being spent.
+              </p>
             </form>
           </div>
         )
       }
-      <div id="transaction-area">
-        <TransactionWindow
-          title="Transactions in Shared Categories"
-          transactions={transactions.catTransactions}
-          isolatedTransactions={transactions.isolatedTransactions}
-          checkmarks={checkedTransactions.checkmarks}
-          handleSelectTransaction={handleSelectTransaction}
-          selectAll={selectAll}
-        />
-        <TransactionWindow
-          title="Transactions in Shared Banking Accounts"
-          transactions={transactions.bankTransactions}
-          isolatedTransactions={transactions.isolatedTransactions}
-          handleSelectTransaction={handleSelectTransaction}
-        />
-        <TransactionWindow
-          title="Account Receiving Split Transaction"
-          transactions={transactions.recipientTransactions}
-          isolatedTransactions={transactions.isolatedTransactions}
-          handleSelectTransaction={handleSelectTransaction}
-        />
-      </div>
+      <section id="transaction-section" className="section-container">
+        <p>
+          Select all the transactions in shared budget categories that you want included in the split transaction. If a transaction is present in a shared category but did not come from a shared banking account, or vice versa, you'll notice a yellow warning symbol. Use these warnings to review if anything is missing or incorrect.
+        </p>
+        <div id="transaction-area">
+          <TransactionWindow
+            title="Transactions in Shared Categories"
+            transactions={transactions.catTransactions}
+            isolatedTransactions={transactions.isolatedTransactions}
+            checkmarks={checkedTransactions.checkmarks}
+            handleSelectTransaction={handleSelectTransaction}
+            selectAll={selectAll}
+          />
+          <TransactionWindow
+            title="Transactions in Shared Banking Accounts"
+            transactions={transactions.bankTransactions}
+            isolatedTransactions={transactions.isolatedTransactions}
+            handleSelectTransaction={handleSelectTransaction}
+          />
+          <TransactionWindow
+            title="Account Receiving Split Transaction"
+            transactions={transactions.recipientTransactions}
+            isolatedTransactions={transactions.isolatedTransactions}
+            handleSelectTransaction={handleSelectTransaction}
+          />
+        </div>
+      </section>
     </div>
   );
 };

@@ -1,6 +1,8 @@
 .transaction-window {
   overflow: scroll;
   margin: 10px;
+  border-radius: 12px;
+  padding: 15px;
 }
 
 .select-all-area {
@@ -15,6 +17,8 @@
   border-radius: 12px;
   margin-bottom: 5px;
   padding: 5px;
+  background-color: white;
+  box-shadow: 0 1px 0 0.5px #f1f2f1;
 }
 
 .txn-date {
@@ -40,6 +44,7 @@
   width: 10px;
   border-radius: 50%;
   background-color: yellow;
+  margin-right: 5px;
 }
 
 .validated-symbol {
@@ -48,4 +53,5 @@
   width: 10px;
   border-radius: 50%;
   background-color: green;
+  margin-right: 5px;
 }

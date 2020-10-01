@@ -19,6 +19,7 @@ const TransactionWindow = ({
 }) => {
   const noTransactions = transactions.length === 0;
   const isEditable = title === "Transactions in Shared Categories";
+  const isSplitAcct = title === "Account Receiving Split Transaction";
   const isolatedTransactionIds = isolatedTransactions.map((txn) => txn.id);
   return (
     <div className="transaction-window">
@@ -44,6 +45,7 @@ const TransactionWindow = ({
             type={title}
             handleSelectTransaction={handleSelectTransaction}
             isIsolated={isIsolated}
+            isSplitAcct={isSplitAcct}
             key={txn.id}
           />
         );

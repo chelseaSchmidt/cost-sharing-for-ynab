@@ -61,73 +61,89 @@ const AccountSelector = ({ userData, budgetData, setUserData }) => {
   }
 
   return (
-    <>
-      <p>What banking accounts in your YNAB budget are used for shared expenses?</p>
-      {budgetAccounts.map(({ name, id }) => {
-        let toggleClass = 'acct-btn';
-        if (sharedAccounts.map((acct) => acct.accountId).indexOf(id) > -1) {
-          toggleClass += ' active-btn';
-        }
-        return (
-          <button
-            type="button"
-            id={id}
-            className={toggleClass}
-            onClick={addAccount}
-            key={id}
+    <div id="account-selector-container" className="section-container">
+      <div id="account-selector-area">
+        <div id="bank-tags">
+          <p>
+            Select one or more banking accounts that contain shared expenses, such as a credit card that you share with a significant other or roommate.
+          </p>
+          <div className="tag-area">
+            {budgetAccounts.map(({ name, id }) => {
+              let toggleClass = 'acct-btn';
+              if (sharedAccounts.map((acct) => acct.accountId).indexOf(id) > -1) {
+                toggleClass += ' active-btn';
+              }
+              return (
+                <button
+                  type="button"
+                  id={id}
+                  className={toggleClass}
+                  onClick={addAccount}
+                  key={id}
+                >
+                  {name}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+        <div id="cat-tags">
+          <p>
+            Select one or more category groups where you track shared expenses before splitting them with the other person.
+          </p>
+          <div className="tag-area">
+            {budgetCategories.map(({ name, id }) => {
+              let toggleClass = 'cat-btn';
+              if (sharedCategories.map((cat) => cat.categoryId).indexOf(id) > -1) {
+                toggleClass += ' active-btn';
+              }
+              return (
+                <button
+                  type="button"
+                  id={id}
+                  className={toggleClass}
+                  onClick={addCategory}
+                  key={id}
+                >
+                  {name}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+        <div id="split-option-area">
+          <p>
+            Select the banking account where you track what is owed back to you by the other person.
+          </p>
+          <select
+            onChange={(e) => setSplitAccount(e.target.value)}
+            defaultValue="select-an-account"
+            id="split-acct-dropdown"
           >
-            {name}
-          </button>
-        );
-      })}
-      <div className="divider" />
-      <p>What Category Groups in your YNAB budget are used for shared expenses?</p>
-      {budgetCategories.map(({ name, id }) => {
-        let toggleClass = 'cat-btn';
-        if (sharedCategories.map((cat) => cat.categoryId).indexOf(id) > -1) {
-          toggleClass += ' active-btn';
-        }
-        return (
-          <button
-            type="button"
-            id={id}
-            className={toggleClass}
-            onClick={addCategory}
-            key={id}
-          >
-            {name}
-          </button>
-        );
-      })}
-      <div className="divider" />
-      <p>What banking account in your YNAB budget should receive the split transaction?</p>
-      <select
-        onChange={(e) => setSplitAccount(e.target.value)}
-        defaultValue="select-an-account"
-      >
-        <option value="select-an-account">
-          -- select an account --
-        </option>
-        {budgetAccounts.map(({ name, id }) => (
-          <option
-            id={`split-${id}`}
-            key={`split-${id}`}
-            value={id}
-          >
-            {name}
-          </option>
-        ))}
-      </select>
-      <div className="divider" />
+            <option value="select-an-account">
+              -- select an account --
+            </option>
+            {budgetAccounts.map(({ name, id }) => (
+              <option
+                id={`split-${id}`}
+                key={`split-${id}`}
+                value={id}
+              >
+                {name}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
       <button
         type="button"
         id="save-btn"
+        className="update-btn"
         onClick={save}
       >
         Save
       </button>
-      <div className="divider" />
-    </>
+  </div>
   );
 };
 

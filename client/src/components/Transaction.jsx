@@ -15,6 +15,7 @@ const Transaction = ({
   handleSelectTransaction,
   transaction,
   isIsolated,
+  isSplitAcct,
   txnNumber,
   checked = 0,
 }) => {
@@ -31,8 +32,8 @@ const Transaction = ({
   } = transaction;
   return (
     <div className="transaction">
-      {isIsolated && <span className="warning-symbol" />}
-      {!isIsolated && <span className="validated-symbol" />}
+      {isIsolated && !isSplitAcct && <span className="warning-symbol" />}
+      {!isIsolated && !isSplitAcct && <span className="validated-symbol" />}
       {editable && <input type="checkbox" checked={!!checked} onChange={(e) => handleSelectTransaction(e, transaction, txnNumber)} />}
       <div className="txn-date">
         {moment(date).format('MMM DD, YYYY')}
@@ -62,6 +63,7 @@ Transaction.propTypes = {
   type: string.isRequired,
   handleSelectTransaction: func.isRequired,
   isIsolated: bool.isRequired,
+  isSplitAcct: bool.isRequired,
   txnNumber: number.isRequired,
   checked: number,
   transaction: shape({

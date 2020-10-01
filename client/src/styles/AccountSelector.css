@@ -1,16 +1,60 @@
+#account-selector-container {
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#account-selector-area {
+  display: flex;
+}
+
+#bank-tags {
+  display: flex;
+  margin-right: 10px;
+}
+
+#cat-tags {
+  display: flex;
+  margin-right: 10px;
+}
+
+#split-option-area {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.tag-area {
+  padding: 10px;
+}
+
 .acct-btn, .cat-btn {
   background-color: white;
-  border: 1px solid gray;
-  border-radius: 12px;
+  border: 1px solid #73a0ca;
+  border-radius: 8px;
+  box-shadow: 0 1px 0 0.5px #285681;
   margin: 2px;
+  color: #464b46;
 }
 
 .acct-btn:hover, .cat-btn:hover {
   cursor: pointer;
-  background-color: lightgray;
+  background-color: #a1bcd6;
 }
 
 .active-btn {
-  background-color: black;
+  background-color: #105494;
   color: white;
+}
+
+.active-btn:hover {
+  color: black;
+}
+
+#split-acct-dropdown {
+  height: 25px;
 }
