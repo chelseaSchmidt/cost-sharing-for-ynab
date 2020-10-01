@@ -12,6 +12,7 @@ import '../styles/AccountSelector.css';
 const AccountSelector = ({ userData, budgetData, setUserData }) => {
   const [sharedAccounts, setSharedAccounts] = useState(userData.sharedAccounts);
   const [sharedCategories, setSharedCategories] = useState(userData.sharedCategories);
+  const [splitAccount, setSplitAccount] = useState(userData.splitAccount);
   const budgetAccounts = [...budgetData.budgetAccounts];
   const budgetCategories = [...budgetData.budgetCategories];
 
@@ -22,6 +23,10 @@ const AccountSelector = ({ userData, budgetData, setUserData }) => {
   useEffect(() => {
     setSharedCategories(userData.sharedCategories);
   }, [userData.sharedCategories]);
+
+  useEffect(() => {
+    setSplitAccount(userData.splitAccount);
+  }, [userData.splitAccount]);
 
   function addAccount({ target: { id, innerHTML } }) {
     if (sharedAccounts.filter((acct) => acct.accountId === id).length) {
@@ -52,6 +57,7 @@ const AccountSelector = ({ userData, budgetData, setUserData }) => {
     setUserData({
       sharedAccounts,
       sharedCategories,
+      splitAccount,
     });
   }
 
@@ -94,13 +100,18 @@ const AccountSelector = ({ userData, budgetData, setUserData }) => {
         );
       })}
       <p>What banking account in your YNAB budget should receive the split transaction?</p>
-      <select>
+      <select
+        onChange={(e) => setSplitAccount(e.target.value)}
+      >
+        <option selected value="">
+          -- select an account --
+        </option>
         {budgetAccounts.map(({ name, id }) => {
           return (
             <option
               id={`split-${id}`}
               key={`split-${id}`}
-              value={deCaseDeSpace(name)}
+              value={id}
             >
               {name}
             </option>
@@ -129,7 +140,7 @@ AccountSelector.propTypes = {
         id: string,
       })),
     })),
-    splitAccount: objectOf(string),
+    splitAccount: string,
   }).isRequired,
   budgetData: shape({
     budgetAccounts: arrayOf(objectOf(string)),

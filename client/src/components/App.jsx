@@ -5,7 +5,6 @@ import TransactionWindow from './TransactionWindow';
 import AccountSelector from './AccountSelector';
 import {
   getAllTransactions,
-  getDTFTransactions,
   getAccounts,
   getCategories,
   createSplitTransaction,
@@ -31,7 +30,7 @@ const App = (props) => {
     bankTransactions: [],
     catTransactions: [],
     isolatedTransactions: [],
-    dueToFromTransactions: [],
+    recipientTransactions: [],
   });
   const [budgetData, setBudgetData] = useState({
     budgetAccounts: [{ name: '', id: '' }],
@@ -40,7 +39,7 @@ const App = (props) => {
   const [userData, setUserData] = useState({
     sharedAccounts: [],
     sharedCategories: [],
-    splitAccount: { name: '', id: '' },
+    splitAccount: '',
   });
 
   useEffect(() => {
@@ -74,7 +73,7 @@ const App = (props) => {
       bankTransactions: [],
       catTransactions: [],
       isolatedTransactions: [],
-      dueToFromTransactions: [],
+      recipientTransactions: [],
     };
     const sharedAccountIds = userData.sharedAccounts.map((acct) => acct.accountId);
     const sharedCatIds = _.flatten(userData.sharedCategories
@@ -88,6 +87,9 @@ const App = (props) => {
           && !txn.transfer_account_id
         )).forEach((txn) => {
           let count = 0;
+          if (userData.splitAccount === txn.account_id) {
+            newTxns.recipientTransactions.push(txn);
+          }
           if (sharedAccountIds.indexOf(txn.account_id) > -1) {
             newTxns.bankTransactions.push(txn);
             count += 1;
@@ -100,14 +102,6 @@ const App = (props) => {
             newTxns.isolatedTransactions.push(txn);
           }
         });
-        return getDTFTransactions(sinceDate);
-      })
-      .then(({ data: { data } }) => {
-        newTxns.dueToFromTransactions = data.transactions.filter((txn) => (
-          checkIfDateInRange(txn.date, endDate)
-          && txn.approved
-          && !txn.transfer_account_id
-        ));
         setTransactions(newTxns);
       })
       .catch((err) => { console.error(err); });
@@ -167,7 +161,7 @@ const App = (props) => {
       // TO DO: why is this conversion needed a second time?
     });
     const summaryTransaction = {
-      account_id: dueToFromId,
+      account_id: userData.splitAccount,
       date: convertDateToString(splitDate),
       amount: Number(
         (_.reduce(halvedCostsByCategory, (sum, amt) => sum + amt) * 1000)
@@ -190,7 +184,7 @@ const App = (props) => {
       })),
     };
     createSplitTransaction(summaryTransaction)
-      .then((res) => console.log(res))
+      .then(getTransactions)
       .catch((err) => console.error(err));
   }
 
@@ -259,7 +253,7 @@ const App = (props) => {
         />
         <TransactionWindow
           title="Account Receiving Split Transaction"
-          transactions={transactions.dueToFromTransactions}
+          transactions={transactions.recipientTransactions}
           isolatedTransactions={transactions.isolatedTransactions}
           handleSelectTransaction={handleSelectTransaction}
         />
