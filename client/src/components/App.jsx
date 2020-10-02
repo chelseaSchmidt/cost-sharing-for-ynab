@@ -154,7 +154,7 @@ const App = (props) => {
       // TO DO: why is this conversion needed a second time?
     });
     const summaryTransaction = {
-      account_id: userData.splitAccount,
+      account_id: splitAccount,
       date: convertDateToString(splitDate),
       amount: Number(
         (_.reduce(halvedCostsByCategory, (sum, amt) => sum + amt) * 1000)
