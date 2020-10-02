@@ -185,9 +185,16 @@ const App = (props) => {
 
   return (
     <div className="app-container">
-      <div id="instructions" className="section-container">
-        Remember to reconcile your accounts in YNAB before starting.
-      </div>
+      <header>
+        <h1>
+          Cost Sharing for YNAB
+        </h1>
+        <img
+          src="works_with_ynab.svg"
+          alt="Works with YNAB"
+          id="works-with-ynab-img"
+        />
+      </header>
       <div className="section-container">
         <AccountSelector
           sharedAccounts={sharedAccounts}
