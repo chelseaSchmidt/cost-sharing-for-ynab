@@ -46,6 +46,11 @@ header {
   color: white;
   display: flex;
   justify-content: center;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background-color: #1669B8;
 }
 
 header > h1 {
@@ -56,7 +61,7 @@ header > h1 {
 }
 
 #works-with-ynab-img {
-  width: 20%;
+  width: 7%;
   height: auto;
 }
 
