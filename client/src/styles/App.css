@@ -13,7 +13,7 @@ body {
   /* border: 10px solid #73a0ca; */
   margin: 0;
   padding: 40px;
-  height: 100vh;
+  /* height: 100vh; */
 }
 
 .app-container {
@@ -28,15 +28,6 @@ body {
   /* border: 2px solid #00990a; */
   box-shadow: 0 1px 2px 0 #0a3a68;
   max-width: 1290px;
-}
-
-/*
-=================
-INSTRUCTIONS
-=================
-*/
-
-#instructions {
   border-radius: 12px;
   padding: 15px;
   margin-bottom: 15px;
@@ -49,15 +40,9 @@ DATE RANGE AREAS
 */
 
 #date-range-area {
-  border-radius: 12px;
-  padding: 15px;
-  margin-bottom: 15px;
-}
-
-#split-btn-area {
-  border-radius: 12px;
-  padding: 15px;
-  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 #date-range-area > form > label > input {
@@ -82,6 +67,7 @@ TRANSACTION AREA
 #transaction-container {
   border-radius: 12px;
   padding: 15px;
+  max-height: 92vh;
 }
 
 #transaction-area {
@@ -116,6 +102,10 @@ BUTTONS
 .update-btn:disabled {
   background-color: gray;
   cursor: not-allowed;
+}
+
+#update-txn-btn {
+  margin-top: 20px;
 }
 
 /*

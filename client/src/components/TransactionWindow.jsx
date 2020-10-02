@@ -23,7 +23,7 @@ const TransactionWindow = ({
   const isolatedTransactionIds = isolatedTransactions.map((txn) => txn.id);
   return (
     <div className="transaction-window">
-      <h2>{title}</h2>
+      <h3 className="window-title">{title}</h3>
       <div className="select-all-area">
         {!noTransactions && isEditable && (
           <label htmlFor="select-all-input">
@@ -32,24 +32,26 @@ const TransactionWindow = ({
           </label>
         )}
       </div>
-      {!noTransactions && transactions.map((txn, i) => {
-        let isIsolated = false;
-        if (isolatedTransactionIds.indexOf(txn.id) > -1) {
-          isIsolated = true;
-        }
-        return (
-          <Transaction
-            txnNumber={i}
-            checked={checkmarks[i]}
-            transaction={txn}
-            type={title}
-            handleSelectTransaction={handleSelectTransaction}
-            isIsolated={isIsolated}
-            isSplitAcct={isSplitAcct}
-            key={txn.id}
-          />
-        );
-      })}
+      <div className="transaction-feed">
+        {!noTransactions && transactions.map((txn, i) => {
+          let isIsolated = false;
+          if (isolatedTransactionIds.indexOf(txn.id) > -1) {
+            isIsolated = true;
+          }
+          return (
+            <Transaction
+              txnNumber={i}
+              checked={checkmarks[i]}
+              transaction={txn}
+              type={title}
+              handleSelectTransaction={handleSelectTransaction}
+              isIsolated={isIsolated}
+              isSplitAcct={isSplitAcct}
+              key={txn.id}
+            />
+          );
+        })}
+      </div>
       {noTransactions && <span><em>No transactions</em></span>}
     </div>
   );

@@ -8,24 +8,17 @@ import {
 } from 'prop-types';
 import '../styles/AccountSelector.css';
 
-const AccountSelector = ({ userData, budgetData, setUserData }) => {
-  const [sharedAccounts, setSharedAccounts] = useState(userData.sharedAccounts);
-  const [sharedCategories, setSharedCategories] = useState(userData.sharedCategories);
-  const [splitAccount, setSplitAccount] = useState(userData.splitAccount);
+const AccountSelector = ({
+  budgetData,
+  sharedAccounts,
+  sharedCategories,
+  splitAccount,
+  setSharedAccounts,
+  setSharedCategories,
+  setSplitAccount,
+}) => {
   const budgetAccounts = [...budgetData.budgetAccounts];
   const budgetCategories = [...budgetData.budgetCategories];
-
-  useEffect(() => {
-    setSharedAccounts(userData.sharedAccounts);
-  }, [userData.sharedAccounts]);
-
-  useEffect(() => {
-    setSharedCategories(userData.sharedCategories);
-  }, [userData.sharedCategories]);
-
-  useEffect(() => {
-    setSplitAccount(userData.splitAccount);
-  }, [userData.splitAccount]);
 
   function addAccount({ target: { id, innerHTML } }) {
     if (sharedAccounts.filter((acct) => acct.accountId === id).length) {
@@ -52,14 +45,6 @@ const AccountSelector = ({ userData, budgetData, setUserData }) => {
     }
   }
 
-  function save() {
-    setUserData({
-      sharedAccounts,
-      sharedCategories,
-      splitAccount,
-    });
-  }
-
   const excludedCategories = [
     'Internal Master Category',
     'Credit Card Payments',
@@ -67,7 +52,7 @@ const AccountSelector = ({ userData, budgetData, setUserData }) => {
   ];
 
   return (
-    <div id="account-selector-container" className="section-container">
+    <div id="account-selector-container">
       <div id="account-selector-area">
         <div id="bank-tags">
           <p>
@@ -144,30 +129,20 @@ const AccountSelector = ({ userData, budgetData, setUserData }) => {
           </select>
         </div>
       </div>
-      <button
-        type="button"
-        id="save-btn"
-        className="update-btn"
-        onClick={save}
-      >
-        Save
-      </button>
   </div>
   );
 };
 
 AccountSelector.propTypes = {
-  userData: shape({
-    sharedAccounts: arrayOf(objectOf(string)),
-    sharedCategories: arrayOf(shape({
-      name: string,
-      categoryId: string,
-      subCategories: arrayOf(shape({
-        id: string,
-      })),
+  sharedAccounts: arrayOf(objectOf(string)).isRequired,
+  sharedCategories: arrayOf(shape({
+    name: string,
+    categoryId: string,
+    subCategories: arrayOf(shape({
+      id: string,
     })),
-    splitAccount: string,
-  }).isRequired,
+  })).isRequired,
+  splitAccount: string.isRequired,
   budgetData: shape({
     budgetAccounts: arrayOf(objectOf(string)),
     budgetCategories: arrayOf(shape({
@@ -178,7 +153,9 @@ AccountSelector.propTypes = {
       })),
     })),
   }).isRequired,
-  setUserData: func.isRequired,
+  setSharedAccounts: func.isRequired,
+  setSharedCategories: func.isRequired,
+  setSplitAccount: func.isRequired,
 };
 
 export default AccountSelector;
