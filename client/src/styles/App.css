@@ -19,6 +19,12 @@ body {
   align-items: right;
 }
 
+input, select {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 13px;
+  color: #464b46;
+}
+
 .app-container {
   display: flex;
   flex-direction: column;
@@ -78,8 +84,6 @@ DATE RANGE AREAS
 
 #date-range-area {
   display: flex;
-  /* flex-direction: column; */
-  align-items: center;
   padding: 0 15px 0 15px;
 }
 
@@ -89,19 +93,11 @@ DATE RANGE AREAS
 
 #date-range-area > form {
   flex: 3 1 0;
+  padding: 20px;
 }
 
 #date-range-area > form > label > input {
-  margin: 10px;
-}
-
-#split-btn-area > form > input {
-  margin: 10px;
-}
-
-.caution-text {
-  font-style: italic;
-  font-size: 10px;
+  margin: 0 10px 0 10px;
 }
 
 /*
@@ -121,6 +117,21 @@ TRANSACTION AREA
   flex-direction: row;
   border-radius: 12px;
   padding: 15px;
+}
+
+/*
+=================
+FOOTER
+=================
+*/
+
+#split-btn-area > form > input {
+  margin: 10px;
+}
+
+.caution-text {
+  font-style: italic;
+  font-size: 10px;
 }
 
 /*

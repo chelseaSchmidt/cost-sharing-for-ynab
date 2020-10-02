@@ -219,7 +219,7 @@ const App = (props) => {
                 onChange={(e) => setSinceDate(convertStringToDate(e.target.value))}
               />
             </label>
-            <label htmlFor="start">
+            <label htmlFor="end">
               End date:
               <input
                 type="date"

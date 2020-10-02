@@ -46,7 +46,7 @@ TAG AREAS
 
 .tag-area {
   flex: 3 1 0;
-  padding: 10px;
+  padding: 20px;
 }
 
 /*
@@ -97,4 +97,5 @@ DROPDOWN AREA
 
 #split-acct-dropdown {
   flex: 3 1 0;
+  padding: 20px;
 }

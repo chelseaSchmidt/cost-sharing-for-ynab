@@ -109,24 +109,25 @@ const AccountSelector = ({
           <p>
             Select the banking account where you track what is owed back to you by the other person.
           </p>
-          <select
-            onChange={(e) => setSplitAccount(e.target.value)}
-            defaultValue="select-an-account"
-            id="split-acct-dropdown"
-          >
-            <option disabled value="select-an-account">
-              -- select an account --
-            </option>
-            {budgetAccounts.map(({ name, id }) => (
-              <option
-                id={`split-${id}`}
-                key={`split-${id}`}
-                value={id}
-              >
-                {name}
+          <div id="split-acct-dropdown">
+            <select
+              onChange={(e) => setSplitAccount(e.target.value)}
+              defaultValue="select-an-account"
+            >
+              <option disabled value="select-an-account">
+                -- select an account --
               </option>
-            ))}
-          </select>
+              {budgetAccounts.map(({ name, id }) => (
+                <option
+                  id={`split-${id}`}
+                  key={`split-${id}`}
+                  value={id}
+                >
+                  {name}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
   </div>
