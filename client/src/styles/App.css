@@ -34,6 +34,9 @@ body {
   border-radius: 12px;
   padding: 15px;
   margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /*
@@ -73,8 +76,17 @@ DATE RANGE AREAS
 
 #date-range-area {
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   align-items: center;
+  padding: 0 15px 0 15px;
+}
+
+#date-range-area > p {
+  flex: 1 1 0;
+}
+
+#date-range-area > form {
+  flex: 3 1 0;
 }
 
 #date-range-area > form > label > input {

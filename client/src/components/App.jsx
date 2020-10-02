@@ -229,15 +229,15 @@ const App = (props) => {
               />
             </label>
           </form>
-          <button
-            type="button"
-            onClick={getTransactions}
-            id="update-txn-btn"
-            className="update-btn"
-          >
-            Refresh Transactions
-          </button>
         </div>
+        <button
+          type="button"
+          onClick={getTransactions}
+          id="update-txn-btn"
+          className="update-btn"
+        >
+          Refresh Transactions
+        </button>
       </div>
       <section id="transaction-container" className="section-container">
         <p>

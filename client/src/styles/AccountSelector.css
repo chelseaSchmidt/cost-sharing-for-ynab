@@ -7,7 +7,6 @@ CONTAINERS
 #account-selector-container {
   border-radius: 12px;
   padding: 15px;
-  margin-bottom: 15px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -22,11 +21,12 @@ SECTIONS
 
 #account-selector-area {
   display: flex;
+  flex-direction: column;
 }
 
 /*
 ==============
-SUB-SECTIONS
+TAG AREAS
 ==============
 */
 
@@ -40,10 +40,13 @@ SUB-SECTIONS
   margin-right: 10px;
 }
 
-#split-option-area {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+#bank-tags > p, #cat-tags > p {
+  flex: 1 1 0;
+}
+
+.tag-area {
+  flex: 3 1 0;
+  padding: 10px;
 }
 
 /*
@@ -51,10 +54,6 @@ SUB-SECTIONS
 TAGS
 ==============
 */
-
-.tag-area {
-  padding: 10px;
-}
 
 .acct-btn, .cat-btn {
   background-color: white;
@@ -82,10 +81,20 @@ TAGS
 
 /*
 ==============
-DROPDOWN
+DROPDOWN AREA
 ==============
 */
 
+#split-option-area {
+  display: flex;
+  /* flex-direction: column; */
+  align-items: center;
+}
+
+#split-option-area > p {
+  flex: 1 1 0;
+}
+
 #split-acct-dropdown {
-  height: 25px;
+  flex: 3 1 0;
 }
