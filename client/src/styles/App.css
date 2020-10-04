@@ -6,10 +6,10 @@ CONTAINERS
 
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-size: 13px;
+  font-size: 14px;
   color: #464b46;
   background-color: #1669B8;
-  /* background: linear-gradient(#1669B8, #73a0ca); */
+  background: linear-gradient(#2f73b3, #73a0ca);
   /* border: 10px solid #73a0ca; */
   margin: 0;
   padding: 40px;
@@ -33,9 +33,10 @@ input, select {
 }
 
 .section-container {
-  background-color: white;
+  background-color: #2b69a5;
+  color: white;
   /* border: 2px solid #00990a; */
-  box-shadow: 0 1px 2px 0 #0a3a68;
+  box-shadow: 0 1px 4px 0 #0a3a68;
   max-width: 1290px;
   border-radius: 12px;
   padding: 15px;
@@ -58,10 +59,12 @@ header {
   position: -webkit-sticky;
   position: sticky;
   top: 0;
-  width: 100%;
-  background-color: #1669B8;
+  width: 110%;
+  background-color: #2f73b3;
   margin: 0;
-  box-shadow: 0 0 1px 2px #1669B8;
+  margin-bottom: 15px;
+  box-shadow: 0 0 1px 2px #2f73b3;
+  border-bottom: 5px solid white;
 }
 
 header > h1 {
@@ -72,7 +75,7 @@ header > h1 {
 }
 
 #works-with-ynab-img {
-  width: 7%;
+  width: 7.5%;
   height: auto;
 }
 

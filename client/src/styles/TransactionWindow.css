@@ -57,6 +57,7 @@ TRANSACTIONS
   padding: 5px;
   background-color: white;
   box-shadow: 0 1px 0 0.5px #f1f2f1;
+  color: #464b46;
 }
 
 .txn-date {

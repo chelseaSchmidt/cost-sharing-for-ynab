@@ -57,26 +57,31 @@ TAGS
 
 .acct-btn, .cat-btn {
   background-color: white;
-  border: 1px solid #73a0ca;
+  /* border: 1px solid #464b46; */
+  border: none;
   border-radius: 8px;
-  box-shadow: 0 1px 0 0.5px #285681;
-  margin: 2px;
+  box-shadow: 0 1px 0 0.5px #73a0ca;
+  margin: 3px;
   color: #464b46;
+  padding: 4px 8px 4px 8px;
 }
 
 .acct-btn:hover, .cat-btn:hover {
   cursor: pointer;
-  background-color: #a1bcd6;
-  color: white;
+  background-color: #a1d6d6;
 }
 
 .active-btn {
-  background-color: #105494;
+  background-color: #63c3a4;
+  box-shadow: 0 1px 0 0.5px #395066;
   color: white;
+  font-weight: 600;
+  text-shadow: 0 0 2px #666;
+  padding: 4px 5px 4px 5px;
 }
 
 .active-btn:hover {
-  color: black;
+  background-color: #55a38a;
 }
 
 /*
