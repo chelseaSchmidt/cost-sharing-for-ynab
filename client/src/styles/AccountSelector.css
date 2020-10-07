@@ -6,7 +6,7 @@ CONTAINERS
 
 #account-selector-container {
   border-radius: 12px;
-  padding: 15px;
+  padding: 15px 75px 15px 75px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -31,23 +31,26 @@ TAG AREAS
 */
 
 #bank-tags {
-  display: flex;
-  margin-right: 10px;
+  /* display: flex; */
+  /* margin-right: 10px; */
+  margin-bottom: 40px;
 }
 
 #cat-tags {
-  display: flex;
-  margin-right: 10px;
+  /* display: flex; */
+  /* margin-right: 10px; */
+  margin-bottom: 40px;
 }
 
 #bank-tags > p, #cat-tags > p {
-  flex: 1 1 0;
+  /* flex: 1 1 0; */
+  margin-bottom: 20px;
 }
 
-.tag-area {
+/* .tag-area {
   flex: 3 1 0;
   padding: 20px;
-}
+} */
 
 /*
 ==============
@@ -56,11 +59,11 @@ TAGS
 */
 
 .acct-btn, .cat-btn {
-  background-color: white;
+  background-color: rgb(241, 241, 241);
   /* border: 1px solid #464b46; */
   border: none;
   border-radius: 8px;
-  box-shadow: 0 1px 0 0.5px #73a0ca;
+  box-shadow: 0 1px 0 0.5px #e4e7ea;
   margin: 3px;
   color: #464b46;
   padding: 4px 8px 4px 8px;
@@ -68,11 +71,12 @@ TAGS
 
 .acct-btn:hover, .cat-btn:hover {
   cursor: pointer;
-  background-color: #a1d6d6;
+  background-color: #5183b1;
+  color: white;
 }
 
 .active-btn {
-  background-color: #63c3a4;
+  background-color: #2f73b3;
   box-shadow: 0 1px 0 0.5px #395066;
   color: white;
   font-weight: 600;
@@ -81,7 +85,8 @@ TAGS
 }
 
 .active-btn:hover {
-  background-color: #55a38a;
+  background-color: #0061bd;
+  color: white;
 }
 
 /*
@@ -91,16 +96,18 @@ DROPDOWN AREA
 */
 
 #split-option-area {
-  display: flex;
+  /* display: flex; */
   /* flex-direction: column; */
-  align-items: center;
+  /* align-items: center; */
+  margin-bottom: 40px;
 }
 
 #split-option-area > p {
-  flex: 1 1 0;
+  /* flex: 1 1 0; */
+  margin-bottom: 20px;
 }
 
 #split-acct-dropdown {
-  flex: 3 1 0;
+  /* flex: 3 1 0; */
   padding: 20px;
 }

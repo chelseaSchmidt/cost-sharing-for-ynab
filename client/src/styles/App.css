@@ -8,11 +8,11 @@ body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: 14px;
   color: #464b46;
-  background-color: #1669B8;
-  background: linear-gradient(#2f73b3, #73a0ca);
+  background-color: rgb(250, 250, 250);
+  /* background: linear-gradient(#2f73b3, #73a0ca); */
   /* border: 10px solid #73a0ca; */
   margin: 0;
-  padding: 40px;
+  padding: 0 40px 40px 40px;
   /* height: 100vh; */
   display: flex;
   flex-direction: column;
@@ -33,10 +33,9 @@ input, select {
 }
 
 .section-container {
-  background-color: #2b69a5;
-  color: white;
+  background-color: white;
   /* border: 2px solid #00990a; */
-  box-shadow: 0 1px 4px 0 #0a3a68;
+  box-shadow: 0 1px 2px 0 #d6d6d6;
   max-width: 1290px;
   border-radius: 12px;
   padding: 15px;
@@ -64,7 +63,7 @@ header {
   margin: 0;
   margin-bottom: 15px;
   box-shadow: 0 0 1px 2px #2f73b3;
-  border-bottom: 5px solid white;
+  /* border-bottom: 5px solid white; */
 }
 
 header > h1 {
@@ -86,16 +85,17 @@ DATE RANGE AREAS
 */
 
 #date-range-area {
-  display: flex;
+  /* display: flex; */
   padding: 0 15px 0 15px;
 }
 
 #date-range-area > p {
-  flex: 1 1 0;
+  /* flex: 1 1 0; */
+  margin-bottom: 20px;
 }
 
 #date-range-area > form {
-  flex: 3 1 0;
+  /* flex: 3 1 0; */
   padding: 20px;
 }
 
