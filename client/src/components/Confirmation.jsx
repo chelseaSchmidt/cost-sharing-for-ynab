@@ -6,7 +6,7 @@ const Confirmation = () => {
     <div id="confirmation-container">
       <div id="confirmation">
         <p>
-          Transaction Created
+          Transaction created
         </p>
       </div>
     </div>

@@ -4,6 +4,7 @@ import _ from 'lodash';
 import TransactionWindow from './TransactionWindow';
 import AccountSelector from './AccountSelector';
 import Confirmation from './Confirmation';
+import Error from './Error';
 import {
   getAllTransactions,
   getAccounts,
@@ -40,6 +41,7 @@ const App = (props) => {
   const [sharedAccounts, setSharedAccounts] = useState([]);
   const [sharedCategories, setSharedCategories] = useState([]);
   const [splitAccount, setSplitAccount] = useState('');
+  const [errorOccurred, setErrorOccurred] = useState(false);
 
   useEffect(() => {
     const budgetObj = {
@@ -59,7 +61,7 @@ const App = (props) => {
           .map(({ name, id, categories }) => { return { name, id, categories }; })); // eslint-disable-line
         setBudgetData(budgetObj);
       })
-      .catch((err) => console.error(err));
+      .catch((err) => setErrorOccurred(true));
   }, [props]);
 
   function getTransactions(e = { preventDefault: () => {} }, retrievedAfterCreate = false) {
@@ -100,7 +102,7 @@ const App = (props) => {
         });
         setTransactions(newTxns);
       })
-      .catch((err) => { console.error(err); });
+      .catch((err) => setErrorOccurred(true));
   }
 
   function handleSelectTransaction({ target: { checked } }, transaction, txnNumber) {
@@ -183,7 +185,7 @@ const App = (props) => {
       .then(() => {
         getTransactions(undefined, true);
       })
-      .catch((err) => console.error(err));
+      .catch((err) => setErrorOccurred(true));
   }
 
   const splitIsAllowed = checkedTransactions.transactions.length && splitAccount.length;
@@ -301,6 +303,7 @@ const App = (props) => {
         </form>
       </div>
       {transactions.retrievedAfterCreate && <Confirmation />}
+      {errorOccurred && <Error />}
     </div>
   );
 };
