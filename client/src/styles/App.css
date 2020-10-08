@@ -175,6 +175,18 @@ BUTTONS
   margin-top: 20px;
 }
 
+#view-privacy-btn {
+  margin-bottom: 20px;
+  background: none;
+  border: none;
+  text-decoration: underline;
+}
+
+#view-privacy-btn:hover {
+  cursor: pointer;
+  color: blue;
+}
+
 /*
 =================
 UTILITY

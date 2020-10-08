@@ -4,6 +4,7 @@ import _ from 'lodash';
 import TransactionWindow from './TransactionWindow';
 import AccountSelector from './AccountSelector';
 import Confirmation from './Confirmation';
+import PrivacyPolicy from './PrivacyPolicy';
 import Error from './Error';
 import {
   getAllTransactions,
@@ -42,6 +43,7 @@ const App = (props) => {
   const [sharedCategories, setSharedCategories] = useState([]);
   const [splitAccount, setSplitAccount] = useState('');
   const [errorOccurred, setErrorOccurred] = useState(false);
+  const [privacyActive, setPrivacyActive] = useState(true);
 
   useEffect(() => {
     const budgetObj = {
@@ -192,6 +194,7 @@ const App = (props) => {
 
   return (
     <div className="app-container">
+      {privacyActive && <PrivacyPolicy setPrivacyActive={setPrivacyActive} />}
       <header>
         <h1>
           Cost Sharing for YNAB
@@ -304,6 +307,7 @@ const App = (props) => {
       </div>
       {transactions.retrievedAfterCreate && <Confirmation />}
       {errorOccurred && <Error />}
+      <button id="view-privacy-btn" onClick={() => setPrivacyActive(true)}>View Privacy Policy</button>
     </div>
   );
 };
