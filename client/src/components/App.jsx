@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import _ from 'lodash';
 import TransactionWindow from './TransactionWindow';
 import AccountSelector from './AccountSelector';
+import Confirmation from './Confirmation';
 import {
   getAllTransactions,
   getAccounts,
@@ -30,6 +31,7 @@ const App = (props) => {
     catTransactions: [],
     isolatedTransactions: [],
     recipientTransactions: [],
+    retrievedAfterCreate: false,
   });
   const [budgetData, setBudgetData] = useState({
     budgetAccounts: [{ name: '', id: '' }],
@@ -60,13 +62,14 @@ const App = (props) => {
       .catch((err) => console.error(err));
   }, [props]);
 
-  function getTransactions(e = { preventDefault: () => {} }) {
+  function getTransactions(e = { preventDefault: () => {} }, retrievedAfterCreate = false) {
     e.preventDefault();
     const newTxns = {
       bankTransactions: [],
       catTransactions: [],
       isolatedTransactions: [],
       recipientTransactions: [],
+      retrievedAfterCreate,
     };
     const sharedAccountIds = sharedAccounts.map((acct) => acct.accountId);
     const sharedCatIds = _.flatten(sharedCategories
@@ -177,7 +180,9 @@ const App = (props) => {
       })),
     };
     createSplitTransaction(summaryTransaction)
-      .then(() => getTransactions())
+      .then(() => {
+        getTransactions(undefined, true);
+      })
       .catch((err) => console.error(err));
   }
 
@@ -295,6 +300,7 @@ const App = (props) => {
           )}
         </form>
       </div>
+      {transactions.retrievedAfterCreate && <Confirmation />}
     </div>
   );
 };
