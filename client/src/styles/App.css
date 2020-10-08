@@ -12,11 +12,10 @@ body {
   /* background: linear-gradient(#2f73b3, #73a0ca); */
   /* border: 10px solid #73a0ca; */
   margin: 0;
-  padding: 0 40px 40px 40px;
-  /* height: 100vh; */
+  padding: 0;
   display: flex;
   flex-direction: column;
-  align-items: right;
+  align-items: stretch;
 }
 
 input, select {
@@ -35,10 +34,10 @@ input, select {
 .section-container {
   background-color: white;
   /* border: 2px solid #00990a; */
-  box-shadow: 0 1px 2px 0 #d6d6d6;
+  box-shadow: 0 0 3px 0 #9298a2;
   max-width: 1290px;
   border-radius: 12px;
-  padding: 15px;
+  padding: 50px 75px 50px 75px;
   margin-bottom: 15px;
   display: flex;
   flex-direction: column;
@@ -47,7 +46,7 @@ input, select {
 
 /*
 =================
-HEADER
+HEADERS
 =================
 */
 
@@ -58,7 +57,7 @@ header {
   position: -webkit-sticky;
   position: sticky;
   top: 0;
-  width: 110%;
+  width: 100%;
   background-color: #2f73b3;
   margin: 0;
   margin-bottom: 15px;
@@ -78,26 +77,34 @@ header > h1 {
   height: auto;
 }
 
+.section-header {
+  font-size: 25px;
+  margin: 0 0 50px 0;
+  padding: 0;
+  font-weight: 600;
+  text-align: center;
+}
+
 /*
 =================
 DATE RANGE AREAS
 =================
 */
 
-#date-range-area {
-  /* display: flex; */
-  padding: 0 15px 0 15px;
-}
+/* #date-range-area {
+  display: flex;
+  padding: 0 75px 0 75px;
+} */
 
 #date-range-area > p {
   /* flex: 1 1 0; */
-  margin-bottom: 20px;
+  margin: 0 0 20px 0;
 }
 
-#date-range-area > form {
-  /* flex: 3 1 0; */
+/* #date-range-area > form {
+  flex: 3 1 0;
   padding: 20px;
-}
+} */
 
 #date-range-area > form > label > input {
   margin: 0 10px 0 10px;
@@ -111,7 +118,7 @@ TRANSACTION AREA
 
 #transaction-container {
   border-radius: 12px;
-  padding: 15px;
+  /* padding: 15px; */
   max-height: 92vh;
 }
 
@@ -119,7 +126,7 @@ TRANSACTION AREA
   display: flex;
   flex-direction: row;
   border-radius: 12px;
-  padding: 15px;
+  /* padding: 15px; */
 }
 
 /*

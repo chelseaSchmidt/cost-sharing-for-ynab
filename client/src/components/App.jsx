@@ -240,6 +240,7 @@ const App = (props) => {
         </button>
       </div>
       <section id="transaction-container" className="section-container">
+        <h1 className="section-header">Select Transactions to Split</h1>
         <p>
           Select all the transactions in shared budget categories that you want included in the split transaction. If a transaction is present in a shared category but did not come from a shared banking account, or vice versa, you'll notice a yellow warning symbol. Use these warnings to review if anything is missing or incorrect.
         </p>
@@ -268,6 +269,7 @@ const App = (props) => {
       </section>
       <div id="split-btn-area" className="section-container">
         <form>
+          <h1 className="section-header">Create Split Transaction</h1>
           <p>
             Choose a date you want to create the transaction in YNAB that will halve costs between you and the other person, and hit "Split Selected Transactions On Date". The new transaction will be split across all the original categories, so you can continue to have visibility into where your shared dollars are being spent.
           </p>

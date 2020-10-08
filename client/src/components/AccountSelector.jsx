@@ -55,6 +55,7 @@ const AccountSelector = ({
     <div id="account-selector-container">
       <div id="account-selector-area">
         <div id="bank-tags">
+          <h1 className="section-header">Set Preferences</h1>
           <p>
             Select one or more banking accounts that contain shared expenses, such as a credit card that you share with a significant other or roommate.
           </p>

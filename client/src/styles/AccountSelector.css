@@ -6,7 +6,7 @@ CONTAINERS
 
 #account-selector-container {
   border-radius: 12px;
-  padding: 15px 75px 15px 75px;
+  /* padding: 15px 75px 0 75px; */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -63,7 +63,7 @@ TAGS
   /* border: 1px solid #464b46; */
   border: none;
   border-radius: 8px;
-  box-shadow: 0 1px 0 0.5px #e4e7ea;
+  box-shadow: 0 1px 0 0.5px #c9cdd2;
   margin: 3px;
   color: #464b46;
   padding: 4px 8px 4px 8px;
@@ -107,7 +107,7 @@ DROPDOWN AREA
   margin-bottom: 20px;
 }
 
-#split-acct-dropdown {
-  /* flex: 3 1 0; */
+/* #split-acct-dropdown {
+  flex: 3 1 0;
   padding: 20px;
-}
+} */
