@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
   arrayOf,
   objectOf,
@@ -48,7 +48,7 @@ const AccountSelector = ({
   const excludedCategories = [
     'Internal Master Category',
     'Credit Card Payments',
-    'Hidden Categories'
+    'Hidden Categories',
   ];
 
   return (
@@ -57,7 +57,8 @@ const AccountSelector = ({
         <div id="bank-tags">
           <h1 className="section-header">Set Preferences</h1>
           <p>
-            Select one or more banking accounts that contain shared expenses, such as a credit card that you share with a significant other or roommate.
+            Select one or more banking accounts that contain shared expenses,
+            such as a credit card that you share with a significant other or roommate.
           </p>
           <div className="tag-area">
             {budgetAccounts.map(({ name, id }) => {
@@ -81,7 +82,8 @@ const AccountSelector = ({
         </div>
         <div id="cat-tags">
           <p>
-            Select one or more category groups where you track shared expenses before splitting them with the other person.
+            Select one or more category groups where you track shared expenses
+            before splitting them with the other person.
           </p>
           <div className="tag-area">
             {budgetCategories.map(({ name, id }) => {
@@ -131,7 +133,7 @@ const AccountSelector = ({
           </div>
         </div>
       </div>
-  </div>
+    </div>
   );
 };
 

@@ -63,7 +63,7 @@ const App = (props) => {
           .map(({ name, id, categories }) => { return { name, id, categories }; })); // eslint-disable-line
         setBudgetData(budgetObj);
       })
-      .catch((err) => setErrorOccurred(true));
+      .catch(() => setErrorOccurred(true));
   }, [props]);
 
   function getTransactions(e = { preventDefault: () => {} }, retrievedAfterCreate = false) {
@@ -104,7 +104,7 @@ const App = (props) => {
         });
         setTransactions(newTxns);
       })
-      .catch((err) => setErrorOccurred(true));
+      .catch(() => setErrorOccurred(true));
   }
 
   function handleSelectTransaction({ target: { checked } }, transaction, txnNumber) {
@@ -187,7 +187,7 @@ const App = (props) => {
       .then(() => {
         getTransactions(undefined, true);
       })
-      .catch((err) => setErrorOccurred(true));
+      .catch(() => setErrorOccurred(true));
   }
 
   const splitIsAllowed = checkedTransactions.transactions.length && splitAccount.length;
@@ -217,7 +217,10 @@ const App = (props) => {
         />
         <div id="date-range-area">
           <p>
-            Specify a date range, such as a one-month period, that you want to split transactions for. For example, you might calculate what the other person owes you for shared costs every week, two weeks, or once a month.
+            Specify a date range, such as a one-month period, that you want to
+            split transactions for. For example, you might calculate what the
+            other person owes you for shared costs every week, two weeks, or
+            once a month.
           </p>
           <form>
             <label htmlFor="start">
@@ -246,13 +249,17 @@ const App = (props) => {
           id="update-txn-btn"
           className="update-btn"
         >
-          Refresh Transactions
+          Show Transactions
         </button>
       </div>
       <section id="transaction-container" className="section-container">
         <h1 className="section-header">Select Transactions to Split</h1>
         <p>
-          Select all the transactions in shared budget categories that you want included in the split transaction. If a transaction is present in a shared category but did not come from a shared banking account, or vice versa, you'll notice a yellow warning symbol. Use these warnings to review if anything is missing or incorrect.
+          Select all the transactions in shared budget categories that you want
+          included in the split transaction. If a transaction is present in a
+          shared category but did not come from a shared banking account, or vice
+          versa, you&apos;ll notice a yellow warning symbol. Use these warnings to review
+          if anything is missing or incorrect.
         </p>
         <div id="transaction-area">
           <TransactionWindow
@@ -281,7 +288,11 @@ const App = (props) => {
         <form>
           <h1 className="section-header">Create Split Transaction</h1>
           <p>
-            Choose a date you want to create the transaction in YNAB that will halve costs between you and the other person, and hit "Split Selected Transactions On Date". The new transaction will be split across all the original categories, so you can continue to have visibility into where your shared dollars are being spent.
+            Choose a date you want to create the transaction in YNAB that will
+            halve costs between you and the other person, and hit &quot;Split Selected
+            Transactions On Date.&quot; The new transaction will be split across all
+            the original categories, so you can continue to have visibility into
+            where your shared dollars are being spent.
           </p>
           <input
             type="date"
@@ -300,14 +311,29 @@ const App = (props) => {
           </button>
           {!splitIsAllowed && (
             <span className="caution-text">
-              Please select one or more transactions to split and choose an account to receive the split transaction
+              Please select one or more transactions to split and choose an account
+              to receive the split transaction
             </span>
           )}
         </form>
       </div>
       {transactions.retrievedAfterCreate && <Confirmation />}
       {errorOccurred && <Error />}
-      <button id="view-privacy-btn" onClick={() => setPrivacyActive(true)}>View Privacy Policy</button>
+      <button
+        type="button"
+        className="link-btn"
+        onClick={() => setPrivacyActive(true)}
+      >
+        View Privacy Policy
+      </button>
+      <a
+        className="link-btn"
+        href="https://github.com/chelseaSchmidt/cost-sharing-for-ynab/issues"
+        target="_blank"
+        rel="noreferrer"
+      >
+        Report a bug by opening an issue in GitHub
+      </a>
     </div>
   );
 };

@@ -6,7 +6,6 @@ CONTAINERS
 
 #account-selector-container {
   border-radius: 12px;
-  /* padding: 15px 75px 0 75px; */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -31,26 +30,16 @@ TAG AREAS
 */
 
 #bank-tags {
-  /* display: flex; */
-  /* margin-right: 10px; */
   margin-bottom: 40px;
 }
 
 #cat-tags {
-  /* display: flex; */
-  /* margin-right: 10px; */
   margin-bottom: 40px;
 }
 
 #bank-tags > p, #cat-tags > p {
-  /* flex: 1 1 0; */
   margin-bottom: 20px;
 }
-
-/* .tag-area {
-  flex: 3 1 0;
-  padding: 20px;
-} */
 
 /*
 ==============
@@ -60,7 +49,6 @@ TAGS
 
 .acct-btn, .cat-btn {
   background-color: rgb(241, 241, 241);
-  /* border: 1px solid #464b46; */
   border: none;
   border-radius: 8px;
   box-shadow: 0 1px 0 0.5px #c9cdd2;
@@ -96,18 +84,9 @@ DROPDOWN AREA
 */
 
 #split-option-area {
-  /* display: flex; */
-  /* flex-direction: column; */
-  /* align-items: center; */
   margin-bottom: 40px;
 }
 
 #split-option-area > p {
-  /* flex: 1 1 0; */
   margin-bottom: 20px;
 }
-
-/* #split-acct-dropdown {
-  flex: 3 1 0;
-  padding: 20px;
-} */
