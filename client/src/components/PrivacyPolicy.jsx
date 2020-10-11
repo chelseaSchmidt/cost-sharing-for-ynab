@@ -22,8 +22,12 @@ const PrivacyPolicy = ({ setPrivacyActive }) => {
           Cost Sharing For YNAB does not collect any personal information. Outside
           of YNAB itself, there is no database connected to Cost Sharing For YNAB
           in which to store information. Please see YNAB&apos;s privacy policy to
-          understand what information is collected by YNAB itself, unrelated to
+          understand what information is collected by YNAB, unrelated to
           using Cost Sharing For YNAB.
+
+          Data will be obtained from your YNAB budget for the current active session
+          only, and will not be stored. Cost Sharing For YNAB does not pass the data
+          to any third parties.
         </p>
         <br />
         <p>
