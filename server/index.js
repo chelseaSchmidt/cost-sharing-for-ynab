@@ -16,6 +16,7 @@ app.use(express.static(publicDir));
 
 redirectApp.use(morgan('dev'));
 redirectApp.get('*', (req, res) => {
+  console.log('redirected to HTTPS');
   res.redirect(`https://${req.headers.host}${req.url}`);
 });
 
