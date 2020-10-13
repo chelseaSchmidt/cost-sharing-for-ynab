@@ -9,8 +9,8 @@
   - npm install
   - npm run build || npm run watch
   - npm start
-    - Optional environment variable: PORT (defaults to 3003)
-  - Navigate to http://localhost:3003
+    - Optional environment variable: PORT (defaults to 80)
+  - Navigate to http://localhost
 
 ## Other
   - Command to run ESLint
