@@ -6,6 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server",
+    "start:HTTP": "PORT=80 node server",
+    "start:HTTPS": "HTTPS=true PORT=443 node server",
     "build": "webpack",
     "watch": "webpack -w",
     "linter": "npx eslint ./ --ext .js,.jsx"
