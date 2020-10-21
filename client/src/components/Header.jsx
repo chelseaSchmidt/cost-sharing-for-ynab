@@ -1,17 +1,22 @@
 import React from 'react';
+import Nav from './Nav.jsx';
+import '../styles/Header.css';
 
-const Header = () => {
+const Header = ({ setPrivacyActive }) => {
   return (
-    <header>
-      <h1>
-        Cost Sharing for YNAB
-      </h1>
-      <img
-        src="works_with_ynab.svg"
-        alt="Works with YNAB"
-        id="works-with-ynab-img"
-      />
-    </header>
+    <div id="header-container">
+      <header>
+        <h1>
+          Cost Sharing for YNAB
+          <img
+          src="works_with_ynab.svg"
+          alt="Works with YNAB"
+          id="works-with-ynab-img"
+        />
+        </h1>
+        <Nav setPrivacyActive={setPrivacyActive} />
+      </header>
+    </div>
   );
 };
 

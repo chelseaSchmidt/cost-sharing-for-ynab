@@ -6,6 +6,7 @@ import AccountSelector from './AccountSelector';
 import Confirmation from './Confirmation';
 import PrivacyPolicy from './PrivacyPolicy';
 import Header from './Header';
+import Nav from './Nav';
 import Error from './Error';
 import {
   getAllTransactions,
@@ -196,7 +197,7 @@ const App = (props) => {
   return (
     <div className="app-container">
       {privacyActive && <PrivacyPolicy setPrivacyActive={setPrivacyActive} />}
-      <Header />
+      <Header setPrivacyActive={setPrivacyActive} />
       <div className="section-container">
         <AccountSelector
           sharedAccounts={sharedAccounts}
@@ -311,27 +312,7 @@ const App = (props) => {
       </div>
       {transactions.retrievedAfterCreate && <Confirmation />}
       {errorOccurred && <Error />}
-      <button
-        type="button"
-        className="link-btn"
-        onClick={() => setPrivacyActive(true)}
-      >
-        View privacy policy
-      </button>
-      <a
-        className="link-btn"
-        href="https://github.com/chelseaSchmidt/cost-sharing-for-ynab/issues"
-        target="_blank"
-        rel="noreferrer"
-      >
-        Report a bug by opening an issue in GitHub
-      </a>
-      <a
-        className="link-btn"
-        href="/"
-      >
-        Return to website
-      </a>
+      <Nav setPrivacyActive={setPrivacyActive} />
     </div>
   );
 };

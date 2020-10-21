@@ -1,0 +1,18 @@
+.link-btn {
+  padding: 0;
+  margin: 0 10px 20px 10px;
+  background: none;
+  border: none;
+  text-decoration: underline;
+  color: #464b46;
+  font-size: 12px;
+}
+
+.link-btn:hover, .link-btn:visited:hover {
+  cursor: pointer;
+  color: blue;
+}
+
+.link-btn:visited {
+  color: #464b46;
+}
