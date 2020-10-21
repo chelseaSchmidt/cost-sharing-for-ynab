@@ -10,6 +10,8 @@
     "start:HTTPS": "HTTPS=true node server",
     "build": "webpack",
     "watch": "webpack -w",
+    "build:site": "webpack --config siteWebpack.config.js",
+    "watch:site": "webpack --config siteWebpack.config.js -w",
     "linter": "npx eslint ./ --ext .js,.jsx"
   },
   "repository": {
@@ -37,6 +39,7 @@
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-router-dom": "^5.2.0",
     "style-loader": "^1.2.1"
   },
   "devDependencies": {

@@ -5,6 +5,7 @@ import TransactionWindow from './TransactionWindow';
 import AccountSelector from './AccountSelector';
 import Confirmation from './Confirmation';
 import PrivacyPolicy from './PrivacyPolicy';
+import Header from './Header';
 import Error from './Error';
 import {
   getAllTransactions,
@@ -195,16 +196,7 @@ const App = (props) => {
   return (
     <div className="app-container">
       {privacyActive && <PrivacyPolicy setPrivacyActive={setPrivacyActive} />}
-      <header>
-        <h1>
-          Cost Sharing for YNAB
-        </h1>
-        <img
-          src="works_with_ynab.svg"
-          alt="Works with YNAB"
-          id="works-with-ynab-img"
-        />
-      </header>
+      <Header />
       <div className="section-container">
         <AccountSelector
           sharedAccounts={sharedAccounts}
@@ -324,7 +316,7 @@ const App = (props) => {
         className="link-btn"
         onClick={() => setPrivacyActive(true)}
       >
-        View Privacy Policy
+        View privacy policy
       </button>
       <a
         className="link-btn"
@@ -333,6 +325,12 @@ const App = (props) => {
         rel="noreferrer"
       >
         Report a bug by opening an issue in GitHub
+      </a>
+      <a
+        className="link-btn"
+        href="/"
+      >
+        Return to website
       </a>
     </div>
   );

@@ -8,12 +8,14 @@ const path = require('path');
 const usingHTTPS = !!process.env.HTTPS;
 const httpsPort = process.env.HTTPSPORT || 3001;
 const httpPort = process.env.HTTPPORT || 3000;
-const publicDir = path.resolve(__dirname, '..', 'client', 'public');
+const appDir = path.resolve(__dirname, '..', 'client', 'app');
+const siteDir = path.resolve(__dirname, '..', 'client', 'site');
 const app = express();
 const redirectApp = express();
 
 app.use(morgan('dev'));
-app.use(express.static(publicDir));
+app.use(express.static(siteDir));
+app.use('/cost-sharer', express.static(appDir));
 
 redirectApp.use(morgan('dev'));
 redirectApp.get('*', (req, res) => {
@@ -23,8 +25,8 @@ redirectApp.get('*', (req, res) => {
 
 if (usingHTTPS) {
   const options = {
-    key: fs.readFileSync(process.env.KEY) || '',
-    cert: fs.readFileSync(process.env.CERT) || '',
+    key: fs.readFileSync(process.env.KEY),
+    cert: fs.readFileSync(process.env.CERT),
   };
   https.createServer(options, app).listen(httpsPort, () => {
     console.log(`HTTPS good to go at port ${httpsPort}`);
