@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 const express = require('express');
 const https = require('https');
 const fs = require('fs');
@@ -5,8 +6,8 @@ const morgan = require('morgan');
 const path = require('path');
 
 const usingHTTPS = !!process.env.HTTPS;
-const httpsPort = process.env.HTTPSPORT || 443;
-const httpPort = process.env.HTTPPORT || 80;
+const httpsPort = process.env.HTTPSPORT || 3001;
+const httpPort = process.env.HTTPPORT || 3000;
 const publicDir = path.resolve(__dirname, '..', 'client', 'public');
 const app = express();
 const redirectApp = express();
