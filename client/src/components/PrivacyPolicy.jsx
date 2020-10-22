@@ -18,9 +18,11 @@ const PrivacyPolicy = () => {
       <p>
         Cost Sharing for YNAB does not collect any personal information. Outside
         of connecting to YNAB itself through their API, there is no database
-        connected to Cost Sharing for YNAB in which to store information. Please see
-        YNAB&apos;s privacy policy to understand what information is collected by YNAB,
-        unrelated to using Cost Sharing for YNAB.
+        connected to Cost Sharing for YNAB in which to store information. Cost
+        Sharing for YNAB allows you to view and edit your YNAB budget through a
+        custom interface, so please see YNAB&apos;s privacy policy to understand
+        what information might be collected by YNAB in the normal course of
+        viewing and editing your budget.
       </p>
       <p>
         Data will be obtained from your YNAB budget for the current active session
@@ -30,7 +32,7 @@ const PrivacyPolicy = () => {
       <p>
         Cost Sharing for YNAB is an open-source web application. If you would like to
         verify any of the above statements, the source-code can be viewed at&nbsp;
-        <a href="https://github.com/chelseaSchmidt/cost-sharing-for-ynab">
+        <a href="https://github.com/chelseaSchmidt/cost-sharing-for-ynab" target="_blank">
           https://github.com/chelseaSchmidt/cost-sharing-for-ynab
         </a>
         .

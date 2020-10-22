@@ -1,7 +1,7 @@
 header {
   box-sizing: border-box;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   width: 100%;
   position: -webkit-sticky;
   position: sticky;
@@ -46,4 +46,11 @@ header > #nav-container > a:visited
   height: 78px; */
   width: 144.07px;
   height: 57.33px;
+}
+
+.small-divider {
+  border-top: 1px solid lightgray;
+  margin: 20px 2px 20px 2px;
+  width: 100%;
+  padding: 0 10px 0 10px;
 }
