@@ -1,4 +1,5 @@
 # Cost Sharing for YNAB
+Easily track expenses on shared credit card in your YNAB budget! Use the app here: https://costsharingforynab.com
 
 ## System requirements
   - Node (version 10.20.1 used in development)
