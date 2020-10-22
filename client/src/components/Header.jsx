@@ -4,19 +4,19 @@ import '../styles/Header.css';
 
 const Header = ({ setPrivacyActive }) => {
   return (
-    <div id="header-container">
-      <header>
+    <header>
+      <div className="row">
         <h1>
           Cost Sharing for YNAB
-          <img
+        </h1>
+        <img
           src="works_with_ynab.svg"
           alt="Works with YNAB"
           id="works-with-ynab-img"
         />
-        </h1>
-        <Nav setPrivacyActive={setPrivacyActive} />
-      </header>
-    </div>
+      </div>
+      <Nav setPrivacyActive={setPrivacyActive} />
+    </header>
   );
 };
 

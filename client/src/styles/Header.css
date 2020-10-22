@@ -1,4 +1,7 @@
-#header-container {
+header {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
   width: 100%;
   position: -webkit-sticky;
   position: sticky;
@@ -7,35 +10,39 @@
   background-color: #2f73b3;
   margin: 0;
   margin-bottom: 15px;
+  padding: 10px 20px 10px 20px;
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.5);
 }
 
-header {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
+header > div {
+  align-items: center;
 }
 
-header > h1 {
+header > div > h1 {
   margin-right: 10px;
   font-size: 30px;
   letter-spacing: 0.5px;
   font-weight: 600;
 }
 
-#header-container > #nav-container {
+header > #nav-container {
   display: flex;
-  justify-content: flex-end;
+  align-items: center;
+  justify-content: center;
 }
 
-#header-container > #nav-container > button,
-#header-container > #nav-container > a,
-#header-container > #nav-container > a:visited
+header > #nav-container > button,
+header > #nav-container > a,
+header > #nav-container > a:visited
 {
+  margin: 0;
+  padding: 10px;
   color: white;
 }
 
 #works-with-ynab-img {
-  width: 7.5%;
-  height: auto;
+  /* width: 196px;
+  height: 78px; */
+  width: 144.07px;
+  height: 57.33px;
 }

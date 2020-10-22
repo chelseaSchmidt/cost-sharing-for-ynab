@@ -4,12 +4,19 @@ import '../styles/Nav.css';
 const Nav = ({ setPrivacyActive }) => {
   return (
     <div id="nav-container">
+      <a
+        className="link-btn"
+        href="/"
+      >
+        Home
+      </a>
       <button
         type="button"
         className="link-btn"
+        id="priv-pol-btn"
         onClick={() => setPrivacyActive(true)}
       >
-        View privacy policy
+        Privacy policy
       </button>
       <a
         className="link-btn"
@@ -18,12 +25,6 @@ const Nav = ({ setPrivacyActive }) => {
         rel="noreferrer"
       >
         Report a bug by opening an issue in GitHub
-      </a>
-      <a
-        className="link-btn"
-        href="/"
-      >
-        Return to website
       </a>
     </div>
   );

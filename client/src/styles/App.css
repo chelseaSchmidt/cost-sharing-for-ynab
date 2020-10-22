@@ -142,3 +142,12 @@ UTILITY
   border-top: 1px solid lightgray;
   margin: 10px 2px 10px 2px;
 }
+
+.row {
+  display: flex;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+}

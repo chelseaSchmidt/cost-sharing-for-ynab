@@ -16,6 +16,10 @@ body {
   align-items: stretch;
 }
 
+#content-container {
+  padding: 10px 20px 10px 20px;
+}
+
 input, select {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: 13px;
@@ -67,6 +71,10 @@ BUTTONS
   color: #464b46;
 }
 
+#priv-pol-btn {
+  display: none;
+}
+
 /*
 =================
 UTILITY
@@ -76,4 +84,13 @@ UTILITY
 .divider {
   border-top: 1px solid lightgray;
   margin: 10px 2px 10px 2px;
+}
+
+.row {
+  display: flex;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
 }
