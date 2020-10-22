@@ -4,7 +4,7 @@ import _ from 'lodash';
 import TransactionWindow from './TransactionWindow';
 import AccountSelector from './AccountSelector';
 import Confirmation from './Confirmation';
-import PrivacyPolicy from './PrivacyPolicy';
+import PrivacyWindow from './PrivacyWindow';
 import Header from './Header';
 import Nav from './Nav';
 import Error from './Error';
@@ -196,7 +196,7 @@ const App = (props) => {
 
   return (
     <div className="app-container">
-      {privacyActive && <PrivacyPolicy setPrivacyActive={setPrivacyActive} />}
+      {privacyActive && <PrivacyWindow setPrivacyActive={setPrivacyActive} />}
       <Header setPrivacyActive={setPrivacyActive} />
       <div className="section-container">
         <AccountSelector

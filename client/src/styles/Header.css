@@ -29,6 +29,7 @@ header > #nav-container {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 0;
 }
 
 header > #nav-container > button,

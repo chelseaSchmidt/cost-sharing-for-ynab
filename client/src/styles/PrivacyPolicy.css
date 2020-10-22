@@ -1,29 +1,8 @@
-#privacy-background {
-  position: fixed;
-  top: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: black;
-  opacity: 50%;
-}
-
-#privacy-policy {
-  position: fixed;
-  top: 20vh;
-  left: 50%;
-  transform: translate(-50%, 0);
-  width: 80vw;
-  background-color: white;
-  border-radius: 12px;
-  box-shadow: 0 0 5px 0 #4c4c4c;
-  padding: 20px;
-}
-
 #privacy-header {
   font-weight: bold;
+  font-size: 20px;
 }
 
-#privacy-btn-area {
-  display: flex;
-  justify-content: center;
+.priv-section-header {
+  font-weight: bold;
 }

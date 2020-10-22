@@ -1,5 +1,5 @@
 import React from 'react';
-import PrivacyPolicy from './PrivacyPolicy';
+import PrivacyPolicy from '../../src/components/PrivacyPolicy';
 import Header from '../../src/components/Header';
 import '../styles/Home.css';
 

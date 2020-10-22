@@ -1,10 +1,15 @@
 import React from 'react';
+import { func } from 'prop-types';
+import PrivacyPolicy from './PrivacyPolicy';
+import '../styles/PrivacyWindow.css';
 
-const PrivacyPolicy = () => {
+const PrivacyWindow = ({ setPrivacyActive }) => {
   return (
     <>
+      <div id="privacy-background" />
       <div id="privacy-policy">
-        <p id="privacy-header">
+        <PrivacyPolicy />
+        {/* <p id="privacy-header">
           Privacy Policy
         </p>
         <p>
@@ -52,10 +57,23 @@ const PrivacyPolicy = () => {
           For more information about these privacy practices, if you have questions,
           or if you would like to make a complaint, please email
           cost.sharing.for.ynab@gmail.com.
-        </p>
+        </p> */}
+        <div id="privacy-btn-area">
+          <button
+            type="button"
+            className="update-btn"
+            onClick={() => setPrivacyActive(false)}
+          >
+            Okay, Sounds Good
+          </button>
+        </div>
       </div>
     </>
   );
 };
 
-export default PrivacyPolicy;
+PrivacyWindow.propTypes = {
+  setPrivacyActive: func.isRequired,
+};
+
+export default PrivacyWindow;
