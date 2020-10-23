@@ -28,7 +28,7 @@ const Header = ({ setPrivacyActive, url, appEndpoint }) => {
         isOpen={menuIsOpen}
         onStateChange={(state) => handleStateChange(state)}
       >
-        <a href="/">Home</a>
+        <a href="/" className="menu-link">Home</a>
         <div className="small-divider" />
         {
           url &&
@@ -36,8 +36,9 @@ const Header = ({ setPrivacyActive, url, appEndpoint }) => {
               <a
                 href={`https://app.youneedabudget.com/oauth/authorize?client_id=4ac8ca3c431ac99075e603496136606d7da8102f6178ce2796566b30c4659988&redirect_uri=${url}${appEndpoint}&response_type=token`}
                 onClick={() => setMenuIsOpen(false)}
+                className="menu-link"
               >
-                Authenticate and use the app (recommended to use Chrome)
+                Use the App (Chrome Recommended)
               </a>
               <div className="small-divider" />
             </>
@@ -45,8 +46,12 @@ const Header = ({ setPrivacyActive, url, appEndpoint }) => {
         {
           url &&
             <>
-              <a href="/cost-sharer" onClick={() => setMenuIsOpen(false)}>
-                Preview the app without authenticating (developer)
+              <a
+                href="/cost-sharer"
+                onClick={() => setMenuIsOpen(false)}
+                className="menu-link"
+              >
+                Preview the App Without YNAB Credentials (Bugs Expected)
               </a>
               <div className="small-divider" />
             </>
@@ -55,6 +60,7 @@ const Header = ({ setPrivacyActive, url, appEndpoint }) => {
           href="#privacy-header"
           id="priv-pol-btn"
           onClick={() => { setPrivacyActive(true); setMenuIsOpen(false); }}
+          className="menu-link"
         >
           Privacy Policy
         </a>
@@ -64,6 +70,7 @@ const Header = ({ setPrivacyActive, url, appEndpoint }) => {
           target="_blank"
           rel="noreferrer"
           onClick={() => setMenuIsOpen(false)}
+          className="menu-link"
         >
           Report a bug by opening an issue in GitHub
         </a>

@@ -54,3 +54,16 @@ header > #nav-container > a:visited
   width: 100%;
   padding: 0 10px 0 10px;
 }
+
+.menu-link {
+  text-decoration: none;
+  color: #464b46;
+}
+
+.menu-link:hover, .menu-link:visited:hover {
+  color: #2f73b3;
+}
+
+.menu-link:visited {
+  color: #464b46;
+}
