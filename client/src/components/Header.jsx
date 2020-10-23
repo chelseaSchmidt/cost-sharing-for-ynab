@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { push as Menu } from 'react-burger-menu';
 import Nav from './Nav.jsx';
 import '../styles/Header.css';
 import '../styles/Menu.css';
 
 const Header = ({ setPrivacyActive, url, appEndpoint }) => {
+  const [menuIsOpen, setMenuIsOpen] = useState(false);
+  const handleStateChange = (state) => setMenuIsOpen(state.isOpen);
   return (
     <header>
       <div className="row">
@@ -21,13 +23,20 @@ const Header = ({ setPrivacyActive, url, appEndpoint }) => {
         id="menu-click-area"
         onClick={() => document.getElementById('react-burger-menu-btn').click()}
       />
-      <Menu right>
+      <Menu
+        right
+        isOpen={menuIsOpen}
+        onStateChange={(state) => handleStateChange(state)}
+      >
         <a href="/">Home</a>
         <div className="small-divider" />
         {
           url &&
             <>
-              <a href={`https://app.youneedabudget.com/oauth/authorize?client_id=4ac8ca3c431ac99075e603496136606d7da8102f6178ce2796566b30c4659988&redirect_uri=${url}${appEndpoint}&response_type=token`}>
+              <a
+                href={`https://app.youneedabudget.com/oauth/authorize?client_id=4ac8ca3c431ac99075e603496136606d7da8102f6178ce2796566b30c4659988&redirect_uri=${url}${appEndpoint}&response_type=token`}
+                onClick={() => setMenuIsOpen(false)}
+              >
                 Authenticate and use the app (recommended to use Chrome)
               </a>
               <div className="small-divider" />
@@ -36,18 +45,25 @@ const Header = ({ setPrivacyActive, url, appEndpoint }) => {
         {
           url &&
             <>
-              <a href="/cost-sharer">
+              <a href="/cost-sharer" onClick={() => setMenuIsOpen(false)}>
                 Preview the app without authenticating (developer)
               </a>
               <div className="small-divider" />
             </>
         }
-        <a href="#privacy-header" id="priv-pol-btn" onClick={() => setPrivacyActive(true)}>Privacy Policy</a>
+        <a
+          href="#privacy-header"
+          id="priv-pol-btn"
+          onClick={() => { setPrivacyActive(true); setMenuIsOpen(false); }}
+        >
+          Privacy Policy
+        </a>
         <div className="small-divider" />
         <a
           href="https://github.com/chelseaSchmidt/cost-sharing-for-ynab/issues"
           target="_blank"
           rel="noreferrer"
+          onClick={() => setMenuIsOpen(false)}
         >
           Report a bug by opening an issue in GitHub
         </a>
