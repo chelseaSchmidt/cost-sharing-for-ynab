@@ -8,10 +8,10 @@
     "start": "nodemon server",
     "start:HTTP": "node server",
     "start:HTTPS": "HTTPS=true node server",
-    "build": "webpack",
-    "watch": "webpack -w",
-    "build:site": "webpack --config siteWebpack.config.js",
-    "watch:site": "webpack --config siteWebpack.config.js -w",
+    "build:prod": "webpack --config webpack.prod.js",
+    "build:site:prod": "webpack --config siteWebpack.prod.js",
+    "watch:dev": "webpack -w --config webpack.dev.js",
+    "watch:site:dev": "webpack --config siteWebpack.dev.js -w",
     "linter": "npx eslint ./ --ext .js,.jsx"
   },
   "repository": {
@@ -41,7 +41,8 @@
     "react-burger-menu": "^2.9.0",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
-    "style-loader": "^1.2.1"
+    "style-loader": "^1.2.1",
+    "terser-webpack-plugin": "^5.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.11.5",
@@ -55,6 +56,7 @@
     "eslint-plugin-react": "^7.20.6",
     "eslint-plugin-react-hooks": "^4.1.0",
     "webpack": "^4.44.1",
-    "webpack-cli": "^3.3.12"
+    "webpack-cli": "^3.3.12",
+    "webpack-merge": "^5.2.0"
   }
 }

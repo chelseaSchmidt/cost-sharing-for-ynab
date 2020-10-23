@@ -1,13 +1,11 @@
 const path = require('path');
 
 module.exports = {
-  entry: './client/siteSrc/index.jsx',
+  entry: './client/src/index.jsx',
   output: {
-    filename: 'siteBundle.js',
-    path: path.resolve(__dirname, 'client', 'site'),
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'client', 'app'),
   },
-  mode: 'development',
-  devtool: 'inline-source-map',
   resolve: {
     extensions: ['.js', '.jsx'],
   },
