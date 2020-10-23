@@ -1,3 +1,15 @@
+#menu-click-area {
+  width: 61.6px;
+  height: 51.3px;
+  position: fixed;
+  right: 23px;
+  top: 24px;
+}
+
+#menu-click-area:hover {
+  cursor: pointer;
+}
+
 /* Position and sizing of burger button */
 .bm-burger-button {
   position: fixed;
@@ -67,5 +79,9 @@ Note: Beware of modifying this element as it can break the animations - you shou
 /* Styling of overlay */
 .bm-overlay {
   background: rgba(0, 0, 0, 0.3);
-  height: fit-content !important;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
 }

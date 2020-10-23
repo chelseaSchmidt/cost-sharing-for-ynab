@@ -17,6 +17,10 @@ const Header = ({ setPrivacyActive, url, appEndpoint }) => {
           id="works-with-ynab-img"
         />
       </div>
+      <div
+        id="menu-click-area"
+        onClick={() => document.getElementById('react-burger-menu-btn').click()}
+      />
       <Menu right>
         <a href="/">Home</a>
         <div className="small-divider" />
