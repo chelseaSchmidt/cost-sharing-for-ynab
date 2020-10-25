@@ -10,14 +10,13 @@ const Nav = ({ setPrivacyActive }) => (
     >
       Home
     </a>
-    <a
+    <button
       className="link-btn"
-      href="#"
       id="priv-pol-btn"
       onClick={() => setPrivacyActive(true)}
     >
       Privacy Policy
-    </a>
+    </button>
     <a
       className="link-btn"
       href="https://github.com/chelseaSchmidt/cost-sharing-for-ynab/issues"
