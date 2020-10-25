@@ -165,10 +165,9 @@ const App = (props) => {
     const summaryTransaction = {
       account_id: splitAccount,
       date: convertDateToString(splitDate),
-      amount: Number(
-        (_.reduce(halvedCostsByCategory, (sum, amt) => sum + amt) * 1000)
-          .toFixed(2)
-      ) * -1,
+      amount: Number((
+        _.reduce(halvedCostsByCategory, (sum, amt) => sum + amt) * 1000)
+        .toFixed(2)) * -1,
       payee_id: null,
       payee_name: null,
       category_id: null,

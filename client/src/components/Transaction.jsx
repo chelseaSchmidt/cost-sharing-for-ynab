@@ -53,6 +53,7 @@ const Transaction = ({
         </div>
         <div className="txn-more">
           <a href="#">More</a>
+          {/* TO DO */}
         </div>
       </div>
     </div>

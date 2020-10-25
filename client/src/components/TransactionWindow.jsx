@@ -25,10 +25,12 @@ const TransactionWindow = ({
     <div className="transaction-window">
       <h3 className="window-title">{title}</h3>
       <div className="select-all-area">
-        {!noTransactions && isEditable && (
+        {!noTransactions
+        && isEditable
+        && (
           <label htmlFor="select-all-input">
             <input type="checkbox" onChange={selectAll} id="select-all-input" />
-              Select All
+            Select All
           </label>
         )}
       </div>

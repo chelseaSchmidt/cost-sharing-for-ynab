@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { push as Menu } from 'react-burger-menu';
-import Nav from './Nav.jsx';
+import { func, string } from 'prop-types';
 import '../styles/Header.css';
 import '../styles/Menu.css';
 
@@ -21,7 +21,11 @@ const Header = ({ setPrivacyActive, url, appEndpoint }) => {
       </div>
       <div
         id="menu-click-area"
+        role="button"
+        aria-label="Select menu"
+        tabIndex={0}
         onClick={() => document.getElementById('react-burger-menu-btn').click()}
+        onKeyDown={() => document.getElementById('react-burger-menu-btn').click()}
       />
       <Menu
         right
@@ -31,7 +35,8 @@ const Header = ({ setPrivacyActive, url, appEndpoint }) => {
         <a href="/" className="menu-link">Home</a>
         <div className="small-divider" />
         {
-          url &&
+          url
+          && (
             <>
               <a
                 href={`https://app.youneedabudget.com/oauth/authorize?client_id=4ac8ca3c431ac99075e603496136606d7da8102f6178ce2796566b30c4659988&redirect_uri=${url}${appEndpoint}&response_type=token`}
@@ -42,9 +47,11 @@ const Header = ({ setPrivacyActive, url, appEndpoint }) => {
               </a>
               <div className="small-divider" />
             </>
+          )
         }
         {
-          url &&
+          url
+          && (
             <>
               <a
                 href="/cost-sharer"
@@ -55,6 +62,7 @@ const Header = ({ setPrivacyActive, url, appEndpoint }) => {
               </a>
               <div className="small-divider" />
             </>
+          )
         }
         <a
           href="#privacy-header"
@@ -77,6 +85,12 @@ const Header = ({ setPrivacyActive, url, appEndpoint }) => {
       </Menu>
     </header>
   );
+};
+
+Header.propTypes = {
+  setPrivacyActive: func.isRequired,
+  url: string.isRequired,
+  appEndpoint: string.isRequired,
 };
 
 export default Header;

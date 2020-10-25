@@ -12,7 +12,6 @@ const AccountSelector = ({
   budgetData,
   sharedAccounts,
   sharedCategories,
-  splitAccount,
   setSharedAccounts,
   setSharedCategories,
   setSplitAccount,
@@ -146,7 +145,6 @@ AccountSelector.propTypes = {
       id: string,
     })),
   })).isRequired,
-  splitAccount: string.isRequired,
   budgetData: shape({
     budgetAccounts: arrayOf(objectOf(string)),
     budgetCategories: arrayOf(shape({

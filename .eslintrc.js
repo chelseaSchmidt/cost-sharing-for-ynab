@@ -22,5 +22,7 @@ module.exports = {
   },
   ignorePatterns: [
     'bundle.js',
+    '.bundle.js',
+    'siteBundle.js',
   ],
 };
