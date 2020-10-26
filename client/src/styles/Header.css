@@ -67,3 +67,18 @@ header > #nav-container > a:visited
 .menu-link:visited {
   color: #464b46;
 }
+
+.bm-item-list > #priv-pol-btn {
+  appearance: none;
+  text-rendering: inherit;
+  text-align: left;
+  align-items: unset;
+  background: none;
+  font: inherit;
+  padding: unset;
+  border: none;
+}
+
+.bm-item-list > #priv-pol-btn:hover {
+  cursor: pointer;
+}

@@ -64,14 +64,18 @@ const Header = ({ setPrivacyActive, url, appEndpoint }) => {
             </>
           )
         }
-        <a
-          href="#privacy-header"
+        <button
           id="priv-pol-btn"
-          onClick={() => { setPrivacyActive(true); setMenuIsOpen(false); }}
+          type="button"
+          onClick={() => {
+            setPrivacyActive(true);
+            setMenuIsOpen(false);
+            document.getElementById('privacy-policy-text').scrollIntoView(true);
+          }}
           className="menu-link"
         >
           Privacy Policy
-        </a>
+        </button>
         <div className="small-divider" />
         <a
           href="https://github.com/chelseaSchmidt/cost-sharing-for-ynab/issues"
@@ -89,8 +93,8 @@ const Header = ({ setPrivacyActive, url, appEndpoint }) => {
 
 Header.propTypes = {
   setPrivacyActive: func.isRequired,
-  url: string.isRequired,
-  appEndpoint: string.isRequired,
+  url: string,
+  appEndpoint: string,
 };
 
 export default Header;

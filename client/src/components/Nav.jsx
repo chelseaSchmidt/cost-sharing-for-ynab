@@ -13,6 +13,7 @@ const Nav = ({ setPrivacyActive }) => (
     <button
       className="link-btn"
       id="priv-pol-btn"
+      type="button"
       onClick={() => setPrivacyActive(true)}
     >
       Privacy Policy

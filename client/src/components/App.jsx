@@ -209,6 +209,7 @@ const App = (props) => {
         />
         <div id="date-range-area">
           <p>
+            <b>Required:</b>
             Specify a date range, such as a one-month period, that you want to
             split transactions for. For example, you might calculate what the
             other person owes you for shared costs every week, two weeks, or
