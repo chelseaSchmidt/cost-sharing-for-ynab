@@ -13,10 +13,12 @@
   left: 50%;
   transform: translate(-50%, 0);
   width: 80vw;
+  max-height: 80vh;
   background-color: white;
   border-radius: 12px;
   box-shadow: 0 0 5px 0 #4c4c4c;
   padding: 20px;
+  overflow-y: scroll;
 }
 
 #privacy-btn-area {

@@ -1,9 +1,9 @@
 #menu-click-area {
-  width: 61.6px;
-  height: 51.3px;
+  width: 110px;
+  height: 96px;
   position: fixed;
-  right: 23px;
-  top: 24px;
+  right: 0;
+  top: 0;
 }
 
 #menu-click-area:hover {

@@ -70,7 +70,9 @@ const Header = ({ setPrivacyActive, url, appEndpoint }) => {
           onClick={() => {
             setPrivacyActive(true);
             setMenuIsOpen(false);
-            document.getElementById('privacy-policy-text').scrollIntoView(true);
+            if (url) {
+              document.getElementById('privacy-policy-text').scrollIntoView(true);
+            }
           }}
           className="menu-link"
         >

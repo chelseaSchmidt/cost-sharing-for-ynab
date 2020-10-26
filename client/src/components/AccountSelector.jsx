@@ -56,7 +56,7 @@ const AccountSelector = ({
         <div id="bank-tags">
           <h1 className="section-header">Set Preferences</h1>
           <p>
-            <b>Optional:</b>
+            <b>Optional:&nbsp;</b>
             Select one or more banking accounts that contain shared expenses,
             such as a credit card that you share with a significant other or roommate.
           </p>
@@ -82,7 +82,7 @@ const AccountSelector = ({
         </div>
         <div id="cat-tags">
           <p>
-            <b>Required:</b>
+            <b>Required:&nbsp;</b>
             Select one or more category groups where you track shared expenses
             before splitting them with the other person. If there isn&apos;t a
             specific category group for this, select all groups that contain
@@ -113,7 +113,7 @@ const AccountSelector = ({
         </div>
         <div id="split-option-area">
           <p>
-            <b>Required:</b>
+            <b>Required:&nbsp;</b>
             Select the banking account (referred to as an IOU
             account in the website instructions) where you track what is owed
             back to you by the other person.
