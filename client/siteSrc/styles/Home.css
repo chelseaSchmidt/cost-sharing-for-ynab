@@ -67,7 +67,7 @@ header {
   width: 100%;
   font-size: 25px;
   text-align: center;
-  /* text-shadow: 0px 3px 11px lightgray; */
+  text-shadow: 0px 3px 11px lightgray;
 }
 
 li {
@@ -97,6 +97,7 @@ BUTTONS/LINKS
   margin: 10px;
   box-sizing: unset;
   font-weight: 400;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .update-btn:hover {

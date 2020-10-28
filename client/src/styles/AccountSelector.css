@@ -72,9 +72,9 @@ TAGS
   background-color: #2f73b3;
   box-shadow: 0 1px 0 0.5px #395066;
   color: white;
-  font-weight: 600;
+  /* font-weight: 600; */
   text-shadow: 0 0 2px #666;
-  padding: 4px 7px 4px 7px;
+  padding: 4px 9px 4px 9px;
 }
 
 .active-btn:hover {
