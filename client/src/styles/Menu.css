@@ -1,5 +1,5 @@
 #menu-click-area {
-  width: 110px;
+  width: 150px;
   height: 96px;
   position: fixed;
   right: 0;
@@ -74,6 +74,10 @@ Note: Beware of modifying this element as it can break the animations - you shou
 /* Individual item */
 .bm-item {
   display: inline-block;
+}
+
+.bm-item:focus {
+  outline: none;
 }
 
 /* Styling of overlay */

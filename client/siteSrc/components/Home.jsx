@@ -32,6 +32,7 @@ const Home = () => {
           alt="Screenshot of 'Shared Expenses' category group and sub-categories"
           width="189px"
           height="432px"
+          id="shared-expense-img"
         />
         <p className="description">
           At the end of each month, I credit half of all those expenses back to my
