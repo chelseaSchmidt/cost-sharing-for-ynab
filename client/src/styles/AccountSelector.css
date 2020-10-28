@@ -55,6 +55,7 @@ TAGS
   margin: 3px;
   color: #464b46;
   padding: 4px 8px 4px 8px;
+  font-size: 12px;
 }
 
 .acct-btn:hover, .cat-btn:hover {
@@ -63,13 +64,17 @@ TAGS
   color: white;
 }
 
+.acct-btn:focus, .cat-btn:focus {
+  outline: none;
+}
+
 .active-btn {
   background-color: #2f73b3;
   box-shadow: 0 1px 0 0.5px #395066;
   color: white;
   font-weight: 600;
   text-shadow: 0 0 2px #666;
-  padding: 4px 5px 4px 5px;
+  padding: 4px 7px 4px 7px;
 }
 
 .active-btn:hover {

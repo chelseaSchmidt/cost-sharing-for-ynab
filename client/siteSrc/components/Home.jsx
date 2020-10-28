@@ -68,9 +68,9 @@ const Home = () => {
             specifically for shared costs, don&apos;t worry about this step.
           </li>
           <li>
-            Select one or more category
+            Select one or more category&nbsp;
             <em>groups</em>
-            that contain shared-cost budget categories. Individual categories
+            &nbsp;that contain shared-cost budget categories. Individual categories
             cannot be selected at this time, only entire groups.
           </li>
           <li>

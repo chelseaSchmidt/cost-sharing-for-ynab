@@ -238,7 +238,7 @@ const App = (props) => {
         </div>
         <button
           type="button"
-          onClick={getTransactions}
+          onClick={() => { getTransactions(); document.getElementById('transaction-container').scrollIntoView(true); }}
           id="update-txn-btn"
           className="update-btn"
         >

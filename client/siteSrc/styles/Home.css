@@ -4,12 +4,14 @@ CONTAINERS
 =================
 */
 
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
 html {
   scroll-behavior: smooth;
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Raleway', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: 14px;
   color: #464b46;
   /* background-color: rgb(250, 250, 250); */
@@ -18,6 +20,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  letter-spacing: 0.1px;
 }
 
 #content-container {
@@ -31,10 +34,14 @@ CONTENT
 =================
 */
 
+header {
+  margin-bottom: 15px;
+}
+
 .subtitle, #privacy-header {
   font-weight: bold;
   font-size: 20px;
-  text-shadow: 0px 3px 11px lightgray;
+  /* text-shadow: 0px 3px 11px lightgray; */
   margin: 0 0 20px 0;
   text-transform: uppercase;
   text-align: center;
@@ -47,7 +54,7 @@ CONTENT
 .description, #privacy-policy-text {
   width: 50%;
   min-width: 350px;
-  text-shadow: 0px 2px 13px lightgray;
+  /* text-shadow: 0px 2px 13px lightgray; */
   margin: 10px 0 10px 0;
 }
 
@@ -60,7 +67,7 @@ CONTENT
   width: 100%;
   font-size: 25px;
   text-align: center;
-  text-shadow: 0px 3px 11px lightgray;
+  /* text-shadow: 0px 3px 11px lightgray; */
 }
 
 li {

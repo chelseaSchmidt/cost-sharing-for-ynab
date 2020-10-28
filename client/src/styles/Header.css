@@ -9,7 +9,7 @@ header {
   color: white;
   background-color: #2f73b3;
   margin: 0;
-  margin-bottom: 15px;
+  margin-bottom: 50px;
   padding: 10px 20px 10px 20px;
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.5);
 }
@@ -21,8 +21,9 @@ header > div {
 header > div > h1 {
   margin-right: 10px;
   font-size: 30px;
-  letter-spacing: 0.5px;
-  font-weight: 600;
+  letter-spacing: 1px;
+  font-weight: 800;
+  text-shadow: 0 1px 1px #545353;
 }
 
 header > #nav-container {
