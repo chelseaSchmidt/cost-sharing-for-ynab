@@ -1,14 +1,14 @@
 #privacy-header {
   font-weight: bold;
   font-size: 20px;
-  text-shadow: 0px 3px 11px lightgray;
+  /* text-shadow: 0px 3px 11px lightgray; */
 }
 
 .priv-section-header {
   font-weight: bold;
-  text-shadow: 0px 3px 11px lightgray;
+  /* text-shadow: 0px 3px 11px lightgray; */
 }
 
-#privacy-policy-text {
+/* #privacy-policy-text {
   text-shadow: 0px 2px 13px lightgray;
-}
+} */
