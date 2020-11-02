@@ -52,7 +52,7 @@ const Transaction = ({
           {account_name}
         </div>
         <div className="txn-more">
-          <a href="#">More</a>
+          <button className="more-btn">More</button>
           {/* TO DO */}
         </div>
       </div>

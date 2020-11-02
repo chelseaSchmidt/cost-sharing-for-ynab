@@ -94,3 +94,21 @@ TRANSACTIONS
   background-color: green;
   margin-right: 5px;
 }
+
+.more-btn {
+  font: inherit;
+  color: #464b46;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  text-decoration: underline;
+}
+
+.more-btn:hover {
+  cursor: pointer;
+}
+
+.more-btn:focus {
+  outline: none;
+}
