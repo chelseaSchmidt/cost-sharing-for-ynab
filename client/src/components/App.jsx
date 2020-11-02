@@ -44,8 +44,15 @@ const App = (props) => {
   const [sharedAccounts, setSharedAccounts] = useState([]);
   const [sharedCategories, setSharedCategories] = useState([]);
   const [splitAccount, setSplitAccount] = useState('');
-  const [errorOccurred, setErrorOccurred] = useState(false);
+  const [error, setError] = useState({
+    occurred: false,
+    status: 0,
+  });
   const [privacyActive, setPrivacyActive] = useState(true);
+
+  const errorMessages = {
+    401: 'Error: Authentication Failed. If the URL on this webpage appears as "https://costsharingforynab.com/cost-sharer/#", this is a bug. If not, and instead of "#" there is a long series of numbers and letters, your session may simply have expired. If it looks like a bug and you would like to help get it resolved, please send an email with the details to cost.sharing.for.ynab@gmail.com. Thank you for your patience!',
+  };
 
   useEffect(() => {
     const budgetObj = {
@@ -65,7 +72,12 @@ const App = (props) => {
           .map(({ name, id, categories }) => { return { name, id, categories }; })); // eslint-disable-line
         setBudgetData(budgetObj);
       })
-      .catch(() => setErrorOccurred(true));
+      .catch((err) => {
+        setError({
+          occurred: true,
+          status: err.response.status,
+        });
+      });
   }, [props]);
 
   function getTransactions(e = { preventDefault: () => {} }, retrievedAfterCreate = false) {
@@ -106,7 +118,12 @@ const App = (props) => {
         });
         setTransactions(newTxns);
       })
-      .catch(() => setErrorOccurred(true));
+      .catch((err) => {
+        setError({
+          occurred: true,
+          status: err.response.status,
+        });
+      });
   }
 
   function handleSelectTransaction({ target: { checked } }, transaction, txnNumber) {
@@ -188,7 +205,12 @@ const App = (props) => {
       .then(() => {
         getTransactions(undefined, true);
       })
-      .catch(() => setErrorOccurred(true));
+      .catch((err) => {
+        setError({
+          occurred: true,
+          status: err.response.status,
+        });
+      });
   }
 
   const splitIsAllowed = checkedTransactions.transactions.length && splitAccount.length;
@@ -311,7 +333,7 @@ const App = (props) => {
         </form>
       </div>
       {transactions.retrievedAfterCreate && <Confirmation />}
-      {errorOccurred && <Error />}
+      {error.occurred && <Error message={errorMessages[error.status]} setError={setError} />}
       <Nav setPrivacyActive={setPrivacyActive} />
     </div>
   );

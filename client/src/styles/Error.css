@@ -1,45 +1,77 @@
 #error {
+  box-sizing: border-box;
   position: fixed;
   top: 50vh;
-  left: 50%;
-  transform: translate(-50%, 0);
-  width: 15vw;
-  border-radius: 12px;
+  left: 0;
+  /* transform: translate(-50%, 0); */
+  width: 100vw;
+  /* border-radius: 12px; */
   background-color: rgb(138, 42, 42);
   opacity: 95%;
   box-shadow: 0 0 5px 0 #4c4c4c;
-  text-shadow: 0 0 2px #a9a3a3;
+  /* text-shadow: 0 0 2px #a9a3a3; */
   color: white;
   text-align: center;
   letter-spacing: 1px;
-  font-style: italic;
+  /* font-style: italic; */
   font-size: 16px;
   padding: 10px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  animation-name: fade-out;
+  align-items: center;
+  /* animation-name: fade-out;
   -webkit-animation-name: fade-out;
   animation-fill-mode: forwards;
   -webkit-animation-fill-mode: forwards;
   animation-duration: 2s;
   -webkit-animation-duration: 2s;
   animation-delay: 1s;
-  -webkit-animation-delay: 1s;
+  -webkit-animation-delay: 1s; */
+}
+
+.exit-btn {
+  box-sizing: border-box;
+  background: none;
+  border: none;
+  color: white;
+  font-weight: bold;
+  height: fit-content;
+  padding: 5px 10px;
+  font-size: 16px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin: 5px;
+}
+
+.close-btn {
+  box-sizing: border-box;
+  background-color: white;
+  border: none;
+  border-radius: 12px;
+  color: rgb(138, 42, 42);
+  width: 100px;
+  padding: 5px;
+}
+
+.exit-btn:hover, .close-btn:hover {
+  cursor: pointer;
 }
 
 #error-container {
   overflow: hidden;
-  animation-name: condense;
+  /* animation-name: condense;
   -webkit-animation-name: condense;
   animation-fill-mode: forwards;
   -webkit-animation-fill-mode: forwards;
   animation-delay: 3.5s;
   -webkit-animation-delay: 3.5s;
   animation-duration: 1s;
-  -webkit-animation-duration: 1s;
+  -webkit-animation-duration: 1s; */
 }
 
-@keyframes fade-out {
+/* @keyframes fade-out {
   to {
     opacity: 0;
   }
@@ -65,4 +97,4 @@
     font-size: 0;
     padding: 0;
   }
-}
+} */

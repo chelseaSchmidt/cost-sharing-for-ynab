@@ -1,18 +1,19 @@
 #confirmation {
+  box-sizing: border-box;
   position: fixed;
   top: 50vh;
-  left: 50%;
-  transform: translate(-50%, 0);
-  width: 15vw;
-  border-radius: 12px;
-  background-color: #9cacbb;
+  left: 0;
+  /* transform: translate(-50%, 0); */
+  width: 100vw;
+  /* border-radius: 12px; */
+  background-color: rgb(37, 37, 37);
   opacity: 95%;
   box-shadow: 0 0 5px 0 #4c4c4c;
-  text-shadow: 0 0 2px #a9a3a3;
+  /* text-shadow: 0 0 2px #a9a3a3; */
   color: white;
   text-align: center;
   letter-spacing: 1px;
-  font-style: italic;
+  /* font-style: italic; */
   font-size: 16px;
   padding: 10px;
   display: flex;
