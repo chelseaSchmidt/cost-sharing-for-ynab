@@ -8,6 +8,7 @@ import {
 } from 'prop-types';
 import Transaction from './Transaction';
 import '../styles/TransactionWindow.css';
+import { toId } from '../../utilities/general';
 
 const TransactionWindow = ({
   title,
@@ -20,7 +21,7 @@ const TransactionWindow = ({
   const noTransactions = transactions.length === 0;
   const isEditable = title === 'Transactions in Shared Categories';
   const isSplitAcct = title === 'Account Receiving Split Transaction';
-  const isolatedTransactionIds = isolatedTransactions.map((txn) => txn.id);
+  const isolatedTransactionIds = isolatedTransactions.map(toId);
   return (
     <div className="transaction-window">
       <h3 className="window-title">{title}</h3>

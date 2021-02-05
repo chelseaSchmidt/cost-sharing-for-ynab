@@ -21,6 +21,7 @@ import {
   checkIfDateInRange,
 } from '../../utilities/dateHelpers';
 import '../styles/App.css';
+import { toId } from '../../utilities/general';
 
 const App = (props) => {
   const [sinceDate, setSinceDate] = useState(getFiveDaysAgo());
@@ -92,7 +93,7 @@ const App = (props) => {
     const sharedAccountIds = sharedAccounts.map((acct) => acct.accountId);
     const sharedCatIds = _.flatten(sharedCategories
       .map((catGroup) => catGroup.subCategories))
-      .map((cat) => cat.id);
+      .map(toId);
     getAllTransactions(sinceDate)
       .then(({ data: { data } }) => {
         data.transactions.filter((txn) => (
