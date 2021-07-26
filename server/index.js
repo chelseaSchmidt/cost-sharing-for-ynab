@@ -24,9 +24,11 @@ redirectApp.get('*', (req, res) => {
 });
 
 if (usingHTTPS) {
+  const pathToKey = path.resolve(__dirname, process.env.KEY);
+  const pathToCert = path.resolve(__dirname, process.env.CERT);
   const options = {
-    key: fs.readFileSync(process.env.KEY),
-    cert: fs.readFileSync(process.env.CERT),
+    key: fs.readFileSync(pathToKey),
+    cert: fs.readFileSync(pathToCert),
   };
   https.createServer(options, app).listen(httpsPort, () => {
     console.log(`HTTPS good to go at port ${httpsPort}`);
