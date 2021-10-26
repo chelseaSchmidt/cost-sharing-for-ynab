@@ -19,6 +19,7 @@ module.exports = {
     'react',
   ],
   rules: {
+    'no-console': 'off',
   },
   ignorePatterns: [
     'bundle.js',

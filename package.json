@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server",
     "start:HTTP": "node server",
-    "start:HTTPS": "HTTPS=true node server",
+    "start:HTTPS": "IS_HTTPS=true node server",
     "build:prod": "webpack --config webpack.prod.js",
     "build:site:prod": "webpack --config siteWebpack.prod.js",
     "watch:dev": "webpack -w --config webpack.dev.js",
@@ -16,15 +16,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/chelseaSchmidt/share-a-credit-card.git"
+    "url": "git+https://github.com/chelseaSchmidt/cost-sharing-for-ynab.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/chelseaSchmidt/share-a-credit-card/issues"
+    "url": "https://github.com/chelseaSchmidt/cost-sharing-for-ynab/issues"
   },
-  "homepage": "https://github.com/chelseaSchmidt/share-a-credit-card#readme",
+  "homepage": "https://github.com/chelseaSchmidt/cost-sharing-for-ynab#readme",
   "dependencies": {
     "axios": "^0.20.0",
     "body-parser": "^1.19.0",
