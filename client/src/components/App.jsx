@@ -13,13 +13,13 @@ import {
   getAccounts,
   getCategories,
   createSplitTransaction,
-} from '../../utilities/http';
+} from '../../utils/http';
 import {
   getFiveDaysAgo,
   convertDateToString,
   convertStringToDate,
   checkIfDateInRange,
-} from '../../utilities/dateHelpers';
+} from '../../utils/dateHelpers';
 import '../styles/App.css';
 
 const App = (props) => {
