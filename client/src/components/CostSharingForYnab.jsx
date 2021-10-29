@@ -11,7 +11,7 @@ import Error from './Error';
 import {
   getAllTransactions,
   getAccounts,
-  getCategories,
+  getCategoryGroups,
   createSplitTransaction,
 } from '../../utils/http';
 import {
@@ -22,7 +22,12 @@ import {
 } from '../../utils/dateHelpers';
 import '../styles/App.css';
 
-const App = (props) => {
+const CostSharingForYnab = () => {
+  const [isPageLoading, setIsPageLoading] = useState(true);
+  const [budgetData, setBudgetData] = useState({
+    accounts: [],
+    categoryGroups: [],
+  });
   const [sinceDate, setSinceDate] = useState(getFiveDaysAgo());
   const [endDate, setEndDate] = useState(new Date());
   const [checkedTransactions, setCheckedTransactions] = useState({
@@ -35,59 +40,43 @@ const App = (props) => {
     catTransactions: [],
     isolatedTransactions: [],
     recipientTransactions: [],
-    retrievedAfterCreate: false,
-  });
-  const [budgetData, setBudgetData] = useState({
-    budgetAccounts: [{ name: '', id: '' }],
-    budgetCategories: [{ name: '', id: '' }],
+    wereRetrievedAfterCreate: false,
   });
   const [sharedAccounts, setSharedAccounts] = useState([]);
   const [sharedCategories, setSharedCategories] = useState([]);
   const [splitAccount, setSplitAccount] = useState('');
-  const [error, setError] = useState({
-    occurred: false,
-    status: 0,
-  });
+  const [error, setError] = useState(null);
   const [privacyActive, setPrivacyActive] = useState(true);
 
-  const errorMessages = {
-    401: 'Error: Authentication Failed. If the URL on this webpage appears as "https://costsharingforynab.com/cost-sharer/#", this is a bug. If not, and instead of "#" there is a long series of numbers and letters, your session may simply have expired. If it looks like a bug and you would like to help get it resolved, please send an email with the details to cost.sharing.for.ynab@gmail.com. Thank you for your patience!',
+  const getAndDisplayBudgetData = async () => {
+    try {
+      const accounts = await getAccounts();
+      const categoryGroups = await getCategoryGroups();
+      setBudgetData({ accounts, categoryGroups });
+    } catch (e) {
+      setError({
+        status: e.response?.status,
+        message: e.message,
+      });
+    }
   };
 
   useEffect(() => {
-    const budgetObj = {
-      budgetAccounts: [],
-      budgetCategories: [],
-    };
-    getAccounts()
-      .then(({ data: { data: { accounts } } }) => {
-        budgetObj.budgetAccounts = accounts
-          .filter(({ closed }) => !closed)
-          .map(({ name, id }) => { return { name, id }; }); // eslint-disable-line
-        return getCategories();
-      })
-      .then(({ data: { data: { category_groups } } }) => {
-        budgetObj.budgetCategories = _.flatten(category_groups
-          .filter(({ hidden }) => !hidden)
-          .map(({ name, id, categories }) => { return { name, id, categories }; })); // eslint-disable-line
-        setBudgetData(budgetObj);
-      })
-      .catch((err) => {
-        setError({
-          occurred: true,
-          status: err.response.status,
-        });
-      });
-  }, [props]);
+    getAndDisplayBudgetData();
+  }, []);
 
-  function getTransactions(e = { preventDefault: () => {} }, retrievedAfterCreate = false) {
-    e.preventDefault();
+  useEffect(() => {
+    if (budgetData) setIsPageLoading(false);
+  }, [budgetData]);
+
+  const getTransactions = (e, wereRetrievedAfterCreate = false) => {
+    e?.preventDefault();
     const newTxns = {
       bankTransactions: [],
       catTransactions: [],
       isolatedTransactions: [],
       recipientTransactions: [],
-      retrievedAfterCreate,
+      wereRetrievedAfterCreate,
     };
     const sharedAccountIds = sharedAccounts.map((acct) => acct.accountId);
     const sharedCatIds = _.flatten(sharedCategories
@@ -124,7 +113,7 @@ const App = (props) => {
           status: err.response.status,
         });
       });
-  }
+  };
 
   function handleSelectTransaction({ target: { checked } }, transaction, txnNumber) {
     if (checked) {
@@ -207,15 +196,15 @@ const App = (props) => {
       })
       .catch((err) => {
         setError({
-          occurred: true,
-          status: err.response.status,
+          status: err.response?.status,
+          message: err.message,
         });
       });
   }
 
   const splitIsAllowed = checkedTransactions.transactions.length && splitAccount.length;
 
-  return (
+  return isPageLoading ? 'Loading...' : (
     <div className="app-container">
       {privacyActive && <PrivacyWindow setPrivacyActive={setPrivacyActive} />}
       <Header setPrivacyActive={setPrivacyActive} />
@@ -332,11 +321,22 @@ const App = (props) => {
           )}
         </form>
       </div>
-      {transactions.retrievedAfterCreate && <Confirmation />}
-      {error.occurred && <Error message={errorMessages[error.status]} setError={setError} />}
+      {
+        transactions.wereRetrievedAfterCreate && (
+          <Confirmation />
+        )
+      }
+      {
+        error && (
+          <Error
+            error={error}
+            setError={setError}
+          />
+        )
+      }
       <Nav setPrivacyActive={setPrivacyActive} />
     </div>
   );
 };
 
-export default App;
+export default CostSharingForYnab;

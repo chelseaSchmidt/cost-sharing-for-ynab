@@ -58,7 +58,7 @@ const Header = ({ setPrivacyActive, url, appEndpoint }) => {
                 onClick={() => setMenuIsOpen(false)}
                 className="menu-link"
               >
-                Preview the App Without YNAB Credentials (Bugs Expected)
+                Preview the App Without YNAB Credentials
               </a>
               <div className="small-divider" />
             </>

@@ -23,21 +23,23 @@ export const getAllTransactions = (sinceDate) => (
   })
 );
 
-export const getAccounts = () => (
-  axios({
+export const getAccounts = async () => {
+  const result = await axios({
     method: 'get',
     headers: { Authorization: `Bearer ${getToken()}` },
     url: 'https://api.youneedabudget.com/v1/budgets/default/accounts',
-  })
-);
+  });
+  return result?.data.data.accounts.filter(({ closed }) => !closed);
+};
 
-export const getCategories = () => (
-  axios({
+export const getCategoryGroups = async () => {
+  const result = await axios({
     method: 'get',
     headers: { Authorization: `Bearer ${getToken()}` },
     url: 'https://api.youneedabudget.com/v1/budgets/default/categories',
-  })
-);
+  });
+  return result?.data.data.category_groups.filter(({ hidden }) => !hidden);
+};
 
 export const createSplitTransaction = (transaction) => (
   axios({

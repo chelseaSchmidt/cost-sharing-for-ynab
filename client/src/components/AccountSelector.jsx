@@ -16,8 +16,8 @@ const AccountSelector = ({
   setSharedCategories,
   setSplitAccount,
 }) => {
-  const budgetAccounts = [...budgetData.budgetAccounts];
-  const budgetCategories = [...budgetData.budgetCategories];
+  const budgetAccounts = [...budgetData.accounts];
+  const budgetCategories = [...budgetData.categoryGroups];
 
   function addAccount({ target: { id, innerHTML } }) {
     if (sharedAccounts.filter((acct) => acct.accountId === id).length) {

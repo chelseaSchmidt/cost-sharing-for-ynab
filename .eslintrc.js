@@ -20,6 +20,7 @@ module.exports = {
   ],
   rules: {
     'no-console': 'off',
+    'react/forbid-prop-types': 'off',
   },
   ignorePatterns: [
     'bundle.js',

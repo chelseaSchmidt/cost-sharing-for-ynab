@@ -107,7 +107,7 @@ const Home = () => {
           Use the App (Chrome Recommended)
         </a>
         <a href="/cost-sharer" className="update-btn">
-          Preview the App Without YNAB Credentials (Bugs Expected)
+          Preview the App Without YNAB Credentials
         </a>
         <div className="divider" />
         <PrivacyPolicy />
