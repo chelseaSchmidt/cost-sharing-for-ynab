@@ -11,10 +11,10 @@ import '../styles/AccountSelector.css';
 const AccountSelector = ({
   budgetData,
   sharedAccounts,
-  sharedCategories,
+  sharedParentCategories,
   setSharedAccounts,
-  setSharedCategories,
-  setSplitAccount,
+  setSharedParentCategories,
+  setSplitAccountId,
 }) => {
   const budgetAccounts = [...budgetData.accounts];
   const budgetCategories = [...budgetData.categoryGroups];
@@ -31,16 +31,16 @@ const AccountSelector = ({
   }
 
   function addCategory({ target: { id, innerHTML } }) {
-    if (sharedCategories.filter((cat) => cat.categoryId === id).length) {
-      const copyCats = sharedCategories.filter((cat) => cat.categoryId !== id);
-      setSharedCategories(copyCats);
+    if (sharedParentCategories.filter((cat) => cat.categoryId === id).length) {
+      const copyCats = sharedParentCategories.filter((cat) => cat.categoryId !== id);
+      setSharedParentCategories(copyCats);
     } else {
       const subCategories = budgetCategories
         .filter((catGroup) => catGroup.id === id)
         .map((catGroup) => catGroup.categories)[0];
-      const copyCats = [...sharedCategories];
+      const copyCats = [...sharedParentCategories];
       copyCats.push({ name: innerHTML, categoryId: id, subCategories });
-      setSharedCategories(copyCats);
+      setSharedParentCategories(copyCats);
     }
   }
 
@@ -94,7 +94,7 @@ const AccountSelector = ({
                 return <span key={id} />;
               }
               let toggleClass = 'cat-btn';
-              if (sharedCategories.map((cat) => cat.categoryId).indexOf(id) > -1) {
+              if (sharedParentCategories.map((cat) => cat.categoryId).indexOf(id) > -1) {
                 toggleClass += ' active-btn';
               }
               return (
@@ -120,7 +120,7 @@ const AccountSelector = ({
           </p>
           <div id="split-acct-dropdown">
             <select
-              onChange={(e) => setSplitAccount(e.target.value)}
+              onChange={(e) => setSplitAccountId(e.target.value)}
               defaultValue="select-an-account"
             >
               <option disabled value="select-an-account">
@@ -145,7 +145,7 @@ const AccountSelector = ({
 
 AccountSelector.propTypes = {
   sharedAccounts: arrayOf(objectOf(string)).isRequired,
-  sharedCategories: arrayOf(shape({
+  sharedParentCategories: arrayOf(shape({
     name: string,
     categoryId: string,
     subCategories: arrayOf(shape({
@@ -163,8 +163,8 @@ AccountSelector.propTypes = {
     })),
   }).isRequired,
   setSharedAccounts: func.isRequired,
-  setSharedCategories: func.isRequired,
-  setSplitAccount: func.isRequired,
+  setSharedParentCategories: func.isRequired,
+  setSplitAccountId: func.isRequired,
 };
 
 export default AccountSelector;

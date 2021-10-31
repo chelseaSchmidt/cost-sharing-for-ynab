@@ -12,7 +12,7 @@ import '../styles/TransactionWindow.css';
 const TransactionWindow = ({
   title,
   transactions,
-  isolatedTransactions,
+  transactionsSharedInOneButNotOther,
   handleSelectTransaction,
   selectAll = () => {},
   checkmarks = [],
@@ -20,7 +20,7 @@ const TransactionWindow = ({
   const noTransactions = transactions.length === 0;
   const isEditable = title === 'Transactions in Shared Categories';
   const isSplitAcct = title === 'Account Receiving Split Transaction';
-  const isolatedTransactionIds = isolatedTransactions.map((txn) => txn.id);
+  const isolatedTransactionIds = transactionsSharedInOneButNotOther.map((txn) => txn.id);
   return (
     <div className="transaction-window">
       <h3 className="window-title">{title}</h3>
@@ -61,7 +61,7 @@ const TransactionWindow = ({
 
 TransactionWindow.propTypes = {
   transactions: arrayOf(shape({ id: string })).isRequired,
-  isolatedTransactions: arrayOf(shape({ id: string })).isRequired,
+  transactionsSharedInOneButNotOther: arrayOf(shape({ id: string })).isRequired,
   checkmarks: arrayOf(number),
   title: string.isRequired,
   handleSelectTransaction: func.isRequired,

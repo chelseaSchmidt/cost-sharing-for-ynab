@@ -9,7 +9,7 @@ import Header from './Header';
 import Nav from './Nav';
 import Error from './Error';
 import {
-  getAllTransactions,
+  getTransactionsSinceDate,
   getAccounts,
   getCategoryGroups,
   createSplitTransaction,
@@ -18,9 +18,10 @@ import {
   getFiveDaysAgo,
   convertDateToString,
   convertStringToDate,
-  checkIfDateInRange,
+  isDateBeforeEndDate,
 } from '../../utils/dateHelpers';
 import '../styles/App.css';
+import classifyTransactions from './utils/classifyTransactions';
 
 const CostSharingForYnab = () => {
   const [isPageLoading, setIsPageLoading] = useState(true);
@@ -28,90 +29,65 @@ const CostSharingForYnab = () => {
     accounts: [],
     categoryGroups: [],
   });
-  const [sinceDate, setSinceDate] = useState(getFiveDaysAgo());
-  const [endDate, setEndDate] = useState(new Date());
+  const [transactionsStartDate, setTransactionsStartDate] = useState(getFiveDaysAgo());
+  const [transactionsEndDate, setTransactionsEndDate] = useState(new Date());
   const [checkedTransactions, setCheckedTransactions] = useState({
     transactions: [],
     checkmarks: [],
   });
   const [splitDate, setSplitDate] = useState(new Date());
-  const [transactions, setTransactions] = useState({
-    bankTransactions: [],
-    catTransactions: [],
-    isolatedTransactions: [],
-    recipientTransactions: [],
-  });
+  const [displayedTransactions, setDisplayedTransactions] = useState([]);
   const [sharedAccounts, setSharedAccounts] = useState([]);
-  const [sharedCategories, setSharedCategories] = useState([]);
-  const [splitAccount, setSplitAccount] = useState('');
-  const [error, setError] = useState(null);
+  const [sharedParentCategories, setSharedParentCategories] = useState([]);
+  const [splitAccountId, setSplitAccountId] = useState('');
+  const [errorData, setErrorData] = useState(null);
   const [privacyActive, setPrivacyActive] = useState(true);
   const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
 
-  const getAndDisplayBudgetData = async () => {
+  const isSplitTransactionDisabled = (
+    !checkedTransactions.transactions.length
+    || !splitAccountId
+  );
+
+  const classifiedTransactions = classifyTransactions({
+    displayedTransactions,
+    sharedAccounts,
+    sharedParentCategories,
+    splitAccountId,
+  });
+
+  const getBudgetData = async () => {
     try {
       const accounts = await getAccounts();
       const categoryGroups = await getCategoryGroups();
       setBudgetData({ accounts, categoryGroups });
-    } catch (e) {
-      setError({
-        status: e.response?.status,
-        message: e.message,
+    } catch (error) {
+      setErrorData({
+        status: error.response?.status,
+        message: error.message,
       });
     }
   };
 
-  useEffect(() => {
-    getAndDisplayBudgetData();
-  }, []);
+  const getDisplayedTransactions = async ({ startDate, endDate }) => {
+    const isTransactionATransfer = (transaction) => !!transaction.transfer_account_id;
 
-  useEffect(() => {
-    if (budgetData) setIsPageLoading(false);
-  }, [budgetData]);
+    try {
+      const transactionsSinceStartDate = await getTransactionsSinceDate(startDate);
 
-  const getTransactions = (e) => {
-    e?.preventDefault();
-    const newTxns = {
-      bankTransactions: [],
-      catTransactions: [],
-      isolatedTransactions: [],
-      recipientTransactions: [],
-    };
-    const sharedAccountIds = sharedAccounts.map((acct) => acct.accountId);
-    const sharedCatIds = _.flatten(sharedCategories
-      .map((catGroup) => catGroup.subCategories))
-      .map((cat) => cat.id);
-    getAllTransactions(sinceDate)
-      .then(({ data: { data } }) => {
-        data.transactions.filter((txn) => (
-          checkIfDateInRange(txn.date, endDate)
-          && txn.approved
-          && !txn.transfer_account_id
-        )).forEach((txn) => {
-          let count = 0;
-          if (splitAccount === txn.account_id) {
-            newTxns.recipientTransactions.push(txn);
-          }
-          if (sharedAccountIds.indexOf(txn.account_id) > -1) {
-            newTxns.bankTransactions.push(txn);
-            count += 1;
-          }
-          if (sharedCatIds.indexOf(txn.category_id) > -1) {
-            newTxns.catTransactions.push(txn);
-            count += 1;
-          }
-          if (count === 1) {
-            newTxns.isolatedTransactions.push(txn);
-          }
-        });
-        setTransactions(newTxns);
-      })
-      .catch((err) => {
-        setError({
-          occurred: true,
-          status: err.response.status,
-        });
+      const transactionsToDisplay = transactionsSinceStartDate.filter((transaction) => (
+        isDateBeforeEndDate(transaction.date, endDate)
+        && transaction.approved
+        && !isTransactionATransfer(transaction)
+      ));
+
+      setDisplayedTransactions(transactionsToDisplay);
+    } catch (error) {
+      setErrorData({
+        message: error.message,
+        status: error.response?.status,
       });
+    }
   };
 
   function handleSelectTransaction({ target: { checked } }, transaction, txnNumber) {
@@ -139,7 +115,7 @@ const CostSharingForYnab = () => {
     if (checked) {
       setCheckedTransactions((prevTxns) => {
         const newTxns = { ...prevTxns };
-        newTxns.transactions = [...transactions.catTransactions];
+        newTxns.transactions = [...classifiedTransactions.transactionsInSharedCategories];
         newTxns.checkmarks = _.range(1, newTxns.transactions.length + 1, 0);
         return newTxns;
       });
@@ -168,7 +144,7 @@ const CostSharingForYnab = () => {
       // TO DO: why is this conversion needed a second time?
     });
     const summaryTransaction = {
-      account_id: splitAccount,
+      account_id: splitAccountId,
       date: convertDateToString(splitDate),
       amount: Number((
         _.reduce(halvedCostsByCategory, (sum, amt) => sum + amt) * 1000)
@@ -192,17 +168,26 @@ const CostSharingForYnab = () => {
     createSplitTransaction(summaryTransaction)
       .then(() => {
         setIsConfirmationVisible(true);
-        getTransactions(undefined, true);
+        getDisplayedTransactions({
+          startDate: transactionsStartDate,
+          endDate: transactionsEndDate,
+        });
       })
-      .catch((err) => {
-        setError({
-          status: err.response?.status,
-          message: err.message,
+      .catch((error) => {
+        setErrorData({
+          status: error.response?.status,
+          message: error.message,
         });
       });
   }
 
-  const splitIsAllowed = checkedTransactions.transactions.length && splitAccount.length;
+  useEffect(() => {
+    getBudgetData();
+  }, []);
+
+  useEffect(() => {
+    if (budgetData) setIsPageLoading(false);
+  }, [budgetData]);
 
   return isPageLoading ? 'Loading...' : (
     <div className="app-container">
@@ -211,12 +196,12 @@ const CostSharingForYnab = () => {
       <div className="section-container">
         <AccountSelector
           sharedAccounts={sharedAccounts}
-          sharedCategories={sharedCategories}
-          splitAccount={splitAccount}
+          sharedParentCategories={sharedParentCategories}
+          splitAccountId={splitAccountId}
           budgetData={budgetData}
           setSharedAccounts={setSharedAccounts}
-          setSharedCategories={setSharedCategories}
-          setSplitAccount={setSplitAccount}
+          setSharedParentCategories={setSharedParentCategories}
+          setSplitAccountId={setSplitAccountId}
         />
         <div id="date-range-area">
           <p>
@@ -232,8 +217,8 @@ const CostSharingForYnab = () => {
               <input
                 type="date"
                 id="start"
-                value={convertDateToString(sinceDate)}
-                onChange={(e) => setSinceDate(convertStringToDate(e.target.value))}
+                value={convertDateToString(transactionsStartDate)}
+                onChange={(e) => setTransactionsStartDate(convertStringToDate(e.target.value))}
               />
             </label>
             <label htmlFor="end">
@@ -241,15 +226,21 @@ const CostSharingForYnab = () => {
               <input
                 type="date"
                 id="end"
-                value={convertDateToString(endDate)}
-                onChange={(e) => setEndDate(convertStringToDate(e.target.value, false))}
+                value={convertDateToString(transactionsEndDate)}
+                onChange={(e) => setTransactionsEndDate(convertStringToDate(e.target.value, false))}
               />
             </label>
           </form>
         </div>
         <button
           type="button"
-          onClick={() => { getTransactions(); document.getElementById('transaction-container').scrollIntoView(true); }}
+          onClick={() => {
+            getDisplayedTransactions({
+              startDate: transactionsStartDate,
+              endDate: transactionsEndDate,
+            });
+            document.getElementById('transaction-container').scrollIntoView(true);
+          }}
           id="update-txn-btn"
           className="update-btn"
         >
@@ -268,22 +259,28 @@ const CostSharingForYnab = () => {
         <div id="transaction-area">
           <TransactionWindow
             title="Transactions in Shared Categories"
-            transactions={transactions.catTransactions}
-            isolatedTransactions={transactions.isolatedTransactions}
+            transactions={classifiedTransactions.transactionsInSharedCategories}
+            transactionsSharedInOneButNotOther={
+              classifiedTransactions.transactionsSharedInOneButNotOther
+            }
             checkmarks={checkedTransactions.checkmarks}
             handleSelectTransaction={handleSelectTransaction}
             selectAll={selectAll}
           />
           <TransactionWindow
             title="Transactions in Shared Banking Accounts"
-            transactions={transactions.bankTransactions}
-            isolatedTransactions={transactions.isolatedTransactions}
+            transactions={classifiedTransactions.transactionsInSharedBankAccounts}
+            transactionsSharedInOneButNotOther={
+              classifiedTransactions.transactionsSharedInOneButNotOther
+            }
             handleSelectTransaction={handleSelectTransaction}
           />
           <TransactionWindow
-            title="Account Receiving Split Transaction"
-            transactions={transactions.recipientTransactions}
-            isolatedTransactions={transactions.isolatedTransactions}
+            title="IOU Account"
+            transactions={classifiedTransactions.iouAccountTransactions}
+            transactionsSharedInOneButNotOther={
+              classifiedTransactions.transactionsSharedInOneButNotOther
+            }
             handleSelectTransaction={handleSelectTransaction}
           />
         </div>
@@ -309,13 +306,13 @@ const CostSharingForYnab = () => {
             onClick={createSplitEntry}
             id="split-txn-btn"
             className="update-btn"
-            disabled={!splitIsAllowed}
+            disabled={isSplitTransactionDisabled}
           >
             Split Selected Transactions On Date
           </button>
-          {!splitIsAllowed && (
+          {isSplitTransactionDisabled && (
             <span className="caution-text">
-              Please select one or more transactions to split and choose an account
+              Please select one or more transactions to split and choose an IOU account
               to receive the split transaction
             </span>
           )}
@@ -329,10 +326,10 @@ const CostSharingForYnab = () => {
         )
       }
       {
-        error && (
+        errorData && (
           <Error
-            error={error}
-            setError={setError}
+            errorData={errorData}
+            setErrorData={setErrorData}
           />
         )
       }

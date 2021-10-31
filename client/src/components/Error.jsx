@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import Popup from './Popup';
 
 const Error = ({
-  error,
-  setError,
+  errorData,
+  setErrorData,
 }) => {
   const statusCodeErrorMessages = {
     defaultMessage: (
@@ -17,9 +17,9 @@ const Error = ({
 
   return (
     <Popup
-      onClose={() => setError(null)}
+      onClose={() => setErrorData(null)}
       message={
-        statusCodeErrorMessages[error.status]
+        statusCodeErrorMessages[errorData.status]
         || statusCodeErrorMessages.defaultMessage
       }
       containerStyle={{ backgroundColor: '#8a2a2a' }}
@@ -29,8 +29,8 @@ const Error = ({
 };
 
 Error.propTypes = {
-  error: PropTypes.object.isRequired,
-  setError: PropTypes.func.isRequired,
+  errorData: PropTypes.object.isRequired,
+  setErrorData: PropTypes.func.isRequired,
 };
 
 export default Error;

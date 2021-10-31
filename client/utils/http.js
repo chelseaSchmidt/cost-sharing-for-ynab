@@ -12,16 +12,17 @@ const getToken = () => {
   return url.slice(start + tokenStart.length, end);
 };
 
-export const getAllTransactions = (sinceDate) => (
-  axios({
+export const getTransactionsSinceDate = async (sinceDate) => {
+  const result = await axios({
     method: 'get',
     headers: { Authorization: `Bearer ${getToken()}` },
     url: 'https://api.youneedabudget.com/v1/budgets/default/transactions',
     params: {
       since_date: `${sinceDate}`,
     },
-  })
-);
+  });
+  return result?.data.data.transactions;
+};
 
 export const getAccounts = async () => {
   const result = await axios({

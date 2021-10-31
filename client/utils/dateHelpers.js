@@ -29,7 +29,7 @@ export const convertStringToDate = (string, startOfDay = true) => {
   return date;
 };
 
-export const checkIfDateInRange = (dateString, endDate) => {
+export const isDateBeforeEndDate = (dateString, endDate) => {
   // yyyy-mm-dd
   const date = convertStringToDate(dateString);
   return date < endDate;
