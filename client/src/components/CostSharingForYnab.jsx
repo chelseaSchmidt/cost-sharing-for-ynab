@@ -13,15 +13,15 @@ import {
   getAccounts,
   getCategoryGroups,
   createSplitTransaction,
-} from '../../utils/http';
+} from './utils/http';
 import {
   getFiveDaysAgo,
   convertDateToString,
   convertStringToDate,
   isDateBeforeEndDate,
-} from '../../utils/dateHelpers';
-import '../styles/App.css';
+} from './utils/dateHelpers';
 import classifyTransactions from './utils/classifyTransactions';
+import '../styles/App.css';
 
 const CostSharingForYnab = () => {
   const [isPageLoading, setIsPageLoading] = useState(true);
