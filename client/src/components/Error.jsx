@@ -1,6 +1,6 @@
 import React from 'react';
-import '../styles/Error.css';
 import PropTypes from 'prop-types';
+import Popup from './Popup';
 
 const Error = ({
   error,
@@ -16,32 +16,15 @@ const Error = ({
   };
 
   return (
-    <div id="error-container">
-      <div id="error">
-        <div>
-          <p>
-            {
-              statusCodeErrorMessages[error.status]
-              || statusCodeErrorMessages.defaultMessage
-            }
-          </p>
-          <button
-            type="button"
-            className="exit-btn"
-            onClick={() => setError(null)}
-          >
-            X
-          </button>
-        </div>
-        <button
-          type="button"
-          className="close-btn"
-          onClick={() => setError(null)}
-        >
-          Close
-        </button>
-      </div>
-    </div>
+    <Popup
+      onClose={() => setError(null)}
+      message={
+        statusCodeErrorMessages[error.status]
+        || statusCodeErrorMessages.defaultMessage
+      }
+      containerStyle={{ backgroundColor: '#8a2a2a' }}
+      closeButtonStyle={{ color: '#8a2a2a' }}
+    />
   );
 };
 

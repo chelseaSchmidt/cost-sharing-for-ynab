@@ -40,13 +40,13 @@ const CostSharingForYnab = () => {
     catTransactions: [],
     isolatedTransactions: [],
     recipientTransactions: [],
-    wereRetrievedAfterCreate: false,
   });
   const [sharedAccounts, setSharedAccounts] = useState([]);
   const [sharedCategories, setSharedCategories] = useState([]);
   const [splitAccount, setSplitAccount] = useState('');
   const [error, setError] = useState(null);
   const [privacyActive, setPrivacyActive] = useState(true);
+  const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
 
   const getAndDisplayBudgetData = async () => {
     try {
@@ -69,14 +69,13 @@ const CostSharingForYnab = () => {
     if (budgetData) setIsPageLoading(false);
   }, [budgetData]);
 
-  const getTransactions = (e, wereRetrievedAfterCreate = false) => {
+  const getTransactions = (e) => {
     e?.preventDefault();
     const newTxns = {
       bankTransactions: [],
       catTransactions: [],
       isolatedTransactions: [],
       recipientTransactions: [],
-      wereRetrievedAfterCreate,
     };
     const sharedAccountIds = sharedAccounts.map((acct) => acct.accountId);
     const sharedCatIds = _.flatten(sharedCategories
@@ -192,6 +191,7 @@ const CostSharingForYnab = () => {
     };
     createSplitTransaction(summaryTransaction)
       .then(() => {
+        setIsConfirmationVisible(true);
         getTransactions(undefined, true);
       })
       .catch((err) => {
@@ -322,8 +322,10 @@ const CostSharingForYnab = () => {
         </form>
       </div>
       {
-        transactions.wereRetrievedAfterCreate && (
-          <Confirmation />
+        isConfirmationVisible && (
+          <Confirmation
+            setIsConfirmationVisible={setIsConfirmationVisible}
+          />
         )
       }
       {

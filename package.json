@@ -43,6 +43,7 @@
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
     "style-loader": "^1.2.1",
+    "styled-components": "^5.3.3",
     "terser-webpack-plugin": "^5.0.1"
   },
   "devDependencies": {

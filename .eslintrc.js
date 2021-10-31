@@ -21,6 +21,8 @@ module.exports = {
   rules: {
     'no-console': 'off',
     'react/forbid-prop-types': 'off',
+    'arrow-body-style': 'off',
+    'react/require-default-props': 'off',
   },
   ignorePatterns: [
     'bundle.js',
