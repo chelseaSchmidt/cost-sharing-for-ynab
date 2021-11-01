@@ -31,30 +31,28 @@ const CostSharingForYnab = () => {
   });
   const [transactionsStartDate, setTransactionsStartDate] = useState(getFiveDaysAgo());
   const [transactionsEndDate, setTransactionsEndDate] = useState(new Date());
-  const [checkedTransactions, setCheckedTransactions] = useState({
-    transactions: [],
-    checkmarks: [],
-  });
+  const [checkedTransactions, setCheckedTransactions] = useState([]);
   const [splitDate, setSplitDate] = useState(new Date());
-  const [displayedTransactions, setDisplayedTransactions] = useState([]);
+  const [classifiedTransactions, setClassifiedTransactions] = useState({});
   const [sharedAccounts, setSharedAccounts] = useState([]);
   const [sharedParentCategories, setSharedParentCategories] = useState([]);
   const [splitAccountId, setSplitAccountId] = useState('');
   const [errorData, setErrorData] = useState(null);
   const [privacyActive, setPrivacyActive] = useState(true);
   const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
+  const [isSelectAllChecked, setIsSelectAllChecked] = useState(false);
+
+  const {
+    transactionsInSharedBankAccounts = [],
+    transactionsInSharedCategories = [],
+    transactionsSharedInOneButNotOther = [],
+    iouAccountTransactions = [],
+  } = classifiedTransactions;
 
   const isSplitTransactionDisabled = (
-    !checkedTransactions.transactions.length
+    !checkedTransactions.length
     || !splitAccountId
   );
-
-  const classifiedTransactions = classifyTransactions({
-    displayedTransactions,
-    sharedAccounts,
-    sharedParentCategories,
-    splitAccountId,
-  });
 
   const getBudgetData = async () => {
     try {
@@ -69,19 +67,24 @@ const CostSharingForYnab = () => {
     }
   };
 
-  const getDisplayedTransactions = async ({ startDate, endDate }) => {
+  const getClassifiedTransactions = async ({ startDate, endDate }) => {
     const isTransactionATransfer = (transaction) => !!transaction.transfer_account_id;
 
     try {
       const transactionsSinceStartDate = await getTransactionsSinceDate(startDate);
 
-      const transactionsToDisplay = transactionsSinceStartDate.filter((transaction) => (
+      const displayedTransactions = transactionsSinceStartDate.filter((transaction) => (
         isDateBeforeEndDate(transaction.date, endDate)
         && transaction.approved
         && !isTransactionATransfer(transaction)
       ));
 
-      setDisplayedTransactions(transactionsToDisplay);
+      setClassifiedTransactions(classifyTransactions({
+        displayedTransactions,
+        sharedAccounts,
+        sharedParentCategories,
+        splitAccountId,
+      }));
     } catch (error) {
       setErrorData({
         message: error.message,
@@ -90,48 +93,22 @@ const CostSharingForYnab = () => {
     }
   };
 
-  function handleSelectTransaction({ target: { checked } }, transaction, txnNumber) {
-    if (checked) {
-      setCheckedTransactions((prevTxns) => {
-        const newTxns = { ...prevTxns };
-        newTxns.transactions.push(transaction);
-        newTxns.checkmarks[txnNumber] = 1;
-        return newTxns;
-      });
-    } else {
-      setCheckedTransactions((prevTxns) => {
-        const newTxns = { ...prevTxns };
-        const deletionIndex = newTxns.transactions.reduce((finalIdx, txn, currIdx) => (
-          txn.id === transaction.id ? currIdx : finalIdx
-        ), null);
-        newTxns.transactions.splice(deletionIndex, 1);
-        newTxns.checkmarks[txnNumber] = 0;
-        return newTxns;
-      });
-    }
-  }
+  const selectTransaction = (e, transaction) => {
+    setCheckedTransactions(
+      e.target.checked
+        ? [...checkedTransactions, transaction]
+        : checkedTransactions.filter(({ id }) => id !== transaction.id),
+    );
+  };
 
-  function selectAll({ target: { checked } }) {
-    if (checked) {
-      setCheckedTransactions((prevTxns) => {
-        const newTxns = { ...prevTxns };
-        newTxns.transactions = [...classifiedTransactions.transactionsInSharedCategories];
-        newTxns.checkmarks = _.range(1, newTxns.transactions.length + 1, 0);
-        return newTxns;
-      });
-    } else {
-      setCheckedTransactions((prevTxns) => {
-        const newTxns = { ...prevTxns };
-        newTxns.transactions = [];
-        newTxns.checkmarks = [];
-        return newTxns;
-      });
-    }
-  }
+  const selectAllTransactions = (e) => {
+    setIsSelectAllChecked(e.target.checked);
+    setCheckedTransactions(e.target.checked ? [...transactionsInSharedCategories] : []);
+  };
 
   function createSplitEntry(e) {
     e.preventDefault();
-    const halvedCostsByCategory = checkedTransactions.transactions.reduce((totals, txn) => {
+    const halvedCostsByCategory = checkedTransactions.reduce((totals, txn) => {
       if (txn.category_id in totals) {
         totals[txn.category_id] += Number((txn.amount / 1000 / 2).toFixed(2));
       } else {
@@ -168,7 +145,7 @@ const CostSharingForYnab = () => {
     createSplitTransaction(summaryTransaction)
       .then(() => {
         setIsConfirmationVisible(true);
-        getDisplayedTransactions({
+        getClassifiedTransactions({
           startDate: transactionsStartDate,
           endDate: transactionsEndDate,
         });
@@ -235,7 +212,7 @@ const CostSharingForYnab = () => {
         <button
           type="button"
           onClick={() => {
-            getDisplayedTransactions({
+            getClassifiedTransactions({
               startDate: transactionsStartDate,
               endDate: transactionsEndDate,
             });
@@ -259,29 +236,20 @@ const CostSharingForYnab = () => {
         <div id="transaction-area">
           <TransactionWindow
             title="Transactions in Shared Categories"
-            transactions={classifiedTransactions.transactionsInSharedCategories}
-            transactionsSharedInOneButNotOther={
-              classifiedTransactions.transactionsSharedInOneButNotOther
-            }
-            checkmarks={checkedTransactions.checkmarks}
-            handleSelectTransaction={handleSelectTransaction}
-            selectAll={selectAll}
+            transactions={transactionsInSharedCategories}
+            transactionsSharedInOneButNotOther={transactionsSharedInOneButNotOther}
+            selectTransaction={selectTransaction}
+            selectAllTransactions={selectAllTransactions}
+            isSelectAllChecked={isSelectAllChecked}
           />
           <TransactionWindow
             title="Transactions in Shared Banking Accounts"
-            transactions={classifiedTransactions.transactionsInSharedBankAccounts}
-            transactionsSharedInOneButNotOther={
-              classifiedTransactions.transactionsSharedInOneButNotOther
-            }
-            handleSelectTransaction={handleSelectTransaction}
+            transactions={transactionsInSharedBankAccounts}
+            transactionsSharedInOneButNotOther={transactionsSharedInOneButNotOther}
           />
           <TransactionWindow
             title="IOU Account"
-            transactions={classifiedTransactions.iouAccountTransactions}
-            transactionsSharedInOneButNotOther={
-              classifiedTransactions.transactionsSharedInOneButNotOther
-            }
-            handleSelectTransaction={handleSelectTransaction}
+            transactions={iouAccountTransactions}
           />
         </div>
       </section>

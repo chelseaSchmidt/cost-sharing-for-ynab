@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import formatCurrency from 'format-currency';
 import {
@@ -12,29 +12,44 @@ import {
 
 const Transaction = ({
   type,
-  handleSelectTransaction,
+  selectTransaction,
   transaction,
   isIsolated,
   isSplitAcct,
-  txnNumber,
-  checked = 0,
+  isSelectAllChecked = false,
 }) => {
   const editable = type === 'Transactions in Shared Categories';
   const currencyOpts = { format: '%s%v', symbol: '$' };
   const {
     date,
     amount,
-    memo,
-    cleared,
+    // memo,
+    // cleared,
     payee_name,
     category_name,
     account_name,
   } = transaction;
+
+  const [isSelected, setIsSelected] = useState(false);
+
+  useEffect(() => {
+    setIsSelected(isSelectAllChecked);
+  }, [isSelectAllChecked]);
+
   return (
     <div className="transaction">
       {isIsolated && !isSplitAcct && <span className="warning-symbol" />}
       {!isIsolated && !isSplitAcct && <span className="validated-symbol" />}
-      {editable && <input type="checkbox" checked={!!checked} onChange={(e) => handleSelectTransaction(e, transaction, txnNumber)} />}
+      {editable && (
+        <input
+          type="checkbox"
+          checked={isSelected}
+          onChange={(e) => {
+            setIsSelected(e.target.checked);
+            selectTransaction(e, transaction);
+          }}
+        />
+      )}
       <div className="txn-date">
         {moment(date).format('MMM DD, YYYY')}
       </div>
@@ -52,8 +67,10 @@ const Transaction = ({
           {account_name}
         </div>
         <div className="txn-more">
-          <button className="more-btn">More</button>
-          {/* TO DO */}
+          <button type="button" className="more-btn">
+            More
+            {/* TODO */}
+          </button>
         </div>
       </div>
     </div>
@@ -62,11 +79,10 @@ const Transaction = ({
 
 Transaction.propTypes = {
   type: string.isRequired,
-  handleSelectTransaction: func.isRequired,
+  selectTransaction: func,
   isIsolated: bool.isRequired,
   isSplitAcct: bool.isRequired,
-  txnNumber: number.isRequired,
-  checked: number,
+  isSelectAllChecked: bool,
   transaction: shape({
     date: string,
     amount: number,
