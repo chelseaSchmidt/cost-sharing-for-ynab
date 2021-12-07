@@ -42,11 +42,12 @@ export const getCategoryGroups = async () => {
   return result?.data.data.category_groups.filter(({ hidden }) => !hidden);
 };
 
-export const createSplitTransaction = (transaction) => (
-  axios({
+export const createSplitTransaction = async (transaction) => {
+  const result = await axios({
     method: 'post',
     headers: { Authorization: `Bearer ${getToken()}` },
     url: 'https://api.youneedabudget.com/v1/budgets/default/transactions',
     data: { transaction },
-  })
-);
+  });
+  return result?.data.data;
+};

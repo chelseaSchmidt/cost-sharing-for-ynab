@@ -106,26 +106,32 @@ const CostSharingForYnab = () => {
     setCheckedTransactions(e.target.checked ? [...transactionsInSharedCategories] : []);
   };
 
-  function createSplitEntry(e) {
+  const createSplitEntry = async (e) => {
     e.preventDefault();
-    const halvedCostsByCategory = checkedTransactions.reduce((totals, txn) => {
-      if (txn.category_id in totals) {
-        totals[txn.category_id] += Number((txn.amount / 1000 / 2).toFixed(2));
-      } else {
-        totals[txn.category_id] = Number((txn.amount / 1000 / 2).toFixed(2));
-      }
-      return totals;
-    }, {});
-    _.each(halvedCostsByCategory, (val, key) => {
-      halvedCostsByCategory[key] = Number(val.toFixed(2));
-      // TO DO: why is this conversion needed a second time?
-    });
+
+    const categorizedTransactions = _.groupBy(checkedTransactions, 'category_id');
+
+    const categorizedAmounts = _.reduce(
+      categorizedTransactions,
+      (accum, transactions, categoryId) => {
+        accum[categoryId] = _.sumBy(transactions, 'amount');
+        return accum;
+      },
+      {},
+    );
+    const halvedCategorizedAmounts = _.reduce(
+      categorizedAmounts,
+      (accum, amount, categoryId) => {
+        accum[categoryId] = Math.round(amount / 2);
+        return accum;
+      },
+      {},
+    );
+
     const summaryTransaction = {
       account_id: splitAccountId,
       date: convertDateToString(splitDate),
-      amount: Number((
-        _.reduce(halvedCostsByCategory, (sum, amt) => sum + amt) * 1000)
-        .toFixed(2)) * -1,
+      amount: _.reduce(halvedCategorizedAmounts, (sum, amt) => sum - amt, 0),
       payee_id: null,
       payee_name: null,
       category_id: null,
@@ -134,29 +140,29 @@ const CostSharingForYnab = () => {
       approved: true,
       flag_color: null,
       import_id: null,
-      subtransactions: _.map(halvedCostsByCategory, (amt, catId) => ({
-        amount: amt * -1000,
+      subtransactions: _.map(halvedCategorizedAmounts, (amount, category_id) => ({
+        amount: -(amount),
         payee_id: null,
         payee_name: 'Shared Costs',
-        category_id: catId,
+        category_id,
         memo: null,
       })),
     };
-    createSplitTransaction(summaryTransaction)
-      .then(() => {
-        setIsConfirmationVisible(true);
-        getClassifiedTransactions({
-          startDate: transactionsStartDate,
-          endDate: transactionsEndDate,
-        });
-      })
-      .catch((error) => {
-        setErrorData({
-          status: error.response?.status,
-          message: error.message,
-        });
+
+    try {
+      await createSplitTransaction(summaryTransaction);
+      setIsConfirmationVisible(true);
+      getClassifiedTransactions({
+        startDate: transactionsStartDate,
+        endDate: transactionsEndDate,
       });
-  }
+    } catch (error) {
+      setErrorData({
+        status: error.response?.status,
+        message: error.message,
+      });
+    }
+  };
 
   useEffect(() => {
     getBudgetData();
