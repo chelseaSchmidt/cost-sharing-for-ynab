@@ -4,7 +4,11 @@ import { func, string } from 'prop-types';
 import '../styles/Header.css';
 import '../styles/Menu.css';
 
-const Header = ({ setPrivacyActive, url, appEndpoint }) => {
+const Header = ({
+  setShouldDisplayPrivacyPolicy,
+  url,
+  appEndpoint,
+}) => {
   const [menuIsOpen, setMenuIsOpen] = useState(false);
   const handleStateChange = (state) => setMenuIsOpen(state.isOpen);
   return (
@@ -68,7 +72,7 @@ const Header = ({ setPrivacyActive, url, appEndpoint }) => {
           id="priv-pol-btn"
           type="button"
           onClick={() => {
-            setPrivacyActive(true);
+            setShouldDisplayPrivacyPolicy(true);
             setMenuIsOpen(false);
             if (url) {
               document.getElementById('privacy-policy-text').scrollIntoView(true);
@@ -94,7 +98,7 @@ const Header = ({ setPrivacyActive, url, appEndpoint }) => {
 };
 
 Header.propTypes = {
-  setPrivacyActive: func.isRequired,
+  setShouldDisplayPrivacyPolicy: func.isRequired,
   url: string,
   appEndpoint: string,
 };

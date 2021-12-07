@@ -3,7 +3,7 @@ import { func } from 'prop-types';
 import PrivacyPolicy from './PrivacyPolicy';
 import '../styles/PrivacyWindow.css';
 
-const PrivacyWindow = ({ setPrivacyActive }) => (
+const PrivacyWindow = ({ setShouldDisplayPrivacyPolicy }) => (
   <>
     <div id="privacy-background" />
     <div id="privacy-policy">
@@ -12,7 +12,7 @@ const PrivacyWindow = ({ setPrivacyActive }) => (
         <button
           type="button"
           className="update-btn"
-          onClick={() => setPrivacyActive(false)}
+          onClick={() => setShouldDisplayPrivacyPolicy(false)}
         >
           Okay, Sounds Good
         </button>
@@ -22,7 +22,7 @@ const PrivacyWindow = ({ setPrivacyActive }) => (
 );
 
 PrivacyWindow.propTypes = {
-  setPrivacyActive: func.isRequired,
+  setShouldDisplayPrivacyPolicy: func.isRequired,
 };
 
 export default PrivacyWindow;

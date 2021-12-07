@@ -38,7 +38,7 @@ const CostSharingForYnab = () => {
   const [sharedParentCategories, setSharedParentCategories] = useState([]);
   const [splitAccountId, setSplitAccountId] = useState('');
   const [errorData, setErrorData] = useState(null);
-  const [privacyActive, setPrivacyActive] = useState(true);
+  const [shouldDisplayPrivacyPolicy, setShouldDisplayPrivacyPolicy] = useState(true);
   const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
   const [isSelectAllChecked, setIsSelectAllChecked] = useState(false);
 
@@ -174,8 +174,14 @@ const CostSharingForYnab = () => {
 
   return isPageLoading ? 'Loading...' : (
     <div className="app-container">
-      {privacyActive && <PrivacyWindow setPrivacyActive={setPrivacyActive} />}
-      <Header setPrivacyActive={setPrivacyActive} />
+      {
+        shouldDisplayPrivacyPolicy && (
+          <PrivacyWindow setShouldDisplayPrivacyPolicy={setShouldDisplayPrivacyPolicy} />
+        )
+      }
+
+      <Header setShouldDisplayPrivacyPolicy={setShouldDisplayPrivacyPolicy} />
+
       <div className="section-container">
         <AccountSelector
           sharedAccounts={sharedAccounts}
@@ -307,7 +313,7 @@ const CostSharingForYnab = () => {
           />
         )
       }
-      <Nav setPrivacyActive={setPrivacyActive} />
+      <Nav setShouldDisplayPrivacyPolicy={setShouldDisplayPrivacyPolicy} />
     </div>
   );
 };

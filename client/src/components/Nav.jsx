@@ -2,7 +2,7 @@ import React from 'react';
 import { func } from 'prop-types';
 import '../styles/Nav.css';
 
-const Nav = ({ setPrivacyActive }) => (
+const Nav = ({ setShouldDisplayPrivacyPolicy }) => (
   <div id="nav-container">
     <a
       className="link-btn"
@@ -14,7 +14,7 @@ const Nav = ({ setPrivacyActive }) => (
       className="link-btn"
       id="priv-pol-btn"
       type="button"
-      onClick={() => setPrivacyActive(true)}
+      onClick={() => setShouldDisplayPrivacyPolicy(true)}
     >
       Privacy Policy
     </button>
@@ -30,7 +30,7 @@ const Nav = ({ setPrivacyActive }) => (
 );
 
 Nav.propTypes = {
-  setPrivacyActive: func.isRequired,
+  setShouldDisplayPrivacyPolicy: func.isRequired,
 };
 
 export default Nav;
