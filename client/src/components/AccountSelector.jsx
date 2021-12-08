@@ -54,12 +54,8 @@ const AccountSelector = ({
     <div id="account-selector-container">
       <div id="account-selector-area">
         <div id="bank-tags">
-          <h1 className="section-header">Set Preferences</h1>
-          <p>
-            <b>Optional:&nbsp;</b>
-            Select one or more banking accounts that contain shared expenses,
-            such as a credit card that you share with a significant other or roommate.
-          </p>
+          <h1 className="section-header">Choose Accounts and Categories</h1>
+          <p><b>Select all shared credit cards and bank accounts</b></p>
           <div className="tag-area">
             {budgetAccounts.map(({ name, id }) => {
               let toggleClass = 'acct-btn';
@@ -81,13 +77,7 @@ const AccountSelector = ({
           </div>
         </div>
         <div id="cat-tags">
-          <p>
-            <b>Required:&nbsp;</b>
-            Select one or more category groups where you track shared expenses
-            before splitting them with the other person. If there isn&apos;t a
-            specific category group for this, select all groups that contain
-            transactions you may want to split.
-          </p>
+          <p><b>Select all category groups that contain shared expenses</b></p>
           <div className="tag-area">
             {budgetCategories.map(({ name, id }) => {
               if (excludedCategories.indexOf(name) > -1) {
@@ -112,12 +102,7 @@ const AccountSelector = ({
           </div>
         </div>
         <div id="split-option-area">
-          <p>
-            <b>Required:&nbsp;</b>
-            Select the banking account (referred to as an IOU
-            account in the website instructions) where you track what is owed
-            back to you by the other person.
-          </p>
+          <p><b>Select your IOU account</b></p>
           <div id="split-acct-dropdown">
             <select
               onChange={(e) => setSplitAccountId(e.target.value)}

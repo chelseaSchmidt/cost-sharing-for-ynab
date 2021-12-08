@@ -193,28 +193,22 @@ const CostSharingForYnab = () => {
           setSplitAccountId={setSplitAccountId}
         />
         <div id="date-range-area">
-          <p>
-            <b>Required:&nbsp;</b>
-            Specify a date range, such as a one-month period, that you want to
-            split transactions for. For example, you might calculate what the
-            other person owes you for shared costs every week, two weeks, or
-            once a month.
-          </p>
-          <form>
-            <label htmlFor="start">
+          <p><b>Select transaction date range</b></p>
+          <form id="date-range-form">
+            <label htmlFor="transactions-start-date">
               Start date:
               <input
                 type="date"
-                id="start"
+                id="transactions-start-date"
                 value={convertDateToString(transactionsStartDate)}
                 onChange={(e) => setTransactionsStartDate(convertStringToDate(e.target.value))}
               />
             </label>
-            <label htmlFor="end">
+            <label htmlFor="transactions-end-date">
               End date:
               <input
                 type="date"
-                id="end"
+                id="transactions-end-date"
                 value={convertDateToString(transactionsEndDate)}
                 onChange={(e) => setTransactionsEndDate(convertStringToDate(e.target.value, false))}
               />
@@ -259,10 +253,6 @@ const CostSharingForYnab = () => {
             transactions={transactionsInSharedBankAccounts}
             transactionsSharedInOneButNotOther={transactionsSharedInOneButNotOther}
           />
-          <TransactionWindow
-            title="IOU Account"
-            transactions={iouAccountTransactions}
-          />
         </div>
       </section>
       <div id="split-btn-area" className="section-container">
@@ -297,6 +287,10 @@ const CostSharingForYnab = () => {
             </span>
           )}
         </form>
+        <TransactionWindow
+          title="IOU Account"
+          transactions={iouAccountTransactions}
+        />
       </div>
       {
         isConfirmationVisible && (
