@@ -231,13 +231,15 @@ const CostSharingForYnab = () => {
         </button>
       </div>
       <section id="transaction-container" className="section-container">
-        <h1 className="section-header">Select Transactions to Split</h1>
+        <h1 className="section-header">Choose Transactions</h1>
         <p>
-          Select all the transactions in shared budget categories that you want
-          included in the split transaction. If a transaction is present in a
-          shared category but did not come from a shared banking account, or vice
-          versa, you&apos;ll notice a yellow warning symbol. Use these warnings to review
-          if anything is missing or incorrect.
+          Pick the transactions you want to split with the other person.
+        </p>
+        <p>
+          <b>Note:&nbsp;</b>
+          If a transaction is present in a shared category but did not come from a
+          shared banking account, or vice versa, you&apos;ll notice a yellow warning symbol.
+          Use these warnings to review if anything is missing or incorrect.
         </p>
         <div id="transaction-area">
           <TransactionWindow
@@ -257,13 +259,10 @@ const CostSharingForYnab = () => {
       </section>
       <div id="split-btn-area" className="section-container">
         <form>
-          <h1 className="section-header">Create Split Transaction</h1>
+          <h1 className="section-header">Split the Total Cost</h1>
           <p>
-            Choose a date you want to create the transaction in YNAB that will
-            halve costs between you and the other person, and hit &quot;Split Selected
-            Transactions On Date.&quot; The new transaction will be split across all
-            the original categories, so you can continue to have visibility into
-            where your shared dollars are being spent.
+            Create one transaction in your IOU account that splits the total cost
+            of your selected transactions, distributed across the same categories.
           </p>
           <input
             type="date"
@@ -278,12 +277,11 @@ const CostSharingForYnab = () => {
             className="update-btn"
             disabled={isSplitTransactionDisabled}
           >
-            Split Selected Transactions On Date
+            Split Costs On This Date
           </button>
           {isSplitTransactionDisabled && (
             <span className="caution-text">
               Please select one or more transactions to split and choose an IOU account
-              to receive the split transaction
             </span>
           )}
         </form>
