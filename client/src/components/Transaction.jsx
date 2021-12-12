@@ -11,14 +11,13 @@ import {
 } from 'prop-types';
 
 const Transaction = ({
-  type,
+  isEditable,
   selectTransaction,
   transaction,
   isIsolated,
-  isSplitAcct,
+  shouldShowIcon,
   isSelectAllChecked = false,
 }) => {
-  const editable = type === 'Transactions in Shared Categories';
   const currencyOpts = { format: '%s%v', symbol: '$' };
   const {
     date,
@@ -38,9 +37,7 @@ const Transaction = ({
 
   return (
     <div className="transaction">
-      {isIsolated && !isSplitAcct && <span className="warning-symbol" />}
-      {!isIsolated && !isSplitAcct && <span className="validated-symbol" />}
-      {editable && (
+      {isEditable && (
         <input
           type="checkbox"
           checked={isSelected}
@@ -65,6 +62,14 @@ const Transaction = ({
         </div>
         <div className="txn-acct">
           {account_name}
+          {
+            isIsolated && shouldShowIcon && (
+              <span className="warning-symbol" style={{ backgroundColor: 'pink' }}>
+                !
+                <span className="warning-symbol-text">You did not mark this account as shared</span>
+              </span>
+            )
+          }
         </div>
         <div className="txn-more">
           <button type="button" className="more-btn">
@@ -78,10 +83,10 @@ const Transaction = ({
 };
 
 Transaction.propTypes = {
-  type: string.isRequired,
+  isEditable: bool,
   selectTransaction: func,
   isIsolated: bool.isRequired,
-  isSplitAcct: bool.isRequired,
+  shouldShowIcon: bool,
   isSelectAllChecked: bool,
   transaction: shape({
     date: string,

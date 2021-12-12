@@ -1,13 +1,16 @@
-#privacy-background {
+.modal-background {
   position: fixed;
   top: 0;
   width: 100vw;
   height: 100vh;
   background-color: black;
   opacity: 50%;
+  display: flex;
+  align-items: center;
+  z-index: 5;
 }
 
-#privacy-policy {
+.modal-content {
   position: fixed;
   top: 20vh;
   left: 50%;
@@ -18,10 +21,11 @@
   border-radius: 12px;
   box-shadow: 0 0 5px 0 #4c4c4c;
   padding: 20px;
-  overflow-y: scroll;
+  overflow-y: auto;
+  z-index: 6;
 }
 
-#privacy-btn-area {
+.modal-btn-area {
   display: flex;
   justify-content: center;
 }

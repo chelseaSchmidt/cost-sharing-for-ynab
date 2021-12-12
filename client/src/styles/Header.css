@@ -12,6 +12,7 @@ header {
   margin-bottom: 50px;
   padding: 10px 20px 10px 20px;
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.5);
+  z-index: 4;
 }
 
 header > div {
@@ -43,8 +44,6 @@ header > #nav-container > a:visited
 }
 
 #works-with-ynab-img {
-  /* width: 196px;
-  height: 78px; */
   width: 144.07px;
   height: 57.33px;
 }

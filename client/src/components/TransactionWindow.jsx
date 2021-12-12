@@ -16,14 +16,14 @@ const TransactionWindow = ({
   selectTransaction,
   selectAllTransactions,
   isSelectAllChecked,
+  shouldShowIcon,
+  isEditable,
 }) => {
   const noTransactions = transactions.length === 0;
-  const isEditable = title === 'Transactions in Shared Categories';
-  const isSplitAcct = title === 'Account Receiving Split Transaction';
   const isolatedTransactionIds = transactionsSharedInOneButNotOther.map((txn) => txn.id);
   return (
     <div className="transaction-window">
-      <h3 className="window-title">{title}</h3>
+      {title && <h3 className="window-title">{title}</h3>}
       <div className="select-all-area">
         {!noTransactions
         && isEditable
@@ -48,11 +48,11 @@ const TransactionWindow = ({
           return (
             <Transaction
               key={txn.id}
-              type={title}
+              isEditable={isEditable}
               selectTransaction={selectTransaction}
               transaction={txn}
               isIsolated={isIsolated}
-              isSplitAcct={isSplitAcct}
+              shouldShowIcon={shouldShowIcon}
               isSelectAllChecked={isSelectAllChecked}
             />
           );
@@ -66,10 +66,12 @@ const TransactionWindow = ({
 TransactionWindow.propTypes = {
   transactions: arrayOf(shape({ id: string })).isRequired,
   transactionsSharedInOneButNotOther: arrayOf(shape({ id: string })),
-  title: string.isRequired,
+  title: string,
   selectTransaction: func,
   selectAllTransactions: func,
   isSelectAllChecked: bool,
+  shouldShowIcon: bool,
+  isEditable: bool,
 };
 
 export default TransactionWindow;

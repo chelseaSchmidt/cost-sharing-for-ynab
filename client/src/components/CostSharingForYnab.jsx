@@ -4,10 +4,11 @@ import _ from 'lodash';
 import TransactionWindow from './TransactionWindow';
 import AccountSelector from './AccountSelector';
 import Confirmation from './Confirmation';
-import PrivacyWindow from './PrivacyWindow';
+import Modal from './Modal';
 import Header from './Header';
 import Nav from './Nav';
 import Error from './Error';
+import PrivacyPolicy from './PrivacyPolicy';
 import {
   getTransactionsSinceDate,
   getAccounts,
@@ -38,14 +39,15 @@ const CostSharingForYnab = () => {
   const [sharedParentCategories, setSharedParentCategories] = useState([]);
   const [splitAccountId, setSplitAccountId] = useState('');
   const [errorData, setErrorData] = useState(null);
-  const [shouldDisplayPrivacyPolicy, setShouldDisplayPrivacyPolicy] = useState(true);
+  const [activeModal, setActiveModal] = useState('privacyPolicy');
   const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
   const [isSelectAllChecked, setIsSelectAllChecked] = useState(false);
 
   const {
-    transactionsInSharedBankAccounts = [],
+    // transactionsInSharedBankAccounts = [],
     transactionsInSharedCategories = [],
-    transactionsSharedInOneButNotOther = [],
+    sharedAccountErrorTransactions = [],
+    sharedCategoryErrorTransactions = [],
     iouAccountTransactions = [],
   } = classifiedTransactions;
 
@@ -175,12 +177,30 @@ const CostSharingForYnab = () => {
   return isPageLoading ? 'Loading...' : (
     <div className="app-container">
       {
-        shouldDisplayPrivacyPolicy && (
-          <PrivacyWindow setShouldDisplayPrivacyPolicy={setShouldDisplayPrivacyPolicy} />
+        activeModal === 'privacyPolicy' && (
+          <Modal
+            onClose={() => setActiveModal(null)}
+            buttonText="OK"
+          >
+            <PrivacyPolicy />
+          </Modal>
+        )
+      }
+      {
+        activeModal === 'transactionReview' && (
+          <Modal
+            onClose={() => setActiveModal(null)}
+            buttonText="OK"
+          >
+            <TransactionWindow
+              title="Transactions in shared accounts missing from shared budget categories"
+              transactions={sharedAccountErrorTransactions}
+            />
+          </Modal>
         )
       }
 
-      <Header setShouldDisplayPrivacyPolicy={setShouldDisplayPrivacyPolicy} />
+      <Header setActiveModal={setActiveModal} />
 
       <div className="section-container">
         <AccountSelector
@@ -231,29 +251,33 @@ const CostSharingForYnab = () => {
         </button>
       </div>
       <section id="transaction-container" className="section-container">
-        <h1 className="section-header">Choose Transactions</h1>
-        <p>
-          Pick the transactions you want to split with the other person.
-        </p>
-        <p>
-          <b>Note:&nbsp;</b>
-          If a transaction is present in a shared category but did not come from a
-          shared banking account, or vice versa, you&apos;ll notice a yellow warning symbol.
-          Use these warnings to review if anything is missing or incorrect.
-        </p>
+        <h1 className="section-header">Select Shared Costs</h1>
+        {
+          !!sharedAccountErrorTransactions.length && (
+            <p style={{ display: 'flex', color: 'red', alignItems: 'center' }}>
+              <span className="warning-symbol">!</span>
+              <span>
+                You have costs in shared accounts that are missing from shared budget categories.
+              </span>
+              <button
+                type="button"
+                className="review-transactions-btn"
+                onClick={() => setActiveModal('transactionReview')}
+              >
+                Review these transactions
+              </button>
+            </p>
+          )
+        }
         <div id="transaction-area">
           <TransactionWindow
-            title="Transactions in Shared Categories"
             transactions={transactionsInSharedCategories}
-            transactionsSharedInOneButNotOther={transactionsSharedInOneButNotOther}
+            transactionsSharedInOneButNotOther={sharedCategoryErrorTransactions}
             selectTransaction={selectTransaction}
             selectAllTransactions={selectAllTransactions}
             isSelectAllChecked={isSelectAllChecked}
-          />
-          <TransactionWindow
-            title="Transactions in Shared Banking Accounts"
-            transactions={transactionsInSharedBankAccounts}
-            transactionsSharedInOneButNotOther={transactionsSharedInOneButNotOther}
+            shouldShowIcon
+            isEditable
           />
         </div>
       </section>
@@ -305,7 +329,7 @@ const CostSharingForYnab = () => {
           />
         )
       }
-      <Nav setShouldDisplayPrivacyPolicy={setShouldDisplayPrivacyPolicy} />
+      <Nav setActiveModal={setActiveModal} />
     </div>
   );
 };

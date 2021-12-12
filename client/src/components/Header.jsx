@@ -5,7 +5,7 @@ import '../styles/Header.css';
 import '../styles/Menu.css';
 
 const Header = ({
-  setShouldDisplayPrivacyPolicy,
+  setActiveModal,
   url,
   appEndpoint,
 }) => {
@@ -72,7 +72,7 @@ const Header = ({
           id="priv-pol-btn"
           type="button"
           onClick={() => {
-            setShouldDisplayPrivacyPolicy(true);
+            setActiveModal('privacyPolicy');
             setMenuIsOpen(false);
             if (url) {
               document.getElementById('privacy-policy-text').scrollIntoView(true);
@@ -98,7 +98,7 @@ const Header = ({
 };
 
 Header.propTypes = {
-  setShouldDisplayPrivacyPolicy: func.isRequired,
+  setActiveModal: func.isRequired,
   url: string,
   appEndpoint: string,
 };
