@@ -56,6 +56,13 @@ const CostSharingForYnab = () => {
     || !splitAccountId
   );
 
+  const buttonDisabledMessage = !checkedTransactions.length
+    ? (
+      (!splitAccountId && 'Please select shared costs and pick an IOU account')
+      || 'Please select shared costs'
+    )
+    : 'Please pick an IOU account';
+
   const getBudgetData = async () => {
     try {
       const accounts = await getAccounts();
@@ -152,12 +159,16 @@ const CostSharingForYnab = () => {
     };
 
     try {
-      await createSplitTransaction(summaryTransaction);
+      const transaction = await createSplitTransaction(summaryTransaction);
       setIsConfirmationVisible(true);
-      getClassifiedTransactions({
-        startDate: transactionsStartDate,
-        endDate: transactionsEndDate,
+      setClassifiedTransactions({
+        ...classifiedTransactions,
+        iouAccountTransactions: [
+          ...iouAccountTransactions,
+          transaction,
+        ],
       });
+      setCheckedTransactions([]);
     } catch (error) {
       setErrorData({
         status: error.response?.status,
@@ -191,6 +202,7 @@ const CostSharingForYnab = () => {
           <Modal
             onClose={() => setActiveModal(null)}
             buttonText="OK"
+            shouldCloseOnOverlayClick
           >
             <TransactionWindow
               title="Transactions in shared accounts missing from shared budget categories"
@@ -238,6 +250,8 @@ const CostSharingForYnab = () => {
         <button
           type="button"
           onClick={() => {
+            // FIXME: this gets IOU account transactions for the view-transactions date range
+            // instead of the IOU charge date, which is confusing in latest version of the layout
             getClassifiedTransactions({
               startDate: transactionsStartDate,
               endDate: transactionsEndDate,
@@ -285,8 +299,10 @@ const CostSharingForYnab = () => {
         <form>
           <h1 className="section-header">Split the Total Cost</h1>
           <p>
-            Create one transaction in your IOU account that splits the total cost
-            of your selected transactions, distributed across the same categories.
+            Charge half the shared costs to the &quot;IOU&quot;
+            account that shows what your partner owes you. Each
+            category in your budget that contains a shared cost
+            will get an offsetting expense reduction.
           </p>
           <input
             type="date"
@@ -302,15 +318,11 @@ const CostSharingForYnab = () => {
             disabled={isSplitTransactionDisabled}
           >
             Split Costs On This Date
+            <span className="split-txn-btn-text">{buttonDisabledMessage}</span>
           </button>
-          {isSplitTransactionDisabled && (
-            <span className="caution-text">
-              Please select one or more transactions to split and choose an IOU account
-            </span>
-          )}
         </form>
         <TransactionWindow
-          title="IOU Account"
+          title="IOU Account Transactions"
           transactions={iouAccountTransactions}
         />
       </div>

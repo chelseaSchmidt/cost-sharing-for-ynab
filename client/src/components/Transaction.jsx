@@ -64,19 +64,24 @@ const Transaction = ({
           {account_name}
           {
             isIsolated && shouldShowIcon && (
-              <span className="warning-symbol" style={{ backgroundColor: 'pink' }}>
+              <span
+                className="warning-symbol"
+                style={{ backgroundColor: 'rgba(255, 0, 0, 0.1)' }}
+              >
                 !
-                <span className="warning-symbol-text">You did not mark this account as shared</span>
+                <span className="warning-symbol-text">
+                  You did not mark this account as shared
+                </span>
               </span>
             )
           }
         </div>
-        <div className="txn-more">
+        {/* TODO */}
+        {/* <div className="txn-more">
           <button type="button" className="more-btn">
             More
-            {/* TODO */}
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );

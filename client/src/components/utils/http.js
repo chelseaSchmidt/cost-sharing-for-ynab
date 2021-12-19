@@ -49,5 +49,5 @@ export const createSplitTransaction = async (transaction) => {
     url: 'https://api.youneedabudget.com/v1/budgets/default/transactions',
     data: { transaction },
   });
-  return result?.data.data;
+  return result?.data.data.transaction;
 };

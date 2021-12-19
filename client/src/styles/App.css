@@ -67,7 +67,7 @@ HEADERS
 
 .section-header {
   font-size: 25px;
-  margin: 0 0 50px 0;
+  margin: 0 0 35px 0;
   padding: 0;
   font-weight: 600;
   text-align: center;
@@ -94,6 +94,11 @@ DATE RANGE AREAS
 
 #date-range-area > form > label > input {
   margin: 10px;
+  cursor: text;
+}
+
+#date-range-area > form > label > input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
 }
 
 /*
@@ -119,13 +124,53 @@ FOOTER
 =================
 */
 
+#split-txn-btn {
+  position: relative;
+}
+
+.split-txn-btn-text {
+  visibility: hidden;
+  z-index: 1;
+
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  width: 200px;
+  margin-left: -100px;
+
+  background-color: #444;
+  color: white;
+  font-size: 12px;
+  font-weight: normal;
+  text-align: center;
+  padding: 10px 5px;
+  border-radius: 5px;
+}
+
+.split-txn-btn-text::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border: 5px solid;
+  border-color:  #444 transparent transparent transparent;
+}
+
+#split-txn-btn:disabled:hover .split-txn-btn-text {
+  visibility: visible;
+}
+
 #split-btn-area > form > input {
   margin: 10px;
 }
 
-.caution-text {
-  font-style: italic;
-  font-size: 10px;
+#split-date {
+  cursor: text;
+}
+
+#split-date::-webkit-calendar-picker-indicator {
+  cursor: pointer;
 }
 
 /*

@@ -24,7 +24,7 @@ const Nav = ({ setActiveModal }) => (
       target="_blank"
       rel="noreferrer"
     >
-      Report a bug by opening an issue in GitHub
+      Report a Bug
     </a>
   </div>
 );

@@ -90,7 +90,7 @@ const Header = ({
           onClick={() => setMenuIsOpen(false)}
           className="menu-link"
         >
-          Report a bug by opening an issue in GitHub
+          Report a Bug
         </a>
       </Menu>
     </header>

@@ -55,7 +55,7 @@ const AccountSelector = ({
       <div id="account-selector-area">
         <div id="bank-tags">
           <h1 className="section-header">Choose Accounts and Categories</h1>
-          <p><b>Select all shared credit cards and bank accounts</b></p>
+          <p><b>Select the credit card(s) you use for shared expenses</b></p>
           <div className="tag-area">
             {budgetAccounts.map(({ name, id }) => {
               let toggleClass = 'acct-btn';
@@ -77,7 +77,7 @@ const AccountSelector = ({
           </div>
         </div>
         <div id="cat-tags">
-          <p><b>Select all category groups that contain shared expenses</b></p>
+          <p><b>Select all YNAB categories that might contain shared expenses</b></p>
           <div className="tag-area">
             {budgetCategories.map(({ name, id }) => {
               if (excludedCategories.indexOf(name) > -1) {
@@ -102,7 +102,11 @@ const AccountSelector = ({
           </div>
         </div>
         <div id="split-option-area">
-          <p><b>Select your IOU account</b></p>
+          <p>
+            <b>
+              Select the &quot;IOU&quot; account that shows what your partner owes you
+            </b>
+          </p>
           <div id="split-acct-dropdown">
             <select
               onChange={(e) => setSplitAccountId(e.target.value)}

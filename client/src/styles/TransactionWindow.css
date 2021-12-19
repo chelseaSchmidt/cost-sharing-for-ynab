@@ -33,13 +33,13 @@ HEADER AREA
 =================
 */
 
-.window-title {
-  height: 40px;
-}
-
 .select-all-area {
   height: 15px;
   margin-bottom: 15px;
+}
+
+#select-all-input {
+  cursor: pointer;
 }
 
 /*
@@ -58,6 +58,10 @@ TRANSACTIONS
   background-color: white;
   box-shadow: 0 1px 0 0.5px #f1f2f1;
   color: #464b46;
+}
+
+.transaction > input {
+  cursor: pointer;
 }
 
 .txn-date {
@@ -100,19 +104,20 @@ TRANSACTIONS
 
 .warning-symbol-text {
   visibility: hidden;
-  background-color: white;
-  color: red;
-  font-size: 10px;
+  z-index: 1;
+
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  width: 170px;
+
+  background-color: #444;
+  color: white;
+  font-size: 11px;
+  font-weight: normal;
   text-align: center;
   padding: 5px;
   border-radius: 5px;
-  position: absolute;
-  z-index: 1;
-  top: 15px;
-  right: 0;
-  width: 100px;
-  font-weight: normal;
-  box-shadow: 0  0 3px red;
 }
 
 .warning-symbol:hover .warning-symbol-text {

@@ -3,6 +3,7 @@ import {
   func,
   string,
   node,
+  bool,
 } from 'prop-types';
 import '../styles/Modal.css';
 
@@ -10,9 +11,24 @@ const Modal = ({
   onClose,
   buttonText,
   children,
+  shouldCloseOnOverlayClick = false,
 }) => (
   <>
-    <div className="modal-background" />
+    <div
+      className="modal-background"
+      onClick={shouldCloseOnOverlayClick ? onClose : null}
+      role="button"
+      aria-label="Modal overlay"
+      tabIndex={0}
+      onKeyDown={
+        shouldCloseOnOverlayClick
+          ? (e) => {
+            if (e.key === 'Enter') {
+              onClose();
+            }
+          } : null
+      }
+    />
     <div className="modal-content">
       {children}
       <div className="modal-btn-area">
@@ -32,6 +48,7 @@ Modal.propTypes = {
   onClose: func.isRequired,
   buttonText: string.isRequired,
   children: node,
+  shouldCloseOnOverlayClick: bool,
 };
 
 export default Modal;
