@@ -8,4 +8,4 @@ do
   esac
 done
 
-KEY=$KEY CERT=$CERT HTTPSPORT=443 HTTPPORT=80 npm run start:HTTPS
+KEY=$KEY CERT=$CERT HTTPSPORT=443 HTTPPORT=80 npm run start-https

@@ -6,12 +6,12 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server",
-    "start:HTTP": "node server",
-    "start:HTTPS": "IS_HTTPS=true node server",
-    "build:prod": "webpack --config webpack.prod.js",
-    "build:site:prod": "webpack --config siteWebpack.prod.js",
-    "watch:dev": "webpack -w --config webpack.dev.js",
-    "watch:site:dev": "webpack --config siteWebpack.dev.js -w",
+    "start-http": "node server",
+    "start-https": "IS_HTTPS=true node server",
+    "build-prod": "webpack --config webpack.prod.js",
+    "build-site-prod": "webpack --config siteWebpack.prod.js",
+    "watch-dev": "webpack -w --config webpack.dev.js",
+    "watch-site-dev": "webpack --config siteWebpack.dev.js -w",
     "linter": "npx eslint ./ --ext .js,.jsx"
   },
   "repository": {
