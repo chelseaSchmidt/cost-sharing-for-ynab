@@ -77,7 +77,7 @@ const AccountSelector = ({
           </div>
         </div>
         <div id="cat-tags">
-          <p><b>Select all YNAB categories that might contain shared expenses</b></p>
+          <p><b>Select the YNAB parent category(ies) where you track shared expenses</b></p>
           <div className="tag-area">
             {budgetCategories.map(({ name, id }) => {
               if (excludedCategories.indexOf(name) > -1) {

@@ -5,7 +5,7 @@ import '../styles/Header.css';
 import '../styles/Menu.css';
 
 const Header = ({
-  setActiveModal,
+  setActiveModal = () => {},
   url,
   appEndpoint,
 }) => {
@@ -47,7 +47,7 @@ const Header = ({
                 onClick={() => setMenuIsOpen(false)}
                 className="menu-link"
               >
-                Use the App (Chrome Recommended)
+                <b>Start</b>
               </a>
               <div className="small-divider" />
             </>
@@ -62,7 +62,7 @@ const Header = ({
                 onClick={() => setMenuIsOpen(false)}
                 className="menu-link"
               >
-                Preview the App Without YNAB Credentials
+                Preview Without a YNAB Account
               </a>
               <div className="small-divider" />
             </>
@@ -98,7 +98,7 @@ const Header = ({
 };
 
 Header.propTypes = {
-  setActiveModal: func.isRequired,
+  setActiveModal: func,
   url: string,
   appEndpoint: string,
 };

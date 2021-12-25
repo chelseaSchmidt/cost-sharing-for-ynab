@@ -61,6 +61,33 @@ CONTAINERS
 
 /*
 =================
+INSTRUCTIONS
+=================
+*/
+
+.instructions-link-container {
+  margin-top: -25px;
+  margin-bottom: 25px;
+}
+
+.description {
+  padding: 30px;
+}
+
+.description > li {
+  margin-bottom: 20px;
+}
+
+.description > li > ul {
+  margin-top: 20px;
+}
+
+.description > li > ul > li {
+  margin-bottom: 20px;
+}
+
+/*
+=================
 HEADERS
 =================
 */
@@ -219,7 +246,7 @@ BUTTONS
   box-shadow: 0 0 3px 0 black;
   border: none;
   box-sizing: border-box;
-  padding: 2px 15px;
+  padding: 5px 15px;
   font-weight: 400;
 }
 
@@ -241,7 +268,7 @@ UTILITY
 
 .divider {
   border-top: 1px solid lightgray;
-  margin: 10px 2px 10px 2px;
+  margin: 10px 2px;
 }
 
 .row {

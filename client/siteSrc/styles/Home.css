@@ -24,7 +24,7 @@ body {
 }
 
 #content-container {
-  padding: 10px 20px 10px 20px;
+  padding: 10px 40px;
   align-items: center;
 }
 
@@ -55,7 +55,20 @@ header {
   width: 50%;
   min-width: 350px;
   /* text-shadow: 0px 2px 13px lightgray; */
-  margin: 10px 0 10px 0;
+  margin: 10px;
+}
+
+.privacy-policy-container {
+  display: flex;
+  justify-content: center;
+  background-color: #eee;
+  margin: 40px -40px -10px -40px;
+  padding-top: 40px;
+  border-top: 1px solid lightgray;
+}
+
+.description > li > ul {
+  margin: 20px 0 10px 0;
 }
 
 #privacy-policy-text {
@@ -134,8 +147,9 @@ UTILITY
 */
 
 .divider {
+  box-sizing: border-box;
   border-top: 1px solid lightgray;
-  margin: 40px 2px 40px 2px;
+  margin: 40px 0;
   width: 100%;
   min-width: 390px;
 }

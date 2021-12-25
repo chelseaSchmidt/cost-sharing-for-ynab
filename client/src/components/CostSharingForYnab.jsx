@@ -23,6 +23,7 @@ import {
 } from './utils/dateHelpers';
 import classifyTransactions from './utils/classifyTransactions';
 import '../styles/App.css';
+import Instructions from './Instructions';
 
 const CostSharingForYnab = () => {
   const [isPageLoading, setIsPageLoading] = useState(true);
@@ -58,10 +59,10 @@ const CostSharingForYnab = () => {
 
   const buttonDisabledMessage = !checkedTransactions.length
     ? (
-      (!splitAccountId && 'Please select shared costs and pick an IOU account')
-      || 'Please select shared costs'
+      (!splitAccountId && 'Please select shared costs and pick an IOU account first')
+      || 'Please select shared costs first'
     )
-    : 'Please pick an IOU account';
+    : 'Please pick an IOU account first';
 
   const getBudgetData = async () => {
     try {
@@ -164,7 +165,8 @@ const CostSharingForYnab = () => {
       setClassifiedTransactions({
         ...classifiedTransactions,
         iouAccountTransactions: [
-          ...iouAccountTransactions,
+          // TODO: remove this from transaction classification logic and track in separate state
+          // ...iouAccountTransactions
           transaction,
         ],
       });
@@ -211,9 +213,28 @@ const CostSharingForYnab = () => {
           </Modal>
         )
       }
+      {
+        activeModal === 'instructions' && (
+          <Modal
+            onClose={() => setActiveModal(null)}
+            buttonText="OK"
+            shouldCloseOnOverlayClick
+          >
+            <Instructions />
+          </Modal>
+        )
+      }
 
       <Header setActiveModal={setActiveModal} />
-
+      <div className="instructions-link-container">
+        <button
+          type="button"
+          className="link-btn"
+          onClick={() => setActiveModal('instructions')}
+        >
+          Instructions
+        </button>
+      </div>
       <div className="section-container">
         <AccountSelector
           sharedAccounts={sharedAccounts}
@@ -300,9 +321,8 @@ const CostSharingForYnab = () => {
           <h1 className="section-header">Split the Total Cost</h1>
           <p>
             Charge half the shared costs to the &quot;IOU&quot;
-            account that shows what your partner owes you. Each
-            category in your budget that contains a shared cost
-            will get an offsetting expense reduction.
+            account that shows what your partner owes you, and reduce
+            your expenses by the same amount.
           </p>
           <input
             type="date"
@@ -322,7 +342,7 @@ const CostSharingForYnab = () => {
           </button>
         </form>
         <TransactionWindow
-          title="IOU Account Transactions"
+          title="IOU Transaction Preview"
           transactions={iouAccountTransactions}
         />
       </div>
