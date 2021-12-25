@@ -12,7 +12,7 @@ const Home = () => {
       <Header setPrivacyActive={() => {}} url={url} appEndpoint={appEndpoint} />
       <div id="content-container" className="column">
         <p className="description tagline">
-          Track a shared credit card in YNAB without inflating your expenses.
+          Manage a shared credit card in YNAB.
         </p>
         <div className="divider" />
         <p className="description">
