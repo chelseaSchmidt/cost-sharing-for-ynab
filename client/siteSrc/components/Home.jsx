@@ -25,7 +25,7 @@ const Home = () => {
         </p>
         <div className="divider" />
         <div className="subtitle">GETTING STARTED</div>
-        <Instructions />
+        <Instructions isHomePage />
         <button
           type="button"
           onClick={
