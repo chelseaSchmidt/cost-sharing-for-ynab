@@ -12,20 +12,25 @@ export const convertDateToString = (date) => {
   return `${year}-${month}-${day}`;
 };
 
-export const convertStringToDate = (string, startOfDay = true) => {
+export const convertStringToDate = (string, isStartOfDay = true) => {
   // yyyy-mm-dd
   const month = Number(string.slice(5, 7));
   const day = Number(string.slice(8));
   const year = Number(string.slice(0, 4));
+
+  // warning: set date before setting month in case current month doesn't contain the date
+  // (e.g. it's the 31st today and we try to set it to October)
   const date = new Date();
-  date.setMonth(month - 1);
   date.setDate(day);
+  date.setMonth(month - 1);
   date.setFullYear(year);
-  if (startOfDay) {
+
+  if (isStartOfDay) {
     date.setHours(0, 0, 0, 0);
   } else {
     date.setHours(23, 59, 59, 999);
   }
+
   return date;
 };
 
