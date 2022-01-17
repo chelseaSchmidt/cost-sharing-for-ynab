@@ -12,7 +12,6 @@ const Nav = ({ setActiveModal }) => (
     </a>
     <button
       className="link-btn"
-      id="priv-pol-btn"
       type="button"
       onClick={() => setActiveModal('privacyPolicy')}
     >

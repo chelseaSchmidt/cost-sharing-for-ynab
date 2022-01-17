@@ -12,6 +12,5 @@ body {
   padding: 0;
   display: flex;
   flex-direction: column;
-  align-items: stretch;
   letter-spacing: 0.1px;
 }
