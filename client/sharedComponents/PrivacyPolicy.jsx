@@ -1,19 +1,56 @@
 import React from 'react';
-import '../appSrc/styles/PrivacyPolicy.css';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
-const PrivacyPolicy = () => (
-  <div id="privacy-policy-text">
-    <p id="privacy-header">
+const Container = styled.div`
+  ${({ isHomePage }) => isHomePage && `
+    width: 65%;
+    max-width: 950px;
+    min-width: 200px;
+    margin: 10px;
+    align-items: center;
+
+    @media (max-width: 880px) {
+      width: 680px;
+    }
+
+    @media (max-width: 770px) {
+      width: 95%;
+    }
+  `}
+`;
+
+const Header = styled.p`
+  font-weight: bold;
+  font-size: 20px;
+`;
+
+const Subtitle = styled.p`
+  font-weight: bold;
+`;
+
+const PrivacyPolicy = ({
+  isHomePage = false,
+  headerStyle = {},
+  subtitleStyle = {},
+}) => (
+  <Container
+    isHomePage={isHomePage}
+    id="privacy-policy-container"
+  >
+    <Header
+      style={headerStyle}
+    >
       Privacy Policy
-    </p>
+    </Header>
     <p>
       This Privacy Policy describes how your personal information is collected,
       used, and shared when you visit Cost Sharing for YNAB.
     </p>
     <br />
-    <p className="priv-section-header">
+    <Subtitle style={subtitleStyle}>
       PERSONAL INFORMATION COLLECTED
-    </p>
+    </Subtitle>
     <p>
       Cost Sharing for YNAB does not collect any personal information. Outside
       of connecting to YNAB itself through their API, there is no database
@@ -41,24 +78,30 @@ const PrivacyPolicy = () => (
       .
     </p>
     <br />
-    <p className="priv-section-header">
+    <Subtitle style={subtitleStyle}>
       CHANGES
-    </p>
+    </Subtitle>
     <p>
       This privacy policy may be updated from time to time in order to reflect
       changes to privacy practices or for other operational, legal or regulatory
       reasons.
     </p>
     <br />
-    <p className="priv-section-header">
+    <Subtitle style={subtitleStyle}>
       CONTACT
-    </p>
+    </Subtitle>
     <p>
       For more information about these privacy practices, if you have questions,
       or if you would like to make a complaint, please email
       cost.sharing.for.ynab@gmail.com.
     </p>
-  </div>
+  </Container>
 );
+
+PrivacyPolicy.propTypes = {
+  isHomePage: PropTypes.bool,
+  headerStyle: PropTypes.object,
+  subtitleStyle: PropTypes.object,
+};
 
 export default PrivacyPolicy;

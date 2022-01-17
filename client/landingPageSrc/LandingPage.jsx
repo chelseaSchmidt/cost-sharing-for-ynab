@@ -106,7 +106,11 @@ const LandingPage = () => {
 
   return (
     <Container>
-      <Header setPrivacyActive={() => {}} url={currentUrl} appEndpoint={appEndpoint} />
+      <Header
+        landingPageUrl={currentUrl}
+        appEndpoint={appEndpoint}
+        style={{ marginBottom: '15px' }}
+      />
 
       <ContentContainer>
         <Tagline>
@@ -153,7 +157,17 @@ const LandingPage = () => {
         </Button>
 
         <PrivacyPolicyContainer>
-          <PrivacyPolicy />
+          <PrivacyPolicy
+            isHomePage
+            headerStyle={{
+              marginBottom: '10px',
+              textTransform: 'uppercase',
+              textAlign: 'center',
+            }}
+            subtitleStyle={{
+              textAlign: 'center',
+            }}
+          />
         </PrivacyPolicyContainer>
       </ContentContainer>
     </Container>

@@ -1,9 +1,41 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
+
+const Container = styled.ol`
+  text-align: justify;
+  margin: 10px;
+
+  li {
+    margin-bottom: 20px;
+  }
+
+  li > ul {
+    margin: 20px 0 10px 0;
+  }
+
+  ${({ isHomePage }) => isHomePage && `
+    width: 65%;
+    max-width: 950px;
+    min-width: 200px;
+
+    @media (max-width: 880px) {
+      width: 680px;
+    }
+
+    @media (max-width: 770px) {
+      width: 95%;
+    }
+
+    @media (max-width: 450px) {
+      text-align: unset;
+    }
+  `}
+`;
 
 const Instructions = ({ isHomePage = false }) => {
   return (
-    <ol className="description">
+    <Container isHomePage={isHomePage}>
       <li>
         Create a
         <b>&nbsp;parent&nbsp;</b>
@@ -73,7 +105,7 @@ const Instructions = ({ isHomePage = false }) => {
         deposited the money. This will zero out the IOU account and make your bank
         account perfectly balanced, as all things should be!
       </li>
-    </ol>
+    </Container>
   );
 };
 

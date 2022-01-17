@@ -1,19 +1,25 @@
 import React, { useState } from 'react';
 import { push as Menu } from 'react-burger-menu';
-import { func, string } from 'prop-types';
+import { func, string, object } from 'prop-types';
+import styled from 'styled-components';
 import '../appSrc/styles/Header.css';
 import '../appSrc/styles/Menu.css';
 
+const Row = styled.div`
+  display: flex;
+`;
+
 const Header = ({
   setActiveModal = () => {},
-  url,
+  landingPageUrl,
   appEndpoint,
+  style = {},
 }) => {
   const [menuIsOpen, setMenuIsOpen] = useState(false);
   const handleStateChange = (state) => setMenuIsOpen(state.isOpen);
   return (
-    <header>
-      <div className="row">
+    <header style={style}>
+      <Row>
         <h1>
           Cost Sharing for YNAB
         </h1>
@@ -22,7 +28,7 @@ const Header = ({
           alt="Works with YNAB"
           id="works-with-ynab-img"
         />
-      </div>
+      </Row>
       <div
         id="menu-click-area"
         role="button"
@@ -39,24 +45,17 @@ const Header = ({
         <a href="/" className="menu-link">Home</a>
         <div className="small-divider" />
         {
-          url
+          landingPageUrl
           && (
             <>
               <a
-                href={`https://app.youneedabudget.com/oauth/authorize?client_id=4ac8ca3c431ac99075e603496136606d7da8102f6178ce2796566b30c4659988&redirect_uri=${url}${appEndpoint}&response_type=token`}
+                href={`https://app.youneedabudget.com/oauth/authorize?client_id=4ac8ca3c431ac99075e603496136606d7da8102f6178ce2796566b30c4659988&redirect_uri=${landingPageUrl}${appEndpoint}&response_type=token`}
                 onClick={() => setMenuIsOpen(false)}
                 className="menu-link"
               >
                 <b>Start</b>
               </a>
               <div className="small-divider" />
-            </>
-          )
-        }
-        {
-          url
-          && (
-            <>
               <a
                 href="/cost-sharer"
                 onClick={() => setMenuIsOpen(false)}
@@ -72,11 +71,12 @@ const Header = ({
           id="priv-pol-btn"
           type="button"
           onClick={() => {
-            setActiveModal('privacyPolicy');
-            setMenuIsOpen(false);
-            if (url) {
-              document.getElementById('privacy-policy-text').scrollIntoView(true);
+            if (landingPageUrl) {
+              document.getElementById('privacy-policy-container').scrollIntoView(true);
+            } else {
+              setActiveModal('privacyPolicy');
             }
+            setMenuIsOpen(false);
           }}
           className="menu-link"
         >
@@ -99,8 +99,9 @@ const Header = ({
 
 Header.propTypes = {
   setActiveModal: func,
-  url: string,
+  landingPageUrl: string,
   appEndpoint: string,
+  style: object,
 };
 
 export default Header;
