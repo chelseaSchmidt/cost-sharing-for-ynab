@@ -12,10 +12,10 @@ const Home = () => {
       <Header setPrivacyActive={() => {}} url={url} appEndpoint={appEndpoint} />
       <div id="content-container" className="column">
         <p className="description tagline">
-          Manage a shared credit card in YNAB.
+          Conveniently manage a shared credit card in YNAB.
         </p>
         <div className="divider" />
-        <p className="description">
+        <p className="description" style={{ fontSize: '16px' }}>
           {`
             Do you and a partner use a shared credit card for communal expenses?
             Do you want to sync the credit card with your YNAB budget to keep track

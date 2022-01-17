@@ -41,7 +41,6 @@ header {
 .subtitle, #privacy-header {
   font-weight: bold;
   font-size: 20px;
-  /* text-shadow: 0px 3px 11px lightgray; */
   margin: 0 0 20px 0;
   text-transform: uppercase;
   text-align: center;
@@ -51,20 +50,61 @@ header {
   text-align: center;
 }
 
+.description {
+  text-align: justify;
+}
+
 .description, #privacy-policy-text {
-  width: 50%;
-  min-width: 350px;
-  /* text-shadow: 0px 2px 13px lightgray; */
+  width: 65%;
+  max-width: 950px;
+  min-width: 200px;
   margin: 10px;
 }
 
+/* .description-tile {
+  box-sizing: border-box;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: -1px -1px 0 0 lightgray;
+  width: 60%;
+  max-width: 900px;
+  min-width: 200px;
+  margin: 10px;
+} */
+
+@media (max-width: 880px) {
+  .description, #privacy-policy-text {
+    width: 680px;
+  }
+  /* .description-tile {
+    width: 630px;
+  } */
+}
+
+@media (max-width: 770px) {
+  .description, #privacy-policy-text {
+    width: 95%;
+  }
+  /* .description-tile {
+    width: 90%;
+  } */
+}
+
+@media (max-width: 450px) {
+  .description, #privacy-policy-text {
+    text-align: unset;
+  }
+}
+
 .privacy-policy-container {
+  box-sizing: border-box;
   display: flex;
   justify-content: center;
   background-color: #eee;
-  margin: 40px -40px -10px -40px;
-  padding-top: 40px;
+  margin: 40px 0 -10px 0;
+  padding: 40px;
   border-top: 1px solid lightgray;
+  width: 100vw;
 }
 
 .description > li > ul {
@@ -149,9 +189,16 @@ UTILITY
 .divider {
   box-sizing: border-box;
   border-top: 1px solid lightgray;
-  margin: 40px 0;
-  width: 100%;
-  min-width: 390px;
+  margin: 70px 0;
+  width: 70%;
+  min-width: 700px;
+}
+
+@media (max-width: 770px) {
+  .divider {
+    width: 100%;
+    min-width: unset;
+  }
 }
 
 .row {
