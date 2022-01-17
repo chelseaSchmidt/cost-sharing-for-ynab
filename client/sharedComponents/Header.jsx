@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { push as Menu } from 'react-burger-menu';
 import { func, string } from 'prop-types';
-import '../styles/Header.css';
-import '../styles/Menu.css';
+import '../appSrc/styles/Header.css';
+import '../appSrc/styles/Menu.css';
 
 const Header = ({
   setActiveModal = () => {},

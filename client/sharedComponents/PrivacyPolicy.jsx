@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/PrivacyPolicy.css';
+import '../appSrc/styles/PrivacyPolicy.css';
 
 const PrivacyPolicy = () => (
   <div id="privacy-policy-text">

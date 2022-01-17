@@ -5,10 +5,10 @@ import TransactionWindow from './TransactionWindow';
 import AccountSelector from './AccountSelector';
 import Confirmation from './Confirmation';
 import Modal from './Modal';
-import Header from './Header';
+import Header from '../../sharedComponents/Header';
 import Nav from './Nav';
 import Error from './Error';
-import PrivacyPolicy from './PrivacyPolicy';
+import PrivacyPolicy from '../../sharedComponents/PrivacyPolicy';
 import {
   getTransactionsSinceDate,
   getAccounts,
@@ -23,7 +23,7 @@ import {
 } from './utils/dateHelpers';
 import classifyTransactions from './utils/classifyTransactions';
 import '../styles/App.css';
-import Instructions from './Instructions';
+import Instructions from '../../sharedComponents/Instructions';
 
 const CostSharingForYnab = () => {
   const [isPageLoading, setIsPageLoading] = useState(true);
