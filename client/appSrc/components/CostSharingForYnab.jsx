@@ -220,7 +220,7 @@ const CostSharingForYnab = () => {
             buttonText="OK"
             shouldCloseOnOverlayClick
           >
-            <Instructions />
+            <Instructions style={{ padding: '20px' }} />
           </Modal>
         )
       }

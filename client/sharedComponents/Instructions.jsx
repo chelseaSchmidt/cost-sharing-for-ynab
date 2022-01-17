@@ -5,6 +5,11 @@ import styled from 'styled-components';
 const Container = styled.ol`
   text-align: justify;
   margin: 10px;
+  margin-block-start: unset;
+  margin-block-end: unset;
+  margin-inline-start: unset;
+  margin-inline-end: unset;
+  padding-inline-start: unset;
 
   li {
     margin-bottom: 20px;
@@ -13,29 +18,14 @@ const Container = styled.ol`
   li > ul {
     margin: 20px 0 10px 0;
   }
-
-  ${({ isHomePage }) => isHomePage && `
-    width: 65%;
-    max-width: 950px;
-    min-width: 200px;
-
-    @media (max-width: 880px) {
-      width: 680px;
-    }
-
-    @media (max-width: 770px) {
-      width: 95%;
-    }
-
-    @media (max-width: 450px) {
-      text-align: unset;
-    }
-  `}
 `;
 
-const Instructions = ({ isHomePage = false }) => {
+const Instructions = ({
+  isHomePage = false,
+  style = {},
+}) => {
   return (
-    <Container isHomePage={isHomePage}>
+    <Container style={style}>
       <li>
         Create a
         <b>&nbsp;parent&nbsp;</b>
@@ -111,6 +101,7 @@ const Instructions = ({ isHomePage = false }) => {
 
 Instructions.propTypes = {
   isHomePage: PropTypes.bool,
+  style: PropTypes.object,
 };
 
 export default Instructions;

@@ -66,20 +66,7 @@ const Button = styled.button`
   }
 `;
 
-const PrivacyPolicyContainer = styled.div`
-  box-sizing: border-box;
-  display: flex;
-  justify-content: center;
-  background-color: #eee;
-  margin: 40px 0 -10px 0;
-  padding: 40px;
-  border-top: 1px solid lightgray;
-  width: 100vw;
-`;
-
-const Description = styled.p`
-  font-size: 16px;
-  text-align: justify;
+const TextContainer = styled.div`
   width: 65%;
   max-width: 950px;
   min-width: 200px;
@@ -92,10 +79,40 @@ const Description = styled.p`
   @media (max-width: 770px) {
     width: 95%;
   }
+`;
+
+const InstructionsContainer = styled(TextContainer)`
+  margin: unset;
+
+  ol {
+    text-align: justify;
+    margin: 10px;
+
+    @media (max-width: 450px) {
+      text-align: unset;
+    }
+  }
+`;
+
+const Description = styled(TextContainer)`
+  font-size: 16px;
+  text-align: justify;
 
   @media (max-width: 450px) {
     text-align: unset;
   }
+`;
+
+const PrivacyPolicyContainer = styled.div`
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #eee;
+  margin: 40px 0 -10px 0;
+  padding: 40px;
+  border-top: 1px solid lightgray;
+  width: 100vw;
 `;
 
 /* Main Component */
@@ -130,7 +147,9 @@ const LandingPage = () => {
 
         <Subtitle>GETTING STARTED</Subtitle>
 
-        <Instructions isHomePage />
+        <InstructionsContainer>
+          <Instructions isHomePage />
+        </InstructionsContainer>
 
         <Button
           type="button"
@@ -157,17 +176,18 @@ const LandingPage = () => {
         </Button>
 
         <PrivacyPolicyContainer>
-          <PrivacyPolicy
-            isHomePage
-            headerStyle={{
-              marginBottom: '10px',
-              textTransform: 'uppercase',
-              textAlign: 'center',
-            }}
-            subtitleStyle={{
-              textAlign: 'center',
-            }}
-          />
+          <TextContainer>
+            <PrivacyPolicy
+              headerStyle={{
+                marginBottom: '10px',
+                textTransform: 'uppercase',
+                textAlign: 'center',
+              }}
+              subtitleStyle={{
+                textAlign: 'center',
+              }}
+            />
+          </TextContainer>
         </PrivacyPolicyContainer>
       </ContentContainer>
     </Container>

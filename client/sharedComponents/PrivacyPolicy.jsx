@@ -2,23 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-const Container = styled.div`
-  ${({ isHomePage }) => isHomePage && `
-    width: 65%;
-    max-width: 950px;
-    min-width: 200px;
-    margin: 10px;
-    align-items: center;
-
-    @media (max-width: 880px) {
-      width: 680px;
-    }
-
-    @media (max-width: 770px) {
-      width: 95%;
-    }
-  `}
-`;
+const Container = styled.div``;
 
 const Header = styled.p`
   font-weight: bold;
@@ -30,14 +14,10 @@ const Subtitle = styled.p`
 `;
 
 const PrivacyPolicy = ({
-  isHomePage = false,
   headerStyle = {},
   subtitleStyle = {},
 }) => (
-  <Container
-    isHomePage={isHomePage}
-    id="privacy-policy-container"
-  >
+  <Container id="privacy-policy-container">
     <Header
       style={headerStyle}
     >
@@ -99,7 +79,6 @@ const PrivacyPolicy = ({
 );
 
 PrivacyPolicy.propTypes = {
-  isHomePage: PropTypes.bool,
   headerStyle: PropTypes.object,
   subtitleStyle: PropTypes.object,
 };
