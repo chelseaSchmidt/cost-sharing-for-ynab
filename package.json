@@ -9,9 +9,9 @@
     "start-http": "node server",
     "start-https": "IS_HTTPS=true node server",
     "build-prod": "webpack --config webpack.prod.js",
-    "build-site-prod": "webpack --config siteWebpack.prod.js",
+    "build-landing-page-prod": "webpack --config landingPageWebpack.prod.js",
     "watch-dev": "webpack -w --config webpack.dev.js",
-    "watch-site-dev": "webpack --config siteWebpack.dev.js -w",
+    "watch-landing-page-dev": "webpack --config landingPageWebpack.dev.js -w",
     "linter": "npx eslint ./ --ext .js,.jsx"
   },
   "repository": {

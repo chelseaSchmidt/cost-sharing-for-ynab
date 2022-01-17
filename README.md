@@ -1,5 +1,5 @@
 # Cost Sharing for YNAB
-Check out the live website and app here! https://costsharingforynab.com. Cost Sharing for YNAB is an open-source React web application built to work with YNAB (You Need a Budget), integrating with the YNAB API. YNAB members can use this add-on app, secured with HTTPS, to incorporate a shared credit card into their personal budget without making expenses look inflated. Members authenticate with their existing YNAB credentials via OAuth, allowing the app to connect securely to their account. While building this app I took the opportunity to experiment in a few new technologies, including React Hooks on the front end, and hosting the app on my own Linux-based Raspberry Pi (with Node and systemd) on the back end - although needing to reset everything after power outages got old, so I transitioned to hosting the app on AWS :). I'm excited to contribute this add-on feature to the YNAB community!
+Check out the live app here! https://costsharingforynab.com. Cost Sharing for YNAB is an open-source React web application built to work with YNAB (You Need a Budget), integrating with the YNAB API. YNAB, a popular budgeting software, doesn't natively support tracking of a shared credit card account, such as a communal expense card shared between partners. YNAB members can use this add-on app, secured with HTTPS, to incorporate a shared credit card into their personal budget without making their expenses look inflated. Members authenticate with their existing YNAB credentials via OAuth, allowing the app to connect securely to their account. While building this app I took the opportunity to experiment in a few new technologies, including React Hooks on the front end, and hosting the app on my own Linux-based Raspberry Pi (with Node and systemd) on the back end - although needing to reset everything after power outages got old, so I transitioned to hosting the app on AWS :). I'm excited to contribute this add-on feature to the YNAB community!
 
 ## System requirements
   - Node (version 10.20.1 used in development)
@@ -8,9 +8,9 @@ Check out the live website and app here! https://costsharingforynab.com. Cost Sh
 
 ## Run the application in development
   - npm install
-  - npm run watch-dev
-  - npm run watch-site-dev
-  - npm start
+  - Terminal 1: npm run watch-dev
+  - Terminal 2: npm run watch-landing-page-dev
+  - Terminal 3: npm start
     - Optional environment variable: PORT (defaults to 3000)
   - Navigate to http://localhost:3000
 

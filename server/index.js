@@ -10,7 +10,7 @@ const costSharingForYnabServer = express();
 costSharingForYnabServer.use(morgan('dev'));
 
 costSharingForYnabServer.use(
-  express.static(path.resolve(__dirname, '..', 'client', 'site')),
+  express.static(path.resolve(__dirname, '..', 'client', 'landingPage')),
 );
 costSharingForYnabServer.use(
   '/cost-sharer',
