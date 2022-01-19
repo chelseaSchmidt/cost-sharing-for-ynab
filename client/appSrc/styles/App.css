@@ -35,28 +35,6 @@ button {
 
 /*
 =================
-INSTRUCTIONS
-=================
-*/
-
-.description {
-  padding: 30px;
-}
-
-.description > li {
-  margin-bottom: 20px;
-}
-
-.description > li > ul {
-  margin-top: 20px;
-}
-
-.description > li > ul > li {
-  margin-bottom: 20px;
-}
-
-/*
-=================
 HEADERS
 =================
 */
@@ -67,17 +45,6 @@ HEADERS
   padding: 0;
   font-weight: 600;
   text-align: center;
-}
-
-/*
-=================
-DATE RANGE AREAS
-=================
-*/
-
-#date-range-form {
-  display: flex;
-  flex-direction: column;
 }
 
 /*
@@ -206,24 +173,4 @@ BUTTONS
 
 .review-transactions-btn:focus {
   outline: none;
-}
-
-/*
-=================
-UTILITY
-=================
-*/
-
-.divider {
-  border-top: 1px solid lightgray;
-  margin: 10px 2px;
-}
-
-.row {
-  display: flex;
-}
-
-.column {
-  display: flex;
-  flex-direction: column;
 }
