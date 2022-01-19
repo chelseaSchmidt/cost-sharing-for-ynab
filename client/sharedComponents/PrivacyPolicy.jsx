@@ -18,9 +18,7 @@ const PrivacyPolicy = ({
   subtitleStyle = {},
 }) => (
   <Container id="privacy-policy-container">
-    <Header
-      style={headerStyle}
-    >
+    <Header style={headerStyle}>
       Privacy Policy
     </Header>
     <p>

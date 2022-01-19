@@ -35,40 +35,9 @@ button {
 
 /*
 =================
-CONTAINERS
-=================
-*/
-
-.app-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.section-container {
-  background-color: white;
-  box-shadow: 0 0 3px 0 #9298a2;
-  max-width: 1290px;
-  border-radius: 12px;
-  padding: 50px 75px 50px 75px;
-  margin-bottom: 50px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 60vw;
-}
-
-/*
-=================
 INSTRUCTIONS
 =================
 */
-
-.instructions-link-container {
-  margin-top: -25px;
-  margin-bottom: 25px;
-}
 
 .description {
   padding: 30px;
@@ -106,26 +75,9 @@ DATE RANGE AREAS
 =================
 */
 
-#date-range-area {
-  width: 100%;
-}
-
-#date-range-area > p {
-  margin: 0 0 20px 0;
-}
-
 #date-range-form {
   display: flex;
   flex-direction: column;
-}
-
-#date-range-area > form > label > input {
-  margin: 10px;
-  cursor: text;
-}
-
-#date-range-area > form > label > input::-webkit-calendar-picker-indicator {
-  cursor: pointer;
 }
 
 /*
@@ -232,10 +184,6 @@ BUTTONS
 .update-btn:disabled {
   background-color: gray;
   cursor: not-allowed;
-}
-
-#update-txn-btn {
-  margin-top: 20px;
 }
 
 .review-transactions-btn {
