@@ -120,12 +120,13 @@ const PrivacyPolicyContainer = styled.div`
 const LandingPage = () => {
   const currentUrl = window.location.href;
   const appEndpoint = 'cost-sharer';
+  const ynabAuthScreenLink = `https://app.youneedabudget.com/oauth/authorize?client_id=4ac8ca3c431ac99075e603496136606d7da8102f6178ce2796566b30c4659988&redirect_uri=${currentUrl}${appEndpoint}&response_type=token`;
 
   return (
     <Container>
       <Header
-        landingPageUrl={currentUrl}
-        appEndpoint={appEndpoint}
+        onLandingPage
+        ynabAuthScreenLink={ynabAuthScreenLink}
         style={{ marginBottom: '15px' }}
       />
 

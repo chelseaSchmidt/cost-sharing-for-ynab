@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+/* Styled Components */
+
 const Container = styled.ol`
   text-align: justify;
   margin: 10px;
@@ -20,81 +22,88 @@ const Container = styled.ol`
   }
 `;
 
+/* Helper Functions */
+
+const parseMarkdownToHtml = (text) => {
+  const boldPattern = /(\*\*)/;
+  const italicPattern = /(__)/;
+
+  const substrings = text.split(boldPattern)
+    .flatMap((substring) => substring.split(italicPattern));
+
+  let isBoldOn = false;
+  let isItalicOn = false;
+
+  return substrings.map((substring) => {
+    if (substring === '**') isBoldOn = !isBoldOn;
+    else if (substring === '__') isItalicOn = !isItalicOn;
+
+    else {
+      if (isBoldOn && isItalicOn) return <b key={substring}><em>{substring}</em></b>;
+      if (isBoldOn) return <b key={substring}>{substring}</b>;
+      if (isItalicOn) return <em key={substring}>{substring}</em>;
+      return substring;
+    }
+
+    return '';
+  });
+};
+
+/* Main Component */
+
 const Instructions = ({
   isHomePage = false,
   style = {},
 }) => {
+  const listItems = [
+    { text: 'Create a **parent** category in your YNAB budget named something like "Shared Expenses"' },
+    { text: 'Add desired **sub-categories** underneath the "Shared Expenses" parent (such as rent, groceries, etc.)' },
+    {
+      text: 'Add an **IOU account in YNAB:** this account will track what your partner owes you for their half of the credit card debt.',
+      subList: [
+        { text: 'Click **Add Account** in YNAB' },
+        { text: 'Select an account type of **Checking** (or Cash - this doesn\'t matter so much)' },
+        { text: 'Nickname the account something like **"Owed from [__insert partner\'s name__]"**' },
+      ],
+    },
+    {
+      text: 'Add the **shared credit card** as a YNAB account and sync it with your bank, or add transactions manually. Classify transactions to the shared expense categories you created earlier.',
+    },
+    {
+      text: 'Click **Start** below. You will need your YNAB credentials.',
+      isHidden: !isHomePage,
+    },
+    {
+      text: 'The app will guide you through selecting your shared costs over a custom date range. Then it will create a single transaction **removing half the costs from your expenses,** and **adding the same amount to the IOU account you created,** reflecting the balance your partner owes you. You\'ll be able to see the transaction in YNAB, and delete or edit it if needed.',
+    },
+    {
+      text: 'When your partner pays you back the balance, add a **transfer transaction** from the IOU account to the bank or cash account where you deposited the money. This will zero out the IOU account and make your bank account perfectly balanced, as all things should be!',
+    },
+  ];
+
   return (
     <Container style={style}>
-      <li>
-        Create a
-        <b>&nbsp;parent&nbsp;</b>
-        category in your YNAB budget named something like &quot;Shared Expenses&quot;
-      </li>
-      <li>
-        Add desired
-        <b>&nbsp;sub-categories&nbsp;</b>
-        underneath &quot;Shared Expenses&quot;&nbsp;
-        (such as &quot;Rent,&quot; &quot;Groceries,&quot; etc.)
-      </li>
-      <li>
-        Add an
-        <b>&nbsp;IOU account in YNAB:&nbsp;</b>
-        this account will track what your partner owes you for their half of the
-        credit card debt.
-        <ul>
-          <li>
-            Click
-            <b>&nbsp;Add Account&nbsp;</b>
-            in YNAB
-          </li>
-          <li>
-            Select an account type of
-            <b>&nbsp;Checking&nbsp;</b>
-            (or Cash - this doesn&apos;t matter so much)
-          </li>
-          <li>
-            Nickname the account something like
-            <b>
-              &nbsp;&quot;Owed from [
-              <em>insert partner&apos;s name</em>
-              ]&quot;&nbsp;
-            </b>
-          </li>
-        </ul>
-      </li>
-      <li>
-        Add the
-        <b>&nbsp;shared credit card&nbsp;</b>
-        as a YNAB account and sync it with your bank, or add transactions manually.
-        Classify transactions to the shared expense categories you created earlier.
-      </li>
       {
-        isHomePage && (
-          <li>
-            Click
-            <b>&nbsp;Start&nbsp;</b>
-            below. You will need your YNAB credentials.
-          </li>
-        )
+        listItems.map((item) => (
+          !item.isHidden && (
+            <li key={item.text}>
+              {parseMarkdownToHtml(item.text)}
+
+              {item.subList && (
+                <ul>
+                  {item.subList.map((subItem) => (
+                    !subItem.isHidden && (
+                      <li key={subItem.text}>
+                        {parseMarkdownToHtml(subItem.text)}
+                      </li>
+                    )
+                  ))}
+                </ul>
+              )}
+            </li>
+          )
+        ))
       }
-      <li>
-        The app will guide you through selecting your shared costs over a custom date range.
-        Then it will create a single transaction
-        <b>&nbsp;removing half the costs from your expenses,&nbsp;</b>
-        and
-        <b>&nbsp;adding the same amount to the IOU account you created,&nbsp;</b>
-        reflecting the balance your partner owes you.
-        You&apos;ll be able to see the transaction in YNAB,
-        and delete or edit it if needed.
-      </li>
-      <li>
-        When your partner pays you back the balance, add a
-        <b>&nbsp;transfer&nbsp;</b>
-        transaction from the IOU account to the bank or cash account where you
-        deposited the money. This will zero out the IOU account and make your bank
-        account perfectly balanced, as all things should be!
-      </li>
     </Container>
   );
 };

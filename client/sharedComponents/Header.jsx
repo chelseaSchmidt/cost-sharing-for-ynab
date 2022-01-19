@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { push as Menu } from 'react-burger-menu';
-import { func, string, object } from 'prop-types';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import './react-burger-menu.css';
 
@@ -70,13 +70,13 @@ const MenuItem = styled.a`
 `;
 
 const Header = ({
+  onLandingPage,
+  ynabAuthScreenLink,
   setActiveModal = () => {},
-  landingPageUrl,
-  appEndpoint,
   style = {},
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const forwardClickToMenu = () => document.getElementById('react-burger-menu-btn').click();
+  const passClickToMenu = () => document.getElementById('react-burger-menu-btn').click();
 
   return (
     <Container style={style}>
@@ -95,8 +95,8 @@ const Header = ({
         role="button"
         aria-label="Select menu"
         tabIndex={0}
-        onClick={forwardClickToMenu}
-        onKeyDown={forwardClickToMenu}
+        onClick={passClickToMenu}
+        onKeyDown={passClickToMenu}
       />
 
       <Menu
@@ -109,11 +109,11 @@ const Header = ({
         <Divider />
 
         {
-          landingPageUrl
+          onLandingPage
           && (
             <>
               <MenuItem
-                href={`https://app.youneedabudget.com/oauth/authorize?client_id=4ac8ca3c431ac99075e603496136606d7da8102f6178ce2796566b30c4659988&redirect_uri=${landingPageUrl}${appEndpoint}&response_type=token`}
+                href={ynabAuthScreenLink}
                 onClick={() => setIsMenuOpen(false)}
               >
                 <b>Start</b>
@@ -135,7 +135,7 @@ const Header = ({
         <MenuItem
           type="button"
           onClick={() => {
-            if (landingPageUrl) {
+            if (onLandingPage) {
               document.getElementById('privacy-policy-container').scrollIntoView(true);
             } else {
               setActiveModal('privacyPolicy');
@@ -162,10 +162,10 @@ const Header = ({
 };
 
 Header.propTypes = {
-  setActiveModal: func,
-  landingPageUrl: string,
-  appEndpoint: string,
-  style: object,
+  onLandingPage: PropTypes.bool,
+  ynabAuthScreenLink: PropTypes.string,
+  setActiveModal: PropTypes.func,
+  style: PropTypes.object,
 };
 
 export default Header;
