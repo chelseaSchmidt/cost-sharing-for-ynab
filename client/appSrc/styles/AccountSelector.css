@@ -1,48 +1,5 @@
 /*
 ==============
-CONTAINERS
-==============
-*/
-
-#account-selector-container {
-  border-radius: 12px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 100%;
-}
-
-/*
-==============
-SECTIONS
-==============
-*/
-
-#account-selector-area {
-  display: flex;
-  flex-direction: column;
-}
-
-/*
-==============
-TAG AREAS
-==============
-*/
-
-#bank-tags {
-  margin-bottom: 40px;
-}
-
-#cat-tags {
-  margin-bottom: 40px;
-}
-
-#bank-tags > p, #cat-tags > p {
-  margin-bottom: 20px;
-}
-
-/*
-==============
 TAGS
 ==============
 */

@@ -1,8 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import styled from 'styled-components';
 import '../styles/AccountSelector.css';
 import { SectionHeader } from './styledComponents';
+
+/* Styled Components */
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 12px;
+  width: 100%;
+`;
+
+// FIXME: not a very good name
+const ButtonsContainer = styled.div`
+  margin-bottom: 40px;
+
+  p {
+    margin-bottom: 20px;
+  }
+`;
+
+/* Main Component */
 
 const AccountSelector = ({
   budgetData: {
@@ -61,78 +83,94 @@ const AccountSelector = ({
     }
   };
 
-  const excludedCategories = [
+  const hiddenCategoryNames = [
     'Internal Master Category',
     'Credit Card Payments',
     'Hidden Categories',
   ];
 
   return (
-    <div id="account-selector-container">
-      <div id="account-selector-area">
-        <div id="bank-tags">
-          <SectionHeader>Choose Accounts and Categories</SectionHeader>
-          <p><b>Select the credit card(s) you use for shared expenses</b></p>
-          <div className="tag-area">
-            {budgetAccounts.map(({ name, id }) => {
-              let toggleClass = 'acct-btn';
-              if (sharedAccounts.map((acct) => acct.accountId).indexOf(id) > -1) {
-                toggleClass += ' active-btn';
+    <Container>
+      <ButtonsContainer>
+        <SectionHeader>Choose Accounts and Categories</SectionHeader>
+
+        <p><b>Select the credit card(s) you use for shared expenses</b></p>
+
+        <div className="tag-area">
+          {
+            budgetAccounts.map(({ name, id }) => {
+              let classNamesString = 'acct-btn';
+
+              if (sharedAccounts.find(({ accountId }) => accountId === id)) {
+                classNamesString += ' active-btn';
               }
+
               return (
                 <button
                   type="button"
                   key={id}
                   id={id}
-                  className={toggleClass}
+                  className={classNamesString}
                   onClick={() => toggleSharedAccount({ id, name })}
                 >
                   {name}
                 </button>
               );
-            })}
-          </div>
+            })
+          }
         </div>
-        <div id="cat-tags">
-          <p><b>Select the YNAB parent category(ies) where you track shared expenses</b></p>
-          <div className="tag-area">
-            {budgetParentCategories.map(({ name, id, categories: subCategories }) => {
-              if (excludedCategories.indexOf(name) > -1) {
-                return <span key={id} />;
+      </ButtonsContainer>
+      <ButtonsContainer>
+        <p><b>Select the YNAB parent category(ies) where you track shared expenses</b></p>
+        <div className="tag-area">
+          {
+            budgetParentCategories.map(({
+              name,
+              id,
+              categories: subCategories,
+            }) => {
+              if (!hiddenCategoryNames.includes(name)) {
+                let classNamesString = 'cat-btn';
+
+                if (sharedParentCategories.find(({ categoryId }) => categoryId === id)) {
+                  classNamesString += ' active-btn';
+                }
+
+                return (
+                  <button
+                    type="button"
+                    id={id}
+                    className={classNamesString}
+                    onClick={() => toggleSharedCategory({ id, name, subCategories })}
+                    key={id}
+                  >
+                    {name}
+                  </button>
+                );
               }
-              let toggleClass = 'cat-btn';
-              if (sharedParentCategories.map((cat) => cat.categoryId).indexOf(id) > -1) {
-                toggleClass += ' active-btn';
-              }
-              return (
-                <button
-                  type="button"
-                  id={id}
-                  className={toggleClass}
-                  onClick={() => toggleSharedCategory({ id, name, subCategories })}
-                  key={id}
-                >
-                  {name}
-                </button>
-              );
-            })}
-          </div>
+              return null;
+            })
+          }
         </div>
-        <div id="split-option-area">
-          <p>
-            <b>
-              Select the &quot;IOU&quot; account that shows what your partner owes you
-            </b>
-          </p>
-          <div id="split-acct-dropdown">
-            <select
-              onChange={(e) => setSplitAccountId(e.target.value)}
-              defaultValue="select-an-account"
-            >
-              <option disabled value="select-an-account">
-                -- select an account --
-              </option>
-              {budgetAccounts.map(({ name, id }) => (
+      </ButtonsContainer>
+      <div id="split-option-area">
+        <p>
+          <b>
+            Select the &quot;IOU&quot; account that shows what your partner owes you
+          </b>
+        </p>
+
+        <div id="split-acct-dropdown">
+          <select
+            onChange={(e) => setSplitAccountId(e.target.value)}
+            defaultValue="select-an-account"
+          >
+            <option disabled value="select-an-account">
+              -- select an account --
+            </option>
+
+            {
+              budgetAccounts.map(({ name, id }) => (
                 <option
                   id={`split-${id}`}
                   key={`split-${id}`}
@@ -140,12 +178,12 @@ const AccountSelector = ({
                 >
                   {name}
                 </option>
-              ))}
-            </select>
-          </div>
+              ))
+            }
+          </select>
         </div>
       </div>
-    </div>
+    </Container>
   );
 };
 
