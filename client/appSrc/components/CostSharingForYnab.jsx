@@ -10,6 +10,14 @@ import Header from '../../sharedComponents/Header';
 import Nav from './Nav';
 import Error from './Error';
 import PrivacyPolicy from '../../sharedComponents/PrivacyPolicy';
+import Instructions from '../../sharedComponents/Instructions';
+import {
+  SectionHeader,
+  BaseButton,
+  WarningIcon,
+  Tooltip,
+  LinkishButton,
+} from './styledComponents';
 import {
   getTransactionsSinceDate,
   getAccounts,
@@ -23,8 +31,7 @@ import {
   isDateBeforeEndDate,
 } from './utils/dateHelpers';
 import classifyTransactions from './utils/classifyTransactions';
-import '../styles/App.css';
-import Instructions from '../../sharedComponents/Instructions';
+import '../styles/global.css';
 
 /* Styled Components */
 
@@ -40,53 +47,21 @@ const InstructionsButtonContainer = styled.div`
   margin-bottom: 25px;
 `;
 
-const InstructionsButton = styled.button`
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  text-rendering: unset;
-  align-items: unset;
-  font: unset;
-  box-sizing: unset;
-  writing-mode: unset;
-  -webkit-writing-mode: unset;
-  letter-spacing: unset;
-  word-spacing: unset;
-  text-transform: unset;
-  text-indent: unset;
-  text-shadow: unset;
-  display: unset;
-  background: none;
-  border: none;
-
-  text-align: left;
-  padding: 0;
-  margin: 0 10px;
-  cursor: pointer;
-  text-decoration: underline;
-  color: #464b46;
-  font-size: 12px;
-
-  :hover, :visited:hover {
-    color: blue;
-  }
-
-  :visited {
-    color: #464b46;
-  }
-`;
-
 const SectionTile = styled.section`
-  background-color: white;
-  box-shadow: 0 0 3px 0 #9298a2;
-  max-width: 1290px;
-  border-radius: 12px;
-  padding: 50px 75px;
-  margin-bottom: 50px;
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 60vw;
+  max-width: 1290px;
+  padding: 50px 75px;
+  margin-bottom: 50px;
+  border-radius: 12px;
+  box-shadow: 0 0 3px 0 #9298a2;
+  background-color: white;
+`;
+
+const TransactionsTile = styled(SectionTile)`
+  max-height: 92vh;
 `;
 
 const DateRangeSelectorContainer = styled.div`
@@ -96,15 +71,6 @@ const DateRangeSelectorContainer = styled.div`
 const DateRangeForm = styled.form`
   display: flex;
   flex-direction: column;
-
-  label > input {
-    margin: 10px;
-    cursor: text;
-  }
-
-  label > input::-webkit-calendar-picker-indicator {
-    cursor: pointer;
-  }
 `;
 
 const DateRangeFormDescription = styled.p`
@@ -112,32 +78,73 @@ const DateRangeFormDescription = styled.p`
   margin: 0 0 20px 0;
 `;
 
-const ShowTransactionsButton = styled.button`
-  box-sizing: unset;
-  background-color: #11518c;
-  color: white;
-  border-radius: 8px;
-  height: 25px;
+const DateRangeLabel = styled.label``;
+
+const DateRangeInput = styled.input`
+  margin: 10px;
+  cursor: text;
+
+  ::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+  }
+`;
+
+const ShowTransactionsButton = styled(BaseButton)`
   margin: 20px 10px 0 10px;
-  font-size: 14px;
-  border: 1px solid white;
-  box-shadow: 0 1px 2px 0 #515852;
-  padding: 2px 15px;
-  font-weight: 400;
-  cursor: pointer;
+`;
+
+const ReviewTransactionsButton = styled(BaseButton)`
+  background-color: maroon;
+  margin-left: 10px;
+  border: none;
+  box-shadow: 0 0 3px 0 black;
 
   :hover {
-    background-color: lightgray;
+    color: maroon;
   }
+`;
 
-  :focus {
-    outline: none;
-  }
+const SplitTransactionsButton = styled(BaseButton)`
+  position: relative;
+  margin: 0 10px;
 
-  :disabled {
-    background-color: gray;
-    cursor: not-allowed;
+  :disabled:hover {
+    > * {
+      visibility: visible;
+    }
   }
+`;
+
+const ButtonDisabledPopup = styled(Tooltip)`
+  bottom: 125%;
+  right: unset;
+  left: 50%;
+  width: 200px;
+  margin-left: -100px;
+  padding: 10px 5px;
+  font-size: 12px;
+
+  ::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border: 5px solid;
+    border-color:  #444 transparent transparent transparent;
+  }
+`;
+
+const MissingTransactionsWarning = styled.p`
+  display: flex;
+  align-items: center;
+  color: red;
+`;
+
+const TransactionWindowContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  border-radius: 12px;
 `;
 
 /* Main Component */
@@ -332,12 +339,12 @@ const CostSharingForYnab = () => {
       <Header setActiveModal={setActiveModal} />
 
       <InstructionsButtonContainer>
-        <InstructionsButton
+        <LinkishButton
           type="button"
           onClick={() => setActiveModal('instructions')}
         >
           Instructions
-        </InstructionsButton>
+        </LinkishButton>
       </InstructionsButtonContainer>
 
       <SectionTile>
@@ -357,24 +364,24 @@ const CostSharingForYnab = () => {
           </DateRangeFormDescription>
 
           <DateRangeForm>
-            <label htmlFor="transactions-start-date">
+            <DateRangeLabel htmlFor="transactions-start-date">
               Start date:
-              <input
+              <DateRangeInput
                 type="date"
                 id="transactions-start-date"
                 value={convertDateToString(transactionsStartDate)}
                 onChange={(e) => setTransactionsStartDate(convertStringToDate(e.target.value))}
               />
-            </label>
-            <label htmlFor="transactions-end-date">
+            </DateRangeLabel>
+            <DateRangeLabel htmlFor="transactions-end-date">
               End date:
-              <input
+              <DateRangeInput
                 type="date"
                 id="transactions-end-date"
                 value={convertDateToString(transactionsEndDate)}
                 onChange={(e) => setTransactionsEndDate(convertStringToDate(e.target.value, false))}
               />
-            </label>
+            </DateRangeLabel>
           </DateRangeForm>
         </DateRangeSelectorContainer>
 
@@ -393,26 +400,23 @@ const CostSharingForYnab = () => {
           Show Transactions
         </ShowTransactionsButton>
       </SectionTile>
-      <SectionTile id="transaction-container">
-        <h1 className="section-header">Select Shared Costs</h1>
+      <TransactionsTile id="transaction-container">
+        <SectionHeader>Select Shared Costs</SectionHeader>
         {
           !!sharedAccountErrorTransactions.length && (
-            <p style={{ display: 'flex', color: 'red', alignItems: 'center' }}>
-              <span className="warning-symbol">!</span>
-              <span>
-                You have costs in shared accounts that are missing from shared budget categories.
-              </span>
-              <button
+            <MissingTransactionsWarning>
+              <WarningIcon>!</WarningIcon>
+              You have costs in shared accounts that are missing from shared budget categories.
+              <ReviewTransactionsButton
                 type="button"
-                className="review-transactions-btn"
                 onClick={() => setActiveModal('transactionReview')}
               >
-                Review these transactions
-              </button>
-            </p>
+                Review
+              </ReviewTransactionsButton>
+            </MissingTransactionsWarning>
           )
         }
-        <div id="transaction-area">
+        <TransactionWindowContainer>
           <TransactionWindow
             transactions={transactionsInSharedCategories}
             transactionsSharedInOneButNotOther={sharedCategoryErrorTransactions}
@@ -422,32 +426,29 @@ const CostSharingForYnab = () => {
             shouldShowIcon
             isEditable
           />
-        </div>
-      </SectionTile>
-      <SectionTile id="split-btn-area">
+        </TransactionWindowContainer>
+      </TransactionsTile>
+      <SectionTile>
         <form>
-          <h1 className="section-header">Split the Total Cost</h1>
+          <SectionHeader>Split the Total Cost</SectionHeader>
           <p>
             Charge half the shared costs to the &quot;IOU&quot;
             account that shows what your partner owes you, and reduce
             your expenses by the same amount.
           </p>
-          <input
+          <DateRangeInput
             type="date"
-            id="split-date"
             value={convertDateToString(splitDate)}
             onChange={(e) => setSplitDate(convertStringToDate(e.target.value))}
           />
-          <button
+          <SplitTransactionsButton
             type="submit"
             onClick={createSplitEntry}
-            id="split-txn-btn"
-            className="update-btn"
             disabled={isSplitTransactionDisabled}
           >
             Split Costs On This Date
-            <span className="split-txn-btn-text">{buttonDisabledMessage}</span>
-          </button>
+            <ButtonDisabledPopup>{buttonDisabledMessage}</ButtonDisabledPopup>
+          </SplitTransactionsButton>
         </form>
         <TransactionWindow
           title="IOU Transaction Preview"

@@ -2,13 +2,54 @@
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import formatCurrency from 'format-currency';
-import {
-  shape,
-  string,
-  number,
-  bool,
-  func,
-} from 'prop-types';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import { WarningIcon, Tooltip } from './styledComponents';
+
+/* Styled Components */
+
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+  border: 1px solid lightgray;
+  border-radius: 12px;
+  box-shadow: 0 1px 0 0.5px #f1f2f1;
+  margin: 0 2px 5px 0;
+  padding: 5px;
+  background-color: white;
+  color: #464b46;
+`;
+
+const Checkbox = styled.input`
+  cursor: pointer;
+`;
+
+const Date = styled.div`
+  color: gray;
+  margin-right: 20px;
+  font-size: 12px;
+`;
+
+const Amount = styled.div`
+  width: 100px;
+  text-align: center;
+  margin-right: 5px;
+  font-size: 17px;
+`;
+
+const Details = styled.div`
+  font-size: 12px;
+`;
+
+const AccountName = styled.div`
+  display: flex;
+`;
+
+const TransactionWarningIcon = styled(WarningIcon)`
+  background-color: rgba(255, 0, 0, 0.1);
+`;
+
+/* Main Component */
 
 const Transaction = ({
   isEditable,
@@ -18,15 +59,14 @@ const Transaction = ({
   shouldShowIcon,
   isSelectAllChecked = false,
 }) => {
-  const currencyOpts = { format: '%s%v', symbol: '$' };
   const {
     date,
     amount,
-    // memo,
-    // cleared,
     payee_name,
     category_name,
     account_name,
+    // memo,
+    // cleared,
   } = transaction;
 
   const [isSelected, setIsSelected] = useState(false);
@@ -36,9 +76,9 @@ const Transaction = ({
   }, [isSelectAllChecked]);
 
   return (
-    <div className="transaction">
+    <Container>
       {isEditable && (
-        <input
+        <Checkbox
           type="checkbox"
           checked={isSelected}
           onChange={(e) => {
@@ -47,60 +87,63 @@ const Transaction = ({
           }}
         />
       )}
-      <div className="txn-date">
+
+      <Date>
         {moment(date).format('MMM DD, YYYY')}
-      </div>
-      <div className="txn-amt">
-        {formatCurrency(amount / -1000, currencyOpts)}
-      </div>
-      <div className="txn-details">
-        <div className="txn-cat">
+      </Date>
+
+      <Amount>
+        {formatCurrency(
+          amount / -1000,
+          { format: '%s%v', symbol: '$' },
+        )}
+      </Amount>
+
+      <Details>
+        <div>
           {category_name}
         </div>
-        <div className="txn-payee">
+
+        <div>
           {payee_name}
         </div>
-        <div className="txn-acct">
+
+        <AccountName>
           {account_name}
+
           {
             isIsolated && shouldShowIcon && (
-              <span
-                className="warning-symbol"
-                style={{ backgroundColor: 'rgba(255, 0, 0, 0.1)' }}
-              >
+              <TransactionWarningIcon>
                 !
-                <span className="warning-symbol-text">
+                <Tooltip>
                   You did not mark this account as shared
-                </span>
-              </span>
+                </Tooltip>
+              </TransactionWarningIcon>
             )
           }
-        </div>
-        {/* TODO */}
-        {/* <div className="txn-more">
-          <button type="button" className="more-btn">
-            More
-          </button>
-        </div> */}
-      </div>
-    </div>
+        </AccountName>
+
+        {/* TODO: "More" button */}
+      </Details>
+    </Container>
   );
 };
 
 Transaction.propTypes = {
-  isEditable: bool,
-  selectTransaction: func,
-  isIsolated: bool.isRequired,
-  shouldShowIcon: bool,
-  isSelectAllChecked: bool,
-  transaction: shape({
-    date: string,
-    amount: number,
-    memo: string,
-    cleared: string,
-    approved: bool,
-    payee_name: string,
-    category_name: string,
+  isEditable: PropTypes.bool,
+  selectTransaction: PropTypes.func,
+  isIsolated: PropTypes.bool.isRequired,
+  shouldShowIcon: PropTypes.bool,
+  isSelectAllChecked: PropTypes.bool,
+  transaction: PropTypes.shape({
+    date: PropTypes.string,
+    amount: PropTypes.number,
+    memo: PropTypes.string,
+    cleared: PropTypes.string,
+    approved: PropTypes.bool,
+    payee_name: PropTypes.string,
+    category_name: PropTypes.string,
+    account_name: PropTypes.string,
   }).isRequired,
 };
 

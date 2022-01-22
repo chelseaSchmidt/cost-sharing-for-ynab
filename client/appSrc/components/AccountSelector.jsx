@@ -1,12 +1,7 @@
 import React from 'react';
-import {
-  arrayOf,
-  objectOf,
-  string,
-  func,
-  shape,
-} from 'prop-types';
+import PropTypes from 'prop-types';
 import '../styles/AccountSelector.css';
+import { SectionHeader } from './styledComponents';
 
 const AccountSelector = ({
   budgetData,
@@ -19,7 +14,9 @@ const AccountSelector = ({
   const budgetAccounts = [...budgetData.accounts];
   const budgetCategories = [...budgetData.categoryGroups];
 
-  function addAccount({ target: { id, innerHTML } }) {
+  const selectAccount = (e) => {
+    const { target: { id, innerHTML } } = e;
+
     if (sharedAccounts.filter((acct) => acct.accountId === id).length) {
       const copyAccounts = sharedAccounts.filter((acct) => acct.accountId !== id);
       setSharedAccounts(copyAccounts);
@@ -28,9 +25,9 @@ const AccountSelector = ({
       copyAccounts.push({ name: innerHTML, accountId: id });
       setSharedAccounts(copyAccounts);
     }
-  }
+  };
 
-  function addCategory({ target: { id, innerHTML } }) {
+  const selectCategory = ({ target: { id, innerHTML } }) => {
     if (sharedParentCategories.filter((cat) => cat.categoryId === id).length) {
       const copyCats = sharedParentCategories.filter((cat) => cat.categoryId !== id);
       setSharedParentCategories(copyCats);
@@ -42,7 +39,7 @@ const AccountSelector = ({
       copyCats.push({ name: innerHTML, categoryId: id, subCategories });
       setSharedParentCategories(copyCats);
     }
-  }
+  };
 
   const excludedCategories = [
     'Internal Master Category',
@@ -54,7 +51,7 @@ const AccountSelector = ({
     <div id="account-selector-container">
       <div id="account-selector-area">
         <div id="bank-tags">
-          <h1 className="section-header">Choose Accounts and Categories</h1>
+          <SectionHeader>Choose Accounts and Categories</SectionHeader>
           <p><b>Select the credit card(s) you use for shared expenses</b></p>
           <div className="tag-area">
             {budgetAccounts.map(({ name, id }) => {
@@ -67,7 +64,7 @@ const AccountSelector = ({
                   type="button"
                   id={id}
                   className={toggleClass}
-                  onClick={addAccount}
+                  onClick={selectAccount}
                   key={id}
                 >
                   {name}
@@ -92,7 +89,7 @@ const AccountSelector = ({
                   type="button"
                   id={id}
                   className={toggleClass}
-                  onClick={addCategory}
+                  onClick={selectCategory}
                   key={id}
                 >
                   {name}
@@ -133,27 +130,28 @@ const AccountSelector = ({
 };
 
 AccountSelector.propTypes = {
-  sharedAccounts: arrayOf(objectOf(string)).isRequired,
-  sharedParentCategories: arrayOf(shape({
-    name: string,
-    categoryId: string,
-    subCategories: arrayOf(shape({
-      id: string,
-    })),
-  })).isRequired,
-  budgetData: shape({
-    budgetAccounts: arrayOf(objectOf(string)),
-    budgetCategories: arrayOf(shape({
-      name: string,
-      id: string,
-      categories: arrayOf(shape({
-        id: string,
-      })),
-    })),
+  sharedAccounts: PropTypes.array.isRequired,
+  sharedParentCategories: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string,
+      categoryId: PropTypes.string,
+      subCategories: PropTypes.array,
+    }),
+  ).isRequired,
+  budgetData: PropTypes.shape({
+    accounts: PropTypes.array,
+    categoryGroups: PropTypes.array,
+    budgetCategories: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+        id: PropTypes.string,
+        categories: PropTypes.array,
+      }),
+    ),
   }).isRequired,
-  setSharedAccounts: func.isRequired,
-  setSharedParentCategories: func.isRequired,
-  setSplitAccountId: func.isRequired,
+  setSharedAccounts: PropTypes.func.isRequired,
+  setSharedParentCategories: PropTypes.func.isRequired,
+  setSplitAccountId: PropTypes.func.isRequired,
 };
 
 export default AccountSelector;
