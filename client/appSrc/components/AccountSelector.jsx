@@ -1,43 +1,63 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 import '../styles/AccountSelector.css';
 import { SectionHeader } from './styledComponents';
 
 const AccountSelector = ({
-  budgetData,
+  budgetData: {
+    accounts: budgetAccounts,
+    categoryGroups: budgetParentCategories,
+  },
   sharedAccounts,
   sharedParentCategories,
   setSharedAccounts,
   setSharedParentCategories,
   setSplitAccountId,
 }) => {
-  const budgetAccounts = [...budgetData.accounts];
-  const budgetCategories = [...budgetData.categoryGroups];
+  const toggleSharedAccount = ({
+    id,
+    name,
+  }) => {
+    const doesAccountHaveId = ({ accountId }) => accountId === id;
 
-  const selectAccount = (e) => {
-    const { target: { id, innerHTML } } = e;
+    const selectAccount = () => {
+      setSharedAccounts([...sharedAccounts, { name, accountId: id }]);
+    };
 
-    if (sharedAccounts.filter((acct) => acct.accountId === id).length) {
-      const copyAccounts = sharedAccounts.filter((acct) => acct.accountId !== id);
-      setSharedAccounts(copyAccounts);
+    const deselectAccount = () => {
+      setSharedAccounts(sharedAccounts.filter(_.negate(doesAccountHaveId)));
+    };
+
+    if (sharedAccounts.find(doesAccountHaveId)) {
+      deselectAccount();
     } else {
-      const copyAccounts = [...sharedAccounts];
-      copyAccounts.push({ name: innerHTML, accountId: id });
-      setSharedAccounts(copyAccounts);
+      selectAccount();
     }
   };
 
-  const selectCategory = ({ target: { id, innerHTML } }) => {
-    if (sharedParentCategories.filter((cat) => cat.categoryId === id).length) {
-      const copyCats = sharedParentCategories.filter((cat) => cat.categoryId !== id);
-      setSharedParentCategories(copyCats);
+  const toggleSharedCategory = ({
+    id,
+    name,
+    subCategories,
+  }) => {
+    const doesCategoryHaveId = ({ categoryId }) => categoryId === id;
+
+    const selectCategory = () => {
+      setSharedParentCategories([
+        ...sharedParentCategories,
+        { name, categoryId: id, subCategories },
+      ]);
+    };
+
+    const deselectCategory = () => {
+      setSharedParentCategories(sharedParentCategories.filter(_.negate(doesCategoryHaveId)));
+    };
+
+    if (sharedParentCategories.find(doesCategoryHaveId)) {
+      deselectCategory();
     } else {
-      const subCategories = budgetCategories
-        .filter((catGroup) => catGroup.id === id)
-        .map((catGroup) => catGroup.categories)[0];
-      const copyCats = [...sharedParentCategories];
-      copyCats.push({ name: innerHTML, categoryId: id, subCategories });
-      setSharedParentCategories(copyCats);
+      selectCategory();
     }
   };
 
@@ -62,10 +82,10 @@ const AccountSelector = ({
               return (
                 <button
                   type="button"
+                  key={id}
                   id={id}
                   className={toggleClass}
-                  onClick={selectAccount}
-                  key={id}
+                  onClick={() => toggleSharedAccount({ id, name })}
                 >
                   {name}
                 </button>
@@ -76,7 +96,7 @@ const AccountSelector = ({
         <div id="cat-tags">
           <p><b>Select the YNAB parent category(ies) where you track shared expenses</b></p>
           <div className="tag-area">
-            {budgetCategories.map(({ name, id }) => {
+            {budgetParentCategories.map(({ name, id, categories: subCategories }) => {
               if (excludedCategories.indexOf(name) > -1) {
                 return <span key={id} />;
               }
@@ -89,7 +109,7 @@ const AccountSelector = ({
                   type="button"
                   id={id}
                   className={toggleClass}
-                  onClick={selectCategory}
+                  onClick={() => toggleSharedCategory({ id, name, subCategories })}
                   key={id}
                 >
                   {name}
