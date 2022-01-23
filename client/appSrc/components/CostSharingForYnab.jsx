@@ -32,6 +32,7 @@ import {
   getLastDateOfLastMonth,
 } from './utils/dateHelpers';
 import classifyTransactions from './utils/classifyTransactions';
+import modalNames from './modalNames';
 import '../styles/global.css';
 
 /* Styled Components */
@@ -227,7 +228,7 @@ const CostSharingForYnab = () => {
   const [iouAccountTransactions, setIouAccountTransactions] = useState([]);
   const [isIouTransactionLoading, setIsIouTransactionLoading] = useState(false);
   const [errorData, setErrorData] = useState(null);
-  const [activeModal, setActiveModal] = useState('privacyPolicy');
+  const [activeModal, setActiveModal] = useState(modalNames.PRIVACY_POLICY);
   const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
   const [isSelectAllChecked, setIsSelectAllChecked] = useState(false);
 
@@ -439,20 +440,20 @@ const CostSharingForYnab = () => {
           <Modal
             onClose={() => setActiveModal(null)}
             buttonText="OK"
-            shouldCloseOnOverlayClick={activeModal !== 'privacyPolicy'}
+            shouldCloseOnOverlayClick={activeModal !== modalNames.PRIVACY_POLICY}
           >
-            {activeModal === 'privacyPolicy' && (
+            {activeModal === modalNames.PRIVACY_POLICY && (
               <PrivacyPolicy />
             )}
 
-            {activeModal === 'transactionReview' && (
+            {activeModal === modalNames.TRANSACTION_REVIEW && (
               <TransactionWindow
                 title="Transactions in shared accounts missing from shared budget categories"
                 transactions={sharedAccountErrorTransactions}
               />
             )}
 
-            {activeModal === 'instructions' && (
+            {activeModal === modalNames.INSTRUCTIONS && (
               <Instructions style={{ padding: '20px' }} />
             )}
           </Modal>
@@ -481,7 +482,7 @@ const CostSharingForYnab = () => {
       <InstructionsButtonContainer>
         <LinkishButton
           type="button"
-          onClick={() => setActiveModal('instructions')}
+          onClick={() => setActiveModal(modalNames.INSTRUCTIONS)}
         >
           Instructions
         </LinkishButton>
@@ -637,7 +638,7 @@ const CostSharingForYnab = () => {
               You have costs in shared accounts that are missing from shared budget categories.
               <ReviewTransactionsButton
                 type="button"
-                onClick={() => setActiveModal('transactionReview')}
+                onClick={() => setActiveModal(modalNames.TRANSACTION_REVIEW)}
               >
                 Review
               </ReviewTransactionsButton>

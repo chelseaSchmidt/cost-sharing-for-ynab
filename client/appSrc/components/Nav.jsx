@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { LinkishButton, Hyperlink } from './styledComponents';
+import modalNames from './modalNames';
 
 const Container = styled.div`
   margin-bottom: 15px;
@@ -17,7 +18,7 @@ const Nav = ({ setActiveModal }) => (
 
     <LinkishButton
       type="button"
-      onClick={() => setActiveModal('privacyPolicy')}
+      onClick={() => setActiveModal(modalNames.PRIVACY_POLICY)}
     >
       Privacy Policy
     </LinkishButton>

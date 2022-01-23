@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { push as Menu } from 'react-burger-menu';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import modalNames from '../appSrc/components/modalNames';
 import './react-burger-menu.css';
 
 const Container = styled.header`
@@ -138,7 +139,7 @@ const Header = ({
             if (onLandingPage) {
               document.getElementById('privacy-policy-container').scrollIntoView(true);
             } else {
-              setActiveModal('privacyPolicy');
+              setActiveModal(modalNames.PRIVACY_POLICY);
             }
             setIsMenuOpen(false);
           }}
