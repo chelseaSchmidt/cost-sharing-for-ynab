@@ -154,7 +154,7 @@ const LandingPage = () => {
           <p>
             Cost Sharing for YNAB allows you to classify your transactions across any number
             of categories, and then click a button to pull half those costs out of each category.
-            No more doubled-up expenses or catch-all black hole category!
+            No more doubled-up expenses or catch-all category!
           </p>
         </Description>
 
