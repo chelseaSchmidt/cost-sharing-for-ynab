@@ -295,17 +295,20 @@ const CostSharingForYnab = () => {
     setAreTransactionsLoading(false);
   };
 
-  const toggleTransactionSelection = (e, transaction) => {
+  const toggleTransactionSelection = ({
+    isSelected,
+    transaction,
+  }) => {
     setCheckedTransactions(
-      e.target.checked
+      isSelected
         ? [...checkedTransactions, transaction]
         : checkedTransactions.filter(({ id }) => id !== transaction.id),
     );
   };
 
-  const toggleSelectAll = (e) => {
-    setIsSelectAllChecked(e.target.checked);
-    setCheckedTransactions(e.target.checked ? [...transactionsInSharedCategories] : []);
+  const toggleSelectAll = ({ isSelected }) => {
+    setIsSelectAllChecked(isSelected);
+    setCheckedTransactions(isSelected ? [...transactionsInSharedCategories] : []);
   };
 
   const createSplitEntry = async (e) => {

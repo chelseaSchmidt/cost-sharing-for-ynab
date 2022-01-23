@@ -79,7 +79,7 @@ const TransactionWindow = ({
                     <SelectAllCheckbox
                       type="checkbox"
                       checked={isSelectAllChecked}
-                      onChange={toggleSelectAll}
+                      onChange={(e) => toggleSelectAll({ isSelected: e.target.checked })}
                       id="select-all-input"
                     />
                     Select All

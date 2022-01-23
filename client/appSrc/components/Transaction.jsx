@@ -76,7 +76,10 @@ const Transaction = ({
           type="checkbox"
           checked={isSelected}
           onChange={(e) => {
-            toggleTransactionSelection(e, transaction);
+            toggleTransactionSelection({
+              isSelected: e.target.checked,
+              transaction,
+            });
           }}
         />
       )}
