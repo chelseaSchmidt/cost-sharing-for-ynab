@@ -1,35 +1,39 @@
 import React from 'react';
-import { func } from 'prop-types';
-import '../styles/Nav.css';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import { LinkishButton, Hyperlink } from './styledComponents';
+
+const Container = styled.div`
+  margin-bottom: 15px;
+`;
 
 const Nav = ({ setActiveModal }) => (
-  <div id="nav-container">
-    <a
-      className="link-btn"
+  <Container>
+    <Hyperlink
       href="/"
     >
       Home
-    </a>
-    <button
-      className="link-btn"
+    </Hyperlink>
+
+    <LinkishButton
       type="button"
       onClick={() => setActiveModal('privacyPolicy')}
     >
       Privacy Policy
-    </button>
-    <a
-      className="link-btn"
+    </LinkishButton>
+
+    <Hyperlink
       href="https://github.com/chelseaSchmidt/cost-sharing-for-ynab/issues"
       target="_blank"
       rel="noreferrer"
     >
       Report a Bug
-    </a>
-  </div>
+    </Hyperlink>
+  </Container>
 );
 
 Nav.propTypes = {
-  setActiveModal: func.isRequired,
+  setActiveModal: PropTypes.func.isRequired,
 };
 
 export default Nav;

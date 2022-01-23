@@ -33,7 +33,7 @@ export const BaseButton = styled.button`
   }
 `;
 
-export const LinkishButton = styled.button`
+const hyperlinkStyle = `
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -67,6 +67,14 @@ export const LinkishButton = styled.button`
   :visited {
     color: #464b46;
   }
+`;
+
+export const LinkishButton = styled.button`
+  ${hyperlinkStyle}
+`;
+
+export const Hyperlink = styled.a`
+  ${hyperlinkStyle}
 `;
 
 export const WarningIcon = styled.span`
