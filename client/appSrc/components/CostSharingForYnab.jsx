@@ -23,7 +23,7 @@ import {
   getAccounts,
   getCategoryGroups,
   createSplitTransaction,
-} from './utils/http';
+} from './utils/networkRequests';
 import {
   getFiveDaysAgo,
   convertDateToString,
