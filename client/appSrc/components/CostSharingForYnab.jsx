@@ -335,7 +335,7 @@ const CostSharingForYnab = () => {
         activeModal && (
           <Modal
             onClose={() => setActiveModal(null)}
-            buttonText="OK"
+            buttonText={activeModal === modalNames.TRANSACTION_REVIEW ? 'Exit' : 'OK'}
             shouldCloseOnOverlayClick={activeModal !== modalNames.PRIVACY_POLICY}
           >
             {activeModal === modalNames.PRIVACY_POLICY && (
@@ -344,8 +344,26 @@ const CostSharingForYnab = () => {
 
             {activeModal === modalNames.TRANSACTION_REVIEW && (
               <TransactionWindow
-                title="Transactions in shared accounts missing from shared budget categories"
+                title="Transactions in shared accounts not categorized to shared expense categories"
+                description="This list is meant to help you catch miscategorized transactions. Recategorize them in YNAB as needed and then refresh this list."
+                loading={areTransactionsLoading}
+                shouldShowLoadingOverlay
                 transactions={sharedAccountErrorTransactions}
+                containerStyle={{
+                  alignItems: 'unset',
+                }}
+                feedStyle={{
+                  border: 'unset',
+                  padding: 'unset',
+                  height: '50vh',
+                }}
+                shouldShowRefreshButton
+                refreshTransactions={() => {
+                  getClassifiedTransactions({
+                    startDate: transactionsStartDate,
+                    endDate: transactionsEndDate,
+                  });
+                }}
               />
             )}
 
@@ -465,7 +483,8 @@ const CostSharingForYnab = () => {
             <MissingTransactionsWarning>
               <WarningIcon>!</WarningIcon>
 
-              You have costs in shared accounts that are missing from shared budget categories.
+              Some transactions in shared accounts were not
+              categorized to shared expense categories.
 
               <ReviewTransactionsButton
                 type="button"

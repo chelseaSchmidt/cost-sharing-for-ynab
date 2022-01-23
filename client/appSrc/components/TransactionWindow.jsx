@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Transaction from './Transaction';
-import { Spinner } from './styledComponents';
+import { Spinner, BaseButton } from './styledComponents';
 
 /* Styled Components */
 
@@ -15,6 +15,17 @@ const Container = styled.div`
 `;
 
 const Title = styled.h3``;
+
+const RefreshButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+`;
+
+const RefreshButton = styled(BaseButton)`
+  width: fit-content;
+`;
 
 const SelectAllCheckboxContainer = styled.div`
   height: 15px;
@@ -47,11 +58,23 @@ const TransactionFeed = styled.div`
   }
 `;
 
+const TransactionFeedLoadingOverlay = styled(TransactionFeed)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const TransactionLoadingSpinner = styled(Spinner)`
+  height: 20px;
+  width: 20px;
+`;
+
 /* Main Component */
 
 const TransactionWindow = ({
   loading = false,
   title,
+  description = '',
   transactions,
   checkedTransactions = [],
   transactionsSharedInOneButNotOther = [],
@@ -60,12 +83,32 @@ const TransactionWindow = ({
   isSelectAllChecked,
   shouldShowIcon,
   isEditable,
+  shouldShowRefreshButton = false,
+  refreshTransactions = () => {},
+  shouldShowLoadingOverlay = false,
+  containerStyle = {},
+  feedStyle = {},
 }) => {
   const isolatedTransactionIds = transactionsSharedInOneButNotOther.map(({ id }) => id);
 
   return (
-    <Container>
+    <Container style={containerStyle}>
       {title && <Title>{title}</Title>}
+
+      {description}
+
+      {
+        shouldShowRefreshButton && (
+          <RefreshButtonContainer>
+            <RefreshButton
+              type="button"
+              onClick={refreshTransactions}
+            >
+              Refresh
+            </RefreshButton>
+          </RefreshButtonContainer>
+        )
+      }
 
       {
         !loading && (
@@ -90,7 +133,7 @@ const TransactionWindow = ({
 
             {
               !!transactions.length && (
-                <TransactionFeed>
+                <TransactionFeed style={feedStyle}>
                   {
                     transactions.map((transaction) => (
                       <Transaction
@@ -116,12 +159,15 @@ const TransactionWindow = ({
 
       {
         loading && (
-          <Spinner
-            style={{
-              height: '20px',
-              width: '20px',
-            }}
-          />
+          shouldShowLoadingOverlay
+            ? (
+              <TransactionFeedLoadingOverlay style={feedStyle}>
+                <TransactionLoadingSpinner />
+              </TransactionFeedLoadingOverlay>
+            )
+            : (
+              <TransactionLoadingSpinner />
+            )
         )
       }
 
@@ -137,11 +183,17 @@ TransactionWindow.propTypes = {
   checkedTransactions: PropTypes.array,
   transactionsSharedInOneButNotOther: PropTypes.array,
   title: PropTypes.string,
+  description: PropTypes.string,
   toggleTransactionSelection: PropTypes.func,
   toggleSelectAll: PropTypes.func,
   isSelectAllChecked: PropTypes.bool,
   shouldShowIcon: PropTypes.bool,
   isEditable: PropTypes.bool,
+  containerStyle: PropTypes.object,
+  feedStyle: PropTypes.object,
+  shouldShowRefreshButton: PropTypes.bool,
+  refreshTransactions: PropTypes.func,
+  shouldShowLoadingOverlay: PropTypes.bool,
 };
 
 export default TransactionWindow;
