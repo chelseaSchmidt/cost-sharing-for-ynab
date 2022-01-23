@@ -628,7 +628,7 @@ const CostSharingForYnab = () => {
         <SectionHeader>Select Shared Costs</SectionHeader>
 
         {
-          !!sharedAccountErrorTransactions.length && (
+          !areTransactionsLoading && !!sharedAccountErrorTransactions.length && (
             <MissingTransactionsWarning>
               <WarningIcon>!</WarningIcon>
               You have costs in shared accounts that are missing from shared budget categories.

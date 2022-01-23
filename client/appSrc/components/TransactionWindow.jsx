@@ -30,6 +30,9 @@ const SelectAllCheckbox = styled.input`
 const TransactionFeed = styled.div`
   max-height: 60vh;
   overflow-y: auto;
+  border-top: 1px solid lightgray;
+  border-bottom: 1px solid lightgray;
+  padding: 30px;
 
   ::-webkit-scrollbar {
     width: 7px;
@@ -40,7 +43,7 @@ const TransactionFeed = styled.div`
     box-shadow: 0 0 1px rgba(255, 255, 255, .5);
   }
   ::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
   }
 `;
 
@@ -57,46 +60,55 @@ const TransactionWindow = ({
   shouldShowIcon,
   isEditable,
 }) => {
-  const noTransactions = transactions.length === 0;
-  const isolatedTransactionIds = transactionsSharedInOneButNotOther.map((txn) => txn.id);
+  const isolatedTransactionIds = transactionsSharedInOneButNotOther.map(({ id }) => id);
 
   return (
     <Container>
       {title && <Title>{title}</Title>}
 
-      <SelectAllCheckboxContainer>
-        {
-          !noTransactions
-          && isEditable
-          && (
-            <SelectAllCheckboxLabel htmlFor="select-all-input">
-              <SelectAllCheckbox
-                type="checkbox"
-                checked={isSelectAllChecked}
-                onChange={selectAllTransactions}
-                id="select-all-input"
-              />
-              Select All
-            </SelectAllCheckboxLabel>
-          )
-        }
-      </SelectAllCheckboxContainer>
+      {
+        !loading && (
+          <>
+            <SelectAllCheckboxContainer>
+              {
+                !!transactions.length
+                && isEditable
+                && (
+                  <SelectAllCheckboxLabel htmlFor="select-all-input">
+                    <SelectAllCheckbox
+                      type="checkbox"
+                      checked={isSelectAllChecked}
+                      onChange={selectAllTransactions}
+                      id="select-all-input"
+                    />
+                    Select All
+                  </SelectAllCheckboxLabel>
+                )
+              }
+            </SelectAllCheckboxContainer>
 
-      <TransactionFeed>
-        {
-          !!transactions.length && transactions.map((transaction) => (
-            <Transaction
-              key={transaction.id}
-              isEditable={isEditable}
-              selectTransaction={selectTransaction}
-              transaction={transaction}
-              isIsolated={!!isolatedTransactionIds.includes(transaction.id)}
-              shouldShowIcon={shouldShowIcon}
-              isSelectAllChecked={isSelectAllChecked}
-            />
-          ))
-        }
-      </TransactionFeed>
+            {
+              !!transactions.length && (
+                <TransactionFeed>
+                  {
+                    transactions.map((transaction) => (
+                      <Transaction
+                        key={transaction.id}
+                        isEditable={isEditable}
+                        selectTransaction={selectTransaction}
+                        transaction={transaction}
+                        isIsolated={!!isolatedTransactionIds.includes(transaction.id)}
+                        shouldShowIcon={shouldShowIcon}
+                        isSelectAllChecked={isSelectAllChecked}
+                      />
+                    ))
+                  }
+                </TransactionFeed>
+              )
+            }
+          </>
+        )
+      }
 
       {
         loading && (
@@ -109,7 +121,7 @@ const TransactionWindow = ({
         )
       }
 
-      {noTransactions && !loading && <em>No transactions</em>}
+      {!transactions.length && !loading && <em>No transactions</em>}
 
     </Container>
   );
