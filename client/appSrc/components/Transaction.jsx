@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import moment from 'moment';
 import formatCurrency from 'format-currency';
 import PropTypes from 'prop-types';
@@ -53,11 +53,11 @@ const TransactionWarningIcon = styled(WarningIcon)`
 
 const Transaction = ({
   isEditable,
-  selectTransaction,
+  isSelected,
+  toggleTransactionSelection,
   transaction,
   isIsolated,
   shouldShowIcon,
-  isSelectAllChecked = false,
 }) => {
   const {
     date,
@@ -69,12 +69,6 @@ const Transaction = ({
     // cleared,
   } = transaction;
 
-  const [isSelected, setIsSelected] = useState(false);
-
-  useEffect(() => {
-    setIsSelected(isSelectAllChecked);
-  }, [isSelectAllChecked]);
-
   return (
     <Container>
       {isEditable && (
@@ -82,8 +76,7 @@ const Transaction = ({
           type="checkbox"
           checked={isSelected}
           onChange={(e) => {
-            setIsSelected(e.target.checked);
-            selectTransaction(e, transaction);
+            toggleTransactionSelection(e, transaction);
           }}
         />
       )}
@@ -131,10 +124,10 @@ const Transaction = ({
 
 Transaction.propTypes = {
   isEditable: PropTypes.bool,
-  selectTransaction: PropTypes.func,
+  toggleTransactionSelection: PropTypes.func,
   isIsolated: PropTypes.bool.isRequired,
   shouldShowIcon: PropTypes.bool,
-  isSelectAllChecked: PropTypes.bool,
+  isSelected: PropTypes.bool.isRequired,
   transaction: PropTypes.shape({
     date: PropTypes.string,
     amount: PropTypes.number,

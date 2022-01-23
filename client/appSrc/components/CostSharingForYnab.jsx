@@ -295,7 +295,7 @@ const CostSharingForYnab = () => {
     setAreTransactionsLoading(false);
   };
 
-  const selectTransaction = (e, transaction) => {
+  const toggleTransactionSelection = (e, transaction) => {
     setCheckedTransactions(
       e.target.checked
         ? [...checkedTransactions, transaction]
@@ -303,7 +303,7 @@ const CostSharingForYnab = () => {
     );
   };
 
-  const selectAllTransactions = (e) => {
+  const toggleSelectAll = (e) => {
     setIsSelectAllChecked(e.target.checked);
     setCheckedTransactions(e.target.checked ? [...transactionsInSharedCategories] : []);
   };
@@ -646,9 +646,10 @@ const CostSharingForYnab = () => {
           <TransactionWindow
             loading={areTransactionsLoading}
             transactions={transactionsInSharedCategories}
+            checkedTransactions={checkedTransactions}
             transactionsSharedInOneButNotOther={sharedCategoryErrorTransactions}
-            selectTransaction={selectTransaction}
-            selectAllTransactions={selectAllTransactions}
+            toggleTransactionSelection={toggleTransactionSelection}
+            toggleSelectAll={toggleSelectAll}
             isSelectAllChecked={isSelectAllChecked}
             shouldShowIcon
             isEditable

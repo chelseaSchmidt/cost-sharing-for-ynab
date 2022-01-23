@@ -53,9 +53,10 @@ const TransactionWindow = ({
   loading = false,
   title,
   transactions,
+  checkedTransactions = [],
   transactionsSharedInOneButNotOther = [],
-  selectTransaction,
-  selectAllTransactions,
+  toggleTransactionSelection,
+  toggleSelectAll,
   isSelectAllChecked,
   shouldShowIcon,
   isEditable,
@@ -78,7 +79,7 @@ const TransactionWindow = ({
                     <SelectAllCheckbox
                       type="checkbox"
                       checked={isSelectAllChecked}
-                      onChange={selectAllTransactions}
+                      onChange={toggleSelectAll}
                       id="select-all-input"
                     />
                     Select All
@@ -95,8 +96,11 @@ const TransactionWindow = ({
                       <Transaction
                         key={transaction.id}
                         isEditable={isEditable}
-                        selectTransaction={selectTransaction}
+                        // FIXME: nested loop
+                        isSelected={!!checkedTransactions.find(({ id }) => id === transaction.id)}
+                        toggleTransactionSelection={toggleTransactionSelection}
                         transaction={transaction}
+                        // FIXME: nested loop
                         isIsolated={!!isolatedTransactionIds.includes(transaction.id)}
                         shouldShowIcon={shouldShowIcon}
                         isSelectAllChecked={isSelectAllChecked}
@@ -129,15 +133,12 @@ const TransactionWindow = ({
 
 TransactionWindow.propTypes = {
   loading: PropTypes.bool,
-  transactions: PropTypes.arrayOf(
-    PropTypes.shape({ id: PropTypes.string }),
-  ).isRequired,
-  transactionsSharedInOneButNotOther: PropTypes.arrayOf(
-    PropTypes.shape({ id: PropTypes.string }),
-  ),
+  transactions: PropTypes.array.isRequired,
+  checkedTransactions: PropTypes.array,
+  transactionsSharedInOneButNotOther: PropTypes.array,
   title: PropTypes.string,
-  selectTransaction: PropTypes.func,
-  selectAllTransactions: PropTypes.func,
+  toggleTransactionSelection: PropTypes.func,
+  toggleSelectAll: PropTypes.func,
   isSelectAllChecked: PropTypes.bool,
   shouldShowIcon: PropTypes.bool,
   isEditable: PropTypes.bool,
