@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import _ from 'lodash';
 import styled from 'styled-components';
 import TransactionWindow from './TransactionWindow';
-import AccountSelector from './AccountSelector';
 import Confirmation from './Confirmation';
 import Modal from './Modal';
 import Header from '../../sharedComponents/Header';
@@ -64,18 +63,54 @@ const TransactionsTile = styled(SectionTile)`
   max-height: 92vh;
 `;
 
-const DateRangeSelectorContainer = styled.div`
+const SectionContent = styled.div`
   width: 100%;
+  margin-bottom: 40px;
+`;
+
+const Subtitle = styled.p`
+  font-weight: bold;
+  margin-bottom: 20px;
+`;
+
+const ButtonsContainer = styled.div``;
+
+const OptionButton = styled.button`
+  margin: 0 9px 9px 0;
+  padding: 4px 9px;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 1px 0 0.5px #c9cdd2;
+  color: #464b46;
+  font-size: 13px;
+  background-color: rgb(241, 241, 241);
+  cursor: pointer;
+
+  :hover {
+    background-color: #5183b1;
+    color: white;
+  }
+
+  :focus {
+    outline: none;
+  }
+`;
+
+const SelectedOptionButton = styled(OptionButton)`
+  background-color: #2f73b3;
+  box-shadow: 0 1px 0 0.5px #395066;
+  color: white;
+  text-shadow: 0 0 2px #666;
+
+  :hover {
+    background-color: #0061bd;
+    color: white;
+  }
 `;
 
 const DateRangeForm = styled.form`
   display: flex;
   flex-direction: column;
-`;
-
-const DateRangeFormDescription = styled.p`
-  font-weight: bold;
-  margin: 0 0 20px 0;
 `;
 
 const DateRangeLabel = styled.label``;
@@ -86,6 +121,14 @@ const DateRangeInput = styled.input`
 
   ::-webkit-calendar-picker-indicator {
     cursor: pointer;
+  }
+`;
+
+const IouAccountSelector = styled.select`
+  cursor: pointer;
+
+  :focus {
+    outline: none;
   }
 `;
 
@@ -158,35 +201,40 @@ const CostSharingForYnab = () => {
   const [transactionsStartDate, setTransactionsStartDate] = useState(getFiveDaysAgo());
   const [transactionsEndDate, setTransactionsEndDate] = useState(new Date());
   const [checkedTransactions, setCheckedTransactions] = useState([]);
-  const [splitDate, setSplitDate] = useState(new Date());
+  const [dateToSplitCosts, setDateToSplitCosts] = useState(new Date());
   const [classifiedTransactions, setClassifiedTransactions] = useState({});
-  const [sharedAccounts, setSharedAccounts] = useState([]);
-  const [sharedParentCategories, setSharedParentCategories] = useState([]);
-  const [splitAccountId, setSplitAccountId] = useState('');
+  const [selectedAccounts, setSelectedAccounts] = useState([]);
+  const [selectedParentCategories, setSelectedParentCategories] = useState([]);
+  const [iouAccountId, setIouAccountId] = useState('');
+  const [iouAccountTransactions, setIouAccountTransactions] = useState([]);
   const [errorData, setErrorData] = useState(null);
   const [activeModal, setActiveModal] = useState('privacyPolicy');
   const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
   const [isSelectAllChecked, setIsSelectAllChecked] = useState(false);
 
   const {
-    // transactionsInSharedBankAccounts = [],
     transactionsInSharedCategories = [],
     sharedAccountErrorTransactions = [],
     sharedCategoryErrorTransactions = [],
-    iouAccountTransactions = [],
   } = classifiedTransactions;
 
   const isSplitTransactionDisabled = (
     !checkedTransactions.length
-    || !splitAccountId
+    || !iouAccountId
   );
 
   const buttonDisabledMessage = !checkedTransactions.length
     ? (
-      (!splitAccountId && 'Please select shared costs and pick an IOU account first')
+      (!iouAccountId && 'Please select shared costs and pick an IOU account first')
       || 'Please select shared costs first'
     )
     : 'Please pick an IOU account first';
+
+  const hiddenCategoryNames = [
+    'Internal Master Category',
+    'Credit Card Payments',
+    'Hidden Categories',
+  ];
 
   const getBudgetData = async () => {
     try {
@@ -215,9 +263,8 @@ const CostSharingForYnab = () => {
 
       setClassifiedTransactions(classifyTransactions({
         displayedTransactions,
-        sharedAccounts,
-        sharedParentCategories,
-        splitAccountId,
+        selectedAccounts,
+        selectedParentCategories,
       }));
     } catch (error) {
       setErrorData({
@@ -263,8 +310,8 @@ const CostSharingForYnab = () => {
     );
 
     const summaryTransaction = {
-      account_id: splitAccountId,
-      date: convertDateToString(splitDate),
+      account_id: iouAccountId,
+      date: convertDateToString(dateToSplitCosts),
       amount: _.reduce(halvedCategorizedAmounts, (sum, amt) => sum - amt, 0),
       payee_id: null,
       payee_name: null,
@@ -286,20 +333,64 @@ const CostSharingForYnab = () => {
     try {
       const transaction = await createSplitTransaction(summaryTransaction);
       setIsConfirmationVisible(true);
-      setClassifiedTransactions({
-        ...classifiedTransactions,
-        iouAccountTransactions: [
-          // TODO: remove this from transaction classification logic and track in separate state
-          // ...iouAccountTransactions
-          transaction,
-        ],
-      });
+      setIouAccountTransactions([...iouAccountTransactions, transaction]);
       setCheckedTransactions([]);
     } catch (error) {
       setErrorData({
         status: error.response?.status,
         message: error.message,
       });
+    }
+  };
+
+  const doesAccountHaveId = ({ accountId }, id) => (
+    accountId === id
+  );
+
+  const selectAccount = (selection) => (
+    setSelectedAccounts([...selectedAccounts, selection])
+  );
+
+  const deselectAccountById = (id) => (
+    setSelectedAccounts(
+      selectedAccounts.filter((account) => !doesAccountHaveId(account, id)),
+    )
+  );
+
+  const doesCategoryHaveId = ({ categoryId }, id) => (
+    categoryId === id
+  );
+
+  const selectCategory = (selection) => (
+    setSelectedParentCategories([...selectedParentCategories, selection])
+  );
+
+  const deselectCategoryById = (id) => (
+    setSelectedParentCategories(
+      selectedParentCategories.filter((category) => !doesCategoryHaveId(category, id)),
+    )
+  );
+
+  const toggleSharedAccount = ({
+    id,
+    name,
+  }) => {
+    if (selectedAccounts.find((account) => doesAccountHaveId(account, id))) {
+      deselectAccountById(id);
+    } else {
+      selectAccount({ accountId: id, name });
+    }
+  };
+
+  const toggleSharedCategory = ({
+    id,
+    name,
+    subCategories,
+  }) => {
+    if (selectedParentCategories.find((category) => doesCategoryHaveId(category, id))) {
+      deselectCategoryById(id);
+    } else {
+      selectCategory({ name, categoryId: id, subCategories });
     }
   };
 
@@ -313,28 +404,47 @@ const CostSharingForYnab = () => {
 
   return isPageLoading ? 'Loading...' : (
     <Container>
-      {activeModal && (
-        <Modal
-          onClose={() => setActiveModal(null)}
-          buttonText="OK"
-          shouldCloseOnOverlayClick={activeModal !== 'privacyPolicy'}
-        >
-          {activeModal === 'privacyPolicy' && (
-            <PrivacyPolicy />
-          )}
+      {
+        activeModal && (
+          <Modal
+            onClose={() => setActiveModal(null)}
+            buttonText="OK"
+            shouldCloseOnOverlayClick={activeModal !== 'privacyPolicy'}
+          >
+            {activeModal === 'privacyPolicy' && (
+              <PrivacyPolicy />
+            )}
 
-          {activeModal === 'transactionReview' && (
-            <TransactionWindow
-              title="Transactions in shared accounts missing from shared budget categories"
-              transactions={sharedAccountErrorTransactions}
-            />
-          )}
+            {activeModal === 'transactionReview' && (
+              <TransactionWindow
+                title="Transactions in shared accounts missing from shared budget categories"
+                transactions={sharedAccountErrorTransactions}
+              />
+            )}
 
-          {activeModal === 'instructions' && (
-            <Instructions style={{ padding: '20px' }} />
-          )}
-        </Modal>
-      )}
+            {activeModal === 'instructions' && (
+              <Instructions style={{ padding: '20px' }} />
+            )}
+          </Modal>
+        )
+      }
+
+      {
+        isConfirmationVisible && (
+          <Confirmation
+            setIsConfirmationVisible={setIsConfirmationVisible}
+          />
+        )
+      }
+
+      {
+        errorData && (
+          <Error
+            errorData={errorData}
+            setErrorData={setErrorData}
+          />
+        )
+      }
 
       <Header setActiveModal={setActiveModal} />
 
@@ -348,20 +458,107 @@ const CostSharingForYnab = () => {
       </InstructionsButtonContainer>
 
       <SectionTile>
-        <AccountSelector
-          sharedAccounts={sharedAccounts}
-          sharedParentCategories={sharedParentCategories}
-          splitAccountId={splitAccountId}
-          budgetData={budgetData}
-          setSharedAccounts={setSharedAccounts}
-          setSharedParentCategories={setSharedParentCategories}
-          setSplitAccountId={setSplitAccountId}
-        />
+        <SectionHeader>Choose Accounts and Categories</SectionHeader>
 
-        <DateRangeSelectorContainer>
-          <DateRangeFormDescription>
-            Select transaction date range
-          </DateRangeFormDescription>
+        <SectionContent>
+          <Subtitle>Select the credit card(s) you use for shared expenses</Subtitle>
+
+          <ButtonsContainer>
+            {
+              budgetData.accounts.map(({ name, id }) => {
+                const isAccountSelected = selectedAccounts.find(
+                  (account) => doesAccountHaveId(account, id),
+                );
+
+                const Button = isAccountSelected
+                  ? SelectedOptionButton
+                  : OptionButton;
+
+                return (
+                  <Button
+                    type="button"
+                    key={id}
+                    id={id}
+                    onClick={() => toggleSharedAccount({ id, name })}
+                  >
+                    {name}
+                  </Button>
+                );
+              })
+            }
+          </ButtonsContainer>
+        </SectionContent>
+
+        <SectionContent>
+          <Subtitle>Select the YNAB parent category(ies) where you track shared expenses</Subtitle>
+
+          <ButtonsContainer>
+            {
+              budgetData.categoryGroups.map(({
+                name,
+                id,
+                categories: subCategories,
+              }) => {
+                const shouldDisplayCategory = !hiddenCategoryNames.includes(name);
+
+                if (shouldDisplayCategory) {
+                  const isCategorySelected = selectedParentCategories.find(
+                    (category) => doesCategoryHaveId(category, id),
+                  );
+
+                  const Button = isCategorySelected
+                    ? SelectedOptionButton
+                    : OptionButton;
+
+                  return (
+                    <Button
+                      type="button"
+                      key={id}
+                      id={id}
+                      onClick={() => toggleSharedCategory({ id, name, subCategories })}
+                    >
+                      {name}
+                    </Button>
+                  );
+                }
+
+                return null;
+              })
+            }
+          </ButtonsContainer>
+        </SectionContent>
+
+        <SectionContent>
+          <Subtitle>
+            Select the &quot;IOU&quot; account that shows what your partner owes you
+          </Subtitle>
+
+          <div>
+            <IouAccountSelector
+              onChange={(e) => setIouAccountId(e.target.value)}
+              defaultValue="none"
+            >
+              <option disabled value="none">
+                -- select an account --
+              </option>
+
+              {
+                budgetData.accounts.map(({ name, id }) => (
+                  <option
+                    id={`iou-${id}`}
+                    key={`iou-${id}`}
+                    value={id}
+                  >
+                    {name}
+                  </option>
+                ))
+              }
+            </IouAccountSelector>
+          </div>
+        </SectionContent>
+
+        <SectionContent>
+          <Subtitle>Select transaction date range</Subtitle>
 
           <DateRangeForm>
             <DateRangeLabel htmlFor="transactions-start-date">
@@ -384,13 +581,11 @@ const CostSharingForYnab = () => {
               />
             </DateRangeLabel>
           </DateRangeForm>
-        </DateRangeSelectorContainer>
+        </SectionContent>
 
         <ShowTransactionsButton
           type="button"
           onClick={() => {
-            // FIXME: this gets IOU account transactions for the view-transactions date range
-            // instead of the IOU charge date, which is confusing in latest version of the layout
             getClassifiedTransactions({
               startDate: transactionsStartDate,
               endDate: transactionsEndDate,
@@ -445,8 +640,8 @@ const CostSharingForYnab = () => {
 
           <DateRangeInput
             type="date"
-            value={convertDateToString(splitDate)}
-            onChange={(e) => setSplitDate(convertStringToDate(e.target.value))}
+            value={convertDateToString(dateToSplitCosts)}
+            onChange={(e) => setDateToSplitCosts(convertStringToDate(e.target.value))}
           />
 
           <SplitTransactionsButton
@@ -464,23 +659,6 @@ const CostSharingForYnab = () => {
           transactions={iouAccountTransactions}
         />
       </SectionTile>
-
-      {
-        isConfirmationVisible && (
-          <Confirmation
-            setIsConfirmationVisible={setIsConfirmationVisible}
-          />
-        )
-      }
-
-      {
-        errorData && (
-          <Error
-            errorData={errorData}
-            setErrorData={setErrorData}
-          />
-        )
-      }
 
       <Nav setActiveModal={setActiveModal} />
     </Container>
