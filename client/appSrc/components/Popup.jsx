@@ -14,7 +14,6 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border-radius: 12px;
   box-shadow: 0 0 5px 0 #4c4c4c;
   background-color: black;
   opacity: 95%;

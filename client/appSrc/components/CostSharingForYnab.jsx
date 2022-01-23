@@ -25,10 +25,11 @@ import {
   createSplitTransaction,
 } from './utils/networkRequests';
 import {
-  getFiveDaysAgo,
   convertDateToString,
   convertStringToDate,
-  isDateBeforeEndDate,
+  isTransactionBeforeDate,
+  getFirstDateOfLastMonth,
+  getLastDateOfLastMonth,
 } from './utils/dateHelpers';
 import classifyTransactions from './utils/classifyTransactions';
 import '../styles/global.css';
@@ -215,10 +216,10 @@ const CostSharingForYnab = () => {
     accounts: [],
     categoryGroups: [],
   });
-  const [transactionsStartDate, setTransactionsStartDate] = useState(getFiveDaysAgo());
-  const [transactionsEndDate, setTransactionsEndDate] = useState(new Date());
+  const [transactionsStartDate, setTransactionsStartDate] = useState(getFirstDateOfLastMonth());
+  const [transactionsEndDate, setTransactionsEndDate] = useState(getLastDateOfLastMonth());
   const [checkedTransactions, setCheckedTransactions] = useState([]);
-  const [dateToSplitCosts, setDateToSplitCosts] = useState(new Date());
+  const [dateToSplitCosts, setDateToSplitCosts] = useState(getLastDateOfLastMonth());
   const [classifiedTransactions, setClassifiedTransactions] = useState({});
   const [selectedAccounts, setSelectedAccounts] = useState([]);
   const [selectedParentCategories, setSelectedParentCategories] = useState([]);
@@ -275,7 +276,7 @@ const CostSharingForYnab = () => {
       const transactionsSinceStartDate = await getTransactionsSinceDate(startDate);
 
       const displayedTransactions = transactionsSinceStartDate.filter((transaction) => (
-        isDateBeforeEndDate(transaction.date, endDate)
+        isTransactionBeforeDate(transaction, endDate)
         && transaction.approved
         && !isTransactionATransfer(transaction)
       ));
