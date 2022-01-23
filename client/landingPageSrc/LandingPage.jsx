@@ -138,10 +138,24 @@ const LandingPage = () => {
         <Divider />
 
         <Description>
-          Do you and a partner use a shared credit card for communal expenses?
-          Do you want to sync the credit card with your YNAB budget to keep track
-          of where your dollars are going, without your expenses looking doubled?
-          Cost Sharing for YNAB can help!
+          <p>
+            Hi fellow YNABer! If you&apos;re using a shared credit card or bank account
+            for communal expenses, you&apos;ve probably noticed it&apos;s difficult to track
+            without your expenses appearing doubled.
+          </p>
+
+          <p>
+            Maybe you resorted to excluding it from YNAB completely. Or, maybe you&apos;re
+            throwing the costs into a blanket &quot;shared expense&quot; category, and
+            later splitting the total in half - which fixes the doubling problem,
+            but masks which expenses the dollars are going toward.
+          </p>
+
+          <p>
+            Cost Sharing for YNAB allows you to classify your transactions across any number
+            of categories, and then click a button to pull half those costs out of each category.
+            No more doubled-up expenses or catch-all black hole category!
+          </p>
         </Description>
 
         <Divider />
