@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import _ from 'lodash';
 import styled from 'styled-components';
+import AccountButtons from './AccountButtons';
+import CategoryButtons from './CategoryButtons';
 import TransactionWindow from './TransactionWindow';
 import Confirmation from './Confirmation';
 import Modal from './Modal';
@@ -82,41 +84,6 @@ const RowOrColumn = styled.div`
 
   @media (max-width: 645px) {
     flex-direction: column;
-  }
-`;
-
-const ButtonsContainer = styled.div``;
-
-const OptionButton = styled.button`
-  margin: 0 9px 9px 0;
-  padding: 4px 9px;
-  border: none;
-  border-radius: 8px;
-  box-shadow: 0 1px 0 0.5px #c9cdd2;
-  color: #464b46;
-  font-size: 13px;
-  background-color: rgb(241, 241, 241);
-  cursor: pointer;
-
-  :hover {
-    background-color: #5183b1;
-    color: white;
-  }
-
-  :focus {
-    outline: none;
-  }
-`;
-
-const SelectedOptionButton = styled(OptionButton)`
-  background-color: #2f73b3;
-  box-shadow: 0 1px 0 0.5px #395066;
-  color: white;
-  text-shadow: 0 0 2px #666;
-
-  :hover {
-    background-color: #0061bd;
-    color: white;
   }
 `;
 
@@ -250,12 +217,6 @@ const CostSharingForYnab = () => {
     )
     : 'Please pick an IOU account first';
 
-  const hiddenCategoryNames = [
-    'Internal Master Category',
-    'Credit Card Payments',
-    'Hidden Categories',
-  ];
-
   const getBudgetData = async () => {
     try {
       const accounts = await getAccounts();
@@ -370,57 +331,6 @@ const CostSharingForYnab = () => {
     setIsIouTransactionLoading(false);
   };
 
-  const doesAccountHaveId = ({ accountId }, id) => (
-    accountId === id
-  );
-
-  const selectAccount = (selection) => (
-    setSelectedAccounts([...selectedAccounts, selection])
-  );
-
-  const deselectAccountById = (id) => (
-    setSelectedAccounts(
-      selectedAccounts.filter((account) => !doesAccountHaveId(account, id)),
-    )
-  );
-
-  const doesCategoryHaveId = ({ categoryId }, id) => (
-    categoryId === id
-  );
-
-  const selectCategory = (selection) => (
-    setSelectedParentCategories([...selectedParentCategories, selection])
-  );
-
-  const deselectCategoryById = (id) => (
-    setSelectedParentCategories(
-      selectedParentCategories.filter((category) => !doesCategoryHaveId(category, id)),
-    )
-  );
-
-  const toggleSharedAccount = ({
-    id,
-    name,
-  }) => {
-    if (selectedAccounts.find((account) => doesAccountHaveId(account, id))) {
-      deselectAccountById(id);
-    } else {
-      selectAccount({ accountId: id, name });
-    }
-  };
-
-  const toggleSharedCategory = ({
-    id,
-    name,
-    subCategories,
-  }) => {
-    if (selectedParentCategories.find((category) => doesCategoryHaveId(category, id))) {
-      deselectCategoryById(id);
-    } else {
-      selectCategory({ name, categoryId: id, subCategories });
-    }
-  };
-
   useEffect(() => {
     getBudgetData();
   }, []);
@@ -435,6 +345,9 @@ const CostSharingForYnab = () => {
 
   return isPageLoading ? 'Loading...' : (
     <Container>
+
+      {/* Modals */}
+
       {
         activeModal && (
           <Modal
@@ -460,6 +373,8 @@ const CostSharingForYnab = () => {
         )
       }
 
+      {/* Popup messages */}
+
       {
         isConfirmationVisible && (
           <Confirmation
@@ -476,6 +391,8 @@ const CostSharingForYnab = () => {
           />
         )
       }
+
+      {/* Main content */}
 
       <Header setActiveModal={setActiveModal} />
 
@@ -494,69 +411,22 @@ const CostSharingForYnab = () => {
         <SectionContent>
           <Subtitle>Select the credit card(s) you use for shared expenses</Subtitle>
 
-          <ButtonsContainer>
-            {
-              budgetData.accounts.map(({ name, id }) => {
-                const isAccountSelected = selectedAccounts.find(
-                  (account) => doesAccountHaveId(account, id),
-                );
-
-                const Button = isAccountSelected
-                  ? SelectedOptionButton
-                  : OptionButton;
-
-                return (
-                  <Button
-                    type="button"
-                    key={id}
-                    id={id}
-                    onClick={() => toggleSharedAccount({ id, name })}
-                  >
-                    {name}
-                  </Button>
-                );
-              })
-            }
-          </ButtonsContainer>
+          <AccountButtons
+            accounts={budgetData.accounts}
+            selectedAccounts={selectedAccounts}
+            setSelectedAccounts={setSelectedAccounts}
+          />
         </SectionContent>
 
         <SectionContent>
           <Subtitle>Select the YNAB parent category(ies) where you track shared expenses</Subtitle>
 
-          <ButtonsContainer>
-            {
-              budgetData.categoryGroups.map(({
-                name,
-                id,
-                categories: subCategories,
-              }) => {
-                const shouldDisplayCategory = !hiddenCategoryNames.includes(name);
-
-                if (shouldDisplayCategory) {
-                  const isCategorySelected = selectedParentCategories.find(
-                    (category) => doesCategoryHaveId(category, id),
-                  );
-
-                  const Button = isCategorySelected
-                    ? SelectedOptionButton
-                    : OptionButton;
-
-                  return (
-                    <Button
-                      type="button"
-                      key={id}
-                      id={id}
-                      onClick={() => toggleSharedCategory({ id, name, subCategories })}
-                    >
-                      {name}
-                    </Button>
-                  );
-                }
-
-                return null;
-              })
-            }
-          </ButtonsContainer>
+          <CategoryButtons
+            // FIXME: rename categoryGroups to parentCategories
+            parentCategories={budgetData.categoryGroups}
+            selectedParentCategories={selectedParentCategories}
+            setSelectedParentCategories={setSelectedParentCategories}
+          />
         </SectionContent>
 
         <SectionContent>
@@ -702,6 +572,7 @@ const CostSharingForYnab = () => {
       </SectionTile>
 
       <Nav setActiveModal={setActiveModal} />
+
     </Container>
   );
 };
