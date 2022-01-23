@@ -16,6 +16,7 @@ import {
   WarningIcon,
   Tooltip,
   LinkishButton,
+  Spinner,
 } from './styledComponents';
 import {
   getTransactionsSinceDate,
@@ -71,6 +72,15 @@ const SectionContent = styled.div`
 const Subtitle = styled.p`
   font-weight: bold;
   margin-bottom: 20px;
+`;
+
+const RowOrColumn = styled.div`
+  display: flex;
+  align-items: center;
+
+  @media (max-width: 645px) {
+    flex-direction: column;
+  }
 `;
 
 const ButtonsContainer = styled.div``;
@@ -148,7 +158,13 @@ const ReviewTransactionsButton = styled(BaseButton)`
 `;
 
 const SplitTransactionsButton = styled(BaseButton)`
+  box-sizing: border-box;
   position: relative;
+  height: 35px;
+  width: 182px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin: 0 10px;
 
   :disabled:hover {
@@ -194,6 +210,7 @@ const TransactionWindowContainer = styled.div`
 
 const CostSharingForYnab = () => {
   const [isPageLoading, setIsPageLoading] = useState(true);
+  const [areTransactionsLoading, setAreTransactionsLoading] = useState(false);
   const [budgetData, setBudgetData] = useState({
     accounts: [],
     categoryGroups: [],
@@ -207,6 +224,7 @@ const CostSharingForYnab = () => {
   const [selectedParentCategories, setSelectedParentCategories] = useState([]);
   const [iouAccountId, setIouAccountId] = useState('');
   const [iouAccountTransactions, setIouAccountTransactions] = useState([]);
+  const [isIouTransactionLoading, setIsIouTransactionLoading] = useState(false);
   const [errorData, setErrorData] = useState(null);
   const [activeModal, setActiveModal] = useState('privacyPolicy');
   const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
@@ -253,6 +271,7 @@ const CostSharingForYnab = () => {
     const isTransactionATransfer = (transaction) => !!transaction.transfer_account_id;
 
     try {
+      setAreTransactionsLoading(true);
       const transactionsSinceStartDate = await getTransactionsSinceDate(startDate);
 
       const displayedTransactions = transactionsSinceStartDate.filter((transaction) => (
@@ -272,6 +291,7 @@ const CostSharingForYnab = () => {
         status: error.response?.status,
       });
     }
+    setAreTransactionsLoading(false);
   };
 
   const selectTransaction = (e, transaction) => {
@@ -331,6 +351,7 @@ const CostSharingForYnab = () => {
     };
 
     try {
+      setIsIouTransactionLoading(true);
       const transaction = await createSplitTransaction(summaryTransaction);
       setIsConfirmationVisible(true);
       setIouAccountTransactions([...iouAccountTransactions, transaction]);
@@ -341,6 +362,7 @@ const CostSharingForYnab = () => {
         message: error.message,
       });
     }
+    setIsIouTransactionLoading(false);
   };
 
   const doesAccountHaveId = ({ accountId }, id) => (
@@ -401,6 +423,10 @@ const CostSharingForYnab = () => {
   useEffect(() => {
     if (budgetData) setIsPageLoading(false);
   }, [budgetData]);
+
+  useEffect(() => {
+    if (areTransactionsLoading) setCheckedTransactions([]);
+  }, [areTransactionsLoading]);
 
   return isPageLoading ? 'Loading...' : (
     <Container>
@@ -617,6 +643,7 @@ const CostSharingForYnab = () => {
 
         <TransactionWindowContainer>
           <TransactionWindow
+            loading={areTransactionsLoading}
             transactions={transactionsInSharedCategories}
             transactionsSharedInOneButNotOther={sharedCategoryErrorTransactions}
             selectTransaction={selectTransaction}
@@ -638,23 +665,31 @@ const CostSharingForYnab = () => {
             your expenses by the same amount.
           </p>
 
-          <DateRangeInput
-            type="date"
-            value={convertDateToString(dateToSplitCosts)}
-            onChange={(e) => setDateToSplitCosts(convertStringToDate(e.target.value))}
-          />
+          <RowOrColumn>
+            <DateRangeInput
+              type="date"
+              value={convertDateToString(dateToSplitCosts)}
+              onChange={(e) => setDateToSplitCosts(convertStringToDate(e.target.value))}
+            />
 
-          <SplitTransactionsButton
-            type="submit"
-            onClick={createSplitEntry}
-            disabled={isSplitTransactionDisabled}
-          >
-            Split Costs On This Date
-            <ButtonDisabledPopup>{buttonDisabledMessage}</ButtonDisabledPopup>
-          </SplitTransactionsButton>
+            <SplitTransactionsButton
+              type="submit"
+              onClick={createSplitEntry}
+              disabled={isSplitTransactionDisabled}
+            >
+              {
+                isIouTransactionLoading
+                  ? <Spinner />
+                  : 'Split Costs On This Date'
+              }
+
+              <ButtonDisabledPopup>{buttonDisabledMessage}</ButtonDisabledPopup>
+            </SplitTransactionsButton>
+          </RowOrColumn>
         </form>
 
         <TransactionWindow
+          loading={isIouTransactionLoading}
           title="IOU Transaction Preview"
           transactions={iouAccountTransactions}
         />

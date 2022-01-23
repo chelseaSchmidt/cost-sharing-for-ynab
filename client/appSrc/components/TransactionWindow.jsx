@@ -2,13 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Transaction from './Transaction';
+import { Spinner } from './styledComponents';
 
 /* Styled Components */
 
 const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin: 0 10px;
   padding: 15px;
-  border-radius: 12px;
 `;
 
 const Title = styled.h3``;
@@ -44,6 +47,7 @@ const TransactionFeed = styled.div`
 /* Main Component */
 
 const TransactionWindow = ({
+  loading = false,
   title,
   transactions,
   transactionsSharedInOneButNotOther = [],
@@ -94,12 +98,25 @@ const TransactionWindow = ({
         }
       </TransactionFeed>
 
-      {noTransactions && <em>No transactions</em>}
+      {
+        loading && (
+          <Spinner
+            style={{
+              height: '20px',
+              width: '20px',
+            }}
+          />
+        )
+      }
+
+      {noTransactions && !loading && <em>No transactions</em>}
+
     </Container>
   );
 };
 
 TransactionWindow.propTypes = {
+  loading: PropTypes.bool,
   transactions: PropTypes.arrayOf(
     PropTypes.shape({ id: PropTypes.string }),
   ).isRequired,

@@ -117,3 +117,18 @@ export const Tooltip = styled.span`
   padding: 5px;
   border-radius: 5px;
 `;
+
+// https://www.w3schools.com/howto/howto_css_loader.asp
+export const Spinner = styled.div`
+  border: 3px solid #eee;
+  border-top: 3px solid #aaa;
+  border-radius: 50%;
+  width: 12px;
+  height: 12px;
+  animation: spin 2s linear infinite;
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+`;
