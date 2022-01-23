@@ -44,8 +44,8 @@ const PrivacyPolicy = ({
       does not pass the data to any third parties.
     </p>
     <p>
-      Cost Sharing for YNAB is an open-source web application. If you would like to
-      verify any of the above statements, the source-code can be viewed at&nbsp;
+      Cost Sharing for YNAB is an open-source web application.
+      The source-code can be viewed at&nbsp;
       <a
         href="https://github.com/chelseaSchmidt/cost-sharing-for-ynab"
         target="_blank"

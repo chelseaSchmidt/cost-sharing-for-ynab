@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
 import styled from 'styled-components';
-import '../styles/AccountSelector.css';
 import { SectionHeader } from './styledComponents';
 
 /* Styled Components */
@@ -15,12 +13,57 @@ const Container = styled.div`
   width: 100%;
 `;
 
-// FIXME: not a very good name
-const ButtonsContainer = styled.div`
+const SectionContent = styled.div`
   margin-bottom: 40px;
+`;
 
-  p {
-    margin-bottom: 20px;
+const Subtitle = styled.p`
+  font-weight: bold;
+  margin-bottom: 20px;
+`;
+
+const ButtonsContainer = styled.div``;
+
+const OptionButton = styled.button`
+  margin: 0 9px 9px 0;
+  padding: 4px 9px;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 1px 0 0.5px #c9cdd2;
+  color: #464b46;
+  font-size: 13px;
+  background-color: rgb(241, 241, 241);
+  cursor: pointer;
+
+  :hover {
+    background-color: #5183b1;
+    color: white;
+  }
+
+  :focus {
+    outline: none;
+  }
+`;
+
+const SelectedOptionButton = styled(OptionButton)`
+  background-color: #2f73b3;
+  box-shadow: 0 1px 0 0.5px #395066;
+  color: white;
+  text-shadow: 0 0 2px #666;
+
+  :hover {
+    background-color: #0061bd;
+    color: white;
+  }
+`;
+
+const IouAccountSelectorContainer = styled.div``;
+
+const IouAccountSelector = styled.select`
+  cursor: pointer;
+
+  :focus {
+    outline: none;
   }
 `;
 
@@ -37,24 +80,42 @@ const AccountSelector = ({
   setSharedParentCategories,
   setSplitAccountId,
 }) => {
+  const doesAccountHaveId = ({ accountId }, id) => (
+    accountId === id
+  );
+
+  const selectAccount = (selection) => (
+    setSharedAccounts([...sharedAccounts, selection])
+  );
+
+  const deselectAccountById = (id) => (
+    setSharedAccounts(
+      sharedAccounts.filter((account) => !doesAccountHaveId(account, id)),
+    )
+  );
+
+  const doesCategoryHaveId = ({ categoryId }, id) => (
+    categoryId === id
+  );
+
+  const selectCategory = (selection) => (
+    setSharedParentCategories([...sharedParentCategories, selection])
+  );
+
+  const deselectCategoryById = (id) => (
+    setSharedParentCategories(
+      sharedParentCategories.filter((category) => !doesCategoryHaveId(category, id)),
+    )
+  );
+
   const toggleSharedAccount = ({
     id,
     name,
   }) => {
-    const doesAccountHaveId = ({ accountId }) => accountId === id;
-
-    const selectAccount = () => {
-      setSharedAccounts([...sharedAccounts, { name, accountId: id }]);
-    };
-
-    const deselectAccount = () => {
-      setSharedAccounts(sharedAccounts.filter(_.negate(doesAccountHaveId)));
-    };
-
-    if (sharedAccounts.find(doesAccountHaveId)) {
-      deselectAccount();
+    if (sharedAccounts.find((account) => doesAccountHaveId(account, id))) {
+      deselectAccountById(id);
     } else {
-      selectAccount();
+      selectAccount({ accountId: id, name });
     }
   };
 
@@ -63,23 +124,10 @@ const AccountSelector = ({
     name,
     subCategories,
   }) => {
-    const doesCategoryHaveId = ({ categoryId }) => categoryId === id;
-
-    const selectCategory = () => {
-      setSharedParentCategories([
-        ...sharedParentCategories,
-        { name, categoryId: id, subCategories },
-      ]);
-    };
-
-    const deselectCategory = () => {
-      setSharedParentCategories(sharedParentCategories.filter(_.negate(doesCategoryHaveId)));
-    };
-
-    if (sharedParentCategories.find(doesCategoryHaveId)) {
-      deselectCategory();
+    if (sharedParentCategories.find((category) => doesCategoryHaveId(category, id))) {
+      deselectCategoryById(id);
     } else {
-      selectCategory();
+      selectCategory({ name, categoryId: id, subCategories });
     }
   };
 
@@ -91,98 +139,104 @@ const AccountSelector = ({
 
   return (
     <Container>
-      <ButtonsContainer>
-        <SectionHeader>Choose Accounts and Categories</SectionHeader>
+      <SectionHeader>Choose Accounts and Categories</SectionHeader>
 
-        <p><b>Select the credit card(s) you use for shared expenses</b></p>
+      <SectionContent>
+        <Subtitle>Select the credit card(s) you use for shared expenses</Subtitle>
 
-        <div className="tag-area">
+        <ButtonsContainer>
           {
             budgetAccounts.map(({ name, id }) => {
-              let classNamesString = 'acct-btn';
+              const isAccountSelected = sharedAccounts.find(
+                (account) => doesAccountHaveId(account, id),
+              );
 
-              if (sharedAccounts.find(({ accountId }) => accountId === id)) {
-                classNamesString += ' active-btn';
-              }
+              const Button = isAccountSelected
+                ? SelectedOptionButton
+                : OptionButton;
 
               return (
-                <button
+                <Button
                   type="button"
                   key={id}
                   id={id}
-                  className={classNamesString}
                   onClick={() => toggleSharedAccount({ id, name })}
                 >
                   {name}
-                </button>
+                </Button>
               );
             })
           }
-        </div>
-      </ButtonsContainer>
-      <ButtonsContainer>
-        <p><b>Select the YNAB parent category(ies) where you track shared expenses</b></p>
-        <div className="tag-area">
+        </ButtonsContainer>
+      </SectionContent>
+
+      <SectionContent>
+        <Subtitle>Select the YNAB parent category(ies) where you track shared expenses</Subtitle>
+
+        <ButtonsContainer>
           {
             budgetParentCategories.map(({
               name,
               id,
               categories: subCategories,
             }) => {
-              if (!hiddenCategoryNames.includes(name)) {
-                let classNamesString = 'cat-btn';
+              const shouldDisplayCategory = !hiddenCategoryNames.includes(name);
 
-                if (sharedParentCategories.find(({ categoryId }) => categoryId === id)) {
-                  classNamesString += ' active-btn';
-                }
+              if (shouldDisplayCategory) {
+                const isCategorySelected = sharedParentCategories.find(
+                  (category) => doesCategoryHaveId(category, id),
+                );
+
+                const Button = isCategorySelected
+                  ? SelectedOptionButton
+                  : OptionButton;
 
                 return (
-                  <button
+                  <Button
                     type="button"
-                    id={id}
-                    className={classNamesString}
-                    onClick={() => toggleSharedCategory({ id, name, subCategories })}
                     key={id}
+                    id={id}
+                    onClick={() => toggleSharedCategory({ id, name, subCategories })}
                   >
                     {name}
-                  </button>
+                  </Button>
                 );
               }
+
               return null;
             })
           }
-        </div>
-      </ButtonsContainer>
-      <div id="split-option-area">
-        <p>
-          <b>
-            Select the &quot;IOU&quot; account that shows what your partner owes you
-          </b>
-        </p>
+        </ButtonsContainer>
+      </SectionContent>
 
-        <div id="split-acct-dropdown">
-          <select
+      <SectionContent>
+        <Subtitle>
+          Select the &quot;IOU&quot; account that shows what your partner owes you
+        </Subtitle>
+
+        <IouAccountSelectorContainer>
+          <IouAccountSelector
             onChange={(e) => setSplitAccountId(e.target.value)}
-            defaultValue="select-an-account"
+            defaultValue="none"
           >
-            <option disabled value="select-an-account">
+            <option disabled value="none">
               -- select an account --
             </option>
 
             {
               budgetAccounts.map(({ name, id }) => (
                 <option
-                  id={`split-${id}`}
-                  key={`split-${id}`}
+                  id={`iou-${id}`}
+                  key={`iou-${id}`}
                   value={id}
                 >
                   {name}
                 </option>
               ))
             }
-          </select>
-        </div>
-      </div>
+          </IouAccountSelector>
+        </IouAccountSelectorContainer>
+      </SectionContent>
     </Container>
   );
 };

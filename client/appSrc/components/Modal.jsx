@@ -24,6 +24,7 @@ const Container = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   width: 80vw;
+  max-width: 1100px;
   max-height: 80vh;
   border-radius: 12px;
   box-shadow: 0 0 5px 0 #4c4c4c;

@@ -373,6 +373,7 @@ const CostSharingForYnab = () => {
                 onChange={(e) => setTransactionsStartDate(convertStringToDate(e.target.value))}
               />
             </DateRangeLabel>
+
             <DateRangeLabel htmlFor="transactions-end-date">
               End date:
               <DateRangeInput
@@ -400,8 +401,10 @@ const CostSharingForYnab = () => {
           Show Transactions
         </ShowTransactionsButton>
       </SectionTile>
+
       <TransactionsTile id="transaction-container">
         <SectionHeader>Select Shared Costs</SectionHeader>
+
         {
           !!sharedAccountErrorTransactions.length && (
             <MissingTransactionsWarning>
@@ -416,6 +419,7 @@ const CostSharingForYnab = () => {
             </MissingTransactionsWarning>
           )
         }
+
         <TransactionWindowContainer>
           <TransactionWindow
             transactions={transactionsInSharedCategories}
@@ -428,19 +432,23 @@ const CostSharingForYnab = () => {
           />
         </TransactionWindowContainer>
       </TransactionsTile>
+
       <SectionTile>
         <form>
           <SectionHeader>Split the Total Cost</SectionHeader>
+
           <p>
             Charge half the shared costs to the &quot;IOU&quot;
             account that shows what your partner owes you, and reduce
             your expenses by the same amount.
           </p>
+
           <DateRangeInput
             type="date"
             value={convertDateToString(splitDate)}
             onChange={(e) => setSplitDate(convertStringToDate(e.target.value))}
           />
+
           <SplitTransactionsButton
             type="submit"
             onClick={createSplitEntry}
@@ -450,11 +458,13 @@ const CostSharingForYnab = () => {
             <ButtonDisabledPopup>{buttonDisabledMessage}</ButtonDisabledPopup>
           </SplitTransactionsButton>
         </form>
+
         <TransactionWindow
           title="IOU Transaction Preview"
           transactions={iouAccountTransactions}
         />
       </SectionTile>
+
       {
         isConfirmationVisible && (
           <Confirmation
@@ -462,6 +472,7 @@ const CostSharingForYnab = () => {
           />
         )
       }
+
       {
         errorData && (
           <Error
@@ -470,6 +481,7 @@ const CostSharingForYnab = () => {
           />
         )
       }
+
       <Nav setActiveModal={setActiveModal} />
     </Container>
   );
