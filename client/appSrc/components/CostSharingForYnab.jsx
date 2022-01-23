@@ -4,6 +4,8 @@ import _ from 'lodash';
 import styled from 'styled-components';
 import AccountButtons from './AccountButtons';
 import CategoryButtons from './CategoryButtons';
+import AccountSelector from './AccountSelector';
+import DateSelector from './DateSelector';
 import TransactionWindow from './TransactionWindow';
 import Confirmation from './Confirmation';
 import Modal from './Modal';
@@ -90,25 +92,6 @@ const RowOrColumn = styled.div`
 const DateRangeForm = styled.form`
   display: flex;
   flex-direction: column;
-`;
-
-const DateRangeLabel = styled.label``;
-
-const DateRangeInput = styled.input`
-  margin: 10px;
-  cursor: text;
-
-  ::-webkit-calendar-picker-indicator {
-    cursor: pointer;
-  }
-`;
-
-const IouAccountSelector = styled.select`
-  cursor: pointer;
-
-  :focus {
-    outline: none;
-  }
 `;
 
 const ShowTransactionsButton = styled(BaseButton)`
@@ -433,53 +416,30 @@ const CostSharingForYnab = () => {
             Select the &quot;IOU&quot; account that shows what your partner owes you
           </Subtitle>
 
-          <div>
-            <IouAccountSelector
-              onChange={(e) => setIouAccountId(e.target.value)}
-              defaultValue="none"
-            >
-              <option disabled value="none">
-                -- select an account --
-              </option>
-
-              {
-                budgetData.accounts.map(({ name, id }) => (
-                  <option
-                    id={`iou-${id}`}
-                    key={`iou-${id}`}
-                    value={id}
-                  >
-                    {name}
-                  </option>
-                ))
-              }
-            </IouAccountSelector>
-          </div>
+          <AccountSelector
+            accounts={budgetData.accounts}
+            setAccountId={setIouAccountId}
+            optionIdPrefix="iou"
+          />
         </SectionContent>
 
         <SectionContent>
           <Subtitle>Select transaction date range</Subtitle>
 
           <DateRangeForm>
-            <DateRangeLabel htmlFor="transactions-start-date">
-              Start date:
-              <DateRangeInput
-                type="date"
-                id="transactions-start-date"
-                value={convertDateToString(transactionsStartDate)}
-                onChange={(e) => setTransactionsStartDate(convertStringToDate(e.target.value))}
-              />
-            </DateRangeLabel>
+            <DateSelector
+              label="Start date:"
+              inputId="transactions-start-date"
+              inputValue={convertDateToString(transactionsStartDate)}
+              onChange={(value) => setTransactionsStartDate(convertStringToDate(value))}
+            />
 
-            <DateRangeLabel htmlFor="transactions-end-date">
-              End date:
-              <DateRangeInput
-                type="date"
-                id="transactions-end-date"
-                value={convertDateToString(transactionsEndDate)}
-                onChange={(e) => setTransactionsEndDate(convertStringToDate(e.target.value, false))}
-              />
-            </DateRangeLabel>
+            <DateSelector
+              label="End date:"
+              inputId="transactions-end-date"
+              inputValue={convertDateToString(transactionsEndDate)}
+              onChange={(value) => setTransactionsEndDate(convertStringToDate(value, false))}
+            />
           </DateRangeForm>
         </SectionContent>
 
@@ -504,7 +464,9 @@ const CostSharingForYnab = () => {
           !areTransactionsLoading && !!sharedAccountErrorTransactions.length && (
             <MissingTransactionsWarning>
               <WarningIcon>!</WarningIcon>
+
               You have costs in shared accounts that are missing from shared budget categories.
+
               <ReviewTransactionsButton
                 type="button"
                 onClick={() => setActiveModal(modalNames.TRANSACTION_REVIEW)}
@@ -541,10 +503,12 @@ const CostSharingForYnab = () => {
           </p>
 
           <RowOrColumn>
-            <DateRangeInput
-              type="date"
-              value={convertDateToString(dateToSplitCosts)}
-              onChange={(e) => setDateToSplitCosts(convertStringToDate(e.target.value))}
+            <DateSelector
+              label="Select date to split costs"
+              isLabelVisible={false}
+              inputId="cost-split-date-selector"
+              inputValue={convertDateToString(dateToSplitCosts)}
+              onChange={(value) => setDateToSplitCosts(convertStringToDate(value))}
             />
 
             <SplitTransactionsButton
