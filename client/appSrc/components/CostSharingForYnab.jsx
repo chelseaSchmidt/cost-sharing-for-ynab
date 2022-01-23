@@ -23,7 +23,7 @@ import {
 import {
   getTransactionsSinceDate,
   getAccounts,
-  getCategoryGroups,
+  getParentCategories,
   createSplitTransaction,
 } from './utils/networkRequests';
 import {
@@ -182,7 +182,7 @@ const CostSharingForYnab = () => {
   const [areTransactionsLoading, setAreTransactionsLoading] = useState(false);
   const [budgetData, setBudgetData] = useState({
     accounts: [],
-    categoryGroups: [],
+    parentCategories: [],
   });
   const [transactionsStartDate, setTransactionsStartDate] = useState(getFirstDateOfLastMonth());
   const [transactionsEndDate, setTransactionsEndDate] = useState(getLastDateOfLastMonth());
@@ -220,8 +220,8 @@ const CostSharingForYnab = () => {
   const getBudgetData = async () => {
     try {
       const accounts = await getAccounts();
-      const categoryGroups = await getCategoryGroups();
-      setBudgetData({ accounts, categoryGroups });
+      const parentCategories = await getParentCategories();
+      setBudgetData({ accounts, parentCategories });
     } catch (error) {
       setErrorData({
         status: error.response?.status,
@@ -422,8 +422,7 @@ const CostSharingForYnab = () => {
           <Subtitle>Select the YNAB parent category(ies) where you track shared expenses</Subtitle>
 
           <CategoryButtons
-            // FIXME: rename categoryGroups to parentCategories
-            parentCategories={budgetData.categoryGroups}
+            parentCategories={budgetData.parentCategories}
             selectedParentCategories={selectedParentCategories}
             setSelectedParentCategories={setSelectedParentCategories}
           />

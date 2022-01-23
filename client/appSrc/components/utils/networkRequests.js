@@ -33,7 +33,7 @@ export const getAccounts = async () => {
   return result?.data.data.accounts.filter(({ closed }) => !closed);
 };
 
-export const getCategoryGroups = async () => {
+export const getParentCategories = async () => {
   const result = await axios({
     method: 'get',
     headers: { Authorization: `Bearer ${getToken()}` },
