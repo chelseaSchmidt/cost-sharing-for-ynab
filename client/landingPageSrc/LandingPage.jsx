@@ -145,16 +145,16 @@ const LandingPage = () => {
           </p>
 
           <p>
-            Maybe you resorted to excluding it from YNAB completely. Or, maybe you&apos;re
+            Maybe you&apos;ve resorted to excluding it from YNAB completely. Or, maybe you&apos;re
             throwing the costs into a blanket &quot;shared expense&quot; category, and
             later splitting the total in half - which fixes the doubling problem,
-            but masks which expenses the dollars are going toward.
+            but masks where exactly the dollars are going.
           </p>
 
           <p>
             Cost Sharing for YNAB allows you to classify your transactions across any number
-            of categories, and then click a button to pull half those costs out of each category.
-            No more doubled-up expenses or catch-all category!
+            of categories, and then at the click of a button, pull half those costs out of
+            each one. No more doubled-up expenses or catch-all category!
           </p>
         </Description>
 

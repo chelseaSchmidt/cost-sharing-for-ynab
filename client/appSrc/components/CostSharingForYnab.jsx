@@ -305,6 +305,7 @@ const CostSharingForYnab = () => {
       setIsConfirmationVisible(true);
       setIouAccountTransactions([...iouAccountTransactions, transaction]);
       setCheckedTransactions([]);
+      setIsSelectAllChecked(false);
     } catch (error) {
       setErrorData({
         status: error.response?.status,
@@ -323,7 +324,10 @@ const CostSharingForYnab = () => {
   }, [budgetData]);
 
   useEffect(() => {
-    if (areTransactionsLoading) setCheckedTransactions([]);
+    if (areTransactionsLoading) {
+      setCheckedTransactions([]);
+      setIsSelectAllChecked(false);
+    }
   }, [areTransactionsLoading]);
 
   return isPageLoading ? 'Loading...' : (
@@ -345,7 +349,7 @@ const CostSharingForYnab = () => {
             {activeModal === modalNames.TRANSACTION_REVIEW && (
               <TransactionWindow
                 title="Transactions in shared accounts not categorized to shared expense categories"
-                description="This list is meant to help you catch miscategorized transactions. Recategorize them in YNAB as needed and then refresh this list."
+                description="This list is meant to help you catch miscategorized transactions. Recategorize them in YNAB as needed and then refresh the list."
                 loading={areTransactionsLoading}
                 shouldShowLoadingOverlay
                 transactions={sharedAccountErrorTransactions}

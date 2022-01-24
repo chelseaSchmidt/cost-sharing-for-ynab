@@ -24,6 +24,7 @@ const RefreshButtonContainer = styled.div`
 `;
 
 const RefreshButton = styled(BaseButton)`
+  margin-top: 20px;
   width: fit-content;
 `;
 
