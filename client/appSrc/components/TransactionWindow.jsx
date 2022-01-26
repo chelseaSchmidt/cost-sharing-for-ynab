@@ -84,7 +84,7 @@ const TransactionWindow = ({
   toggleSelectAll,
   isSelectAllChecked,
   shouldShowIcon,
-  isEditable,
+  isClickable,
   shouldShowRefreshButton = false,
   refreshTransactions = () => {},
   shouldShowLoadingOverlay = false,
@@ -119,7 +119,7 @@ const TransactionWindow = ({
             <SelectAllCheckboxContainer>
               {
                 !!transactions.length
-                && isEditable
+                && isClickable
                 && (
                   <SelectAllCheckboxLabel htmlFor="select-all-input">
                     <SelectAllCheckbox
@@ -141,7 +141,7 @@ const TransactionWindow = ({
                     transactions.map((transaction) => (
                       <Transaction
                         key={transaction.id}
-                        isEditable={isEditable}
+                        isClickable={isClickable}
                         // FIXME: nested loop
                         isSelected={!!selectedTransactionIds.includes(transaction.id)}
                         toggleTransactionSelection={toggleTransactionSelection}
@@ -191,7 +191,7 @@ TransactionWindow.propTypes = {
   toggleSelectAll: PropTypes.func,
   isSelectAllChecked: PropTypes.bool,
   shouldShowIcon: PropTypes.bool,
-  isEditable: PropTypes.bool,
+  isClickable: PropTypes.bool,
   containerStyle: PropTypes.object,
   feedStyle: PropTypes.object,
   shouldShowRefreshButton: PropTypes.bool,

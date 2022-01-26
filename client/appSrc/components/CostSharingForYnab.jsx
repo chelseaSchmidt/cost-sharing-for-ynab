@@ -510,7 +510,7 @@ const CostSharingForYnab = () => {
             toggleSelectAll={toggleSelectAll}
             isSelectAllChecked={isSelectAllChecked}
             shouldShowIcon
-            isEditable
+            isClickable
           />
         </TransactionWindowContainer>
       </TransactionsTile>

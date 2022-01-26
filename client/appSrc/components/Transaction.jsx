@@ -18,15 +18,16 @@ const Container = styled.div`
   padding: 5px;
   background-color: white;
   color: #464b46;
-  cursor: pointer;
 
-  :hover {
-    background-color: #eee;
-  }
-
-  :active {
-    background-color: #ddd;
-  }
+  ${(props) => props.isClickable && `
+    cursor: pointer;
+    :hover {
+      background-color: #eee;
+    }
+    :active {
+      background-color: #ddd;
+    }
+  `}
 `;
 
 const Checkbox = styled.input`
@@ -61,7 +62,7 @@ const TransactionWarningIcon = styled(WarningIcon)`
 /* Main Component */
 
 const Transaction = ({
-  isEditable,
+  isClickable,
   isSelected,
   toggleTransactionSelection,
   transaction,
@@ -84,8 +85,11 @@ const Transaction = ({
   };
 
   return (
-    <Container onClick={onClick}>
-      {isEditable && (
+    <Container
+      onClick={isClickable ? onClick : () => {}}
+      isClickable={isClickable}
+    >
+      {isClickable && (
         <Checkbox
           type="checkbox"
           checked={isSelected}
@@ -135,7 +139,7 @@ const Transaction = ({
 };
 
 Transaction.propTypes = {
-  isEditable: PropTypes.bool,
+  isClickable: PropTypes.bool,
   toggleTransactionSelection: PropTypes.func,
   isIsolated: PropTypes.bool.isRequired,
   shouldShowIcon: PropTypes.bool,
