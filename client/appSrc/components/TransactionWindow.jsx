@@ -78,7 +78,7 @@ const TransactionWindow = ({
   title,
   description = '',
   transactions,
-  checkedTransactions = [],
+  selectedTransactions = [],
   transactionsSharedInOneButNotOther = [],
   toggleTransactionSelection,
   toggleSelectAll,
@@ -142,7 +142,7 @@ const TransactionWindow = ({
                         key={transaction.id}
                         isEditable={isEditable}
                         // FIXME: nested loop
-                        isSelected={!!checkedTransactions.find(({ id }) => id === transaction.id)}
+                        isSelected={!!selectedTransactions.find(({ id }) => id === transaction.id)}
                         toggleTransactionSelection={toggleTransactionSelection}
                         transaction={transaction}
                         // FIXME: nested loop
@@ -182,7 +182,7 @@ const TransactionWindow = ({
 TransactionWindow.propTypes = {
   loading: PropTypes.bool,
   transactions: PropTypes.array.isRequired,
-  checkedTransactions: PropTypes.array,
+  selectedTransactions: PropTypes.array,
   transactionsSharedInOneButNotOther: PropTypes.array,
   title: PropTypes.string,
   description: PropTypes.string,

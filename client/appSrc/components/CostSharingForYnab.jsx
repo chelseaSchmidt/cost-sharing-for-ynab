@@ -169,7 +169,7 @@ const CostSharingForYnab = () => {
   });
   const [transactionsStartDate, setTransactionsStartDate] = useState(getFirstDateOfLastMonth());
   const [transactionsEndDate, setTransactionsEndDate] = useState(getLastDateOfLastMonth());
-  const [checkedTransactions, setCheckedTransactions] = useState([]);
+  const [selectedTransactions, setSelectedTransactions] = useState([]);
   const [dateToSplitCosts, setDateToSplitCosts] = useState(getLastDateOfLastMonth());
   const [classifiedTransactions, setClassifiedTransactions] = useState({});
   const [selectedAccounts, setSelectedAccounts] = useState([]);
@@ -189,11 +189,11 @@ const CostSharingForYnab = () => {
   } = classifiedTransactions;
 
   const isSplitTransactionDisabled = (
-    !checkedTransactions.length
+    !selectedTransactions.length
     || !iouAccountId
   );
 
-  const buttonDisabledMessage = !checkedTransactions.length
+  const buttonDisabledMessage = !selectedTransactions.length
     ? (
       (!iouAccountId && 'Please select shared costs and pick an IOU account first')
       || 'Please select shared costs first'
@@ -244,22 +244,22 @@ const CostSharingForYnab = () => {
     isSelected,
     transaction,
   }) => {
-    setCheckedTransactions(
+    setSelectedTransactions(
       isSelected
-        ? [...checkedTransactions, transaction]
-        : checkedTransactions.filter(({ id }) => id !== transaction.id),
+        ? [...selectedTransactions, transaction]
+        : selectedTransactions.filter(({ id }) => id !== transaction.id),
     );
   };
 
   const toggleSelectAll = ({ isSelected }) => {
     setIsSelectAllChecked(isSelected);
-    setCheckedTransactions(isSelected ? [...transactionsInSharedCategories] : []);
+    setSelectedTransactions(isSelected ? [...transactionsInSharedCategories] : []);
   };
 
   const createSplitEntry = async (e) => {
     e.preventDefault();
 
-    const categorizedTransactions = _.groupBy(checkedTransactions, 'category_id');
+    const categorizedTransactions = _.groupBy(selectedTransactions, 'category_id');
 
     const categorizedAmounts = _.reduce(
       categorizedTransactions,
@@ -304,7 +304,7 @@ const CostSharingForYnab = () => {
       const transaction = await createSplitTransaction(summaryTransaction);
       setIsConfirmationVisible(true);
       setIouAccountTransactions([...iouAccountTransactions, transaction]);
-      setCheckedTransactions([]);
+      setSelectedTransactions([]);
       setIsSelectAllChecked(false);
     } catch (error) {
       setErrorData({
@@ -325,7 +325,7 @@ const CostSharingForYnab = () => {
 
   useEffect(() => {
     if (areTransactionsLoading) {
-      setCheckedTransactions([]);
+      setSelectedTransactions([]);
       setIsSelectAllChecked(false);
     }
   }, [areTransactionsLoading]);
@@ -504,7 +504,7 @@ const CostSharingForYnab = () => {
           <TransactionWindow
             loading={areTransactionsLoading}
             transactions={transactionsInSharedCategories}
-            checkedTransactions={checkedTransactions}
+            selectedTransactions={selectedTransactions}
             transactionsSharedInOneButNotOther={sharedCategoryErrorTransactions}
             toggleTransactionSelection={toggleTransactionSelection}
             toggleSelectAll={toggleSelectAll}
