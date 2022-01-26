@@ -1,10 +1,10 @@
 const path = require('path');
 
 module.exports = {
-  entry: './client/appSrc/index.jsx',
+  entry: './client/landingPageSrc/index.jsx',
   output: {
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, 'client', 'app'),
+    filename: 'landingPageBundle.js',
+    path: path.resolve(__dirname, 'client', 'landingPage'),
   },
   resolve: {
     extensions: ['.js', '.jsx'],

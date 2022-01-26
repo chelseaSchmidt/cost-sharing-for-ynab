@@ -5,33 +5,48 @@ const fs = require('fs');
 const morgan = require('morgan');
 const path = require('path');
 
-const usingHTTPS = !!process.env.HTTPS;
-const httpsPort = process.env.HTTPSPORT || 3001;
-const httpPort = process.env.HTTPPORT || 3000;
-const appDir = path.resolve(__dirname, '..', 'client', 'app');
-const siteDir = path.resolve(__dirname, '..', 'client', 'site');
-const app = express();
-const redirectApp = express();
+// set up main server
+const costSharingForYnabServer = express();
+costSharingForYnabServer.use(morgan('dev'));
 
-app.use(morgan('dev'));
-app.use(express.static(siteDir));
-app.use('/cost-sharer', express.static(appDir));
+costSharingForYnabServer.use(
+  express.static(path.resolve(__dirname, '..', 'client', 'landingPage')),
+);
+costSharingForYnabServer.use(
+  '/cost-sharer',
+  express.static(path.resolve(__dirname, '..', 'client', 'app')),
+);
 
-redirectApp.use(morgan('dev'));
-redirectApp.get('*', (req, res) => {
-  console.log('redirected to HTTPS');
+// set up server to redirect HTTP requests to equivalent HTTPS url
+const redirectServer = express();
+redirectServer.use(morgan('dev'));
+
+redirectServer.get('*', (req, res) => {
+  console.log('Request redirected to HTTPS server');
   res.redirect(`https://${req.headers.host}${req.url}`);
 });
 
-if (usingHTTPS) {
+// start server(s)
+const httpsPort = process.env.HTTPSPORT || 3001;
+const httpPort = process.env.HTTPPORT || 3000;
+
+if (process.env.IS_HTTPS) {
   const options = {
-    key: fs.readFileSync(process.env.KEY),
-    cert: fs.readFileSync(process.env.CERT),
+    key: fs.readFileSync(path.resolve(__dirname, process.env.KEY)),
+    cert: fs.readFileSync(path.resolve(__dirname, process.env.CERT)),
   };
-  https.createServer(options, app).listen(httpsPort, () => {
-    console.log(`HTTPS good to go at port ${httpsPort}`);
+
+  https
+    .createServer(options, costSharingForYnabServer)
+    .listen(httpsPort, () => {
+      console.log(`Listening for HTTPS requests at ${httpsPort}`);
+    });
+
+  redirectServer.listen(httpPort, () => {
+    console.log(`Listening for HTTP requests at ${httpPort} to forward to HTTPS server at ${httpsPort}`);
   });
-  redirectApp.listen(httpPort, () => console.log(`HTTP at ${httpPort} forwarding to HTTPS at ${httpsPort}`));
 } else {
-  app.listen(httpPort, () => console.log(`HTTP good to go at port ${httpPort}`));
+  costSharingForYnabServer.listen(httpPort, () => {
+    console.log(`Listening for HTTP requests at ${httpPort}`);
+  });
 }
