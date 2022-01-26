@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Transaction from './Transaction';
 import { Spinner, BaseButton } from './styledComponents';
+import { toId } from './utils/general';
 
 /* Styled Components */
 
@@ -77,20 +78,21 @@ const TransactionWindow = ({
   title,
   description = '',
   transactions,
-  checkedTransactions = [],
+  selectedTransactions = [],
   transactionsSharedInOneButNotOther = [],
   toggleTransactionSelection,
   toggleSelectAll,
   isSelectAllChecked,
   shouldShowIcon,
-  isEditable,
+  isClickable,
   shouldShowRefreshButton = false,
   refreshTransactions = () => {},
   shouldShowLoadingOverlay = false,
   containerStyle = {},
   feedStyle = {},
 }) => {
-  const isolatedTransactionIds = transactionsSharedInOneButNotOther.map(({ id }) => id);
+  const isolatedTransactionIds = transactionsSharedInOneButNotOther.map(toId);
+  const selectedTransactionIds = selectedTransactions.map(toId);
 
   return (
     <Container style={containerStyle}>
@@ -117,7 +119,7 @@ const TransactionWindow = ({
             <SelectAllCheckboxContainer>
               {
                 !!transactions.length
-                && isEditable
+                && isClickable
                 && (
                   <SelectAllCheckboxLabel htmlFor="select-all-input">
                     <SelectAllCheckbox
@@ -139,9 +141,9 @@ const TransactionWindow = ({
                     transactions.map((transaction) => (
                       <Transaction
                         key={transaction.id}
-                        isEditable={isEditable}
+                        isClickable={isClickable}
                         // FIXME: nested loop
-                        isSelected={!!checkedTransactions.find(({ id }) => id === transaction.id)}
+                        isSelected={!!selectedTransactionIds.includes(transaction.id)}
                         toggleTransactionSelection={toggleTransactionSelection}
                         transaction={transaction}
                         // FIXME: nested loop
@@ -181,7 +183,7 @@ const TransactionWindow = ({
 TransactionWindow.propTypes = {
   loading: PropTypes.bool,
   transactions: PropTypes.array.isRequired,
-  checkedTransactions: PropTypes.array,
+  selectedTransactions: PropTypes.array,
   transactionsSharedInOneButNotOther: PropTypes.array,
   title: PropTypes.string,
   description: PropTypes.string,
@@ -189,7 +191,7 @@ TransactionWindow.propTypes = {
   toggleSelectAll: PropTypes.func,
   isSelectAllChecked: PropTypes.bool,
   shouldShowIcon: PropTypes.bool,
-  isEditable: PropTypes.bool,
+  isClickable: PropTypes.bool,
   containerStyle: PropTypes.object,
   feedStyle: PropTypes.object,
   shouldShowRefreshButton: PropTypes.bool,

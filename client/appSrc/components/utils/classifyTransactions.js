@@ -1,4 +1,7 @@
 /* eslint-disable camelcase */
+
+import { toId } from './general';
+
 const classifyTransactions = ({
   displayedTransactions,
   selectedAccounts,
@@ -7,7 +10,7 @@ const classifyTransactions = ({
   const sharedAccountIds = selectedAccounts.map((acct) => acct.accountId);
   const sharedCategoryIds = selectedParentCategories
     .flatMap(({ subCategories }) => subCategories)
-    .map(({ id }) => id);
+    .map(toId);
 
   return displayedTransactions.reduce((accum, transaction) => {
     const {
