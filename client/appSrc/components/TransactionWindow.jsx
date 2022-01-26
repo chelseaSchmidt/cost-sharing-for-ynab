@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Transaction from './Transaction';
 import { Spinner, BaseButton } from './styledComponents';
+import { toId } from './utils/general';
 
 /* Styled Components */
 
@@ -90,7 +91,7 @@ const TransactionWindow = ({
   containerStyle = {},
   feedStyle = {},
 }) => {
-  const isolatedTransactionIds = transactionsSharedInOneButNotOther.map(({ id }) => id);
+  const isolatedTransactionIds = transactionsSharedInOneButNotOther.map(toId);
 
   return (
     <Container style={containerStyle}>
