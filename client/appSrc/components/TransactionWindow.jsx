@@ -92,6 +92,7 @@ const TransactionWindow = ({
   feedStyle = {},
 }) => {
   const isolatedTransactionIds = transactionsSharedInOneButNotOther.map(toId);
+  const selectedTransactionIds = selectedTransactions.map(toId);
 
   return (
     <Container style={containerStyle}>
@@ -142,7 +143,7 @@ const TransactionWindow = ({
                         key={transaction.id}
                         isEditable={isEditable}
                         // FIXME: nested loop
-                        isSelected={!!selectedTransactions.find(({ id }) => id === transaction.id)}
+                        isSelected={!!selectedTransactionIds.includes(transaction.id)}
                         toggleTransactionSelection={toggleTransactionSelection}
                         transaction={transaction}
                         // FIXME: nested loop

@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign, camelcase */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import _ from 'lodash';
 import styled from 'styled-components';
 import AccountButtons from './AccountButtons';
@@ -240,16 +240,16 @@ const CostSharingForYnab = () => {
     setAreTransactionsLoading(false);
   };
 
-  const toggleTransactionSelection = ({
+  const toggleTransactionSelection = useCallback(({
     isSelected,
     transaction,
   }) => {
-    setSelectedTransactions(
+    setSelectedTransactions((previousSelected) => (
       isSelected
-        ? [...selectedTransactions, transaction]
-        : selectedTransactions.filter(({ id }) => id !== transaction.id),
-    );
-  };
+        ? [...previousSelected, transaction]
+        : previousSelected.filter(({ id }) => id !== transaction.id)
+    ));
+  }, [setSelectedTransactions]);
 
   const toggleSelectAll = ({ isSelected }) => {
     setIsSelectAllChecked(isSelected);

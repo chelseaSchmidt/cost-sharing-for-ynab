@@ -18,6 +18,15 @@ const Container = styled.div`
   padding: 5px;
   background-color: white;
   color: #464b46;
+  cursor: pointer;
+
+  :hover {
+    background-color: #eee;
+  }
+
+  :active {
+    background-color: #ddd;
+  }
 `;
 
 const Checkbox = styled.input`
@@ -65,22 +74,22 @@ const Transaction = ({
     payee_name,
     category_name,
     account_name,
-    // memo,
-    // cleared,
   } = transaction;
 
+  const onClick = () => {
+    toggleTransactionSelection({
+      isSelected: !isSelected,
+      transaction,
+    });
+  };
+
   return (
-    <Container>
+    <Container onClick={onClick}>
       {isEditable && (
         <Checkbox
           type="checkbox"
           checked={isSelected}
-          onChange={(e) => {
-            toggleTransactionSelection({
-              isSelected: e.target.checked,
-              transaction,
-            });
-          }}
+          readOnly
         />
       )}
 
