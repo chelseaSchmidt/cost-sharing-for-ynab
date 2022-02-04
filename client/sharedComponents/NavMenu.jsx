@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
+import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { BackgroundOverlay } from '../appSrc/components/styledComponents'; // FIXME: move to shared directory
 
 /**
- * FIXME: bugginess with menu pushing body off to the side instead of hiding off screen
- * Repro - change to mobile view
- *
- * FIXME: increase click area
+ * FIXME: pass menu items in from respective page root
  */
 
 const Container = styled.div`
@@ -46,10 +44,11 @@ const ButtonBar = styled.div`
 const menuWidth = '320px';
 
 const Menu = styled.div`
+  z-index: 6;
   display: flex;
   flex-direction: column;
   position: fixed;
-  top: 0;
+  top: 10px;
   box-sizing: border-box;
   height: fit-content;
   width: ${menuWidth};
@@ -142,54 +141,60 @@ const NavMenu = ({
             ))
           }
         </Button>
-
-        <Menu isOpen={isOpen}>
-          <MenuHeader>
-            <ExitButton
-              type="button"
-              aria-label="Exit navigation menu"
-              onClick={closeMenu}
-              tabIndex={0}
-            >
-              X
-            </ExitButton>
-          </MenuHeader>
-
-          {
-            menuItems.map((
-              {
-                text,
-                attributes = {},
-                style = {},
-                onClick = () => {},
-              },
-              i,
-            ) => {
-              const isLastItem = i === menuItems.length - 1;
-
-              return (
-                <React.Fragment
-                  key={text}
-                >
-                  <MenuItem
-                    {...attributes} // eslint-disable-line react/jsx-props-no-spreading
-                    style={style}
-                    onClick={() => {
-                      onClick();
-                      closeMenu();
-                    }}
+        {
+          ReactDOM.createPortal(
+            (
+              <Menu isOpen={isOpen}>
+                <MenuHeader>
+                  <ExitButton
+                    type="button"
+                    aria-label="Exit navigation menu"
+                    onClick={closeMenu}
+                    tabIndex={0}
                   >
-                    {text}
-                  </MenuItem>
+                    X
+                  </ExitButton>
+                </MenuHeader>
 
-                  {!isLastItem && <Divider />}
-                </React.Fragment>
-              );
-            })
-          }
+                {
+                  menuItems.map((
+                    {
+                      text,
+                      attributes = {},
+                      style = {},
+                      onClick = () => {},
+                    },
+                    i,
+                  ) => {
+                    const isLastItem = i === menuItems.length - 1;
 
-          <MenuFooter />
-        </Menu>
+                    return (
+                      <React.Fragment
+                        key={text}
+                      >
+                        <MenuItem
+                          {...attributes} // eslint-disable-line react/jsx-props-no-spreading
+                          style={style}
+                          onClick={() => {
+                            onClick();
+                            closeMenu();
+                          }}
+                        >
+                          {text}
+                        </MenuItem>
+
+                        {!isLastItem && <Divider />}
+                      </React.Fragment>
+                    );
+                  })
+                }
+
+                <MenuFooter />
+              </Menu>
+            ),
+            document.body,
+          )
+        }
       </Container>
     </>
   );
