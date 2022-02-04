@@ -155,28 +155,36 @@ const NavMenu = ({
           </MenuHeader>
 
           {
-            menuItems.map(({
-              text,
-              attributes = {},
-              style = {},
-              onClick = () => {},
-            }) => (
-              <React.Fragment
-                key={text}
-              >
-                <MenuItem
-                  {...attributes} // eslint-disable-line react/jsx-props-no-spreading
-                  style={style}
-                  onClick={() => {
-                    onClick();
-                    closeMenu();
-                  }}
+            menuItems.map((
+              {
+                text,
+                attributes = {},
+                style = {},
+                onClick = () => {},
+              },
+              i,
+            ) => {
+              const isLastItem = i === menuItems.length - 1;
+
+              return (
+                <React.Fragment
+                  key={text}
                 >
-                  {text}
-                </MenuItem>
-                <Divider />
-              </React.Fragment>
-            ))
+                  <MenuItem
+                    {...attributes} // eslint-disable-line react/jsx-props-no-spreading
+                    style={style}
+                    onClick={() => {
+                      onClick();
+                      closeMenu();
+                    }}
+                  >
+                    {text}
+                  </MenuItem>
+
+                  {!isLastItem && <Divider />}
+                </React.Fragment>
+              );
+            })
           }
 
           <MenuFooter />
