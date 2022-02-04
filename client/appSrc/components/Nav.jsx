@@ -24,7 +24,7 @@ const Nav = ({ setActiveModal }) => (
     </LinkishButton>
 
     <Hyperlink
-      href="https://github.com/chelseaSchmidt/cost-sharing-for-ynab/issues"
+      href="https://github.com/chelseaSchmidt/cost-sharing-for-ynab/issues/new"
       target="_blank"
       rel="noreferrer"
     >

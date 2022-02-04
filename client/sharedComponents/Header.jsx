@@ -150,7 +150,7 @@ const Header = ({
         <Divider />
 
         <MenuItem
-          href="https://github.com/chelseaSchmidt/cost-sharing-for-ynab/issues"
+          href="https://github.com/chelseaSchmidt/cost-sharing-for-ynab/issues/new"
           target="_blank"
           rel="noreferrer"
           onClick={() => setIsMenuOpen(false)}
