@@ -5,10 +5,6 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { BackgroundOverlay } from '../appSrc/components/styledComponents'; // FIXME: move to shared directory
 
-/**
- * FIXME: pass menu items in from respective page root
- */
-
 const Container = styled.div`
   position: absolute;
   right: 0;
