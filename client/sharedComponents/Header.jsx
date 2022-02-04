@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import modalNames from '../appSrc/components/modalNames';
 import NavMenu from './NavMenu';
 
 const Container = styled.header`
@@ -40,69 +39,9 @@ const WorksWithYnabIcon = styled.img`
 `;
 
 const Header = ({
-  onLandingPage,
-  ynabAuthScreenLink,
-  setActiveModal = () => {},
   style = {},
+  navMenuItems = [],
 }) => {
-  const sharedMenuItems = [
-    {
-      text: 'Report a Bug',
-      attributes: {
-        href: 'https://github.com/chelseaSchmidt/cost-sharing-for-ynab/issues/new',
-        target: '_blank',
-        rel: 'noreferrer',
-      },
-    },
-  ];
-
-  const landingPageMenuItems = [
-    {
-      text: 'Start',
-      attributes: {
-        href: ynabAuthScreenLink,
-      },
-      style: {
-        fontWeight: 'bold',
-      },
-    },
-    {
-      text: 'Preview Without a YNAB Account',
-      attributes: {
-        href: '/cost-sharer',
-      },
-    },
-    {
-      text: 'Privacy Policy',
-      onClick: () => {
-        document.getElementById('privacy-policy-container').scrollIntoView(true);
-      },
-      attributes: {
-        type: 'button',
-      },
-    },
-    ...sharedMenuItems,
-  ];
-
-  const appMenuItems = [
-    {
-      text: 'Home',
-      attributes: {
-        href: '/',
-      },
-    },
-    {
-      text: 'Privacy Policy',
-      onClick: () => {
-        setActiveModal(modalNames.PRIVACY_POLICY);
-      },
-      attributes: {
-        type: 'button',
-      },
-    },
-    ...sharedMenuItems,
-  ];
-
   return (
     <Container style={style}>
       <Row>
@@ -116,17 +55,19 @@ const Header = ({
         />
       </Row>
 
-      <NavMenu
-        menuItems={onLandingPage ? landingPageMenuItems : appMenuItems}
-      />
+      {
+        !!navMenuItems.length && (
+          <NavMenu
+            menuItems={navMenuItems}
+          />
+        )
+      }
     </Container>
   );
 };
 
 Header.propTypes = {
-  onLandingPage: PropTypes.bool,
-  ynabAuthScreenLink: PropTypes.string,
-  setActiveModal: PropTypes.func,
+  navMenuItems: PropTypes.array,
   style: PropTypes.object,
 };
 
