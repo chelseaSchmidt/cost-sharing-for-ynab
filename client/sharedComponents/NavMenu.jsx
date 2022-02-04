@@ -11,8 +11,6 @@ const menuButtonRightPosition = 20;
  * FIXME: bugginess with menu pushing body off to the side instead of hiding off screen
  * Repro - change to mobile view
  *
- * FIXME: weird class name prop pass through
- *
  * FIXME: increase click area
  */
 
@@ -92,12 +90,34 @@ const ExitButton = styled.div`
   }
 `;
 
+const Divider = styled.div`
+  border-top: 1px solid lightgray;
+  width: 100%;
+`;
+
+const MenuItem = styled.a`
+  text-decoration: none;
+  color: #464b46;
+  text-align: left;
+  padding: 20px 10px;
+  border-radius: 2px;
+  font-size: 1.15em;
+  cursor: pointer;
+
+  :hover, :visited:hover {
+    color: #2f73b3;
+    background-color: #eee;
+  }
+
+  :visited {
+    color: #464b46;
+  }
+`;
+
 const NavMenu = ({
-  menuItemClassName,
-  children,
+  menuItems = [],
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const menuItemClassNamePattern = new RegExp(menuItemClassName);
   const closeMenu = () => setIsOpen(false);
   const toggleMenu = () => setIsOpen(!isOpen);
 
@@ -108,13 +128,7 @@ const NavMenu = ({
           <BackgroundOverlay onClick={closeMenu} />
         )
       }
-      <Container
-        onClick={(e) => {
-          if (menuItemClassNamePattern.test(e.target.className)) {
-            closeMenu();
-          }
-        }}
-      >
+      <Container>
         <Button
           onClick={toggleMenu}
           aria-label="Open navigation menu"
@@ -122,9 +136,12 @@ const NavMenu = ({
           type="button"
         >
           {
-            _.range(0, 3).map((item) => <ButtonBar key={`btn-bar-${item}`} />)
+            _.range(0, 3).map((item) => (
+              <ButtonBar key={`btn-bar-${item}`} />
+            ))
           }
         </Button>
+
         <Menu isOpen={isOpen}>
           <MenuHeader>
             <ExitButton
@@ -137,7 +154,30 @@ const NavMenu = ({
             </ExitButton>
           </MenuHeader>
 
-          {children}
+          {
+            menuItems.map(({
+              text,
+              attributes = {},
+              style = {},
+              onClick = () => {},
+            }) => (
+              <React.Fragment
+                key={text}
+              >
+                <MenuItem
+                  {...attributes} // eslint-disable-line react/jsx-props-no-spreading
+                  style={style}
+                  onClick={() => {
+                    onClick();
+                    closeMenu();
+                  }}
+                >
+                  {text}
+                </MenuItem>
+                <Divider />
+              </React.Fragment>
+            ))
+          }
 
           <MenuFooter />
         </Menu>
@@ -147,8 +187,12 @@ const NavMenu = ({
 };
 
 NavMenu.propTypes = {
-  menuItemClassName: PropTypes.string.isRequired,
-  children: PropTypes.node,
+  menuItems: PropTypes.arrayOf(PropTypes.shape({
+    text: PropTypes.string.isRequired,
+    attributes: PropTypes.object,
+    style: PropTypes.object,
+    onClick: PropTypes.func,
+  })),
 };
 
 export default NavMenu;

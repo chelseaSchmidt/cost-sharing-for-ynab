@@ -39,37 +39,69 @@ const WorksWithYnabIcon = styled.img`
   height: 57.33px;
 `;
 
-const Divider = styled.div`
-  border-top: 1px solid lightgray;
-  width: 100%;
-`;
-
-const MenuItem = styled.a`
-  text-decoration: none;
-  color: #464b46;
-  text-align: left;
-  padding: 20px 10px;
-  border-radius: 2px;
-  font-size: 1.15em;
-  cursor: pointer;
-
-  :hover, :visited:hover {
-    color: #2f73b3;
-    background-color: #eee;
-  }
-
-  :visited {
-    color: #464b46;
-  }
-`;
-
 const Header = ({
   onLandingPage,
   ynabAuthScreenLink,
   setActiveModal = () => {},
   style = {},
 }) => {
-  const menuItemClassName = 'nav-menu-item';
+  const sharedMenuItems = [
+    {
+      text: 'Report a Bug',
+      attributes: {
+        href: 'https://github.com/chelseaSchmidt/cost-sharing-for-ynab/issues/new',
+        target: '_blank',
+        rel: 'noreferrer',
+      },
+    },
+  ];
+
+  const landingPageMenuItems = [
+    {
+      text: 'Start',
+      attributes: {
+        href: ynabAuthScreenLink,
+      },
+      style: {
+        fontWeight: 'bold',
+      },
+    },
+    {
+      text: 'Preview Without a YNAB Account',
+      attributes: {
+        href: '/cost-sharer',
+      },
+    },
+    {
+      text: 'Privacy Policy',
+      onClick: () => {
+        document.getElementById('privacy-policy-container').scrollIntoView(true);
+      },
+      attributes: {
+        type: 'button',
+      },
+    },
+    ...sharedMenuItems,
+  ];
+
+  const appMenuItems = [
+    {
+      text: 'Home',
+      attributes: {
+        href: '/',
+      },
+    },
+    {
+      text: 'Privacy Policy',
+      onClick: () => {
+        setActiveModal(modalNames.PRIVACY_POLICY);
+      },
+      attributes: {
+        type: 'button',
+      },
+    },
+    ...sharedMenuItems,
+  ];
 
   return (
     <Container style={style}>
@@ -84,67 +116,9 @@ const Header = ({
         />
       </Row>
 
-      <NavMenu menuItemClassName={menuItemClassName}>
-        {
-          onLandingPage
-            ? (
-              <>
-                <MenuItem
-                  href={ynabAuthScreenLink}
-                  className={menuItemClassName}
-                >
-                  <b>Start</b>
-                </MenuItem>
-
-                <Divider />
-
-                <MenuItem
-                  href="/cost-sharer"
-                  className={menuItemClassName}
-                >
-                  Preview Without a YNAB Account
-                </MenuItem>
-
-                <Divider />
-              </>
-            )
-            : (
-              <>
-                <MenuItem
-                  href="/"
-                  className={menuItemClassName}
-                >
-                  Home
-                </MenuItem>
-                <Divider />
-              </>
-            )
-        }
-        <MenuItem
-          type="button"
-          className={menuItemClassName}
-          onClick={() => {
-            if (onLandingPage) {
-              document.getElementById('privacy-policy-container').scrollIntoView(true);
-            } else {
-              setActiveModal(modalNames.PRIVACY_POLICY);
-            }
-          }}
-        >
-          Privacy Policy
-        </MenuItem>
-
-        <Divider />
-
-        <MenuItem
-          href="https://github.com/chelseaSchmidt/cost-sharing-for-ynab/issues/new"
-          target="_blank"
-          rel="noreferrer"
-          className={menuItemClassName}
-        >
-          Report a Bug
-        </MenuItem>
-      </NavMenu>
+      <NavMenu
+        menuItems={onLandingPage ? landingPageMenuItems : appMenuItems}
+      />
     </Container>
   );
 };
