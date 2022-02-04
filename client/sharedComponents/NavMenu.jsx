@@ -132,8 +132,8 @@ const NavMenu = ({
           type="button"
         >
           {
-            _.range(0, 3).map((item) => (
-              <ButtonBar key={`btn-bar-${item}`} />
+            _.range(0, 3).map((value) => (
+              <ButtonBar key={`btn-bar-${value}`} />
             ))
           }
         </Button>
