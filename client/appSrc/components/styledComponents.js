@@ -165,3 +165,15 @@ export const SelectedOptionButton = styled(OptionButton)`
     color: white;
   }
 `;
+
+export const BackgroundOverlay = styled.div`
+  position: fixed;
+  z-index: 5;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  background-color: black;
+  opacity: 50%;
+`;

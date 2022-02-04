@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
-import { push as Menu } from 'react-burger-menu';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import modalNames from '../appSrc/components/modalNames';
-import './react-burger-menu.css';
+import NavMenu from './NavMenu';
 
 const Container = styled.header`
   box-sizing: border-box;
@@ -42,27 +41,21 @@ const WorksWithYnabIcon = styled.img`
 
 const Divider = styled.div`
   border-top: 1px solid lightgray;
-  margin: 20px 2px;
   width: 100%;
-  padding: 0 10px;
-`;
-
-const MenuClickArea = styled.div`
-  width: 150px;
-  height: 96px;
-  position: fixed;
-  right: 0;
-  top: 0;
-  cursor: pointer;
 `;
 
 const MenuItem = styled.a`
   text-decoration: none;
   color: #464b46;
+  text-align: left;
+  padding: 20px 10px;
+  border-radius: 2px;
+  font-size: 1.15em;
   cursor: pointer;
 
   :hover, :visited:hover {
     color: #2f73b3;
+    background-color: #eee;
   }
 
   :visited {
@@ -76,8 +69,7 @@ const Header = ({
   setActiveModal = () => {},
   style = {},
 }) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const passClickToMenu = () => document.getElementById('react-burger-menu-btn').click();
+  const menuItemClassName = 'nav-menu-item';
 
   return (
     <Container style={style}>
@@ -92,56 +84,51 @@ const Header = ({
         />
       </Row>
 
-      <MenuClickArea
-        role="button"
-        aria-label="Select menu"
-        tabIndex={0}
-        onClick={passClickToMenu}
-        onKeyDown={passClickToMenu}
-      />
-
-      <Menu
-        right
-        isOpen={isMenuOpen}
-        onStateChange={({ isOpen }) => setIsMenuOpen(isOpen)}
-      >
-        <MenuItem href="/">Home</MenuItem>
-
-        <Divider />
-
+      <NavMenu menuItemClassName={menuItemClassName}>
         {
           onLandingPage
-          && (
-            <>
-              <MenuItem
-                href={ynabAuthScreenLink}
-                onClick={() => setIsMenuOpen(false)}
-              >
-                <b>Start</b>
-              </MenuItem>
+            ? (
+              <>
+                <MenuItem
+                  href={ynabAuthScreenLink}
+                  className={menuItemClassName}
+                >
+                  <b>Start</b>
+                </MenuItem>
 
-              <Divider />
+                <Divider />
 
-              <MenuItem
-                href="/cost-sharer"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Preview Without a YNAB Account
-              </MenuItem>
+                <MenuItem
+                  href="/cost-sharer"
+                  className={menuItemClassName}
+                >
+                  Preview Without a YNAB Account
+                </MenuItem>
 
-              <Divider />
-            </>
-          )
+                <Divider />
+              </>
+            )
+            : (
+              <>
+                <MenuItem
+                  href="/"
+                  className={menuItemClassName}
+                >
+                  Home
+                </MenuItem>
+                <Divider />
+              </>
+            )
         }
         <MenuItem
           type="button"
+          className={menuItemClassName}
           onClick={() => {
             if (onLandingPage) {
               document.getElementById('privacy-policy-container').scrollIntoView(true);
             } else {
               setActiveModal(modalNames.PRIVACY_POLICY);
             }
-            setIsMenuOpen(false);
           }}
         >
           Privacy Policy
@@ -153,11 +140,11 @@ const Header = ({
           href="https://github.com/chelseaSchmidt/cost-sharing-for-ynab/issues/new"
           target="_blank"
           rel="noreferrer"
-          onClick={() => setIsMenuOpen(false)}
+          className={menuItemClassName}
         >
           Report a Bug
         </MenuItem>
-      </Menu>
+      </NavMenu>
     </Container>
   );
 };
