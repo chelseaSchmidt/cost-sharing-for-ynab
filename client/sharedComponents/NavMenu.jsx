@@ -4,9 +4,6 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { BackgroundOverlay } from '../appSrc/components/styledComponents'; // FIXME: move to shared directory
 
-const menuWidth = 320;
-const menuButtonRightPosition = 20;
-
 /**
  * FIXME: bugginess with menu pushing body off to the side instead of hiding off screen
  * Repro - change to mobile view
@@ -16,7 +13,7 @@ const menuButtonRightPosition = 20;
 
 const Container = styled.div`
   position: absolute;
-  right: ${menuButtonRightPosition}px;
+  right: 0;
   top: 50%;
   transform: translate(0, -50%);
   z-index: 6;
@@ -30,10 +27,12 @@ const Button = styled.button`
   flex-direction: column;
   justify-content: space-between;
   background-color: transparent;
-  margin: none;
-  padding: none;
+  box-sizing: content-box;
+  margin: 0;
+  padding: 0;
   border: none;
   height: 30px;
+  padding: 20px 40px;
   cursor: pointer;
 `;
 
@@ -44,6 +43,8 @@ const ButtonBar = styled.div`
   width: 30px;
 `;
 
+const menuWidth = '320px';
+
 const Menu = styled.div`
   display: flex;
   flex-direction: column;
@@ -51,15 +52,15 @@ const Menu = styled.div`
   top: 0;
   box-sizing: border-box;
   height: fit-content;
-  width: ${menuWidth}px;
+  width: ${menuWidth};
   background-color: white;
   padding: 20px;
   border-radius: 5px 0 0 5px;
 
   // drawer animation
-  right: -${menuWidth + menuButtonRightPosition}px;
+  right: -${menuWidth};
   transition: right 0.4s;
-  ${(props) => props.isOpen && `right: -${menuButtonRightPosition}px;`}
+  ${(props) => props.isOpen && 'right: 0;'}
 `;
 
 const MenuHeader = styled.div`
