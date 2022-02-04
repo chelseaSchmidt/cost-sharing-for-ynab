@@ -200,6 +200,32 @@ const CostSharingForYnab = () => {
     )
     : 'Please pick an IOU account first';
 
+  const navMenuItems = [
+    {
+      text: 'Home',
+      attributes: {
+        href: '/',
+      },
+    },
+    {
+      text: 'Privacy Policy',
+      onClick: () => {
+        setActiveModal(modalNames.PRIVACY_POLICY);
+      },
+      attributes: {
+        type: 'button',
+      },
+    },
+    {
+      text: 'Report a Bug',
+      attributes: {
+        href: 'https://github.com/chelseaSchmidt/cost-sharing-for-ynab/issues/new',
+        target: '_blank',
+        rel: 'noreferrer',
+      },
+    },
+  ];
+
   const getBudgetData = async () => {
     try {
       const accounts = await getAccounts();
@@ -399,7 +425,7 @@ const CostSharingForYnab = () => {
 
       {/* Main content */}
 
-      <Header setActiveModal={setActiveModal} />
+      <Header navMenuItems={navMenuItems} />
 
       <InstructionsButtonContainer>
         <LinkishButton

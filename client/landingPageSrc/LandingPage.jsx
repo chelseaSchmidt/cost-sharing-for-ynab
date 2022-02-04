@@ -121,12 +121,45 @@ const LandingPage = () => {
   const currentUrl = window.location.href;
   const appEndpoint = 'cost-sharer';
   const ynabAuthScreenLink = `https://app.youneedabudget.com/oauth/authorize?client_id=4ac8ca3c431ac99075e603496136606d7da8102f6178ce2796566b30c4659988&redirect_uri=${currentUrl}${appEndpoint}&response_type=token`;
+  const navMenuItems = [
+    {
+      text: 'Start',
+      attributes: {
+        href: ynabAuthScreenLink,
+      },
+      style: {
+        fontWeight: 'bold',
+      },
+    },
+    {
+      text: 'Preview Without a YNAB Account',
+      attributes: {
+        href: `/${appEndpoint}`,
+      },
+    },
+    {
+      text: 'Privacy Policy',
+      onClick: () => {
+        document.getElementById('privacy-policy-container').scrollIntoView(true);
+      },
+      attributes: {
+        type: 'button',
+      },
+    },
+    {
+      text: 'Report a Bug',
+      attributes: {
+        href: 'https://github.com/chelseaSchmidt/cost-sharing-for-ynab/issues/new',
+        target: '_blank',
+        rel: 'noreferrer',
+      },
+    },
+  ];
 
   return (
     <Container>
       <Header
-        onLandingPage
-        ynabAuthScreenLink={ynabAuthScreenLink}
+        navMenuItems={navMenuItems}
         style={{ marginBottom: '15px' }}
       />
 
@@ -171,7 +204,7 @@ const LandingPage = () => {
           onClick={
             (e) => {
               e.preventDefault();
-              window.location.href = `https://app.youneedabudget.com/oauth/authorize?client_id=4ac8ca3c431ac99075e603496136606d7da8102f6178ce2796566b30c4659988&redirect_uri=${currentUrl}${appEndpoint}&response_type=token`;
+              window.location.href = ynabAuthScreenLink;
             }
           }
         >
@@ -183,7 +216,7 @@ const LandingPage = () => {
           onClick={
             (e) => {
               e.preventDefault();
-              window.location.href = '/cost-sharer';
+              window.location.href = `/${appEndpoint}`;
             }
           }
         >

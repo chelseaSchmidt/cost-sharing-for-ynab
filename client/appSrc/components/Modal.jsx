@@ -1,21 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { BaseButton } from './styledComponents';
+import { BaseButton, BackgroundOverlay } from './styledComponents';
 
 /* Styled Components */
-
-const BackgroundOverlay = styled.div`
-  position: fixed;
-  z-index: 5;
-  top: 0;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  background-color: black;
-  opacity: 50%;
-`;
 
 const Container = styled.div`
   position: fixed;
