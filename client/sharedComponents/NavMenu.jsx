@@ -46,7 +46,6 @@ const Menu = styled.div`
   position: fixed;
   top: 10px;
   box-sizing: border-box;
-  height: fit-content;
   width: ${menuWidth};
   background-color: white;
   padding: 20px;
@@ -60,7 +59,7 @@ const Menu = styled.div`
 
 const MenuHeader = styled.div`
   display: flex;
-  justify-content: right;
+  justify-content: flex-end;
   width: 100%;
   height: 18px;
   font-size: 18px;
