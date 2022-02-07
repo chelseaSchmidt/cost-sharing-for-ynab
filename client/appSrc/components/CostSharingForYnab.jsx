@@ -9,11 +9,11 @@ import DateSelector from './DateSelector';
 import TransactionWindow from './TransactionWindow';
 import Confirmation from './Confirmation';
 import Modal from './Modal';
-import Header from '../../sharedComponents/Header';
+import Header from '../../shared/Header';
 import Nav from './Nav';
 import Error from './Error';
-import PrivacyPolicy from '../../sharedComponents/PrivacyPolicy';
-import Instructions from '../../sharedComponents/Instructions';
+import PrivacyPolicy from '../../shared/PrivacyPolicy';
+import Instructions from '../../shared/Instructions';
 import {
   SectionHeader,
   BaseButton,

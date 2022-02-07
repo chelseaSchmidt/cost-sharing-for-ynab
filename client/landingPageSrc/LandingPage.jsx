@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import PrivacyPolicy from '../sharedComponents/PrivacyPolicy';
-import Header from '../sharedComponents/Header';
-import Instructions from '../sharedComponents/Instructions';
+import PrivacyPolicy from '../shared/PrivacyPolicy';
+import Header from '../shared/Header';
+import Instructions from '../shared/Instructions';
 import './global.css';
 
 /* Styled Components */
