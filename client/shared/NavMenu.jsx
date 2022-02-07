@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { BackgroundOverlay } from '../appSrc/components/styledComponents'; // FIXME: move to shared directory
+import breakpoints from './breakpoints';
 
 const Container = styled.div`
   position: absolute;
@@ -11,9 +12,14 @@ const Container = styled.div`
   top: 50%;
   transform: translate(0, -50%);
   z-index: 6;
-  background-color: transparent;
-  border: none;
   font-family: inherit;
+
+  @media (max-width: ${breakpoints.mobile}) {
+    transform: unset;
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
 `;
 
 const Button = styled.button`
@@ -23,11 +29,14 @@ const Button = styled.button`
   background-color: transparent;
   box-sizing: content-box;
   margin: 0;
-  padding: 0;
   border: none;
   height: 30px;
   padding: 20px 40px;
   cursor: pointer;
+
+  @media (max-width: ${breakpoints.mobile}) {
+    padding: 5px;
+  }
 `;
 
 const ButtonBar = styled.div`
@@ -47,6 +56,7 @@ const Menu = styled.div`
   top: 10px;
   box-sizing: border-box;
   width: ${menuWidth};
+  max-width: 100vw;
   background-color: white;
   padding: 20px;
   border-radius: 5px 0 0 5px;
@@ -120,7 +130,10 @@ const NavMenu = ({
     <>
       {
         isOpen && (
-          <BackgroundOverlay onClick={closeMenu} />
+          ReactDOM.createPortal(
+            <BackgroundOverlay onClick={closeMenu} />,
+            document.body,
+          )
         )
       }
       <Container>
