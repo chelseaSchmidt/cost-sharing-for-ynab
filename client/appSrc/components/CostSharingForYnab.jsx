@@ -37,6 +37,7 @@ import {
 } from './utils/dateHelpers';
 import classifyTransactions from './utils/classifyTransactions';
 import modalNames from './modalNames';
+import breakpoints from '../../shared/breakpoints';
 import '../styles/global.css';
 
 /* Styled Components */
@@ -53,17 +54,33 @@ const InstructionsButtonContainer = styled.div`
   margin-bottom: 25px;
 `;
 
+const desktopLeftRightTilePadding = 75;
+const mobileLeftRightTilePadding = 30;
+const tinyLeftRightTilePadding = 10;
+
 const SectionTile = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 60vw;
   max-width: 1290px;
-  padding: 50px 75px;
+  padding: 50px ${desktopLeftRightTilePadding}px;
   margin-bottom: 50px;
   border-radius: 12px;
   box-shadow: 0 0 3px 0 #9298a2;
   background-color: white;
+
+  @media (max-width: ${breakpoints.mobile}) {
+    box-sizing: border-box;
+    width: calc(100% - 20px);
+    padding: 50px ${mobileLeftRightTilePadding}px;
+  }
+
+  @media (max-width: ${breakpoints.tiny}) {
+    box-sizing: border-box;
+    width: calc(100% - 20px);
+    padding: 50px ${tinyLeftRightTilePadding}px;
+  }
 `;
 
 const TransactionsTile = styled(SectionTile)`
@@ -119,6 +136,10 @@ const SplitTransactionsButton = styled(BaseButton)`
   justify-content: center;
   margin: 0 10px;
 
+  @media (max-width: ${breakpoints.mobile}) {
+    margin: 10px 0 0 0;
+  }
+
   :disabled:hover {
     > * {
       visibility: visible;
@@ -156,6 +177,20 @@ const TransactionWindowContainer = styled.div`
   display: flex;
   flex-direction: row;
   border-radius: 12px;
+  width: calc(100% + ${desktopLeftRightTilePadding * 2}px);
+  overflow: auto;
+
+  @media (max-width: ${breakpoints.mobile}) {
+    width: calc(100% + ${mobileLeftRightTilePadding * 2}px);
+  }
+
+  @media (max-width: ${breakpoints.tiny}) {
+    width: calc(100% + ${tinyLeftRightTilePadding * 2}px);
+  }
+`;
+
+const Spacer = styled.div`
+  height: 20px;
 `;
 
 /* Main Component */
@@ -481,6 +516,8 @@ const CostSharingForYnab = () => {
               inputValue={convertDateToString(transactionsStartDate)}
               onChange={(value) => setTransactionsStartDate(convertStringToDate(value))}
             />
+
+            <Spacer />
 
             <DateSelector
               label="End date:"

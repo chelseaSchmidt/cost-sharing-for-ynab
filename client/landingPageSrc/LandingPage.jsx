@@ -85,12 +85,7 @@ const InstructionsContainer = styled(TextContainer)`
   margin: unset;
 
   ol {
-    text-align: justify;
     margin: 10px;
-
-    @media (max-width: 450px) {
-      text-align: unset;
-    }
   }
 `;
 

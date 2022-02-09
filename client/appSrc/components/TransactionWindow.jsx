@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Transaction from './Transaction';
 import { Spinner, BaseButton } from './styledComponents';
 import { toId } from './utils/general';
+import breakpoints from '../../shared/breakpoints';
 
 /* Styled Components */
 
@@ -11,8 +12,14 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  box-sizing: border-box;
+  width: 100%;
   margin: 0 10px;
   padding: 15px;
+
+  @media (max-width: ${breakpoints.tiny}) {
+    padding: 5px
+  }
 `;
 
 const Title = styled.h3``;
@@ -41,11 +48,21 @@ const SelectAllCheckbox = styled.input`
 `;
 
 const TransactionFeed = styled.div`
+  box-sizing: border-box;
   max-height: 60vh;
-  overflow-y: auto;
+  width: 100%;
+  overflow: auto;
   border-top: 1px solid lightgray;
   border-bottom: 1px solid lightgray;
   padding: 30px;
+
+  @media (max-width: ${breakpoints.mobile}) {
+    padding: 10px;
+  }
+
+  @media (max-width: ${breakpoints.tiny}) {
+    padding: 5px;
+  }
 
   ::-webkit-scrollbar {
     width: 7px;

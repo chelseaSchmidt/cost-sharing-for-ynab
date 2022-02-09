@@ -35,20 +35,22 @@ const Checkbox = styled.input`
 `;
 
 const Date = styled.div`
+  flex: 2;
   color: gray;
-  margin-right: 20px;
   font-size: 12px;
 `;
 
 const Amount = styled.div`
-  width: 100px;
-  text-align: center;
-  margin-right: 5px;
+  flex: 2;
   font-size: 17px;
+  padding: 0 5px;
 `;
 
 const Details = styled.div`
+  flex: 3;
   font-size: 12px;
+  overflow: auto;
+  white-space: nowrap;
 `;
 
 const AccountName = styled.div`

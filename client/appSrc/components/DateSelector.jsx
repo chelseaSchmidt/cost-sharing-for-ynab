@@ -1,17 +1,33 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import breakpoints from '../../shared/breakpoints';
 
 /* Styled Components */
 
-const Label = styled.label``;
+const Label = styled.label`
+  display: flex;
+  align-items: center;
+
+  @media (max-width: ${breakpoints.mobile}) {
+    flex-direction: column;
+    align-items: unset;
+  }
+`;
 
 const Input = styled.input`
-  margin: 10px;
   cursor: text;
 
   ::-webkit-calendar-picker-indicator {
     cursor: pointer;
+  }
+`;
+
+const Spacer = styled.div`
+  width: 10px;
+
+  @media (max-width: ${breakpoints.mobile}) {
+    height: 10px;
   }
 `;
 
@@ -27,6 +43,7 @@ const DateSelector = ({
   return (
     <Label htmlFor={inputId}>
       {isLabelVisible && label}
+      {isLabelVisible && <Spacer />}
       <Input
         type="date"
         id={inputId}
