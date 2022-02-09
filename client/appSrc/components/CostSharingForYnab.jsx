@@ -130,7 +130,7 @@ const SplitTransactionsButton = styled(BaseButton)`
   box-sizing: border-box;
   position: relative;
   height: 35px;
-  width: 182px;
+  width: 250px;
   display: flex;
   align-items: center;
   justify-content: center;
