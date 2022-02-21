@@ -37,6 +37,7 @@ const DateSelector = ({
   label,
   inputId,
   inputValue,
+  inputStyle = {},
   onChange,
   isLabelVisible = true,
 }) => {
@@ -50,6 +51,7 @@ const DateSelector = ({
         value={inputValue}
         onChange={(e) => onChange(e.target.value)}
         aria-label={isLabelVisible ? null : label}
+        style={inputStyle}
       />
     </Label>
   );
@@ -59,6 +61,7 @@ DateSelector.propTypes = {
   label: PropTypes.string.isRequired,
   inputId: PropTypes.string.isRequired,
   inputValue: PropTypes.string.isRequired,
+  inputStyle: PropTypes.object,
   onChange: PropTypes.func.isRequired,
   isLabelVisible: PropTypes.bool,
 };

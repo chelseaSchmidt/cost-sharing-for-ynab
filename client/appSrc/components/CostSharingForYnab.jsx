@@ -514,6 +514,7 @@ const CostSharingForYnab = () => {
               label="Start date:"
               inputId="transactions-start-date"
               inputValue={convertDateToString(transactionsStartDate)}
+              inputStyle={{ maxWidth: '200px' }}
               onChange={(value) => setTransactionsStartDate(convertStringToDate(value))}
             />
 
@@ -523,6 +524,7 @@ const CostSharingForYnab = () => {
               label="End date:"
               inputId="transactions-end-date"
               inputValue={convertDateToString(transactionsEndDate)}
+              inputStyle={{ maxWidth: '200px' }}
               onChange={(value) => setTransactionsEndDate(convertStringToDate(value, false))}
             />
           </DateRangeForm>
