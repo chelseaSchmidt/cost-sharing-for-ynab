@@ -13,6 +13,10 @@ const Subtitle = styled.p`
   font-weight: bold;
 `;
 
+const InLineLink = styled.a`
+  overflow-wrap: anywhere;
+`;
+
 const PrivacyPolicy = ({
   headerStyle = {},
   subtitleStyle = {},
@@ -46,13 +50,13 @@ const PrivacyPolicy = ({
     <p>
       Cost Sharing for YNAB is an open-source web application.
       The source-code can be viewed at&nbsp;
-      <a
+      <InLineLink
         href="https://github.com/chelseaSchmidt/cost-sharing-for-ynab"
         target="_blank"
         rel="noreferrer"
       >
         https://github.com/chelseaSchmidt/cost-sharing-for-ynab
-      </a>
+      </InLineLink>
       .
     </p>
     <br />

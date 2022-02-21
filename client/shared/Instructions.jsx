@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import breakpoints from './breakpoints';
 
 /* Styled Components */
 
@@ -19,6 +20,10 @@ const Container = styled.ol`
 
   li > ul {
     margin: 20px 0 10px 0;
+  }
+
+  @media (max-width: ${breakpoints.mobile}) {
+    text-align: unset;
   }
 `;
 
