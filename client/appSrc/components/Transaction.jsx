@@ -1,10 +1,11 @@
 /* eslint-disable camelcase */
-import React from 'react';
+import React, { useState } from 'react';
 import moment from 'moment';
 import formatCurrency from 'format-currency';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { WarningIcon, Tooltip } from './styledComponents';
+import ElevatedTooltip from './ElevatedTooltip';
+import { WarningIcon } from './styledComponents';
 
 /* Styled Components */
 
@@ -79,11 +80,34 @@ const Transaction = ({
     account_name,
   } = transaction;
 
+  const [tooltipCoordinates, setTooltipCoordinates] = useState(null);
+
   const onClick = () => {
     toggleTransactionSelection({
       isSelected: !isSelected,
       transaction,
     });
+  };
+
+  const getElementCoordinates = (element) => ([
+    element.getBoundingClientRect().x,
+    element.getBoundingClientRect().y,
+  ]);
+
+  const tooltipStyle = {
+    zIndex: 10,
+    position: 'fixed',
+    left: tooltipCoordinates?.[0],
+    top: tooltipCoordinates?.[1],
+    transform: 'translate(calc(-100% + 15px), -105%)',
+    width: '170px',
+    backgroundColor: '#444',
+    color: 'white',
+    fontSize: '11px',
+    fontWeight: 'normal',
+    textAlign: 'center',
+    padding: '5px',
+    borderRadius: '5px',
   };
 
   return (
@@ -124,11 +148,19 @@ const Transaction = ({
 
           {
             isIsolated && shouldShowIcon && (
-              <TransactionWarningIcon>
+              <TransactionWarningIcon
+                onMouseEnter={(e) => setTooltipCoordinates(getElementCoordinates(e.target))}
+                onMouseLeave={() => setTooltipCoordinates(null)}
+                onClick={(e) => e.stopPropagation()}
+              >
                 !
-                <Tooltip>
-                  You did not mark this account as shared
-                </Tooltip>
+                {
+                  tooltipCoordinates && (
+                    <ElevatedTooltip containerStyle={tooltipStyle}>
+                      You did not mark this account as shared
+                    </ElevatedTooltip>
+                  )
+                }
               </TransactionWarningIcon>
             )
           }
