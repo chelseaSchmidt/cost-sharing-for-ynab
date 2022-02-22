@@ -252,9 +252,9 @@ const CostSharingForYnab = () => {
       },
     },
     {
-      text: 'Report a Bug',
+      text: 'GitHub Repo',
       attributes: {
-        href: 'https://github.com/chelseaSchmidt/cost-sharing-for-ynab/issues/new',
+        href: 'https://github.com/chelseaSchmidt/cost-sharing-for-ynab',
         target: '_blank',
         rel: 'noreferrer',
       },
