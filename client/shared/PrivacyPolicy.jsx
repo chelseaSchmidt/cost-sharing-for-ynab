@@ -49,7 +49,7 @@ const PrivacyPolicy = ({
     </p>
     <p>
       Cost Sharing for YNAB is an open-source web application.
-      The source-code can be viewed at&nbsp;
+      The source code can be viewed at&nbsp;
       <InLineLink
         href="https://github.com/chelseaSchmidt/cost-sharing-for-ynab"
         target="_blank"
