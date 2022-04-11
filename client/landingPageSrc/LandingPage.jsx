@@ -26,7 +26,8 @@ const CreditCardIcon = styled.img`
 const Tagline = styled.p`
   margin: 40px 0 40px 0;
   width: 100%;
-  font-size: 25px;
+  min-width: 190px;
+  font-size: 30px;
   text-align: center;
   text-shadow: 0 3px 11px lightgray;
 `;
@@ -95,12 +96,21 @@ const InstructionsContainer = styled(TextContainer)`
   }
 `;
 
-const Description = styled(TextContainer)`
+const Description = styled.div`
+  width: 65%;
+  max-width: 650px;
+  min-width: 200px;
+  margin: 10px;
   font-size: 16px;
   text-align: justify;
 
+  @media (max-width: 880px) {
+    width: 80%;
+  }
+
   @media (max-width: 450px) {
     text-align: unset;
+    width: 100%;
   }
 `;
 
