@@ -13,12 +13,18 @@ const Container = styled.div``;
 const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 10px 40px;
+  padding: 30px 40px 10px 40px;
   align-items: center;
 `;
 
+const CreditCardIcon = styled.img`
+  width: 100px;
+  height: auto;
+  object-fit: contain;
+`;
+
 const Tagline = styled.p`
-  margin: 30px 0 0 0;
+  margin: 40px 0 40px 0;
   width: 100%;
   font-size: 25px;
   text-align: center;
@@ -159,11 +165,14 @@ const LandingPage = () => {
       />
 
       <ContentContainer>
+        <CreditCardIcon
+          src="creditCard.png"
+          alt="credit card"
+        />
+
         <Tagline>
           Conveniently manage a shared credit card in YNAB.
         </Tagline>
-
-        <Divider />
 
         <Description>
           <p>
