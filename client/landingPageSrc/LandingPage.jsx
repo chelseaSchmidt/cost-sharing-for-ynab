@@ -102,7 +102,6 @@ const Description = styled.div`
   min-width: 200px;
   margin: 10px;
   font-size: 16px;
-  text-align: justify;
 
   @media (max-width: 880px) {
     width: 80%;
@@ -112,6 +111,35 @@ const Description = styled.div`
     text-align: unset;
     width: 100%;
   }
+`;
+
+const DescriptionSection = styled.section`
+  display: flex;
+  align-items: center;
+  margin-bottom: 75px;
+
+  @media (max-width: 650px) {
+    flex-direction: column;
+  }
+`;
+
+const DescriptionIcon = styled.img`
+  flex-grow: 0;
+  flex-shrink: 0;
+  width: 70px;
+  height: auto;
+  object-fit: contain;
+
+  @media (max-width: 650px) {
+    width: 50px;
+    margin-bottom: 20px;
+  }
+`;
+
+const DescriptionText = styled.div`
+  box-sizing: border-box;
+  padding-left: 20px;
+  height: fit-content;
 `;
 
 const PrivacyPolicyContainer = styled.div`
@@ -185,24 +213,46 @@ const LandingPage = () => {
         </Tagline>
 
         <Description>
-          <p>
-            Hi fellow YNABer! If you&apos;re using a shared credit card or bank account
-            for communal expenses, you&apos;ve probably noticed it&apos;s difficult to track
-            without your expenses appearing doubled.
-          </p>
+          <DescriptionSection>
+            <DescriptionIcon
+              src="welcome.png"
+              alt="Welcome"
+            />
 
-          <p>
-            Maybe you&apos;ve resorted to excluding it from YNAB completely. Or, maybe you&apos;re
-            throwing the costs into a blanket &quot;shared expense&quot; category, and
-            later splitting the total in half - which fixes the doubling problem,
-            but masks where exactly the dollars are going.
-          </p>
+            <DescriptionText>
+              Hi fellow YNABer! If you&apos;re using a shared credit card or bank account
+              for communal expenses, and want to track it in YNAB more easily, you&apos;re
+              in the right place!
+            </DescriptionText>
+          </DescriptionSection>
 
-          <p>
-            Cost Sharing for YNAB allows you to classify your transactions across any number
-            of categories, and then at the click of a button, pull half those costs out of
-            each one. No more doubled-up expenses or catch-all category!
-          </p>
+          <DescriptionSection>
+            <DescriptionIcon
+              src="puzzle.png"
+              alt="The Problem"
+            />
+
+            <DescriptionText>
+              A shared bank account or credit card is difficult to track in YNAB without
+              your expenses appearing doubled. Maybe you&apos;ve resorted to excluding it
+              from YNAB completely. Or, maybe you&apos;re throwing the costs into a blanket
+              &quot;shared expense&quot; category, and later splitting the total in half - which
+              fixes the doubling problem, but masks where exactly the dollars are going.
+            </DescriptionText>
+          </DescriptionSection>
+
+          <DescriptionSection>
+            <DescriptionIcon
+              src="lightBulb.png"
+              alt="The Solution"
+            />
+
+            <DescriptionText>
+              Cost Sharing for YNAB allows you to classify your transactions across any number
+              of categories, and then at the click of a button, pull half those costs out of
+              each one. No more doubled-up expenses or catch-all category!
+            </DescriptionText>
+          </DescriptionSection>
         </Description>
 
         <Divider />
