@@ -90,6 +90,7 @@ const TextContainer = styled.div`
 
 const InstructionsContainer = styled(TextContainer)`
   margin: unset;
+  max-width: 650px;
 
   ol {
     margin: 10px;
@@ -117,6 +118,10 @@ const DescriptionSection = styled.section`
   display: flex;
   align-items: center;
   margin-bottom: 75px;
+
+  :last-child {
+    margin-bottom: 0;
+  }
 
   @media (max-width: 650px) {
     flex-direction: column;
