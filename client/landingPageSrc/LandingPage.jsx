@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import PrivacyPolicy from '../shared/PrivacyPolicy';
 import Header from '../shared/Header';
 import Instructions from '../shared/Instructions';
+import { Hyperlink } from '../appSrc/components/styledComponents'; // FIXME: move to shared directory
 import './global.css';
 
 /* Styled Components */
@@ -159,6 +160,22 @@ const PrivacyPolicyContainer = styled.div`
   width: 100vw;
 `;
 
+const Footer = styled.footer`
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  border-top: 1px solid lightgray;
+  padding: 40px 10px;
+
+  a {
+    margin-bottom: 10px;
+    overflow-wrap: anywhere;
+    text-align: center;
+  }
+`;
+
 /* Main Component */
 
 const LandingPage = () => {
@@ -307,6 +324,41 @@ const LandingPage = () => {
           </TextContainer>
         </PrivacyPolicyContainer>
       </ContentContainer>
+
+      <Footer>
+        <Hyperlink
+          href="https://www.flaticon.com/search?word=credit%20card&type=icon"
+          title="credit card icons"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Credit card icons created by Freepik - Flaticon
+        </Hyperlink>
+        <Hyperlink
+          href="https://www.flaticon.com/free-icons/welcome"
+          title="welcome icons"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Welcome icons created by Freepik - Flaticon
+        </Hyperlink>
+        <Hyperlink
+          href="https://www.flaticon.com/free-icons/puzzle"
+          title="puzzle icons"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Puzzle icons created by Freepik - Flaticon
+        </Hyperlink>
+        <Hyperlink
+          href="https://www.flaticon.com/free-icons/solution"
+          title="solution icons"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Solution icons created by Freepik - Flaticon
+        </Hyperlink>
+      </Footer>
     </Container>
   );
 };
