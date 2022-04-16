@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import PrivacyPolicy from '../shared/PrivacyPolicy';
 import Header from '../shared/Header';
 import Instructions from '../shared/Instructions';
+import { Hyperlink } from '../appSrc/components/styledComponents'; // FIXME: move to shared directory
 import './global.css';
 
 /* Styled Components */
@@ -13,14 +14,21 @@ const Container = styled.div``;
 const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 10px 40px;
+  padding: 30px 40px 10px 40px;
   align-items: center;
 `;
 
+const CreditCardIcon = styled.img`
+  width: 100px;
+  height: auto;
+  object-fit: contain;
+`;
+
 const Tagline = styled.p`
-  margin: 30px 0 0 0;
+  margin: 40px 0 40px 0;
   width: 100%;
-  font-size: 25px;
+  min-width: 190px;
+  font-size: 30px;
   text-align: center;
   text-shadow: 0 3px 11px lightgray;
 `;
@@ -83,19 +91,61 @@ const TextContainer = styled.div`
 
 const InstructionsContainer = styled(TextContainer)`
   margin: unset;
+  max-width: 650px;
 
   ol {
     margin: 10px;
   }
 `;
 
-const Description = styled(TextContainer)`
+const Description = styled.div`
+  width: 65%;
+  max-width: 650px;
+  min-width: 200px;
+  margin: 10px;
   font-size: 16px;
-  text-align: justify;
+
+  @media (max-width: 880px) {
+    width: 80%;
+  }
 
   @media (max-width: 450px) {
     text-align: unset;
+    width: 100%;
   }
+`;
+
+const DescriptionSection = styled.section`
+  display: flex;
+  align-items: center;
+  margin-bottom: 75px;
+
+  :last-child {
+    margin-bottom: 0;
+  }
+
+  @media (max-width: 650px) {
+    flex-direction: column;
+  }
+`;
+
+const DescriptionIcon = styled.img`
+  flex-grow: 0;
+  flex-shrink: 0;
+  width: 70px;
+  height: auto;
+  object-fit: contain;
+
+  @media (max-width: 650px) {
+    width: 50px;
+    margin-bottom: 20px;
+  }
+`;
+
+const DescriptionText = styled.div`
+  box-sizing: border-box;
+  padding-left: 20px;
+  height: fit-content;
 `;
 
 const PrivacyPolicyContainer = styled.div`
@@ -108,6 +158,22 @@ const PrivacyPolicyContainer = styled.div`
   padding: 40px;
   border-top: 1px solid lightgray;
   width: 100vw;
+`;
+
+const Footer = styled.footer`
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  border-top: 1px solid lightgray;
+  padding: 40px 10px;
+
+  a {
+    margin-bottom: 10px;
+    overflow-wrap: anywhere;
+    text-align: center;
+  }
 `;
 
 /* Main Component */
@@ -159,31 +225,56 @@ const LandingPage = () => {
       />
 
       <ContentContainer>
+        <CreditCardIcon
+          src="creditCard.png"
+          alt="credit card"
+        />
+
         <Tagline>
           Conveniently manage a shared credit card in YNAB.
         </Tagline>
 
-        <Divider />
-
         <Description>
-          <p>
-            Hi fellow YNABer! If you&apos;re using a shared credit card or bank account
-            for communal expenses, you&apos;ve probably noticed it&apos;s difficult to track
-            without your expenses appearing doubled.
-          </p>
+          <DescriptionSection>
+            <DescriptionIcon
+              src="welcome.png"
+              alt="Welcome"
+            />
 
-          <p>
-            Maybe you&apos;ve resorted to excluding it from YNAB completely. Or, maybe you&apos;re
-            throwing the costs into a blanket &quot;shared expense&quot; category, and
-            later splitting the total in half - which fixes the doubling problem,
-            but masks where exactly the dollars are going.
-          </p>
+            <DescriptionText>
+              Hi fellow YNABer! If you&apos;re using a shared credit card or bank account
+              for communal expenses, and want to track it in YNAB more easily, you&apos;re
+              in the right place!
+            </DescriptionText>
+          </DescriptionSection>
 
-          <p>
-            Cost Sharing for YNAB allows you to classify your transactions across any number
-            of categories, and then at the click of a button, pull half those costs out of
-            each one. No more doubled-up expenses or catch-all category!
-          </p>
+          <DescriptionSection>
+            <DescriptionIcon
+              src="puzzle.png"
+              alt="The Problem"
+            />
+
+            <DescriptionText>
+              A shared bank account or credit card is difficult to track in YNAB without
+              your expenses appearing doubled. Maybe you&apos;ve resorted to excluding it
+              from YNAB completely. Or, maybe you&apos;re throwing the costs into a blanket
+              &quot;shared expense&quot; category, and later splitting the total in half - which
+              fixes the doubling problem, but masks where exactly the dollars are going.
+            </DescriptionText>
+          </DescriptionSection>
+
+          <DescriptionSection>
+            <DescriptionIcon
+              src="lightBulb.png"
+              alt="The Solution"
+            />
+
+            <DescriptionText>
+              Cost Sharing for YNAB allows you to classify your transactions across any number
+              of categories, and then at the click of a button, pull half those costs out of
+              each one. No more doubled-up expenses or catch-all category!
+            </DescriptionText>
+          </DescriptionSection>
         </Description>
 
         <Divider />
@@ -233,6 +324,41 @@ const LandingPage = () => {
           </TextContainer>
         </PrivacyPolicyContainer>
       </ContentContainer>
+
+      <Footer>
+        <Hyperlink
+          href="https://www.flaticon.com/search?word=credit%20card&type=icon"
+          title="credit card icons"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Credit card icons created by Freepik - Flaticon
+        </Hyperlink>
+        <Hyperlink
+          href="https://www.flaticon.com/free-icons/welcome"
+          title="welcome icons"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Welcome icons created by Freepik - Flaticon
+        </Hyperlink>
+        <Hyperlink
+          href="https://www.flaticon.com/free-icons/puzzle"
+          title="puzzle icons"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Puzzle icons created by Freepik - Flaticon
+        </Hyperlink>
+        <Hyperlink
+          href="https://www.flaticon.com/free-icons/solution"
+          title="solution icons"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Solution icons created by Freepik - Flaticon
+        </Hyperlink>
+      </Footer>
     </Container>
   );
 };

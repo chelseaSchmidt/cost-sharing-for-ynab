@@ -15,11 +15,15 @@ const Container = styled.ol`
   padding-inline-start: unset;
 
   li {
-    margin-bottom: 20px;
+    margin-bottom: 40px;
   }
 
   li > ul {
     margin: 20px 0 10px 0;
+  }
+
+  li > ul > li {
+    margin-bottom: 20px;
   }
 
   @media (max-width: ${breakpoints.mobile}) {
