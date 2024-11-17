@@ -319,8 +319,8 @@ const CostSharingForYnab = () => {
   };
   
   const handleSplitPercentageChange = (percentage) => {
-    const partnerPercentage = 1 - (percentage / 100);
-    return partnerPercentage;
+    const owedPercentage = 1 - (percentage / 100);
+    return owedPercentage;
   };
 
   const createSplitEntry = async (e) => {
@@ -503,7 +503,7 @@ const CostSharingForYnab = () => {
 
         <SectionContent>
           <Subtitle>
-            Select the &quot;IOU&quot; account that shows what your partner owes you
+            Select the &quot;IOU&quot; account that shows what you are owed
           </Subtitle>
 
           <AccountSelector
@@ -593,7 +593,7 @@ const CostSharingForYnab = () => {
 
           <p>
             Charge a percentage the shared costs to the &quot;IOU&quot;
-            account that shows what your partner owes you, and reduce
+            account that shows what you are owed, and reduce
             your expenses by the same amount.
           </p>
 
