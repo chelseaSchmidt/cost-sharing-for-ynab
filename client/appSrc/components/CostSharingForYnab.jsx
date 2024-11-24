@@ -318,7 +318,7 @@ const CostSharingForYnab = () => {
     setSelectedTransactions(isSelected ? [...transactionsInSharedCategories] : []);
   };
   
-  const handleSplitPercentageChange = (percentage) => {
+  getOwedPercentage = (percentage) => {
     const owedPercentage = 1 - (percentage / 100);
     return owedPercentage;
   };
@@ -337,10 +337,10 @@ const CostSharingForYnab = () => {
       {},
     );
 
-    const reducedCategorizedAmounts = _.reduce(
+    const owedCategorizedAmounts = _.reduce(
       categorizedAmounts,
       (accum, amount, categoryId) => {
-      accum[categoryId] = Math.round(amount * handleSplitPercentageChange(splitPercentage));
+      accum[categoryId] = Math.round(amount * getOwedPercentage(splitPercentage));
       return accum;
       },
       {},
@@ -592,14 +592,14 @@ const CostSharingForYnab = () => {
           <SectionHeader>Split the Total Cost</SectionHeader>
 
           <p>
-            Charge a percentage the shared costs to the &quot;IOU&quot;
+            Charge a percentage of the shared costs to the &quot;IOU&quot;
             account that shows what you are owed, and reduce
             your expenses by the same amount.
           </p>
 
           <RowOrColumn>
             <label htmlFor="split-percentage-slider">
-              <b>Select your share of the shared expenses (in percentage):</b>
+              <b>Select your share of the expenses (in percent):</b>
             </label>
             <input
               type="number"
