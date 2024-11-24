@@ -204,7 +204,7 @@ const CostSharingForYnab = () => {
   });
   const [transactionsStartDate, setTransactionsStartDate] = useState(getFirstDateOfLastMonth());
   const [transactionsEndDate, setTransactionsEndDate] = useState(getLastDateOfLastMonth());
-  const [splitPercentage, setSplitPercentage] = useState(50);
+  const [myShare, setMyShare] = useState(50);
   const [selectedTransactions, setSelectedTransactions] = useState([]);
   const [dateToSplitCosts, setDateToSplitCosts] = useState(getLastDateOfLastMonth());
   const [classifiedTransactions, setClassifiedTransactions] = useState({});
@@ -340,7 +340,7 @@ const CostSharingForYnab = () => {
     const owedCategorizedAmounts = _.reduce(
       categorizedAmounts,
       (accum, amount, categoryId) => {
-      accum[categoryId] = Math.round(amount * getOwedPercentage(splitPercentage));
+      accum[categoryId] = Math.round(amount * getOwedPercentage(myShare));
       return accum;
       },
       {},
@@ -606,8 +606,8 @@ const CostSharingForYnab = () => {
               id="split-percentage-slider"
               min="1"
               max="99"
-              value={splitPercentage}
-              onChange={(e) => setSplitPercentage(e.target.value)}
+              value={myShare}
+              onChange={(e) => setMyShare(e.target.value)}
             />
             <span>%</span> 
           </RowOrColumn>
