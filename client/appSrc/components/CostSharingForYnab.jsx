@@ -318,7 +318,7 @@ const CostSharingForYnab = () => {
     setSelectedTransactions(isSelected ? [...transactionsInSharedCategories] : []);
   };
   
-  getOwedPercentage = (percentage) => {
+  const getOwedPercentage = (percentage) => {
     const owedPercentage = 1 - (percentage / 100);
     return owedPercentage;
   };
@@ -349,7 +349,7 @@ const CostSharingForYnab = () => {
     const summaryTransaction = {
       account_id: iouAccountId,
       date: convertDateToString(dateToSplitCosts),
-      amount: _.reduce(reducedCategorizedAmounts, (sum, amt) => sum - amt, 0),
+      amount: _.reduce(owedCategorizedAmounts, (sum, amt) => sum - amt, 0),
       payee_id: null,
       payee_name: null,
       category_id: null,
@@ -358,7 +358,7 @@ const CostSharingForYnab = () => {
       approved: true,
       flag_color: null,
       import_id: null,
-      subtransactions: _.map(reducedCategorizedAmounts, (amount, category_id) => ({
+      subtransactions: _.map(owedCategorizedAmounts, (amount, category_id) => ({
         amount: -(amount),
         payee_id: null,
         payee_name: 'Shared Costs',
@@ -602,14 +602,25 @@ const CostSharingForYnab = () => {
               <b>Select your share of the expenses (in percent):</b>
             </label>
             <input
-              type="number"
+              type="range"
               id="split-percentage-slider"
               min="1"
               max="99"
               value={myShare}
               onChange={(e) => setMyShare(e.target.value)}
             />
-            <span>%</span> 
+            <input
+              type="number"
+              min="1"
+              max="99"
+              value={myShare}
+              onChange={(e) => {
+                const value = Math.max(1, Math.min(99, e.target.value)); // Clamp value between 1 and 99 (no negative values)
+                setMyShare(value);
+              }}
+              style={{ marginLeft: '10px', width: '50px' }}
+            />
+            <span>%</span>   
           </RowOrColumn>
 
           <Spacer />
