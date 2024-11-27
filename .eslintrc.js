@@ -23,6 +23,10 @@ module.exports = {
     'react/forbid-prop-types': 'off',
     'arrow-body-style': 'off',
     'react/require-default-props': 'off',
+    'jsx-a11y/label-has-associated-control': [2, {
+      assert: 'either',
+      depth: 3,
+    }],
   },
   ignorePatterns: [
     'bundle.js',
