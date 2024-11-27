@@ -28,7 +28,7 @@ redirectServer.get('*', (req, res) => {
 
 // start server(s)
 const httpsPort = process.env.HTTPSPORT || 3001;
-const httpPort = process.env.HTTPPORT || 3000;
+const httpPort = process.env.PORT || process.env.HTTPPORT || 3000;
 
 if (process.env.IS_HTTPS) {
   const options = {
