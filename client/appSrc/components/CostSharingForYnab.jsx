@@ -204,6 +204,7 @@ const CostSharingForYnab = () => {
   });
   const [transactionsStartDate, setTransactionsStartDate] = useState(getFirstDateOfLastMonth());
   const [transactionsEndDate, setTransactionsEndDate] = useState(getLastDateOfLastMonth());
+  const [myShare, setMyShare] = useState(50);
   const [selectedTransactions, setSelectedTransactions] = useState([]);
   const [dateToSplitCosts, setDateToSplitCosts] = useState(getLastDateOfLastMonth());
   const [classifiedTransactions, setClassifiedTransactions] = useState({});
@@ -316,6 +317,11 @@ const CostSharingForYnab = () => {
     setIsSelectAllChecked(isSelected);
     setSelectedTransactions(isSelected ? [...transactionsInSharedCategories] : []);
   };
+  
+  const getOwedPercentage = (percentage) => {
+    const owedPercentage = 1 - (percentage / 100);
+    return owedPercentage;
+  };
 
   const createSplitEntry = async (e) => {
     e.preventDefault();
@@ -330,11 +336,12 @@ const CostSharingForYnab = () => {
       },
       {},
     );
-    const halvedCategorizedAmounts = _.reduce(
+
+    const owedCategorizedAmounts = _.reduce(
       categorizedAmounts,
       (accum, amount, categoryId) => {
-        accum[categoryId] = Math.round(amount / 2);
-        return accum;
+      accum[categoryId] = Math.round(amount * getOwedPercentage(myShare));
+      return accum;
       },
       {},
     );
@@ -342,7 +349,7 @@ const CostSharingForYnab = () => {
     const summaryTransaction = {
       account_id: iouAccountId,
       date: convertDateToString(dateToSplitCosts),
-      amount: _.reduce(halvedCategorizedAmounts, (sum, amt) => sum - amt, 0),
+      amount: _.reduce(owedCategorizedAmounts, (sum, amt) => sum - amt, 0),
       payee_id: null,
       payee_name: null,
       category_id: null,
@@ -351,7 +358,7 @@ const CostSharingForYnab = () => {
       approved: true,
       flag_color: null,
       import_id: null,
-      subtransactions: _.map(halvedCategorizedAmounts, (amount, category_id) => ({
+      subtransactions: _.map(owedCategorizedAmounts, (amount, category_id) => ({
         amount: -(amount),
         payee_id: null,
         payee_name: 'Shared Costs',
@@ -496,7 +503,7 @@ const CostSharingForYnab = () => {
 
         <SectionContent>
           <Subtitle>
-            Select the &quot;IOU&quot; account that shows what your partner owes you
+            Select the &quot;IOU&quot; account that shows what you are owed
           </Subtitle>
 
           <AccountSelector
@@ -585,10 +592,38 @@ const CostSharingForYnab = () => {
           <SectionHeader>Split the Total Cost</SectionHeader>
 
           <p>
-            Charge half the shared costs to the &quot;IOU&quot;
-            account that shows what your partner owes you, and reduce
+            Charge a percentage of the shared costs to the &quot;IOU&quot;
+            account that shows what you are owed, and reduce
             your expenses by the same amount.
           </p>
+
+          <RowOrColumn>
+            <label htmlFor="split-percentage-slider">
+              <b>Select your share of the expenses (in percent):</b>
+            </label>
+            <input
+              type="range"
+              id="split-percentage-slider"
+              min="1"
+              max="99"
+              value={myShare}
+              onChange={(e) => setMyShare(e.target.value)}
+            />
+            <input
+              type="number"
+              min="1"
+              max="99"
+              value={myShare}
+              onChange={(e) => {
+                const value = Math.max(1, Math.min(99, e.target.value)); // Clamp value between 1 and 99 (no negative values)
+                setMyShare(value);
+              }}
+              style={{ marginLeft: '10px', width: '50px' }}
+            />
+            <span>%</span>   
+          </RowOrColumn>
+
+          <Spacer />
 
           <RowOrColumn>
             <DateSelector

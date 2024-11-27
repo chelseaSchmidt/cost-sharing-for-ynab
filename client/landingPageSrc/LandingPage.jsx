@@ -258,7 +258,7 @@ const LandingPage = () => {
               A shared bank account or credit card is difficult to track in YNAB without
               your expenses appearing doubled. Maybe you&apos;ve resorted to excluding it
               from YNAB completely. Or, maybe you&apos;re throwing the costs into a blanket
-              &quot;shared expense&quot; category, and later splitting the total in half - which
+              &quot;shared expense&quot; category, and later splitting the total - which
               fixes the doubling problem, but masks where exactly the dollars are going.
             </DescriptionText>
           </DescriptionSection>
@@ -271,8 +271,8 @@ const LandingPage = () => {
 
             <DescriptionText>
               Cost Sharing for YNAB allows you to classify your transactions across any number
-              of categories, and then at the click of a button, pull half those costs out of
-              each one. No more doubled-up expenses or catch-all category!
+              of categories, and then at the click of a button, remove other people's share of the 
+              expenses from each category. No more doubled-up expenses or catch-all category!
             </DescriptionText>
           </DescriptionSection>
         </Description>

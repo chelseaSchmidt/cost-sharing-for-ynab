@@ -68,7 +68,7 @@ const Instructions = ({
     { text: 'Create a **parent** category in your YNAB budget named something like "Shared Expenses"' },
     { text: 'Add desired **sub-categories** underneath the "Shared Expenses" parent (such as rent, groceries, etc.)' },
     {
-      text: 'Add an **IOU account in YNAB:** this account will track what your partner owes you for their half of the credit card debt.',
+      text: 'Add an **IOU account in YNAB:** this account will track what you are owed for the shared credit card debt.',
       subList: [
         { text: 'Click **Add Account** in YNAB' },
         { text: 'Select an account type of **Checking** (or Cash - this doesn\'t matter so much)' },
@@ -83,10 +83,10 @@ const Instructions = ({
       isHidden: !isHomePage,
     },
     {
-      text: 'The app will guide you through selecting your shared costs over a custom date range. Then it will create a single transaction **removing half the costs from your expenses,** and **adding the same amount to the IOU account you created,** reflecting the balance your partner owes you. You\'ll be able to see the transaction in YNAB, and delete or edit it if needed.',
+      text: 'The app will guide you through selecting your shared costs over a custom date range. Then it will ask you to specify your share of the expenses (e.g. 50%). It will then create a single transaction **removing what you are owed from the expenses,** and **adding the same amount to the IOU account you created,** reflecting the balance you are owed. You\'ll be able to see the transaction in YNAB, and delete or edit it if needed.',
     },
     {
-      text: 'When your partner pays you back the balance, add a **transfer transaction** from the IOU account to the bank or cash account where you deposited the money. This will zero out the IOU account and make your bank account perfectly balanced, as all things should be!',
+      text: 'When you are paid back the balance you are owed, add a **transfer transaction** from the IOU account to the bank or cash account where you deposited the money. This will zero out the IOU account and make your bank account perfectly balanced, as all things should be!',
     },
   ];
 
