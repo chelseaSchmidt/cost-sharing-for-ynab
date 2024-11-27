@@ -317,7 +317,7 @@ const CostSharingForYnab = () => {
     setIsSelectAllChecked(isSelected);
     setSelectedTransactions(isSelected ? [...transactionsInSharedCategories] : []);
   };
-  
+
   const getOwedPercentage = (percentage) => {
     const owedPercentage = 1 - (percentage / 100);
     return owedPercentage;
@@ -340,8 +340,8 @@ const CostSharingForYnab = () => {
     const owedCategorizedAmounts = _.reduce(
       categorizedAmounts,
       (accum, amount, categoryId) => {
-      accum[categoryId] = Math.round(amount * getOwedPercentage(myShare));
-      return accum;
+        accum[categoryId] = Math.round(amount * getOwedPercentage(myShare));
+        return accum;
       },
       {},
     );
@@ -615,12 +615,13 @@ const CostSharingForYnab = () => {
               max="99"
               value={myShare}
               onChange={(e) => {
-                const value = Math.max(1, Math.min(99, e.target.value)); // Clamp value between 1 and 99 (no negative values)
+                // Clamp value between 1 and 99 (no negative values)
+                const value = Math.max(1, Math.min(99, e.target.value));
                 setMyShare(value);
               }}
               style={{ marginLeft: '10px', width: '50px' }}
             />
-            <span>%</span>   
+            <span>%</span>
           </RowOrColumn>
 
           <Spacer />
