@@ -31,7 +31,6 @@
     "body-parser": "^1.19.0",
     "css-loader": "^4.3.0",
     "express": "^4.17.1",
-    "format-currency": "^1.0.0",
     "lodash": "^4.17.20",
     "moment": "^2.29.0",
     "mongoose": "^5.10.6",
