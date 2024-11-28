@@ -1,7 +1,6 @@
 /* eslint-disable camelcase */
 import React, { useState } from 'react';
 import moment from 'moment';
-import formatCurrency from 'format-currency';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import ElevatedTooltip from './ElevatedTooltip';
@@ -128,10 +127,7 @@ const Transaction = ({
       </Date>
 
       <Amount>
-        {formatCurrency(
-          amount / -1000,
-          { format: '%s%v', symbol: '$' },
-        )}
+        {Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount / -1000)}
       </Amount>
 
       <Details>
