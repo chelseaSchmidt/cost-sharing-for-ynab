@@ -244,7 +244,7 @@ const LandingPage = () => {
             <DescriptionText>
               Hi fellow YNABer! If you&apos;re using a shared credit card or bank account
               for communal expenses, and want to track it in YNAB more easily, you&apos;re
-              in the right place!
+              in the right place.
             </DescriptionText>
           </DescriptionSection>
 
@@ -256,10 +256,10 @@ const LandingPage = () => {
 
             <DescriptionText>
               A shared bank account or credit card is difficult to track in YNAB without
-              your expenses appearing doubled. Maybe you&apos;ve resorted to excluding it
+              your expenses appearing inflated. Maybe you&apos;ve resorted to excluding it
               from YNAB completely. Or, maybe you&apos;re throwing the costs into a blanket
-              &quot;shared expense&quot; category, and later splitting the total - which
-              fixes the doubling problem, but masks where exactly the dollars are going.
+              &quot;shared expense&quot; category, and later divvying up the total - which
+              fixes the inflation problem, but masks where exactly the dollars are going.
             </DescriptionText>
           </DescriptionSection>
 
@@ -270,9 +270,9 @@ const LandingPage = () => {
             />
 
             <DescriptionText>
-              Cost Sharing for YNAB allows you to classify your transactions across any number of
-              categories, and then at the click of a button, remove other people&apos;s share of
-              the expenses from each category. No more doubled-up expenses or catch-all category!
+              Cost Sharing for YNAB enables you to classify your transactions across any number of
+              categories, and then at the click of a button, remove someone else&apos;s share of
+              the expenses from each category. No more inflated expenses or catch-all category!
             </DescriptionText>
           </DescriptionSection>
         </Description>

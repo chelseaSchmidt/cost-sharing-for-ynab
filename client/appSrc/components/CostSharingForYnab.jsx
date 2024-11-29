@@ -417,7 +417,7 @@ const CostSharingForYnab = () => {
             {activeModal === modalNames.TRANSACTION_REVIEW && (
               <TransactionWindow
                 title="Transactions in shared accounts not categorized to shared expense categories"
-                description="This list is meant to help you catch miscategorized transactions. Recategorize them in YNAB as needed and then refresh the list."
+                description="This list is meant to help you catch misclassified transactions. Recategorize them in YNAB as needed and then refresh the list."
                 loading={areTransactionsLoading}
                 shouldShowLoadingOverlay
                 transactions={sharedAccountErrorTransactions}
@@ -482,7 +482,7 @@ const CostSharingForYnab = () => {
         <SectionHeader>Choose Accounts and Categories</SectionHeader>
 
         <SectionContent>
-          <Subtitle>Select the credit card(s) you use for shared expenses</Subtitle>
+          <Subtitle>Select the credit card(s)/bank account(s) you use for shared expenses</Subtitle>
 
           <AccountButtons
             accounts={budgetData.accounts}
@@ -503,7 +503,7 @@ const CostSharingForYnab = () => {
 
         <SectionContent>
           <Subtitle>
-            Select the &quot;IOU&quot; account that shows what you are owed
+            Select the &quot;IOU&quot; account that tracks what you are owed
           </Subtitle>
 
           <AccountSelector
@@ -589,17 +589,17 @@ const CostSharingForYnab = () => {
 
       <SectionTile>
         <form>
-          <SectionHeader>Split the Total Cost</SectionHeader>
+          <SectionHeader>Split the Costs</SectionHeader>
 
           <p>
-            Charge a percentage of the shared costs to the &quot;IOU&quot;
-            account that shows what you are owed, and reduce
-            your expenses by the same amount.
+            Select your share of the costs and enter the date on which you want to split them. The
+            percentage owed to you will be moved out of your expenses and into the &quot;IOU&quot;
+            account you selected.
           </p>
 
           <RowOrColumn>
             <label htmlFor="split-percentage-slider">
-              <b>Select your share of the expenses (in percent):</b>
+              <b>Select your share of the costs (in percent):</b>
             </label>
             <input
               type="range"

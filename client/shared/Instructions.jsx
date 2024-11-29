@@ -68,25 +68,25 @@ const Instructions = ({
     { text: 'Create a **parent** category in your YNAB budget named something like "Shared Expenses"' },
     { text: 'Add desired **sub-categories** underneath the "Shared Expenses" parent (such as rent, groceries, etc.)' },
     {
-      text: 'Add an **IOU account in YNAB:** this account will track what you are owed for the shared credit card debt.',
+      text: 'Add an **IOU account in YNAB:** this account will track what you are owed as a result of maintaining the shared credit card/bank account.',
       subList: [
         { text: 'Click **Add Account** in YNAB' },
         { text: 'Select an account type of **Checking** (or Cash - this doesn\'t matter so much)' },
-        { text: 'Nickname the account something like **"Owed from [__insert partner\'s name__]"**' },
+        { text: 'Nickname the account something like **"Owed from [__insert person\'s name__]"**' },
       ],
     },
     {
-      text: 'Add the **shared credit card** as a YNAB account and sync it with your bank, or add transactions manually. Classify transactions to the shared expense categories you created earlier.',
+      text: 'Add the **shared credit card/bank account** as a YNAB account and sync it with your bank, or add transactions manually. Classify transactions to the shared expense categories you created earlier.',
     },
     {
       text: 'Click **Start** below. You will need your YNAB credentials.',
       isHidden: !isHomePage,
     },
     {
-      text: 'The app will guide you through selecting your shared costs over a custom date range. Then it will ask you to specify your share of the expenses (e.g. 50%). It will then create a single transaction **removing what you are owed from the expenses,** and **adding the same amount to the IOU account you created,** reflecting the balance you are owed. You\'ll be able to see the transaction in YNAB, and delete or edit it if needed.',
+      text: 'Follow each step in the app to select your shared costs over a given date range and split a specified percentage of them into the IOU account you created earlier. After you hit "Split Costs," a transaction will be created in your YNAB budget that moves the other person\'s share of the costs **out of your expenses** and **into the IOU account**. You can view the transaction in YNAB afterward (and delete or edit it if needed).',
     },
     {
-      text: 'When you are paid back the balance you are owed, add a **transfer transaction** from the IOU account to the bank or cash account where you deposited the money. This will zero out the IOU account and make your bank account perfectly balanced, as all things should be!',
+      text: 'When you\'re repaid the owed amount, add a **transfer transaction** from the IOU account to the bank or cash account where you deposited the money. This will zero out the IOU account while keeping your bank account perfectly balanced, as all things should be!',
     },
   ];
 
