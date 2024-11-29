@@ -29,7 +29,7 @@ Check out the live app here! https://costsharingforynab.com. Cost Sharing for YN
     - Requires configuring redirects from port 80 --> 3000 and 443 --> 3001
     - HTTP server will redirect to HTTPS server
 
-## Prod deployment (iif you're Chelsea)
+## Prod deployment (if you're Chelsea)
   - First-time setup
     - Install Docker
     - Create a Google Cloud project, then:
