@@ -22,6 +22,9 @@ const PrivacyPolicy = ({
   subtitleStyle = {},
 }) => (
   <Container id="privacy-policy-container">
+    <Subtitle style={subtitleStyle}>
+      Last updated: April 6th, 2025
+    </Subtitle>
     <Header style={headerStyle}>
       Privacy Policy
     </Header>
@@ -34,18 +37,38 @@ const PrivacyPolicy = ({
       PERSONAL INFORMATION COLLECTED
     </Subtitle>
     <p>
-      Cost Sharing for YNAB does not collect any personal information. Outside
-      of connecting to YNAB itself through their API, there is no database
-      connected to Cost Sharing for YNAB in which to store information. Cost
-      Sharing for YNAB allows you to view and edit your YNAB budget through a
-      custom interface, so please see YNAB&apos;s privacy policy to understand
-      what information might be collected by YNAB in the normal course of
+      Cost Sharing for YNAB does not collect any personal information. Cost Sharing for YNAB
+      is a custom interface which allows you to view and edit your YNAB budget, so please review
+      the&nbsp;
+      <InLineLink
+        href="https://www.ynab.com/privacy-policy"
+        target="_blank"
+        rel="noreferrer"
+      >
+        YNAB privacy policy
+      </InLineLink>
+      &nbsp;to understand what information might be collected by YNAB in the normal course of
       viewing and editing your budget.
     </p>
     <p>
       Data will be obtained from your YNAB budget for the current active session
       of Cost Sharing for YNAB only, and will not be stored. Cost Sharing for YNAB
       does not pass the data to any third parties.
+    </p>
+    <p>
+      Cost Sharing for YNAB is not affiliated, associated, or in any way officially connected with
+      YNAB, or any of its subsidiaries or its affiliates. The developer is a fan of YNAB and wanted
+      to add a custom feature, and so created this application. The official YNAB website
+      can be found at&nbsp;
+      <InLineLink
+        href="https://www.ynab.com"
+        target="_blank"
+        rel="noreferrer"
+      >
+        https://www.ynab.com
+      </InLineLink>
+      . The names YNAB and You Need A Budget as well as related names, marks, emblems and
+      images are registered trademarks of YNAB.
     </p>
     <p>
       Cost Sharing for YNAB is an open-source web application.
@@ -55,7 +78,7 @@ const PrivacyPolicy = ({
         target="_blank"
         rel="noreferrer"
       >
-        https://github.com/chelseaSchmidt/cost-sharing-for-ynab
+        github.com/chelseaSchmidt/cost-sharing-for-ynab
       </InLineLink>
       .
     </p>
@@ -66,16 +89,22 @@ const PrivacyPolicy = ({
     <p>
       This privacy policy may be updated from time to time in order to reflect
       changes to privacy practices or for other operational, legal or regulatory
-      reasons.
+      reasons. Please review it for changes periodically.
     </p>
     <br />
     <Subtitle style={subtitleStyle}>
       CONTACT
     </Subtitle>
     <p>
-      For more information about these privacy practices, if you have questions,
-      or if you would like to make a complaint, please email
-      cost.sharing.for.ynab@gmail.com.
+      If you have any questions about this privacy policy, please email&nbsp;
+      <InLineLink
+        href="mailto:cost.sharing.for.ynab@gmail.com"
+        target="_blank"
+        rel="noreferrer"
+      >
+        cost.sharing.for.ynab@gmail.com
+      </InLineLink>
+      .
     </p>
   </Container>
 );
