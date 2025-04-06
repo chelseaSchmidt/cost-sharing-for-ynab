@@ -55,26 +55,33 @@ Check out the live app here! https://costsharingforynab.com. Cost Sharing for YN
     - Tag image
       - `docker tag <image_id> <repository_host_name_from_earlier_step>/<project_id>/<repository_name>/cs4y`
     - Push image
+      - `gcloud auth login`
       - `docker push <repository_host_name_from_step_1>/<project_id>/<repository_name>/cs4y`
     - Deploy with Google Cloud Run
-      - Click "Deploy container" in Google Cloud Run
-      - "Deploy one revision from an existing container image"
-      - Select the `latest` image
-      - Enter a service name
-      - Select a region
-      - "Allow unauthenticated invocations" (required for a public website)
-      - CPU allocation preference
-      - Enter preferred minimum instances
-      - Select "All" under Ingress Control
-      - Container settings
-        - Enter `80` as the container port
-      - "Create"
-    - Navigate to the generated URL
-    - First time domain mapping:
-      - Go to Cloud Run Domain Mappings
-        - "Add mapping"
-        - Follow prompts (use the Google Search Console option to verify the domain)
-        - When done, cert issuance will automatically begin
+      - Revision:
+        - Click the running service in Google Cloud Run
+        - Click "Edit & deploy a new revision"
+        - Select latest image in "Container image URL" field
+        - "Deploy"
+      - Initial:
+        - Click "Deploy container" in Google Cloud Run
+        - "Deploy one revision from an existing container image"
+        - Select the `latest` image
+        - Enter a service name
+        - Select a region
+        - "Allow unauthenticated invocations" (required for a public website)
+        - CPU allocation preference
+        - Enter preferred minimum instances
+        - Select "All" under Ingress Control
+        - Container settings
+          - Enter `80` as the container port
+        - "Create"
+      - Navigate to the generated URL
+      - First time domain mapping:
+        - Go to Cloud Run Domain Mappings
+          - "Add mapping"
+          - Follow prompts (use the Google Search Console option to verify the domain)
+          - When done, cert issuance will automatically begin
 
 ## Helpful commands
   - `docker images` | List images
