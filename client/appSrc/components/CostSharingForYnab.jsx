@@ -494,6 +494,32 @@ const CostSharingForYnab = () => {
         <SectionContent>
           <Subtitle>Select the YNAB parent category(ies) where you track shared expenses</Subtitle>
 
+          {/* Add a "Select All" button */}
+          <button
+            style={{
+              marginBottom: '10px',
+              padding: '8px 16px',
+              backgroundColor: '#007BFF',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer',
+            }}
+            onClick={() => {
+              // Select all parent categories
+              if (budgetData?.parentCategories?.length > 0) {
+                const allCategoryIds = budgetData.parentCategories.map((category) => ({
+                  categoryId: category.id,
+                  name: category.name,
+                  subCategories: category.categories,
+                }));
+                setSelectedParentCategories(allCategoryIds);
+              }
+            }}
+          >
+            Select All
+          </button>
+
           <CategoryButtons
             parentCategories={budgetData.parentCategories}
             selectedParentCategories={selectedParentCategories}
