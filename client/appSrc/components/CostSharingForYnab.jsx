@@ -287,9 +287,12 @@ const CostSharingForYnab = () => {
         && transaction.approved
         && !isTransactionATransfer(transaction)
       ));
+  
+      // Sort transactions by date in descending order (newest to oldest)
+      const sortedTransactions = filteredTransactions.sort((a, b) => new Date(b.date) - new Date(a.date));
 
       setClassifiedTransactions(classifyTransactions({
-        displayedTransactions,
+        displayedTransactions: sortedTransactions,
         selectedAccounts,
         selectedParentCategories,
       }));
