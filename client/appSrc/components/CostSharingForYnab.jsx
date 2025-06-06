@@ -277,19 +277,22 @@ const CostSharingForYnab = () => {
 
   const getClassifiedTransactions = async ({ startDate, endDate }) => {
     const isTransactionATransfer = (transaction) => !!transaction.transfer_account_id;
-
+  
     try {
       setAreTransactionsLoading(true);
       const transactionsSinceStartDate = await getTransactionsSinceDate(startDate);
-
-      const displayedTransactions = transactionsSinceStartDate.filter((transaction) => (
-        isTransactionBeforeDate(transaction, endDate)
+  
+      // Filter transactions by selected shared accounts
+      const sharedAccountIds = selectedAccounts.map((acct) => acct.accountId);
+      const filteredTransactions = transactionsSinceStartDate.filter((transaction) => (
+        sharedAccountIds.includes(transaction.account_id)
+        && isTransactionBeforeDate(transaction, endDate)
         && transaction.approved
         && !isTransactionATransfer(transaction)
       ));
-
+  
       setClassifiedTransactions(classifyTransactions({
-        displayedTransactions,
+        displayedTransactions: filteredTransactions,
         selectedAccounts,
         selectedParentCategories,
       }));
