@@ -604,8 +604,8 @@ const CostSharingForYnab = () => {
             <input
               type="range"
               id="split-percentage-slider"
-              min="1"
-              max="99"
+              min="0"
+              max="100"
               value={myShare}
               onChange={(e) => setMyShare(e.target.value)}
             />
