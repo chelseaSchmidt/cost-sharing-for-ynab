@@ -611,8 +611,8 @@ const CostSharingForYnab = () => {
             />
             <input
               type="number"
-              min="1"
-              max="99"
+              min="0"
+              max="100"
               value={myShare}
               onChange={(e) => {
                 const value = Math.max(0, Math.min(100, e.target.value));
