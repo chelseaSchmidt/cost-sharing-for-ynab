@@ -8,9 +8,20 @@ const classifyTransactions = ({
   selectedParentCategories,
 }) => {
   const sharedAccountIds = selectedAccounts.map((acct) => acct.accountId);
-  const sharedCategoryIds = selectedParentCategories
-    .flatMap(({ subCategories }) => subCategories)
-    .map(toId);
+  const sharedCategoryIds = selectedParentCategories.length > 0
+    ? selectedParentCategories
+        .flatMap(({ subCategories }) => subCategories)
+        .map(toId)
+    : [];
+
+  // If no parent categories selected, treat all as "in shared categories"
+  if (sharedCategoryIds.length === 0) {
+    return {
+      transactionsInSharedCategories: displayedTransactions,
+      sharedAccountErrorTransactions: [],
+      sharedCategoryErrorTransactions: [],
+    };
+  }
 
   return displayedTransactions.reduce((accum, transaction) => {
     const {

@@ -282,10 +282,12 @@ const CostSharingForYnab = () => {
       setAreTransactionsLoading(true);
       const transactionsSinceStartDate = await getTransactionsSinceDate(startDate);
 
-      const displayedTransactions = transactionsSinceStartDate.filter((transaction) => (
+      // Only filter by category if any parent categories are selected
+      let displayedTransactions = transactionsSinceStartDate.filter((transaction) => (
         isTransactionBeforeDate(transaction, endDate)
         && transaction.approved
         && !isTransactionATransfer(transaction)
+        && selectedAccounts.some((acct) => acct.accountId === transaction.account_id)
       )).sort((a, b) => new Date(b.date) - new Date(a.date));
 
       setClassifiedTransactions(classifyTransactions({
@@ -492,7 +494,7 @@ const CostSharingForYnab = () => {
         </SectionContent>
 
         <SectionContent>
-          <Subtitle>Select the YNAB parent category(ies) where you track shared expenses</Subtitle>
+          <Subtitle>(Optional) Select the YNAB parent category(ies) where you track shared expenses</Subtitle>
 
           <CategoryButtons
             parentCategories={budgetData.parentCategories}
