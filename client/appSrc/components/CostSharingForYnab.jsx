@@ -615,8 +615,7 @@ const CostSharingForYnab = () => {
               max="99"
               value={myShare}
               onChange={(e) => {
-                // Clamp value between 1 and 99 (no negative values)
-                const value = Math.max(1, Math.min(99, e.target.value));
+                const value = Math.max(0, Math.min(100, e.target.value));
                 setMyShare(value);
               }}
               style={{ marginLeft: '10px', width: '50px' }}
