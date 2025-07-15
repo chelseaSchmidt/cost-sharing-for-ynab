@@ -282,13 +282,30 @@ const CostSharingForYnab = () => {
       setAreTransactionsLoading(true);
       const transactionsSinceStartDate = await getTransactionsSinceDate(startDate);
 
-      // Only filter by category if any parent categories are selected
-      let displayedTransactions = transactionsSinceStartDate.filter((transaction) => (
-        isTransactionBeforeDate(transaction, endDate)
-        && transaction.approved
-        && !isTransactionATransfer(transaction)
-        && selectedAccounts.some((acct) => acct.accountId === transaction.account_id)
-      )).sort((a, b) => new Date(b.date) - new Date(a.date));
+      let displayedTransactions;
+
+      if (selectedParentCategories.length === 0) {
+        // No parent categories: filter by selected accounts only
+        displayedTransactions = transactionsSinceStartDate.filter((transaction) => (
+          isTransactionBeforeDate(transaction, endDate)
+          && transaction.approved
+          && !isTransactionATransfer(transaction)
+          && selectedAccounts.some((acct) => acct.accountId === transaction.account_id)
+        )).sort((a, b) => new Date(b.date) - new Date(a.date));
+      } else {
+        // Parent categories selected: filter by category, ignore account
+        // Get all subcategory IDs from selected parent categories
+        const sharedCategoryIds = selectedParentCategories
+          .flatMap(({ subCategories }) => subCategories)
+          .map((cat) => cat.id);
+
+        displayedTransactions = transactionsSinceStartDate.filter((transaction) => (
+          isTransactionBeforeDate(transaction, endDate)
+          && transaction.approved
+          && !isTransactionATransfer(transaction)
+          && sharedCategoryIds.includes(transaction.category_id)
+        )).sort((a, b) => new Date(b.date) - new Date(a.date));;
+        }
 
       setClassifiedTransactions(classifyTransactions({
         displayedTransactions,
