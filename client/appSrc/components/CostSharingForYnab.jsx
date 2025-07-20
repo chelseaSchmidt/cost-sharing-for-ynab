@@ -286,8 +286,7 @@ const CostSharingForYnab = () => {
         isTransactionBeforeDate(transaction, endDate)
         && transaction.approved
         && !isTransactionATransfer(transaction)
-      ));
-
+      )).sort((a, b) => new Date(b.date) - new Date(a.date));
       setClassifiedTransactions(classifyTransactions({
         displayedTransactions,
         selectedAccounts,
