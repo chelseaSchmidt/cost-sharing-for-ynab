@@ -511,7 +511,7 @@ const CostSharingForYnab = () => {
         </SectionContent>
 
         <SectionContent>
-          <Subtitle>(Optional) Select the YNAB parent category(ies) where you track shared expenses</Subtitle>
+          <Subtitle>(Optional) If you track shared expenses under separate parent categories, select them here. This will turn on cross-checking for misclassified transactions.</Subtitle>
 
           <CategoryButtons
             parentCategories={budgetData.parentCategories}
