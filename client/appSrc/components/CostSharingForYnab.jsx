@@ -219,7 +219,7 @@ const CostSharingForYnab = () => {
   const [isSelectAllChecked, setIsSelectAllChecked] = useState(false);
 
   const {
-    transactionsInSharedCategories = [],
+    filteredTransactions = [],
     sharedAccountErrorTransactions = [],
     sharedCategoryErrorTransactions = [],
   } = classifiedTransactions;
@@ -334,7 +334,7 @@ const CostSharingForYnab = () => {
 
   const toggleSelectAll = ({ isSelected }) => {
     setIsSelectAllChecked(isSelected);
-    setSelectedTransactions(isSelected ? [...transactionsInSharedCategories] : []);
+    setSelectedTransactions(isSelected ? [...filteredTransactions] : []);
   };
 
   const getOwedPercentage = (percentage) => {
@@ -594,7 +594,7 @@ const CostSharingForYnab = () => {
         <TransactionWindowContainer>
           <TransactionWindow
             loading={areTransactionsLoading}
-            transactions={transactionsInSharedCategories}
+            transactions={filteredTransactions}
             selectedTransactions={selectedTransactions}
             transactionsSharedInOneButNotOther={sharedCategoryErrorTransactions}
             toggleTransactionSelection={toggleTransactionSelection}

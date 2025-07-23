@@ -14,10 +14,9 @@ const classifyTransactions = ({
         .map(toId)
     : [];
 
-  // If no parent categories selected, treat all as "in shared categories"
   if (sharedCategoryIds.length === 0) {
     return {
-      transactionsInSharedCategories: displayedTransactions,
+      filteredTransactions: displayedTransactions,
       sharedAccountErrorTransactions: [],
       sharedCategoryErrorTransactions: [],
     };
@@ -34,13 +33,13 @@ const classifyTransactions = ({
     const isInSharedAccountButNotCategory = isInSharedAccount && !isInSharedCategory;
     const isInSharedCategoryButNotAccount = isInSharedCategory && !isInSharedAccount;
 
-    if (isInSharedCategory) accum.transactionsInSharedCategories.push(transaction);
+    if (isInSharedCategory) accum.filteredTransactions.push(transaction);
     if (isInSharedAccountButNotCategory) accum.sharedAccountErrorTransactions.push(transaction);
     if (isInSharedCategoryButNotAccount) accum.sharedCategoryErrorTransactions.push(transaction);
 
     return accum;
   }, {
-    transactionsInSharedCategories: [],
+    filteredTransactions: [],
     sharedAccountErrorTransactions: [],
     sharedCategoryErrorTransactions: [],
   });
