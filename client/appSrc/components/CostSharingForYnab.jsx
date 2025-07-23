@@ -276,41 +276,17 @@ const CostSharingForYnab = () => {
   };
 
   const getClassifiedTransactions = async ({ startDate, endDate }) => {
-    const isTransactionATransfer = (transaction) => !!transaction.transfer_account_id;
-
     try {
       setAreTransactionsLoading(true);
       const transactionsSinceStartDate = await getTransactionsSinceDate(startDate);
 
-      let displayedTransactions;
-
-      if (selectedParentCategories.length === 0) {
-        // No parent categories: filter by selected accounts only
-        displayedTransactions = transactionsSinceStartDate.filter((transaction) => (
-          isTransactionBeforeDate(transaction, endDate)
-          && transaction.approved
-          && !isTransactionATransfer(transaction)
-          && selectedAccounts.some((acct) => acct.accountId === transaction.account_id)
-        ));
-      } else {
-        // Parent categories selected: filter by category, ignore account
-        // Get all subcategory IDs from selected parent categories
-        const sharedCategoryIds = selectedParentCategories
-          .flatMap(({ subCategories }) => subCategories)
-          .map((cat) => cat.id);
-
-        displayedTransactions = transactionsSinceStartDate.filter((transaction) => (
-          isTransactionBeforeDate(transaction, endDate)
-          && transaction.approved
-          && !isTransactionATransfer(transaction)
-          && sharedCategoryIds.includes(transaction.category_id)
-        ));
-      }
-
       setClassifiedTransactions(classifyTransactions({
-        displayedTransactions,
+        transactions: transactionsSinceStartDate,
         selectedAccounts,
         selectedParentCategories,
+        startDate,
+        endDate,
+        isTransactionBeforeDate,
       }));
     } catch (error) {
       setErrorData({

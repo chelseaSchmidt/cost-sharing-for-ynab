@@ -3,9 +3,12 @@
 import { toId } from './general';
 
 const classifyTransactions = ({
-  displayedTransactions,
+  transactions,
   selectedAccounts,
   selectedParentCategories,
+  startDate,
+  endDate,
+  isTransactionBeforeDate,
 }) => {
   const sharedAccountIds = selectedAccounts.map((acct) => acct.accountId);
   const sharedCategoryIds = selectedParentCategories.length > 0
@@ -14,28 +17,27 @@ const classifyTransactions = ({
         .map(toId)
     : [];
 
-  if (sharedCategoryIds.length === 0) {
-    return {
-      filteredTransactions: displayedTransactions,
-      sharedAccountErrorTransactions: [],
-      sharedCategoryErrorTransactions: [],
-    };
-  }
+  const isTransactionATransfer = (transaction) => !!transaction.transfer_account_id;
 
-  return displayedTransactions.reduce((accum, transaction) => {
-    const {
-      account_id,
-      category_id,
-    } = transaction;
+  const filtered = transactions.filter((transaction) =>
+    isTransactionBeforeDate(transaction, endDate) &&
+    transaction.approved &&
+    !isTransactionATransfer(transaction)
+  );
 
+  return filtered.reduce((accum, transaction) => {
+    const { account_id, category_id } = transaction;
     const isInSharedAccount = sharedAccountIds.includes(account_id);
     const isInSharedCategory = sharedCategoryIds.includes(category_id);
-    const isInSharedAccountButNotCategory = isInSharedAccount && !isInSharedCategory;
-    const isInSharedCategoryButNotAccount = isInSharedCategory && !isInSharedAccount;
 
-    if (isInSharedCategory) accum.filteredTransactions.push(transaction);
-    if (isInSharedAccountButNotCategory) accum.sharedAccountErrorTransactions.push(transaction);
-    if (isInSharedCategoryButNotAccount) accum.sharedCategoryErrorTransactions.push(transaction);
+    if (sharedCategoryIds.length === 0) {
+      if (isInSharedAccount) accum.filteredTransactions.push(transaction);
+    } else if (isInSharedCategory) {
+      accum.filteredTransactions.push(transaction);
+      if (!isInSharedAccount) accum.sharedCategoryErrorTransactions.push(transaction);
+    } else if (isInSharedAccount) {
+      accum.sharedAccountErrorTransactions.push(transaction);
+    }
 
     return accum;
   }, {
