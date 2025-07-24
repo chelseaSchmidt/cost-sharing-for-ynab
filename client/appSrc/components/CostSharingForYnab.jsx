@@ -280,12 +280,6 @@ const CostSharingForYnab = () => {
       setAreTransactionsLoading(true);
       const transactionsSinceStartDate = await getTransactionsSinceDate(startDate);
 
-      const displayedTransactions = transactionsSinceStartDate.filter((transaction) => (
-        isTransactionBeforeDate(transaction, endDate)
-        && transaction.approved
-        && !isTransactionATransfer(transaction)
-      )).sort((a, b) => new Date(b.date) - new Date(a.date));
-
       setClassifiedTransactions(classifyTransactions({
         transactions: transactionsSinceStartDate,
         selectedAccounts,
