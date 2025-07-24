@@ -28,13 +28,13 @@
   "homepage": "https://github.com/chelseaSchmidt/cost-sharing-for-ynab#readme",
   "dependencies": {
     "@babel/runtime": "^7.15.4",
-    "axios": "^0.20.0",
+    "axios": "^1.10.0",
     "body-parser": "^1.19.0",
-    "css-loader": "^4.3.0",
+    "css-loader": "^7.1.2",
     "express": "^4.17.1",
     "lodash": "^4.17.20",
     "moment": "^2.29.0",
-    "mongoose": "^5.10.6",
+    "mongoose": "^8.16.4",
     "morgan": "^1.10.0",
     "path": "^0.12.7",
     "prop-types": "^15.7.2",
@@ -56,9 +56,9 @@
     "eslint-plugin-jsx-a11y": "^6.3.1",
     "eslint-plugin-react": "^7.20.6",
     "eslint-plugin-react-hooks": "^4.1.0",
-    "nodemon": "^2.0.15",
-    "webpack": "^4.44.1",
-    "webpack-cli": "^3.3.12",
+    "nodemon": "^3.1.10",
+    "webpack": "^5.100.2",
+    "webpack-cli": "^6.0.1",
     "webpack-merge": "^5.2.0"
   }
 }
