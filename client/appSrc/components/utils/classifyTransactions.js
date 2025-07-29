@@ -3,47 +3,32 @@
 import { toId } from './general';
 
 const classifyTransactions = ({
-  transactions,
+  displayedTransactions,
   selectedAccounts,
   selectedParentCategories,
-  endDate,
-  isTransactionBeforeDate,
-  isTransactionATransfer,
 }) => {
   const sharedAccountIds = selectedAccounts.map((acct) => acct.accountId);
-  const sharedCategoryIds = selectedParentCategories.length > 0
-    ? selectedParentCategories
-        .flatMap(({ subCategories }) => subCategories)
-        .map(toId)
-    : [];
+  const sharedCategoryIds = selectedParentCategories
+    .flatMap(({ subCategories }) => subCategories)
+    .map(toId);
 
-  let displayedTransactions;
-  if (selectedParentCategories.length === 0) {
-    displayedTransactions = transactions.filter((transaction) => (
-      isTransactionBeforeDate(transaction, endDate)
-      && transaction.approved
-      && !isTransactionATransfer(transaction)
-      && sharedAccountIds.includes(transaction.account_id)
-    )).sort((a, b) => new Date(b.date) - new Date(a.date));
-  } else {
-    displayedTransactions = transactions.filter((transaction) => (
-      isTransactionBeforeDate(transaction, endDate)
-      && transaction.approved
-      && !isTransactionATransfer(transaction)
-      && sharedCategoryIds.includes(transaction.category_id)
-    )).sort((a, b) => new Date(b.date) - new Date(a.date));
-  }
-
-  if (sharedCategoryIds.length === 0) {
+  // filter by account if no categories selected
+  if (!sharedCategoryIds.length) {
     return {
-      filteredTransactions: displayedTransactions,
+      filteredTransactions: displayedTransactions.filter(({ account_id }) => {
+        return sharedAccountIds.includes(account_id);
+      }),
       sharedAccountErrorTransactions: [],
       sharedCategoryErrorTransactions: [],
     };
   }
 
+  // otherwise, filter by category, and use account info to generate warnings
   return displayedTransactions.reduce((accum, transaction) => {
-    const { account_id, category_id } = transaction;
+    const {
+      account_id,
+      category_id,
+    } = transaction;
 
     const isInSharedAccount = sharedAccountIds.includes(account_id);
     const isInSharedCategory = sharedCategoryIds.includes(category_id);

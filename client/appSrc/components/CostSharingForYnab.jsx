@@ -282,13 +282,16 @@ const CostSharingForYnab = () => {
       setAreTransactionsLoading(true);
       const transactionsSinceStartDate = await getTransactionsSinceDate(startDate);
 
+      const displayedTransactions = transactionsSinceStartDate.filter((transaction) => (
+        isTransactionBeforeDate(transaction, endDate)
+        && transaction.approved
+        && !isTransactionATransfer(transaction)
+      )).sort((a, b) => new Date(b.date) - new Date(a.date));
+
       setClassifiedTransactions(classifyTransactions({
-        transactions: transactionsSinceStartDate,
+        displayedTransactions,
         selectedAccounts,
         selectedParentCategories,
-        endDate,
-        isTransactionBeforeDate,
-        isTransactionATransfer,
       }));
     } catch (error) {
       setErrorData({
@@ -489,7 +492,10 @@ const CostSharingForYnab = () => {
         </SectionContent>
 
         <SectionContent>
-          <Subtitle>(Optional) If you track shared expenses under separate parent categories, select them here. This will turn on cross-checking for misclassified transactions.</Subtitle>
+          <Subtitle>
+            (Optional) If you track shared expenses under separate parent categories, select them
+            here. This will turn on cross-checking for misclassified transactions.
+          </Subtitle>
 
           <CategoryButtons
             parentCategories={budgetData.parentCategories}
