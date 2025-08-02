@@ -7,5 +7,5 @@ RUN npm run build-landing-page-prod
 ARG PORT
 ENV MODE=prod
 ENV PORT=$PORT
-CMD ["npm", "run", "start-container"]
+CMD ["npm", "run", "start-prod"]
 EXPOSE $PORT

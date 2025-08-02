@@ -6,9 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server",
-    "start-http": "node server",
-    "start-https": "IS_HTTPS=true node server",
-    "start-container": "node server",
+    "start-prod": "node server",
     "build-prod": "webpack --config webpack.prod.js",
     "build-landing-page-prod": "webpack --config landingPageWebpack.prod.js",
     "watch-dev": "webpack -w --config webpack.dev.js",
