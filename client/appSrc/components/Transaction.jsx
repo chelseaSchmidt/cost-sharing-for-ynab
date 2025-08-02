@@ -19,14 +19,16 @@ const Container = styled.div`
   background-color: white;
   color: #464b46;
 
-  ${(props) => props.isClickable && `
-    cursor: pointer;
-    :hover {
-      background-color: #eee;
-    }
-    :active {
-      background-color: #ddd;
-    }
+  ${(props) =>
+    props.isClickable &&
+    `
+      cursor: pointer;
+      :hover {
+        background-color: #eee;
+      }
+      :active {
+        background-color: #ddd;
+      }
   `}
 `;
 
@@ -71,13 +73,7 @@ const Transaction = ({
   isIsolated,
   shouldShowIcon,
 }) => {
-  const {
-    date,
-    amount,
-    payee_name,
-    category_name,
-    account_name,
-  } = transaction;
+  const { date, amount, payee_name, category_name, account_name } = transaction;
 
   const [tooltipCoordinates, setTooltipCoordinates] = useState(null);
 
@@ -88,10 +84,10 @@ const Transaction = ({
     });
   };
 
-  const getElementCoordinates = (element) => ([
+  const getElementCoordinates = (element) => [
     element.getBoundingClientRect().x,
     element.getBoundingClientRect().y,
-  ]);
+  ];
 
   const tooltipStyle = {
     zIndex: 10,
@@ -110,56 +106,37 @@ const Transaction = ({
   };
 
   return (
-    <Container
-      onClick={isClickable ? onClick : () => {}}
-      isClickable={isClickable}
-    >
-      {isClickable && (
-        <Checkbox
-          type="checkbox"
-          checked={isSelected}
-          readOnly
-        />
-      )}
+    <Container onClick={isClickable ? onClick : () => {}} isClickable={isClickable}>
+      {isClickable && <Checkbox type="checkbox" checked={isSelected} readOnly />}
 
-      <Date>
-        {moment(date).format('MMM DD, YYYY')}
-      </Date>
+      <Date>{moment(date).format('MMM DD, YYYY')}</Date>
 
       <Amount>
         {Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount / -1000)}
       </Amount>
 
       <Details>
-        <div>
-          {category_name}
-        </div>
+        <div>{category_name}</div>
 
-        <div>
-          {payee_name}
-        </div>
+        <div>{payee_name}</div>
 
         <AccountName>
           {account_name}
 
-          {
-            isIsolated && shouldShowIcon && (
-              <TransactionWarningIcon
-                onMouseEnter={(e) => setTooltipCoordinates(getElementCoordinates(e.target))}
-                onMouseLeave={() => setTooltipCoordinates(null)}
-                onClick={(e) => e.stopPropagation()}
-              >
-                !
-                {
-                  tooltipCoordinates && (
-                    <ElevatedTooltip containerStyle={tooltipStyle}>
-                      You did not mark this account as shared
-                    </ElevatedTooltip>
-                  )
-                }
-              </TransactionWarningIcon>
-            )
-          }
+          {isIsolated && shouldShowIcon && (
+            <TransactionWarningIcon
+              onMouseEnter={(e) => setTooltipCoordinates(getElementCoordinates(e.target))}
+              onMouseLeave={() => setTooltipCoordinates(null)}
+              onClick={(e) => e.stopPropagation()}
+            >
+              !
+              {tooltipCoordinates && (
+                <ElevatedTooltip containerStyle={tooltipStyle}>
+                  You did not mark this account as shared
+                </ElevatedTooltip>
+              )}
+            </TransactionWarningIcon>
+          )}
         </AccountName>
 
         {/* TODO: "More" button */}

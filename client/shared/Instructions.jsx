@@ -53,8 +53,7 @@ const parseMarkdownToHtml = (text) => {
   const boldPattern = /(\*\*)/;
   const italicPattern = /(__)/;
 
-  const substrings = text.split(boldPattern)
-    .flatMap((substring) => substring.split(italicPattern));
+  const substrings = text.split(boldPattern).flatMap((substring) => substring.split(italicPattern));
 
   let isBoldOn = false;
   let isItalicOn = false;
@@ -62,9 +61,14 @@ const parseMarkdownToHtml = (text) => {
   return substrings.map((substring) => {
     if (substring === '**') isBoldOn = !isBoldOn;
     else if (substring === '__') isItalicOn = !isItalicOn;
-
     else {
-      if (isBoldOn && isItalicOn) return <b key={substring}><em>{substring}</em></b>;
+      if (isBoldOn && isItalicOn) {
+        return (
+          <b key={substring}>
+            <em>{substring}</em>
+          </b>
+        );
+      }
       if (isBoldOn) return <b key={substring}>{substring}</b>;
       if (isItalicOn) return <em key={substring}>{substring}</em>;
       return substring;
@@ -76,16 +80,13 @@ const parseMarkdownToHtml = (text) => {
 
 /* Main Component */
 
-const Instructions = ({
-  isHomePage = false,
-  style = {},
-}) => {
+const Instructions = ({ isHomePage = false, style = {} }) => {
   const listItemsBasic = [
     {
       text: 'Add an **IOU account in YNAB:** this account will track what you are owed from the person sharing a card/account with you.',
       subList: [
         { text: 'Click **Add Account** in YNAB' },
-        { text: 'Select an account type of **Checking** (or Cash - this doesn\'t matter so much)' },
+        { text: "Select an account type of **Checking** (or Cash - this doesn't matter so much)" },
         { text: 'Nickname the account something like **"Owed from [__insert person\'s name__]"**' },
       ],
     },
@@ -99,40 +100,46 @@ const Instructions = ({
     {
       text: 'Follow each step in the app to select your shared costs over a given date range and split a specified percentage of them into the IOU account you created earlier.',
       subList: [
-        { text: '__Cost Sharing for YNAB achieves this by creating a single transaction in your budget, which can be reviewed and/or edited directly in YNAB afterward.__' },
+        {
+          text: '__Cost Sharing for YNAB achieves this by creating a single transaction in your budget, which can be reviewed and/or edited directly in YNAB afterward.__',
+        },
       ],
     },
     {
-      text: 'When you\'re repaid the owed amount, add a **transfer transaction** from the IOU account to the bank or cash account where you deposited the repayment. This will zero out the IOU account while keeping your bank account perfectly balanced, as all things should be!',
+      text: "When you're repaid the owed amount, add a **transfer transaction** from the IOU account to the bank or cash account where you deposited the repayment. This will zero out the IOU account while keeping your bank account perfectly balanced, as all things should be!",
     },
   ];
 
   const listItemsAdvanced = [
-    { text: 'This will involve adjusting how you categorize transactions in YNAB. Create a **parent** category in your YNAB budget named something like "Shared Expenses"' },
-    { text: 'Add desired **sub-categories** underneath the "Shared Expenses" parent (such as rent, groceries, etc.)' },
+    {
+      text: 'This will involve adjusting how you categorize transactions in YNAB. Create a **parent** category in your YNAB budget named something like "Shared Expenses"',
+    },
+    {
+      text: 'Add desired **sub-categories** underneath the "Shared Expenses" parent (such as rent, groceries, etc.)',
+    },
     { text: 'Classify any shared-cost transactions to these categories' },
     {
       text: 'When using Cost Sharing for YNAB, select your "Shared Expenses" category in the available options.  ',
       subList: [
-        { text: 'This will make all transactions in your "Shared Expenses" sub-categories available to split, whether or not they\'re charged to your shared accounts.' },
+        {
+          text: 'This will make all transactions in your "Shared Expenses" sub-categories available to split, whether or not they\'re charged to your shared accounts.',
+        },
         { text: 'A warning will display next to transactions charged to a non-shared account.' },
-        { text: 'A list of warnings will be displayed showing transactions charged to a shared account, but not added to a shared category.' },
+        {
+          text: 'A list of warnings will be displayed showing transactions charged to a shared account, but not added to a shared category.',
+        },
       ],
     },
   ];
 
   return (
     <Container style={style}>
-      <Subtitle>
-        Basic
-      </Subtitle>
+      <Subtitle>Basic</Subtitle>
       <ListItems items={listItemsBasic} />
 
       <Divider />
 
-      <Subtitle>
-        Optional: Automate checking for misclassified transactions
-      </Subtitle>
+      <Subtitle>Optional: Automate checking for misclassified transactions</Subtitle>
       <ListItems items={listItemsAdvanced} />
     </Container>
   );
@@ -146,26 +153,24 @@ Instructions.propTypes = {
 export default Instructions;
 
 function ListItems({ items }) {
-  return (
-    items.map((item) => (
+  return items.map(
+    (item) =>
       !item.isHidden && (
-      <li key={item.text}>
-        {parseMarkdownToHtml(item.text)}
+        <li key={item.text}>
+          {parseMarkdownToHtml(item.text)}
 
-        {item.subList && (
-        <ul>
-          {item.subList.map((subItem) => (
-            !subItem.isHidden && (
-            <li key={subItem.text}>
-              {parseMarkdownToHtml(subItem.text)}
-            </li>
-            )
-          ))}
-        </ul>
-        )}
-      </li>
-      )
-    ))
+          {item.subList && (
+            <ul>
+              {item.subList.map(
+                (subItem) =>
+                  !subItem.isHidden && (
+                    <li key={subItem.text}>{parseMarkdownToHtml(subItem.text)}</li>
+                  ),
+              )}
+            </ul>
+          )}
+        </li>
+      ),
   );
 }
 

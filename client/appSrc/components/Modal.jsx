@@ -28,12 +28,7 @@ const ButtonContainer = styled.div`
 
 /* Main Component */
 
-const Modal = ({
-  onClose,
-  buttonText = 'OK',
-  children,
-  shouldCloseOnOverlayClick = false,
-}) => (
+const Modal = ({ onClose, buttonText = 'OK', children, shouldCloseOnOverlayClick = false }) => (
   <>
     <BackgroundOverlay
       onClick={shouldCloseOnOverlayClick ? onClose : null}
@@ -42,17 +37,16 @@ const Modal = ({
       tabIndex={0}
       onKeyDown={
         shouldCloseOnOverlayClick
-          ? (e) => { if (e.key === 'Enter') onClose(); }
+          ? (e) => {
+              if (e.key === 'Enter') onClose();
+            }
           : null
       }
     />
     <Container>
       {children}
       <ButtonContainer>
-        <BaseButton
-          type="button"
-          onClick={onClose}
-        >
+        <BaseButton type="button" onClick={onClose}>
           {buttonText}
         </BaseButton>
       </ButtonContainer>
