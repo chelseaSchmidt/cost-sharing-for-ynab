@@ -21,6 +21,7 @@ module.exports = {
     'implicit-arrow-linebreak': 'off',
     'no-confusing-arrow': 'off',
     'function-paren-newline': 'off',
+    'dot-notation': 'off',
     'react/forbid-prop-types': 'off',
     'arrow-body-style': 'off',
     'react/require-default-props': 'off',
