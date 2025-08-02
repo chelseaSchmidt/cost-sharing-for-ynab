@@ -12,6 +12,18 @@ const classifyTransactions = ({
     .flatMap(({ subCategories }) => subCategories)
     .map(toId);
 
+  // filter by account if no categories selected
+  if (!sharedCategoryIds.length) {
+    return {
+      filteredTransactions: displayedTransactions.filter(({ account_id }) => {
+        return sharedAccountIds.includes(account_id);
+      }),
+      sharedAccountErrorTransactions: [],
+      sharedCategoryErrorTransactions: [],
+    };
+  }
+
+  // otherwise, filter by category, and use account info to generate warnings
   return displayedTransactions.reduce((accum, transaction) => {
     const {
       account_id,
@@ -23,13 +35,13 @@ const classifyTransactions = ({
     const isInSharedAccountButNotCategory = isInSharedAccount && !isInSharedCategory;
     const isInSharedCategoryButNotAccount = isInSharedCategory && !isInSharedAccount;
 
-    if (isInSharedCategory) accum.transactionsInSharedCategories.push(transaction);
+    if (isInSharedCategory) accum.filteredTransactions.push(transaction);
     if (isInSharedAccountButNotCategory) accum.sharedAccountErrorTransactions.push(transaction);
     if (isInSharedCategoryButNotAccount) accum.sharedCategoryErrorTransactions.push(transaction);
 
     return accum;
   }, {
-    transactionsInSharedCategories: [],
+    filteredTransactions: [],
     sharedAccountErrorTransactions: [],
     sharedCategoryErrorTransactions: [],
   });

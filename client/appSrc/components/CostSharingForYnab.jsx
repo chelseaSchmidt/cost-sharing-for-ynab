@@ -219,7 +219,7 @@ const CostSharingForYnab = () => {
   const [isSelectAllChecked, setIsSelectAllChecked] = useState(false);
 
   const {
-    transactionsInSharedCategories = [],
+    filteredTransactions = [],
     sharedAccountErrorTransactions = [],
     sharedCategoryErrorTransactions = [],
   } = classifiedTransactions;
@@ -315,7 +315,7 @@ const CostSharingForYnab = () => {
 
   const toggleSelectAll = ({ isSelected }) => {
     setIsSelectAllChecked(isSelected);
-    setSelectedTransactions(isSelected ? [...transactionsInSharedCategories] : []);
+    setSelectedTransactions(isSelected ? [...filteredTransactions] : []);
   };
 
   const getOwedPercentage = (percentage) => {
@@ -492,7 +492,10 @@ const CostSharingForYnab = () => {
         </SectionContent>
 
         <SectionContent>
-          <Subtitle>Select the YNAB parent category(ies) where you track shared expenses</Subtitle>
+          <Subtitle>
+            (Optional) If you track shared expenses under separate parent categories, select them
+            here. This will turn on cross-checking for misclassified transactions.
+          </Subtitle>
 
           <CategoryButtons
             parentCategories={budgetData.parentCategories}
@@ -575,7 +578,7 @@ const CostSharingForYnab = () => {
         <TransactionWindowContainer>
           <TransactionWindow
             loading={areTransactionsLoading}
-            transactions={transactionsInSharedCategories}
+            transactions={filteredTransactions}
             selectedTransactions={selectedTransactions}
             transactionsSharedInOneButNotOther={sharedCategoryErrorTransactions}
             toggleTransactionSelection={toggleTransactionSelection}
