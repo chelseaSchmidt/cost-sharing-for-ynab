@@ -24,6 +24,7 @@ module.exports = {
     'react/forbid-prop-types': 'off',
     'arrow-body-style': 'off',
     'react/require-default-props': 'off',
+    'react/function-component-definition': 'off',
     'jsx-a11y/label-has-associated-control': [
       2,
       {
