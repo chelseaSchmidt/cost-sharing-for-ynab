@@ -2,7 +2,7 @@
   "name": "cost-sharing-for-ynab",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server",
@@ -18,7 +18,7 @@
     "url": "git+https://github.com/chelseaSchmidt/cost-sharing-for-ynab.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Chelsea Schmidt",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/chelseaSchmidt/cost-sharing-for-ynab/issues"
