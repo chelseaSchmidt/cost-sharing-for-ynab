@@ -157,13 +157,13 @@ const ButtonDisabledPopup = styled(Tooltip)`
   font-size: 12px;
 
   ::after {
-    content: "";
+    content: '';
     position: absolute;
     top: 100%;
     left: 50%;
     margin-left: -5px;
     border: 5px solid;
-    border-color:  #444 transparent transparent transparent;
+    border-color: #444 transparent transparent transparent;
   }
 `;
 
@@ -224,16 +224,11 @@ const CostSharingForYnab = () => {
     sharedCategoryErrorTransactions = [],
   } = classifiedTransactions;
 
-  const isSplitTransactionDisabled = (
-    !selectedTransactions.length
-    || !iouAccountId
-  );
+  const isSplitTransactionDisabled = !selectedTransactions.length || !iouAccountId;
 
   const buttonDisabledMessage = !selectedTransactions.length
-    ? (
-      (!iouAccountId && 'Please select shared costs and pick an IOU account first')
-      || 'Please select shared costs first'
-    )
+    ? (!iouAccountId && 'Please select shared costs and pick an IOU account first') ||
+      'Please select shared costs first'
     : 'Please pick an IOU account first';
 
   const navMenuItems = [
@@ -282,17 +277,22 @@ const CostSharingForYnab = () => {
       setAreTransactionsLoading(true);
       const transactionsSinceStartDate = await getTransactionsSinceDate(startDate);
 
-      const displayedTransactions = transactionsSinceStartDate.filter((transaction) => (
-        isTransactionBeforeDate(transaction, endDate)
-        && transaction.approved
-        && !isTransactionATransfer(transaction)
-      )).sort((a, b) => new Date(b.date) - new Date(a.date));
+      const displayedTransactions = transactionsSinceStartDate
+        .filter(
+          (transaction) =>
+            isTransactionBeforeDate(transaction, endDate) &&
+            transaction.approved &&
+            !isTransactionATransfer(transaction),
+        )
+        .sort((a, b) => new Date(b.date) - new Date(a.date));
 
-      setClassifiedTransactions(classifyTransactions({
-        displayedTransactions,
-        selectedAccounts,
-        selectedParentCategories,
-      }));
+      setClassifiedTransactions(
+        classifyTransactions({
+          displayedTransactions,
+          selectedAccounts,
+          selectedParentCategories,
+        }),
+      );
     } catch (error) {
       setErrorData({
         message: error.message,
@@ -302,16 +302,16 @@ const CostSharingForYnab = () => {
     setAreTransactionsLoading(false);
   };
 
-  const toggleTransactionSelection = useCallback(({
-    isSelected,
-    transaction,
-  }) => {
-    setSelectedTransactions((previousSelected) => (
-      isSelected
-        ? [...previousSelected, transaction]
-        : previousSelected.filter(({ id }) => id !== transaction.id)
-    ));
-  }, [setSelectedTransactions]);
+  const toggleTransactionSelection = useCallback(
+    ({ isSelected, transaction }) => {
+      setSelectedTransactions((previousSelected) =>
+        isSelected
+          ? [...previousSelected, transaction]
+          : previousSelected.filter(({ id }) => id !== transaction.id),
+      );
+    },
+    [setSelectedTransactions],
+  );
 
   const toggleSelectAll = ({ isSelected }) => {
     setIsSelectAllChecked(isSelected);
@@ -319,7 +319,7 @@ const CostSharingForYnab = () => {
   };
 
   const getOwedPercentage = (percentage) => {
-    const owedPercentage = 1 - (percentage / 100);
+    const owedPercentage = 1 - percentage / 100;
     return owedPercentage;
   };
 
@@ -359,7 +359,7 @@ const CostSharingForYnab = () => {
       flag_color: null,
       import_id: null,
       subtransactions: _.map(owedCategorizedAmounts, (amount, category_id) => ({
-        amount: -(amount),
+        amount: -amount,
         payee_id: null,
         payee_name: 'Shared Costs',
         category_id,
@@ -398,82 +398,63 @@ const CostSharingForYnab = () => {
     }
   }, [areTransactionsLoading]);
 
-  return isPageLoading ? 'Loading...' : (
+  return isPageLoading ? (
+    'Loading...'
+  ) : (
     <Container>
-
       {/* Modals */}
 
-      {
-        activeModal && (
-          <Modal
-            onClose={() => setActiveModal(null)}
-            buttonText={activeModal === modalNames.TRANSACTION_REVIEW ? 'Exit' : 'OK'}
-            shouldCloseOnOverlayClick={activeModal !== modalNames.PRIVACY_POLICY}
-          >
-            {activeModal === modalNames.PRIVACY_POLICY && (
-              <PrivacyPolicy />
-            )}
+      {activeModal && (
+        <Modal
+          onClose={() => setActiveModal(null)}
+          buttonText={activeModal === modalNames.TRANSACTION_REVIEW ? 'Exit' : 'OK'}
+          shouldCloseOnOverlayClick={activeModal !== modalNames.PRIVACY_POLICY}
+        >
+          {activeModal === modalNames.PRIVACY_POLICY && <PrivacyPolicy />}
 
-            {activeModal === modalNames.TRANSACTION_REVIEW && (
-              <TransactionWindow
-                title="Transactions in shared accounts not categorized to shared expense categories"
-                description="This list is meant to help you catch misclassified transactions. Recategorize them in YNAB as needed and then refresh the list."
-                loading={areTransactionsLoading}
-                shouldShowLoadingOverlay
-                transactions={sharedAccountErrorTransactions}
-                containerStyle={{
-                  alignItems: 'unset',
-                }}
-                feedStyle={{
-                  border: 'unset',
-                  padding: 'unset',
-                  height: '50vh',
-                }}
-                shouldShowRefreshButton
-                refreshTransactions={() => {
-                  getClassifiedTransactions({
-                    startDate: transactionsStartDate,
-                    endDate: transactionsEndDate,
-                  });
-                }}
-              />
-            )}
+          {activeModal === modalNames.TRANSACTION_REVIEW && (
+            <TransactionWindow
+              title="Transactions in shared accounts not categorized to shared expense categories"
+              description="This list is meant to help you catch misclassified transactions. Recategorize them in YNAB as needed and then refresh the list."
+              loading={areTransactionsLoading}
+              shouldShowLoadingOverlay
+              transactions={sharedAccountErrorTransactions}
+              containerStyle={{
+                alignItems: 'unset',
+              }}
+              feedStyle={{
+                border: 'unset',
+                padding: 'unset',
+                height: '50vh',
+              }}
+              shouldShowRefreshButton
+              refreshTransactions={() => {
+                getClassifiedTransactions({
+                  startDate: transactionsStartDate,
+                  endDate: transactionsEndDate,
+                });
+              }}
+            />
+          )}
 
-            {activeModal === modalNames.INSTRUCTIONS && (
-              <Instructions style={{ padding: '20px' }} />
-            )}
-          </Modal>
-        )
-      }
+          {activeModal === modalNames.INSTRUCTIONS && <Instructions style={{ padding: '20px' }} />}
+        </Modal>
+      )}
 
       {/* Popup messages */}
 
-      {
-        isConfirmationVisible && (
-          <Confirmation
-            setIsConfirmationVisible={setIsConfirmationVisible}
-          />
-        )
-      }
+      {isConfirmationVisible && (
+        <Confirmation setIsConfirmationVisible={setIsConfirmationVisible} />
+      )}
 
-      {
-        errorData && (
-          <Error
-            errorData={errorData}
-            setErrorData={setErrorData}
-          />
-        )
-      }
+      {errorData && <Error errorData={errorData} setErrorData={setErrorData} />}
 
       {/* Main content */}
 
       <Header navMenuItems={navMenuItems} />
 
       <InstructionsButtonContainer>
-        <LinkishButton
-          type="button"
-          onClick={() => setActiveModal(modalNames.INSTRUCTIONS)}
-        >
+        <LinkishButton type="button" onClick={() => setActiveModal(modalNames.INSTRUCTIONS)}>
           Instructions
         </LinkishButton>
       </InstructionsButtonContainer>
@@ -505,9 +486,7 @@ const CostSharingForYnab = () => {
         </SectionContent>
 
         <SectionContent>
-          <Subtitle>
-            Select the &quot;IOU&quot; account that tracks what you are owed
-          </Subtitle>
+          <Subtitle>Select the &quot;IOU&quot; account that tracks what you are owed</Subtitle>
 
           <AccountSelector
             accounts={budgetData.accounts}
@@ -557,23 +536,18 @@ const CostSharingForYnab = () => {
       <TransactionsTile id="transaction-container">
         <SectionHeader>Select Shared Costs</SectionHeader>
 
-        {
-          !areTransactionsLoading && !!sharedAccountErrorTransactions.length && (
-            <MissingTransactionsWarning>
-              <WarningIcon>!</WarningIcon>
-
-              Some transactions in shared accounts were not
-              categorized to shared expense categories.
-
-              <ReviewTransactionsButton
-                type="button"
-                onClick={() => setActiveModal(modalNames.TRANSACTION_REVIEW)}
-              >
-                Review
-              </ReviewTransactionsButton>
-            </MissingTransactionsWarning>
-          )
-        }
+        {!areTransactionsLoading && !!sharedAccountErrorTransactions.length && (
+          <MissingTransactionsWarning>
+            <WarningIcon>!</WarningIcon>
+            Some transactions in shared accounts were not categorized to shared expense categories.
+            <ReviewTransactionsButton
+              type="button"
+              onClick={() => setActiveModal(modalNames.TRANSACTION_REVIEW)}
+            >
+              Review
+            </ReviewTransactionsButton>
+          </MissingTransactionsWarning>
+        )}
 
         <TransactionWindowContainer>
           <TransactionWindow
@@ -642,11 +616,7 @@ const CostSharingForYnab = () => {
               onClick={createSplitEntry}
               disabled={isSplitTransactionDisabled}
             >
-              {
-                isIouTransactionLoading
-                  ? <Spinner />
-                  : 'Split Costs On This Date'
-              }
+              {isIouTransactionLoading ? <Spinner /> : 'Split Costs On This Date'}
 
               <ButtonDisabledPopup>{buttonDisabledMessage}</ButtonDisabledPopup>
             </SplitTransactionsButton>
@@ -661,7 +631,6 @@ const CostSharingForYnab = () => {
       </SectionTile>
 
       <Nav setActiveModal={setActiveModal} />
-
     </Container>
   );
 };

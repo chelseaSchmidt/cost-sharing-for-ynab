@@ -18,7 +18,7 @@ const Container = styled.div`
   padding: 15px;
 
   @media (max-width: ${breakpoints.tiny}) {
-    padding: 5px
+    padding: 5px;
   }
 `;
 
@@ -69,8 +69,8 @@ const TransactionFeed = styled.div`
   }
   ::-webkit-scrollbar-thumb {
     border-radius: 4px;
-    background-color: rgba(0, 0, 0, .5);
-    box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+    background-color: rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
   }
   ::-webkit-scrollbar-track {
     box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
@@ -117,82 +117,61 @@ const TransactionWindow = ({
 
       {description}
 
-      {
-        shouldShowRefreshButton && (
-          <RefreshButtonContainer>
-            <RefreshButton
-              type="button"
-              onClick={refreshTransactions}
-            >
-              Refresh
-            </RefreshButton>
-          </RefreshButtonContainer>
-        )
-      }
+      {shouldShowRefreshButton && (
+        <RefreshButtonContainer>
+          <RefreshButton type="button" onClick={refreshTransactions}>
+            Refresh
+          </RefreshButton>
+        </RefreshButtonContainer>
+      )}
 
-      {
-        !loading && (
-          <>
-            <SelectAllCheckboxContainer>
-              {
-                !!transactions.length
-                && isClickable
-                && (
-                  <SelectAllCheckboxLabel htmlFor="select-all-input">
-                    <SelectAllCheckbox
-                      type="checkbox"
-                      checked={isSelectAllChecked}
-                      onChange={(e) => toggleSelectAll({ isSelected: e.target.checked })}
-                      id="select-all-input"
-                    />
-                    Select All
-                  </SelectAllCheckboxLabel>
-                )
-              }
-            </SelectAllCheckboxContainer>
+      {!loading && (
+        <>
+          <SelectAllCheckboxContainer>
+            {!!transactions.length && isClickable && (
+              <SelectAllCheckboxLabel htmlFor="select-all-input">
+                <SelectAllCheckbox
+                  type="checkbox"
+                  checked={isSelectAllChecked}
+                  onChange={(e) => toggleSelectAll({ isSelected: e.target.checked })}
+                  id="select-all-input"
+                />
+                Select All
+              </SelectAllCheckboxLabel>
+            )}
+          </SelectAllCheckboxContainer>
 
-            {
-              !!transactions.length && (
-                <TransactionFeed style={feedStyle}>
-                  {
-                    transactions.map((transaction) => (
-                      <Transaction
-                        key={transaction.id}
-                        isClickable={isClickable}
-                        // FIXME: nested loop
-                        isSelected={!!selectedTransactionIds.includes(transaction.id)}
-                        toggleTransactionSelection={toggleTransactionSelection}
-                        transaction={transaction}
-                        // FIXME: nested loop
-                        isIsolated={!!isolatedTransactionIds.includes(transaction.id)}
-                        shouldShowIcon={shouldShowIcon}
-                        isSelectAllChecked={isSelectAllChecked}
-                      />
-                    ))
-                  }
-                </TransactionFeed>
-              )
-            }
-          </>
-        )
-      }
+          {!!transactions.length && (
+            <TransactionFeed style={feedStyle}>
+              {transactions.map((transaction) => (
+                <Transaction
+                  key={transaction.id}
+                  isClickable={isClickable}
+                  // FIXME: nested loop
+                  isSelected={!!selectedTransactionIds.includes(transaction.id)}
+                  toggleTransactionSelection={toggleTransactionSelection}
+                  transaction={transaction}
+                  // FIXME: nested loop
+                  isIsolated={!!isolatedTransactionIds.includes(transaction.id)}
+                  shouldShowIcon={shouldShowIcon}
+                  isSelectAllChecked={isSelectAllChecked}
+                />
+              ))}
+            </TransactionFeed>
+          )}
+        </>
+      )}
 
-      {
-        loading && (
-          shouldShowLoadingOverlay
-            ? (
-              <TransactionFeedLoadingOverlay style={feedStyle}>
-                <TransactionLoadingSpinner />
-              </TransactionFeedLoadingOverlay>
-            )
-            : (
-              <TransactionLoadingSpinner />
-            )
-        )
-      }
+      {loading &&
+        (shouldShowLoadingOverlay ? (
+          <TransactionFeedLoadingOverlay style={feedStyle}>
+            <TransactionLoadingSpinner />
+          </TransactionFeedLoadingOverlay>
+        ) : (
+          <TransactionLoadingSpinner />
+        ))}
 
       {!transactions.length && !loading && <em>No transactions</em>}
-
     </Container>
   );
 };

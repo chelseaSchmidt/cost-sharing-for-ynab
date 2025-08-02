@@ -60,28 +60,15 @@ const LargeExitButton = styled.button`
   }
 `;
 
-const Popup = ({
-  onClose,
-  message,
-  buttonText = 'Close',
-  containerStyle,
-  closeButtonStyle,
-}) => (
+const Popup = ({ onClose, message, buttonText = 'Close', containerStyle, closeButtonStyle }) => (
   <Container style={containerStyle}>
     <div>
-      <Message>
-        {message}
-      </Message>
+      <Message>{message}</Message>
 
-      <SmallExitButton onClick={onClose}>
-        X
-      </SmallExitButton>
+      <SmallExitButton onClick={onClose}>X</SmallExitButton>
     </div>
 
-    <LargeExitButton
-      onClick={onClose}
-      style={closeButtonStyle}
-    >
+    <LargeExitButton onClick={onClose} style={closeButtonStyle}>
       {buttonText}
     </LargeExitButton>
   </Container>

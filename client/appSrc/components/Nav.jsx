@@ -31,28 +31,19 @@ const MobileSpacer = styled.div`
 
 const Nav = ({ setActiveModal }) => (
   <Container>
-    <Hyperlink
-      href="mailto:cost.sharing.for.ynab@gmail.com"
-    >
+    <Hyperlink href="mailto:cost.sharing.for.ynab@gmail.com">
       cost.sharing.for.ynab@gmail.com
     </Hyperlink>
 
     <DesktopSpacer>·</DesktopSpacer>
     <MobileSpacer />
 
-    <Hyperlink
-      href="/"
-    >
-      Home
-    </Hyperlink>
+    <Hyperlink href="/">Home</Hyperlink>
 
     <DesktopSpacer>·</DesktopSpacer>
     <MobileSpacer />
 
-    <LinkishButton
-      type="button"
-      onClick={() => setActiveModal(modalNames.PRIVACY_POLICY)}
-    >
+    <LinkishButton type="button" onClick={() => setActiveModal(modalNames.PRIVACY_POLICY)}>
       Privacy Policy
     </LinkishButton>
 

@@ -20,25 +20,17 @@ const CategoryButtons = ({
     'Hidden Categories',
   ];
 
-  const doesCategoryHaveId = ({ categoryId }, id) => (
-    categoryId === id
-  );
+  const doesCategoryHaveId = ({ categoryId }, id) => categoryId === id;
 
-  const selectCategory = (selection) => (
-    setSelectedParentCategories([...selectedParentCategories, selection])
-  );
+  const selectCategory = (selection) =>
+    setSelectedParentCategories([...selectedParentCategories, selection]);
 
-  const deselectCategoryById = (id) => (
+  const deselectCategoryById = (id) =>
     setSelectedParentCategories(
       selectedParentCategories.filter((category) => !doesCategoryHaveId(category, id)),
-    )
-  );
+    );
 
-  const toggleSharedCategory = ({
-    id,
-    name,
-    subCategories,
-  }) => {
+  const toggleSharedCategory = ({ id, name, subCategories }) => {
     if (selectedParentCategories.find((category) => doesCategoryHaveId(category, id))) {
       deselectCategoryById(id);
     } else {
@@ -48,38 +40,30 @@ const CategoryButtons = ({
 
   return (
     <Container>
-      {
-        parentCategories.map(({
-          name,
-          id,
-          categories: subCategories,
-        }) => {
-          const shouldDisplayCategory = !hiddenCategoryNames.includes(name);
+      {parentCategories.map(({ name, id, categories: subCategories }) => {
+        const shouldDisplayCategory = !hiddenCategoryNames.includes(name);
 
-          if (shouldDisplayCategory) {
-            const isCategorySelected = selectedParentCategories.find(
-              (category) => doesCategoryHaveId(category, id),
-            );
+        if (shouldDisplayCategory) {
+          const isCategorySelected = selectedParentCategories.find((category) =>
+            doesCategoryHaveId(category, id),
+          );
 
-            const Button = isCategorySelected
-              ? SelectedOptionButton
-              : OptionButton;
+          const Button = isCategorySelected ? SelectedOptionButton : OptionButton;
 
-            return (
-              <Button
-                type="button"
-                key={id}
-                id={id}
-                onClick={() => toggleSharedCategory({ id, name, subCategories })}
-              >
-                {name}
-              </Button>
-            );
-          }
+          return (
+            <Button
+              type="button"
+              key={id}
+              id={id}
+              onClick={() => toggleSharedCategory({ id, name, subCategories })}
+            >
+              {name}
+            </Button>
+          );
+        }
 
-          return null;
-        })
-      }
+        return null;
+      })}
     </Container>
   );
 };

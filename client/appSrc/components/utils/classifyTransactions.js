@@ -24,27 +24,27 @@ const classifyTransactions = ({
   }
 
   // otherwise, filter by category, and use account info to generate warnings
-  return displayedTransactions.reduce((accum, transaction) => {
-    const {
-      account_id,
-      category_id,
-    } = transaction;
+  return displayedTransactions.reduce(
+    (accum, transaction) => {
+      const { account_id, category_id } = transaction;
 
-    const isInSharedAccount = sharedAccountIds.includes(account_id);
-    const isInSharedCategory = sharedCategoryIds.includes(category_id);
-    const isInSharedAccountButNotCategory = isInSharedAccount && !isInSharedCategory;
-    const isInSharedCategoryButNotAccount = isInSharedCategory && !isInSharedAccount;
+      const isInSharedAccount = sharedAccountIds.includes(account_id);
+      const isInSharedCategory = sharedCategoryIds.includes(category_id);
+      const isInSharedAccountButNotCategory = isInSharedAccount && !isInSharedCategory;
+      const isInSharedCategoryButNotAccount = isInSharedCategory && !isInSharedAccount;
 
-    if (isInSharedCategory) accum.filteredTransactions.push(transaction);
-    if (isInSharedAccountButNotCategory) accum.sharedAccountErrorTransactions.push(transaction);
-    if (isInSharedCategoryButNotAccount) accum.sharedCategoryErrorTransactions.push(transaction);
+      if (isInSharedCategory) accum.filteredTransactions.push(transaction);
+      if (isInSharedAccountButNotCategory) accum.sharedAccountErrorTransactions.push(transaction);
+      if (isInSharedCategoryButNotAccount) accum.sharedCategoryErrorTransactions.push(transaction);
 
-    return accum;
-  }, {
-    filteredTransactions: [],
-    sharedAccountErrorTransactions: [],
-    sharedCategoryErrorTransactions: [],
-  });
+      return accum;
+    },
+    {
+      filteredTransactions: [],
+      sharedAccountErrorTransactions: [],
+      sharedCategoryErrorTransactions: [],
+    },
+  );
 };
 
 export default classifyTransactions;

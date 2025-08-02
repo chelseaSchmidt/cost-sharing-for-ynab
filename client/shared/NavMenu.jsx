@@ -109,7 +109,8 @@ const MenuItem = styled.a`
   font-size: 1.15em;
   cursor: pointer;
 
-  :hover, :visited:hover {
+  :hover,
+  :visited:hover {
     color: #2f73b3;
     background-color: #eee;
   }
@@ -119,102 +120,72 @@ const MenuItem = styled.a`
   }
 `;
 
-const NavMenu = ({
-  menuItems = [],
-}) => {
+const NavMenu = ({ menuItems = [] }) => {
   const [isOpen, setIsOpen] = useState(false);
   const closeMenu = () => setIsOpen(false);
   const toggleMenu = () => setIsOpen(!isOpen);
 
   return (
     <>
-      {
-        isOpen && (
-          ReactDOM.createPortal(
-            <BackgroundOverlay onClick={closeMenu} />,
-            document.body,
-          )
-        )
-      }
+      {isOpen && ReactDOM.createPortal(<BackgroundOverlay onClick={closeMenu} />, document.body)}
       <Container>
-        <Button
-          onClick={toggleMenu}
-          aria-label="Open navigation menu"
-          tabIndex={0}
-          type="button"
-        >
-          {
-            _.range(0, 3).map((value) => (
-              <ButtonBar key={`btn-bar-${value}`} />
-            ))
-          }
+        <Button onClick={toggleMenu} aria-label="Open navigation menu" tabIndex={0} type="button">
+          {_.range(0, 3).map((value) => (
+            <ButtonBar key={`btn-bar-${value}`} />
+          ))}
         </Button>
-        {
-          ReactDOM.createPortal(
-            (
-              <Menu isOpen={isOpen}>
-                <MenuHeader>
-                  <ExitButton
-                    type="button"
-                    aria-label="Exit navigation menu"
-                    onClick={closeMenu}
-                    tabIndex={0}
+        {ReactDOM.createPortal(
+          <Menu isOpen={isOpen}>
+            <MenuHeader>
+              <ExitButton
+                type="button"
+                aria-label="Exit navigation menu"
+                onClick={closeMenu}
+                tabIndex={0}
+              >
+                X
+              </ExitButton>
+            </MenuHeader>
+
+            {menuItems.map(({ text, attributes = {}, style = {}, onClick = () => {} }, i) => {
+              const isLastItem = i === menuItems.length - 1;
+
+              return (
+                <React.Fragment key={text}>
+                  <MenuItem
+                    {...attributes} // eslint-disable-line react/jsx-props-no-spreading
+                    style={style}
+                    onClick={() => {
+                      onClick();
+                      closeMenu();
+                    }}
                   >
-                    X
-                  </ExitButton>
-                </MenuHeader>
+                    {text}
+                  </MenuItem>
 
-                {
-                  menuItems.map((
-                    {
-                      text,
-                      attributes = {},
-                      style = {},
-                      onClick = () => {},
-                    },
-                    i,
-                  ) => {
-                    const isLastItem = i === menuItems.length - 1;
+                  {!isLastItem && <Divider />}
+                </React.Fragment>
+              );
+            })}
 
-                    return (
-                      <React.Fragment
-                        key={text}
-                      >
-                        <MenuItem
-                          {...attributes} // eslint-disable-line react/jsx-props-no-spreading
-                          style={style}
-                          onClick={() => {
-                            onClick();
-                            closeMenu();
-                          }}
-                        >
-                          {text}
-                        </MenuItem>
-
-                        {!isLastItem && <Divider />}
-                      </React.Fragment>
-                    );
-                  })
-                }
-
-                <MenuFooter />
-              </Menu>
-            ),
-            document.body,
-          )
-        }
+            <MenuFooter />
+          </Menu>,
+          document.body,
+        )}
       </Container>
     </>
   );
 };
 
 NavMenu.propTypes = {
-  menuItems: PropTypes.arrayOf(PropTypes.shape({
-    text: PropTypes.string.isRequired,
-    attributes: PropTypes.object,
-    style: PropTypes.object,
-    onClick: PropTypes.func,
-  })),
+  menuItems: PropTypes.arrayOf(
+    PropTypes.shape({
+      text: PropTypes.string.isRequired,
+      attributes: PropTypes.object,
+      style: PropTypes.object,
+      onClick: PropTypes.func,
+    }),
+  ),
 };
 
 export default NavMenu;

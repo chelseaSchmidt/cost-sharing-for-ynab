@@ -9,29 +9,15 @@ const Container = styled.div``;
 
 /* Main Component */
 
-const AccountButtons = ({
-  accounts,
-  selectedAccounts,
-  setSelectedAccounts,
-}) => {
-  const doesAccountHaveId = ({ accountId }, id) => (
-    accountId === id
-  );
+const AccountButtons = ({ accounts, selectedAccounts, setSelectedAccounts }) => {
+  const doesAccountHaveId = ({ accountId }, id) => accountId === id;
 
-  const selectAccount = (selection) => (
-    setSelectedAccounts([...selectedAccounts, selection])
-  );
+  const selectAccount = (selection) => setSelectedAccounts([...selectedAccounts, selection]);
 
-  const deselectAccountById = (id) => (
-    setSelectedAccounts(
-      selectedAccounts.filter((account) => !doesAccountHaveId(account, id)),
-    )
-  );
+  const deselectAccountById = (id) =>
+    setSelectedAccounts(selectedAccounts.filter((account) => !doesAccountHaveId(account, id)));
 
-  const toggleSharedAccount = ({
-    id,
-    name,
-  }) => {
+  const toggleSharedAccount = ({ id, name }) => {
     if (selectedAccounts.find((account) => doesAccountHaveId(account, id))) {
       deselectAccountById(id);
     } else {
@@ -41,28 +27,19 @@ const AccountButtons = ({
 
   return (
     <Container>
-      {
-        accounts.map(({ name, id }) => {
-          const isAccountSelected = selectedAccounts.find(
-            (account) => doesAccountHaveId(account, id),
-          );
+      {accounts.map(({ name, id }) => {
+        const isAccountSelected = selectedAccounts.find((account) =>
+          doesAccountHaveId(account, id),
+        );
 
-          const Button = isAccountSelected
-            ? SelectedOptionButton
-            : OptionButton;
+        const Button = isAccountSelected ? SelectedOptionButton : OptionButton;
 
-          return (
-            <Button
-              type="button"
-              key={id}
-              id={id}
-              onClick={() => toggleSharedAccount({ id, name })}
-            >
-              {name}
-            </Button>
-          );
-        })
-      }
+        return (
+          <Button type="button" key={id} id={id} onClick={() => toggleSharedAccount({ id, name })}>
+            {name}
+          </Button>
+        );
+      })}
     </Container>
   );
 };

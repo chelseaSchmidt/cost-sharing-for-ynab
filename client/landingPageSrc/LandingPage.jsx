@@ -215,60 +215,43 @@ const LandingPage = () => {
 
   return (
     <Container>
-      <Header
-        navMenuItems={navMenuItems}
-        style={{ marginBottom: '15px' }}
-      />
+      <Header navMenuItems={navMenuItems} style={{ marginBottom: '15px' }} />
 
       <ContentContainer>
-        <CreditCardIcon
-          src={creditCardSrc}
-          alt="credit card"
-        />
+        <CreditCardIcon src={creditCardSrc} alt="credit card" />
 
-        <Subtitle>
-          Conveniently manage a shared credit card in YNAB.
-        </Subtitle>
+        <Subtitle>Conveniently manage a shared credit card in YNAB.</Subtitle>
 
         <Description>
           <DescriptionSection>
-            <DescriptionIcon
-              src={welcomeIconSrc}
-              alt="Welcome"
-            />
+            <DescriptionIcon src={welcomeIconSrc} alt="Welcome" />
 
             <DescriptionText>
-              Hi fellow YNABer! If you&apos;re using a shared credit card or bank account
-              for communal expenses, and want to track it in YNAB more easily, you&apos;re
-              in the right place.
+              Hi fellow YNABer! If you&apos;re using a shared credit card or bank account for
+              communal expenses, and want to track it in YNAB more easily, you&apos;re in the right
+              place.
             </DescriptionText>
           </DescriptionSection>
 
           <DescriptionSection>
-            <DescriptionIcon
-              src={puzzleIconSrc}
-              alt="The Problem"
-            />
+            <DescriptionIcon src={puzzleIconSrc} alt="The Problem" />
 
             <DescriptionText>
-              A shared bank account or credit card is difficult to track in YNAB without
-              your expenses appearing inflated. Maybe you&apos;ve resorted to excluding it
-              from YNAB completely. Or, maybe you&apos;re throwing the costs into a blanket
-              &quot;shared expense&quot; category, and later divvying up the total - which
-              fixes the inflation problem, but masks where exactly the dollars are going.
+              A shared bank account or credit card is difficult to track in YNAB without your
+              expenses appearing inflated. Maybe you&apos;ve resorted to excluding it from YNAB
+              completely. Or, maybe you&apos;re throwing the costs into a blanket &quot;shared
+              expense&quot; category, and later divvying up the total - which fixes the inflation
+              problem, but masks where exactly the dollars are going.
             </DescriptionText>
           </DescriptionSection>
 
           <DescriptionSection>
-            <DescriptionIcon
-              src={lightBulbSrc}
-              alt="The Solution"
-            />
+            <DescriptionIcon src={lightBulbSrc} alt="The Solution" />
 
             <DescriptionText>
               Cost Sharing for YNAB enables you to classify your transactions across any number of
-              categories, and then at the click of a button, remove someone else&apos;s share of
-              the expenses from each category. No more inflated expenses or catch-all category!
+              categories, and then at the click of a button, remove someone else&apos;s share of the
+              expenses from each category. No more inflated expenses or catch-all category!
             </DescriptionText>
           </DescriptionSection>
         </Description>
@@ -283,24 +266,20 @@ const LandingPage = () => {
 
         <Button
           type="button"
-          onClick={
-            (e) => {
-              e.preventDefault();
-              window.location.href = ynabAuthScreenLink;
-            }
-          }
+          onClick={(e) => {
+            e.preventDefault();
+            window.location.href = ynabAuthScreenLink;
+          }}
         >
           Start
         </Button>
 
         <Button
           type="button"
-          onClick={
-            (e) => {
-              e.preventDefault();
-              window.location.href = `/${appEndpoint}`;
-            }
-          }
+          onClick={(e) => {
+            e.preventDefault();
+            window.location.href = `/${appEndpoint}`;
+          }}
         >
           Preview without a YNAB account
         </Button>
