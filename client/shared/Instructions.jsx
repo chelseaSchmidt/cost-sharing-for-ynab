@@ -31,6 +31,22 @@ const Container = styled.ol`
   }
 `;
 
+const Subtitle = styled.header`
+  width: 100%;
+  font-weight: bold;
+  font-size: 20px;
+  margin: 0 0 20px 0;
+  text-align: center;
+  color: #2f73b3;
+`;
+
+const Divider = styled.div`
+  box-sizing: border-box;
+  border-top: 1px solid lightgray;
+  margin: 70px 0;
+  width: 100%;
+`;
+
 /* Helper Functions */
 
 const parseMarkdownToHtml = (text) => {
@@ -64,11 +80,9 @@ const Instructions = ({
   isHomePage = false,
   style = {},
 }) => {
-  const listItems = [
-    { text: 'Create a **parent** category in your YNAB budget named something like "Shared Expenses"' },
-    { text: 'Add desired **sub-categories** underneath the "Shared Expenses" parent (such as rent, groceries, etc.)' },
+  const listItemsBasic = [
     {
-      text: 'Add an **IOU account in YNAB:** this account will track what you are owed as a result of maintaining the shared credit card/bank account.',
+      text: 'Add an **IOU account in YNAB:** this account will track what you are owed from the person sharing a card/account with you.',
       subList: [
         { text: 'Click **Add Account** in YNAB' },
         { text: 'Select an account type of **Checking** (or Cash - this doesn\'t matter so much)' },
@@ -76,43 +90,50 @@ const Instructions = ({
       ],
     },
     {
-      text: 'Add the **shared credit card/bank account** as a YNAB account and sync it with your bank, or add transactions manually. Classify transactions to the shared expense categories you created earlier.',
+      text: 'Add your **shared credit card/bank account** as a YNAB account and sync it with your bank, or add transactions manually. ',
     },
     {
       text: 'Click **Start** below. You will need your YNAB credentials.',
       isHidden: !isHomePage,
     },
     {
-      text: 'Follow each step in the app to select your shared costs over a given date range and split a specified percentage of them into the IOU account you created earlier. After you hit "Split Costs," a transaction will be created in your YNAB budget that moves the other person\'s share of the costs **out of your expenses** and **into the IOU account**. You can view the transaction in YNAB afterward (and delete or edit it if needed).',
+      text: 'Follow each step in the app to select your shared costs over a given date range and split a specified percentage of them into the IOU account you created earlier.',
+      subList: [
+        { text: '__Cost Sharing for YNAB achieves this by creating a single transaction in your budget, which can be reviewed and/or edited directly in YNAB afterward.__' },
+      ],
     },
     {
-      text: 'When you\'re repaid the owed amount, add a **transfer transaction** from the IOU account to the bank or cash account where you deposited the money. This will zero out the IOU account while keeping your bank account perfectly balanced, as all things should be!',
+      text: 'When you\'re repaid the owed amount, add a **transfer transaction** from the IOU account to the bank or cash account where you deposited the repayment. This will zero out the IOU account while keeping your bank account perfectly balanced, as all things should be!',
+    },
+  ];
+
+  const listItemsAdvanced = [
+    { text: 'This will involve adjusting how you categorize transactions in YNAB. Create a **parent** category in your YNAB budget named something like "Shared Expenses"' },
+    { text: 'Add desired **sub-categories** underneath the "Shared Expenses" parent (such as rent, groceries, etc.)' },
+    { text: 'Classify any shared-cost transactions to these categories' },
+    {
+      text: 'When using Cost Sharing for YNAB, select your "Shared Expenses" category in the available options.  ',
+      subList: [
+        { text: 'This will make all transactions in your "Shared Expenses" sub-categories available to split, whether or not they\'re charged to your shared accounts.' },
+        { text: 'A warning will display next to transactions charged to a non-shared account.' },
+        { text: 'A list of warnings will be displayed showing transactions charged to a shared account, but not added to a shared category.' },
+      ],
     },
   ];
 
   return (
     <Container style={style}>
-      {
-        listItems.map((item) => (
-          !item.isHidden && (
-            <li key={item.text}>
-              {parseMarkdownToHtml(item.text)}
+      <Subtitle>
+        Basic
+      </Subtitle>
+      <ListItems items={listItemsBasic} />
 
-              {item.subList && (
-                <ul>
-                  {item.subList.map((subItem) => (
-                    !subItem.isHidden && (
-                      <li key={subItem.text}>
-                        {parseMarkdownToHtml(subItem.text)}
-                      </li>
-                    )
-                  ))}
-                </ul>
-              )}
-            </li>
-          )
-        ))
-      }
+      <Divider />
+
+      <Subtitle>
+        Optional: Automate checking for misclassified transactions
+      </Subtitle>
+      <ListItems items={listItemsAdvanced} />
     </Container>
   );
 };
@@ -123,3 +144,31 @@ Instructions.propTypes = {
 };
 
 export default Instructions;
+
+function ListItems({ items }) {
+  return (
+    items.map((item) => (
+      !item.isHidden && (
+      <li key={item.text}>
+        {parseMarkdownToHtml(item.text)}
+
+        {item.subList && (
+        <ul>
+          {item.subList.map((subItem) => (
+            !subItem.isHidden && (
+            <li key={subItem.text}>
+              {parseMarkdownToHtml(subItem.text)}
+            </li>
+            )
+          ))}
+        </ul>
+        )}
+      </li>
+      )
+    ))
+  );
+}
+
+ListItems.propTypes = {
+  items: PropTypes.arrayOf(PropTypes.object),
+};

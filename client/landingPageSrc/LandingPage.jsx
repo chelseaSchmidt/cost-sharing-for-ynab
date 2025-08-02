@@ -24,7 +24,7 @@ const CreditCardIcon = styled.img`
   object-fit: contain;
 `;
 
-const Tagline = styled.p`
+const Subtitle = styled.p`
   margin: 40px 0 40px 0;
   width: 100%;
   min-width: 190px;
@@ -44,14 +44,6 @@ const Divider = styled.div`
     width: 100%;
     min-width: unset;
   }
-`;
-
-const Subtitle = styled.div`
-  font-weight: bold;
-  font-size: 20px;
-  margin: 0 0 20px 0;
-  text-transform: uppercase;
-  text-align: center;
 `;
 
 const Button = styled.button`
@@ -230,9 +222,9 @@ const LandingPage = () => {
           alt="credit card"
         />
 
-        <Tagline>
+        <Subtitle>
           Conveniently manage a shared credit card in YNAB.
-        </Tagline>
+        </Subtitle>
 
         <Description>
           <DescriptionSection>
@@ -279,7 +271,7 @@ const LandingPage = () => {
 
         <Divider />
 
-        <Subtitle>GETTING STARTED</Subtitle>
+        <Subtitle>Getting Started</Subtitle>
 
         <InstructionsContainer>
           <Instructions isHomePage />
