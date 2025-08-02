@@ -27,12 +27,10 @@
   "dependencies": {
     "@babel/runtime": "^7.15.4",
     "axios": "^1.10.0",
-    "body-parser": "^1.19.0",
     "css-loader": "^7.1.2",
     "express": "^4.17.1",
     "lodash": "^4.17.20",
     "moment": "^2.29.0",
-    "mongoose": "^8.16.4",
     "morgan": "^1.10.0",
     "path": "^0.12.7",
     "prop-types": "^15.7.2",
