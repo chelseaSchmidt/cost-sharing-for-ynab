@@ -5,6 +5,10 @@ import PrivacyPolicy from '../shared/PrivacyPolicy';
 import Header from '../shared/Header';
 import Instructions from '../shared/Instructions';
 import { Hyperlink } from '../appSrc/components/styledComponents'; // FIXME: move to shared directory
+import creditCardSrc from './assets/creditCard.png';
+import lightBulbSrc from './assets/lightBulb.png';
+import puzzleIconSrc from './assets/puzzle.png';
+import welcomeIconSrc from './assets/welcome.png';
 import './global.css';
 
 /* Styled Components */
@@ -218,7 +222,7 @@ const LandingPage = () => {
 
       <ContentContainer>
         <CreditCardIcon
-          src="creditCard.png"
+          src={creditCardSrc}
           alt="credit card"
         />
 
@@ -229,7 +233,7 @@ const LandingPage = () => {
         <Description>
           <DescriptionSection>
             <DescriptionIcon
-              src="welcome.png"
+              src={welcomeIconSrc}
               alt="Welcome"
             />
 
@@ -242,7 +246,7 @@ const LandingPage = () => {
 
           <DescriptionSection>
             <DescriptionIcon
-              src="puzzle.png"
+              src={puzzleIconSrc}
               alt="The Problem"
             />
 
@@ -257,7 +261,7 @@ const LandingPage = () => {
 
           <DescriptionSection>
             <DescriptionIcon
-              src="lightBulb.png"
+              src={lightBulbSrc}
               alt="The Solution"
             />
 
