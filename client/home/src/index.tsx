@@ -1,7 +1,7 @@
 import { createRoot } from 'react-dom/client';
 import Home from './components/Home';
 
-const ROOT_NODE_ID = 'landing-page';
+const ROOT_NODE_ID = 'app';
 
 const rootNode = document.getElementById(ROOT_NODE_ID);
 
