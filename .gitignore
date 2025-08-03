@@ -10,3 +10,4 @@ server/ssl
 todo.txt
 artifact-registry-key.json
 client/landingPage/assets
+dist

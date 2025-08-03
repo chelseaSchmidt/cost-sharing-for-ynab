@@ -1,5 +1,12 @@
-import ReactDOM from 'react-dom';
 import React from 'react';
+import { createRoot } from 'react-dom/client';
 import CostSharingForYnab from './components/CostSharingForYnab';
 
-ReactDOM.render(<CostSharingForYnab />, document.getElementById('cost-sharing-for-ynab'));
+const ROOT_NODE_ID = 'cost-sharing-for-ynab';
+
+const rootNode = document.getElementById(ROOT_NODE_ID);
+
+if (rootNode) {
+  const root = createRoot(rootNode);
+  root.render(<CostSharingForYnab />);
+}

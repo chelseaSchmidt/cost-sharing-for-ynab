@@ -121,7 +121,7 @@ const ReviewTransactionsButton = styled(BaseButton)`
   border: none;
   box-shadow: 0 0 3px 0 black;
 
-  :hover {
+  &:hover {
     color: maroon;
   }
 `;
@@ -140,7 +140,7 @@ const SplitTransactionsButton = styled(BaseButton)`
     margin: 10px 0 0 0;
   }
 
-  :disabled:hover {
+  &:disabled:hover {
     > * {
       visibility: visible;
     }
@@ -156,7 +156,7 @@ const ButtonDisabledPopup = styled(Tooltip)`
   padding: 10px 5px;
   font-size: 12px;
 
-  ::after {
+  &::after {
     content: '';
     position: absolute;
     top: 100%;

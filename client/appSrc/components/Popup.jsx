@@ -41,7 +41,7 @@ const SmallExitButton = styled.button`
   top: 0;
   margin: 10px 20px;
 
-  :hover {
+  &:hover {
     cursor: pointer;
   }
 `;
@@ -55,7 +55,7 @@ const LargeExitButton = styled.button`
   padding: 5px;
   margin: 10px;
 
-  :hover {
+  &:hover {
     cursor: pointer;
   }
 `;

@@ -1,13 +1,13 @@
 const path = require('path');
 
 module.exports = {
-  entry: './client/landingPageSrc/index.jsx',
+  entry: './client/landingPageSrc/index.tsx',
   output: {
     filename: 'landingPageBundle.js',
     path: path.resolve(__dirname, 'client', 'landingPage'),
   },
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: ['.js', '.ts', '.tsx', '.js', '.jsx'],
   },
   module: {
     rules: [
@@ -17,6 +17,11 @@ module.exports = {
         use: {
           loader: 'babel-loader',
         },
+      },
+      {
+        test: /\.(ts|tsx)$/i,
+        exclude: /(node_modules)/,
+        use: 'ts-loader',
       },
       {
         test: /\.css$/i,

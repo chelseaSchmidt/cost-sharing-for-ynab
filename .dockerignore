@@ -13,3 +13,4 @@ start-http.sh
 start-https.sh
 artifact-registry-key.json
 client/landingPage/assets
+dist

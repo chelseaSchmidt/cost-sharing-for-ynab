@@ -19,15 +19,15 @@ export const BaseButton = styled.button`
   font-weight: 400;
   cursor: pointer;
 
-  :hover {
+  &:hover {
     background-color: lightgray;
   }
 
-  :focus {
+  &:focus {
     outline: none;
   }
 
-  :disabled {
+  &:disabled {
     background-color: gray;
     cursor: not-allowed;
   }
@@ -60,11 +60,11 @@ const hyperlinkStyle = `
   color: #464b46;
   font-size: 12px;
 
-  :hover, :visited:hover {
+  &:hover, &:visited:hover {
     color: blue;
   }
 
-  :visited {
+  &:visited {
     color: #464b46;
   }
 `;
@@ -93,7 +93,7 @@ export const WarningIcon = styled.span`
   font-weight: bold;
   margin: 0 5px;
 
-  :hover {
+  &:hover {
     > * {
       visibility: visible;
     }
@@ -148,12 +148,12 @@ export const OptionButton = styled.button`
   background-color: rgb(241, 241, 241);
   cursor: pointer;
 
-  :hover {
+  &:hover {
     background-color: #5183b1;
     color: white;
   }
 
-  :focus {
+  &:focus {
     outline: none;
   }
 `;
@@ -164,7 +164,7 @@ export const SelectedOptionButton = styled(OptionButton)`
   color: white;
   text-shadow: 0 0 2px #666;
 
-  :hover {
+  &:hover {
     background-color: #0061bd;
     color: white;
   }

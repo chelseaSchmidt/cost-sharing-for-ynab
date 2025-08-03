@@ -22,6 +22,7 @@ module.exports = {
     'no-confusing-arrow': 'off',
     'function-paren-newline': 'off',
     'dot-notation': 'off',
+    'import/extensions': 'off',
     'react/forbid-prop-types': 'off',
     'arrow-body-style': 'off',
     'react/require-default-props': 'off',
@@ -34,5 +35,5 @@ module.exports = {
       },
     ],
   },
-  ignorePatterns: ['bundle.js', '.bundle.js', 'landingPageBundle.js'],
+  ignorePatterns: ['bundle.js', '.bundle.js', 'landingPageBundle.js', '*.d.ts'],
 };

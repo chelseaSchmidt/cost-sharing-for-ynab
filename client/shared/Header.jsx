@@ -70,7 +70,7 @@ const WorksWithYnabIconSmall = styled.img`
   }
 `;
 
-const Header = ({ style = {}, navMenuItems = [] }) => {
+const Header = ({ style = {}, navMenuItems }) => {
   const ynabIconAttributes = {
     src: 'works_with_ynab.svg',
     alt: 'Works with YNAB',
@@ -86,7 +86,7 @@ const Header = ({ style = {}, navMenuItems = [] }) => {
         <WorksWithYnabIconLarge {...ynabIconAttributes} />
       </MainContent>
 
-      {!!navMenuItems.length && <NavMenu menuItems={navMenuItems} />}
+      {!!navMenuItems?.length && <NavMenu menuItems={navMenuItems} />}
     </Container>
   );
 };
