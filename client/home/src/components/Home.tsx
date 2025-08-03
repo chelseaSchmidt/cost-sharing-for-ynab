@@ -8,7 +8,8 @@ import creditCardSrc from '../assets/creditCard.png';
 import lightBulbSrc from '../assets/lightBulb.png';
 import puzzleIconSrc from '../assets/puzzle.png';
 import welcomeIconSrc from '../assets/welcome.png';
-import '../global.css';
+import colors from '../styles/colors';
+import '../styles/global.css';
 
 /* Styled Components */
 
@@ -28,44 +29,38 @@ const CreditCardIcon = styled.img`
 `;
 
 const Subtitle = styled.header`
-  margin: 40px 0 40px 0;
+  margin: 40px 0;
   width: 100%;
   min-width: 190px;
-  font-size: 30px;
   text-align: center;
-  text-shadow: 0 3px 11px lightgray;
+  font-size: 30px;
+  text-shadow: 0 3px 11px ${colors.lightNeutralAccent};
 `;
 
 const Divider = styled.div`
-  box-sizing: border-box;
-  border-top: 1px solid lightgray;
+  border-top: 1px solid ${colors.lightNeutralAccent};
+  width: 100%;
+  max-width: 1200px;
   margin: 70px 0;
-  width: 70%;
-  min-width: 700px;
-
-  @media (max-width: 770px) {
-    width: 100%;
-    min-width: unset;
-  }
 `;
 
 const Button = styled.button`
   box-sizing: border-box;
-  background-color: #11518c;
-  border-radius: 12px;
-  border: 1px solid white;
-  box-shadow: 0 1px 2px 0 #515852;
+  background: ${colors.button};
+  border-radius: 5px;
+  box-shadow: 0 1px 2px 0 #666;
   padding: 7px 15px;
   margin: 10px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: white;
-  font-size: 14px;
   text-decoration: none;
-  font-weight: 400;
-  cursor: pointer;
 
   &:hover {
-    background-color: lightgray;
+    background: ${colors.lightNeutralAccent};
+  }
+
+  &:active {
+    background: ${colors.buttonActive};
   }
 `;
 
@@ -140,7 +135,6 @@ const DescriptionIcon = styled.img`
 const DescriptionText = styled.div`
   box-sizing: border-box;
   padding-left: 20px;
-  height: fit-content;
 `;
 
 const PrivacyPolicyContainer = styled.div`
@@ -148,10 +142,10 @@ const PrivacyPolicyContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #eee;
+  background-color: ${colors.lightNeutralBg};
   margin: 40px 0 -10px 0;
   padding: 40px;
-  border-top: 1px solid lightgray;
+  border-top: 1px solid ${colors.lightNeutralAccent};
   width: 100vw;
 `;
 
@@ -161,7 +155,7 @@ const Footer = styled.footer`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  border-top: 1px solid lightgray;
+  border-top: 1px solid ${colors.lightNeutralAccent};
   padding: 40px 10px;
 
   a {
