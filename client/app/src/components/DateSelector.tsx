@@ -37,7 +37,7 @@ interface Props {
   inputId: string;
   inputValue: string;
   inputStyle?: CSSProperties;
-  onChange: (value: number) => void;
+  onChange: (value: string) => void;
   isLabelVisible?: boolean;
 }
 
@@ -57,7 +57,7 @@ const DateSelector = ({
         type="date"
         id={inputId}
         value={inputValue}
-        onChange={(e) => onChange(Number(e.target.value))}
+        onChange={(e) => onChange(e.target.value)}
         aria-label={isLabelVisible ? '' : label}
         style={inputStyle}
       />
