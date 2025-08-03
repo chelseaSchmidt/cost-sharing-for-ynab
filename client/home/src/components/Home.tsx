@@ -219,7 +219,7 @@ const Home = () => {
               text: "Cost Sharing for YNAB enables you to classify your transactions across any number of categories, and then at the click of a button, remove someone else's share of the expenses from each category. No more inflated expenses or catch-all category!",
             },
           ].map(({ src, alt, text }) => (
-            <DescriptionSection>
+            <DescriptionSection key={alt}>
               <DescriptionIcon src={src} alt={alt} />
               <DescriptionText>{text}</DescriptionText>
             </DescriptionSection>
@@ -277,7 +277,7 @@ const Home = () => {
             children: 'Solution icons created by Freepik - Flaticon',
           },
         ].map((props) => (
-          <Hyperlink {...props} target="_blank" rel="noreferrer" />
+          <Hyperlink {...props} key={props.href} target="_blank" rel="noreferrer" />
         ))}
       </Footer>
     </Container>
