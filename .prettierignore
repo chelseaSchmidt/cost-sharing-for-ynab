@@ -1,4 +1,4 @@
-client/landingPage/public
+client/home/public
 client/app/public
 package-lock.json
 dist

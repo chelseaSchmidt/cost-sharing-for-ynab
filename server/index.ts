@@ -6,7 +6,7 @@ import path from 'path';
 const server = express();
 
 server.use(morgan('dev'));
-server.use(express.static(path.resolve(__dirname, '..', 'client', 'landingPage', 'public')));
+server.use(express.static(path.resolve(__dirname, '..', 'client', 'home', 'public')));
 server.use(
   '/cost-sharer',
   express.static(path.resolve(__dirname, '..', 'client', 'app', 'public')),

@@ -3,8 +3,6 @@ node_modules
 bundle.js
 bundle.js.map
 bundle.js 2.map
-landingPageBundle.js
-landingPageBundle.js.map
 .bundle.js.map.icloud
 identifiers.js
 todo.txt
@@ -12,6 +10,6 @@ todo.txt
 start-http.sh
 start-https.sh
 artifact-registry-key.json
-client/landingPage/public/assets
+client/home/public/assets
 client/app/public/assets
 dist

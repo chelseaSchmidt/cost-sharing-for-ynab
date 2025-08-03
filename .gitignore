@@ -2,13 +2,11 @@ node_modules
 bundle.js
 bundle.js.map
 bundle.js 2.map
-landingPageBundle.js
-landingPageBundle.js.map
 .bundle.js.map.icloud
 identifiers.js
 server/ssl
 todo.txt
 artifact-registry-key.json
-client/landingPage/public/assets
+client/home/public/assets
 client/app/public/assets
 dist

@@ -35,5 +35,5 @@ module.exports = {
       },
     ],
   },
-  ignorePatterns: ['bundle.js', '.bundle.js', 'landingPageBundle.js', '*.d.ts', '*.ts'],
+  ignorePatterns: ['bundle.js', '*.d.ts', '*.ts'],
 };
