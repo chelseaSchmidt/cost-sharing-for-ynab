@@ -13,14 +13,7 @@ import Nav from './Nav';
 import Error from './Error';
 import PrivacyPolicy from '../../../shared/PrivacyPolicy';
 import Instructions from '../../../shared/Instructions';
-import {
-  SectionHeader,
-  BaseButton,
-  WarningIcon,
-  Tooltip,
-  LinkishButton,
-  Spinner,
-} from './styledComponents';
+import { SectionHeader, BaseButton, WarningIcon, Tooltip, Spinner } from './styledComponents';
 import {
   getTransactionsSinceDate,
   getAccounts,
@@ -37,6 +30,7 @@ import {
 import classifyTransactions from './utils/classifyTransactions';
 import breakpoints from '../../../shared/breakpoints';
 import { MenuItem } from '../../../shared/NavMenu';
+import { Hyperlink } from '../../../shared/styledComponents';
 import '../styles/global.css';
 import {
   Account,
@@ -255,6 +249,7 @@ const CostSharingForYnab = () => {
       },
       attributes: {
         type: 'button',
+        as: 'button',
       },
     },
     {
@@ -489,9 +484,9 @@ const CostSharingForYnab = () => {
       <Header navMenuItems={navMenuItems} />
 
       <InstructionsButtonContainer>
-        <LinkishButton type="button" onClick={() => setActiveModal(ModalName.INSTRUCTIONS)}>
+        <Hyperlink as="button" type="button" onClick={() => setActiveModal(ModalName.INSTRUCTIONS)}>
           Instructions
-        </LinkishButton>
+        </Hyperlink>
       </InstructionsButtonContainer>
 
       <SectionTile>

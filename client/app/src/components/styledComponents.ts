@@ -33,50 +33,6 @@ export const BaseButton = styled.button`
   }
 `;
 
-const hyperlinkStyle = `
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  text-rendering: unset;
-  align-items: unset;
-  font: unset;
-  box-sizing: unset;
-  writing-mode: unset;
-  -webkit-writing-mode: unset;
-  letter-spacing: unset;
-  word-spacing: unset;
-  text-transform: unset;
-  text-indent: unset;
-  text-shadow: unset;
-  display: unset;
-  background: none;
-  border: none;
-
-  text-align: left;
-  padding: 0;
-  margin: 0 10px;
-  cursor: pointer;
-  text-decoration: underline;
-  color: #464b46;
-  font-size: 12px;
-
-  &:hover, &:visited:hover {
-    color: blue;
-  }
-
-  &:visited {
-    color: #464b46;
-  }
-`;
-
-export const LinkishButton = styled.button`
-  ${hyperlinkStyle}
-`;
-
-export const Hyperlink = styled.a`
-  ${hyperlinkStyle}
-`;
-
 export const WarningIcon = styled.span`
   display: flex;
   position: relative;

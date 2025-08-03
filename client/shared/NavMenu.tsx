@@ -100,6 +100,8 @@ const Divider = styled.div`
 `;
 
 const MenuItem = styled.a`
+  all: unset;
+
   text-decoration: none;
   color: #464b46;
   text-align: left;
@@ -117,6 +119,11 @@ const MenuItem = styled.a`
   &:visited {
     color: #464b46;
   }
+
+  &:focus-visible {
+    outline: 1px solid blue;
+    border-radius: 5px;
+  }
 `;
 
 export interface MenuItem {
@@ -124,7 +131,7 @@ export interface MenuItem {
   attributes: React.DetailedHTMLProps<
     React.AnchorHTMLAttributes<HTMLAnchorElement>,
     HTMLAnchorElement
-  >;
+  > & { as?: 'button' };
   style?: CSSProperties;
   onClick?: () => void;
 }

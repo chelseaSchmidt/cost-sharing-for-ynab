@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import breakpoints from '../../../shared/breakpoints';
+import { Hyperlink } from '../../../shared/styledComponents';
 import { ModalName } from '../types';
-import { LinkishButton, Hyperlink } from './styledComponents';
 
 const Container = styled.div`
   margin-bottom: 15px;
@@ -45,9 +45,9 @@ const Nav = ({ setActiveModal }: Props) => (
     <DesktopSpacer>·</DesktopSpacer>
     <MobileSpacer />
 
-    <LinkishButton type="button" onClick={() => setActiveModal(ModalName.PRIVACY_POLICY)}>
+    <Hyperlink as="button" type="button" onClick={() => setActiveModal(ModalName.PRIVACY_POLICY)}>
       Privacy Policy
-    </LinkishButton>
+    </Hyperlink>
 
     <DesktopSpacer>·</DesktopSpacer>
     <MobileSpacer />
