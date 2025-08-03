@@ -1,8 +1,10 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import Popup from './Popup';
 
-const Confirmation = ({ setIsConfirmationVisible }) => (
+interface Props {
+  setIsConfirmationVisible: (isVisible: boolean) => void;
+}
+
+const Confirmation = ({ setIsConfirmationVisible }: Props) => (
   <Popup
     message="Transaction created"
     onClose={() => setIsConfirmationVisible(false)}
@@ -10,9 +12,5 @@ const Confirmation = ({ setIsConfirmationVisible }) => (
     closeButtonStyle={{ color: '#252525' }}
   />
 );
-
-Confirmation.propTypes = {
-  setIsConfirmationVisible: PropTypes.func.isRequired,
-};
 
 export default Confirmation;

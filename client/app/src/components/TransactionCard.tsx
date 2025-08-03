@@ -1,5 +1,4 @@
-/* eslint-disable camelcase */
-import { useState } from 'react';
+import { CSSProperties, useState } from 'react';
 import moment from 'moment';
 import styled from 'styled-components';
 import { Transaction } from '../types';
@@ -98,7 +97,7 @@ const TransactionCard = ({
     element.getBoundingClientRect().y,
   ];
 
-  const tooltipStyle = {
+  const tooltipStyle: CSSProperties = {
     zIndex: 10,
     position: 'fixed',
     left: tooltipCoordinates?.[0],

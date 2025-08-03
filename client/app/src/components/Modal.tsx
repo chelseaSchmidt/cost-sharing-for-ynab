@@ -1,7 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { BaseButton, BackgroundOverlay } from './styledComponents';
+import { ReactNode } from 'react';
 
 /* Styled Components */
 
@@ -28,10 +27,22 @@ const ButtonContainer = styled.div`
 
 /* Main Component */
 
-const Modal = ({ onClose, buttonText = 'OK', children, shouldCloseOnOverlayClick = false }) => (
+interface Props {
+  onClose: () => void;
+  buttonText?: string;
+  children: ReactNode;
+  shouldCloseOnOverlayClick?: boolean;
+}
+
+const Modal = ({
+  onClose,
+  buttonText = 'OK',
+  children,
+  shouldCloseOnOverlayClick = false,
+}: Props) => (
   <>
     <BackgroundOverlay
-      onClick={shouldCloseOnOverlayClick ? onClose : null}
+      onClick={shouldCloseOnOverlayClick ? onClose : undefined}
       role="button"
       aria-label="Modal overlay"
       tabIndex={0}
@@ -40,7 +51,7 @@ const Modal = ({ onClose, buttonText = 'OK', children, shouldCloseOnOverlayClick
           ? (e) => {
               if (e.key === 'Enter') onClose();
             }
-          : null
+          : undefined
       }
     />
     <Container>
@@ -53,12 +64,5 @@ const Modal = ({ onClose, buttonText = 'OK', children, shouldCloseOnOverlayClick
     </Container>
   </>
 );
-
-Modal.propTypes = {
-  onClose: PropTypes.func.isRequired,
-  buttonText: PropTypes.string,
-  children: PropTypes.node,
-  shouldCloseOnOverlayClick: PropTypes.bool,
-};
 
 export default Modal;

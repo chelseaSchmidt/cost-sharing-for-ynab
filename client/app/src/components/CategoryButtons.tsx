@@ -1,7 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { OptionButton, SelectedOptionButton } from './styledComponents';
+import { Category, ParentCategory } from '../types';
 
 /* Styled Components */
 
@@ -9,38 +8,44 @@ const Container = styled.div``;
 
 /* Main Component */
 
+interface Props {
+  parentCategories: ParentCategory[];
+  selectedParentCategories: ParentCategory[];
+  setSelectedParentCategories: (pc: ParentCategory[]) => void;
+}
+
 const CategoryButtons = ({
   parentCategories,
   selectedParentCategories,
   setSelectedParentCategories,
-}) => {
+}: Props) => {
   const hiddenCategoryNames = [
     'Internal Master Category',
     'Credit Card Payments',
     'Hidden Categories',
   ];
 
-  const doesCategoryHaveId = ({ categoryId }, id) => categoryId === id;
+  const doesCategoryHaveId = (category: ParentCategory, id?: string) => category.id === id;
 
-  const selectCategory = (selection) =>
+  const selectCategory = (selection: ParentCategory) =>
     setSelectedParentCategories([...selectedParentCategories, selection]);
 
-  const deselectCategoryById = (id) =>
+  const deselectCategoryById = (id: string) =>
     setSelectedParentCategories(
       selectedParentCategories.filter((category) => !doesCategoryHaveId(category, id)),
     );
 
-  const toggleSharedCategory = ({ id, name, subCategories }) => {
+  const toggleSharedCategory = ({ id, name, categories }: ParentCategory) => {
     if (selectedParentCategories.find((category) => doesCategoryHaveId(category, id))) {
       deselectCategoryById(id);
     } else {
-      selectCategory({ name, categoryId: id, subCategories });
+      selectCategory({ name, id, categories });
     }
   };
 
   return (
     <Container>
-      {parentCategories.map(({ name, id, categories: subCategories }) => {
+      {parentCategories.map(({ name, id, categories }) => {
         const shouldDisplayCategory = !hiddenCategoryNames.includes(name);
 
         if (shouldDisplayCategory) {
@@ -55,7 +60,7 @@ const CategoryButtons = ({
               type="button"
               key={id}
               id={id}
-              onClick={() => toggleSharedCategory({ id, name, subCategories })}
+              onClick={() => toggleSharedCategory({ id, name, categories })}
             >
               {name}
             </Button>
@@ -66,12 +71,6 @@ const CategoryButtons = ({
       })}
     </Container>
   );
-};
-
-CategoryButtons.propTypes = {
-  parentCategories: PropTypes.array.isRequired,
-  selectedParentCategories: PropTypes.array.isRequired,
-  setSelectedParentCategories: PropTypes.func.isRequired,
 };
 
 export default CategoryButtons;
