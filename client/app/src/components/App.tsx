@@ -198,7 +198,7 @@ const Spacer = styled.div`
 
 /* Main Component */
 
-const CostSharingForYnab = () => {
+const App = () => {
   const [isPageLoading, setIsPageLoading] = useState(true);
   const [areTransactionsLoading, setAreTransactionsLoading] = useState(false);
   const [budgetData, setBudgetData] = useState<BudgetData>({
@@ -665,4 +665,4 @@ const CostSharingForYnab = () => {
   );
 };
 
-export default CostSharingForYnab;
+export default App;
