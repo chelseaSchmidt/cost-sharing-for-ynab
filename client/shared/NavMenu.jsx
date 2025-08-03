@@ -64,7 +64,7 @@ const Menu = styled.div`
   // drawer animation
   right: -${menuWidth};
   transition: right 0.4s;
-  ${(props) => props.isOpen && 'right: 0;'}
+  ${(props) => props.$isOpen && 'right: 0;'}
 `;
 
 const MenuHeader = styled.div`
@@ -90,7 +90,7 @@ const ExitButton = styled.div`
   opacity: 50%;
   cursor: pointer;
 
-  :hover {
+  &:hover {
     color: #2f73b3;
   }
 `;
@@ -109,13 +109,13 @@ const MenuItem = styled.a`
   font-size: 1.15em;
   cursor: pointer;
 
-  :hover,
-  :visited:hover {
+  &:hover,
+  &:visited:hover {
     color: #2f73b3;
     background-color: #eee;
   }
 
-  :visited {
+  &:visited {
     color: #464b46;
   }
 `;
@@ -135,7 +135,7 @@ const NavMenu = ({ menuItems = [] }) => {
           ))}
         </Button>
         {ReactDOM.createPortal(
-          <Menu isOpen={isOpen}>
+          <Menu $isOpen={isOpen}>
             <MenuHeader>
               <ExitButton
                 type="button"

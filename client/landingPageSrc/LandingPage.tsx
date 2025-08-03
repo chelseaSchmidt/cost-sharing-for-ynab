@@ -1,6 +1,4 @@
-import React from 'react';
 import styled from 'styled-components';
-
 import PrivacyPolicy from '../shared/PrivacyPolicy';
 import Header from '../shared/Header';
 import Instructions from '../shared/Instructions';
@@ -65,7 +63,7 @@ const Button = styled.button`
   font-weight: 400;
   cursor: pointer;
 
-  :hover {
+  &:hover {
     background-color: lightgray;
   }
 `;
@@ -116,7 +114,7 @@ const DescriptionSection = styled.section`
   align-items: center;
   margin-bottom: 75px;
 
-  :last-child {
+  &:last-child {
     margin-bottom: 0;
   }
 
@@ -197,7 +195,7 @@ const LandingPage = () => {
     {
       text: 'Privacy Policy',
       onClick: () => {
-        document.getElementById('privacy-policy-container').scrollIntoView(true);
+        document.getElementById('privacy-policy-container')?.scrollIntoView(true);
       },
       attributes: {
         type: 'button',

@@ -9,7 +9,7 @@ const Container = styled.div``;
 const Select = styled.select`
   cursor: pointer;
 
-  :focus {
+  &:focus {
     outline: none;
   }
 `;

@@ -20,13 +20,13 @@ const Container = styled.div`
   color: #464b46;
 
   ${(props) =>
-    props.isClickable &&
+    props.$isClickable &&
     `
       cursor: pointer;
-      :hover {
+      &:hover {
         background-color: #eee;
       }
-      :active {
+      &:active {
         background-color: #ddd;
       }
   `}
@@ -106,7 +106,7 @@ const Transaction = ({
   };
 
   return (
-    <Container onClick={isClickable ? onClick : () => {}} isClickable={isClickable}>
+    <Container onClick={isClickable ? onClick : () => {}} $isClickable={isClickable}>
       {isClickable && <Checkbox type="checkbox" checked={isSelected} readOnly />}
 
       <Date>{moment(date).format('MMM DD, YYYY')}</Date>

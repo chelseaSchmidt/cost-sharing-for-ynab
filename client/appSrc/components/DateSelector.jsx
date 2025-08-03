@@ -18,7 +18,7 @@ const Label = styled.label`
 const Input = styled.input`
   cursor: text;
 
-  ::-webkit-calendar-picker-indicator {
+  &::-webkit-calendar-picker-indicator {
     cursor: pointer;
   }
 `;
