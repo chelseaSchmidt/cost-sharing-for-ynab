@@ -2,7 +2,8 @@ import styled from 'styled-components';
 import PrivacyPolicy from '../../../shared/PrivacyPolicy';
 import Header from '../../../shared/Header';
 import Instructions from '../../../shared/Instructions';
-import { Hyperlink } from '../../../app/src/components/styledComponents'; // FIXME: move to shared directory
+import { MenuItem } from '../../../shared/NavMenu';
+import { Hyperlink } from '../../../shared/styledComponents';
 import creditCardSrc from '../assets/creditCard.png';
 import lightBulbSrc from '../assets/lightBulb.png';
 import puzzleIconSrc from '../assets/puzzle.png';
@@ -176,7 +177,7 @@ const LandingPage = () => {
   const currentUrl = window.location.href;
   const appEndpoint = 'cost-sharer';
   const ynabAuthScreenLink = `https://app.youneedabudget.com/oauth/authorize?client_id=4ac8ca3c431ac99075e603496136606d7da8102f6178ce2796566b30c4659988&redirect_uri=${currentUrl}${appEndpoint}&response_type=token`;
-  const navMenuItems = [
+  const navMenuItems: MenuItem[] = [
     {
       text: 'Start',
       attributes: {
@@ -199,6 +200,7 @@ const LandingPage = () => {
       },
       attributes: {
         type: 'button',
+        as: 'button',
       },
     },
     {
