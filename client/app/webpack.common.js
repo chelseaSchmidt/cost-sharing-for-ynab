@@ -1,13 +1,13 @@
 const path = require('path');
 
 module.exports = {
-  entry: './client/app/src/index.jsx',
+  entry: './client/app/src/index.tsx',
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'public'),
   },
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: ['.js', '.ts', '.tsx', '.js', '.jsx'],
   },
   module: {
     rules: [
@@ -17,6 +17,11 @@ module.exports = {
         use: {
           loader: 'babel-loader',
         },
+      },
+      {
+        test: /\.(ts|tsx)$/i,
+        exclude: /(node_modules)/,
+        use: 'ts-loader',
       },
       {
         test: /\.css$/i,

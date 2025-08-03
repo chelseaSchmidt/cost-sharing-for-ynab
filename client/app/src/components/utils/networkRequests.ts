@@ -1,4 +1,6 @@
 import axios from 'axios';
+import moment from 'moment';
+import { Account, ParentCategory, Transaction } from '../../types';
 
 const getToken = () => {
   const url = window.location.href;
@@ -12,7 +14,9 @@ const getToken = () => {
   return url.slice(start + tokenStart.length, end);
 };
 
-export const getTransactionsSinceDate = async (sinceDate) => {
+export const getTransactionsSinceDate = async (
+  sinceDate: moment.Moment,
+): Promise<Transaction[]> => {
   const result = await axios({
     method: 'get',
     headers: { Authorization: `Bearer ${getToken()}` },
@@ -21,28 +25,30 @@ export const getTransactionsSinceDate = async (sinceDate) => {
       since_date: `${sinceDate}`,
     },
   });
-  return result?.data.data.transactions;
+  return result?.data.data.transactions || [];
 };
 
-export const getAccounts = async () => {
+export const getAccounts = async (): Promise<Account[]> => {
   const result = await axios({
     method: 'get',
     headers: { Authorization: `Bearer ${getToken()}` },
     url: 'https://api.youneedabudget.com/v1/budgets/default/accounts',
   });
-  return result?.data.data.accounts.filter(({ closed }) => !closed);
+  return result?.data.data.accounts.filter(({ closed }: Account) => !closed) || [];
 };
 
-export const getParentCategories = async () => {
+export const getParentCategories = async (): Promise<ParentCategory[]> => {
   const result = await axios({
     method: 'get',
     headers: { Authorization: `Bearer ${getToken()}` },
     url: 'https://api.youneedabudget.com/v1/budgets/default/categories',
   });
-  return result?.data.data.category_groups.filter(({ hidden }) => !hidden);
+  return result?.data.data.category_groups.filter(({ hidden }: ParentCategory) => !hidden) || [];
 };
 
-export const createSplitTransaction = async (transaction) => {
+export const createSplitTransaction = async (
+  transaction: Transaction,
+): Promise<Transaction | undefined> => {
   const result = await axios({
     method: 'post',
     headers: { Authorization: `Bearer ${getToken()}` },

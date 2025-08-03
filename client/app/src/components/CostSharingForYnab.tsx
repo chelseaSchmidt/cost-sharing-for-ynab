@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign, camelcase */
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import _ from 'lodash';
 import styled from 'styled-components';
 import AccountButtons from './AccountButtons';
@@ -36,9 +36,9 @@ import {
   getLastDateOfLastMonth,
 } from './utils/dateHelpers';
 import classifyTransactions from './utils/classifyTransactions';
-import modalNames from './modalNames';
 import breakpoints from '../../../shared/breakpoints';
 import '../styles/global.css';
+import { BudgetData, ClassifiedTransactions, ErrorData, ModalName, Transaction } from '../types';
 
 /* Styled Components */
 
@@ -198,31 +198,32 @@ const Spacer = styled.div`
 const CostSharingForYnab = () => {
   const [isPageLoading, setIsPageLoading] = useState(true);
   const [areTransactionsLoading, setAreTransactionsLoading] = useState(false);
-  const [budgetData, setBudgetData] = useState({
+  const [budgetData, setBudgetData] = useState<BudgetData>({
     accounts: [],
     parentCategories: [],
   });
   const [transactionsStartDate, setTransactionsStartDate] = useState(getFirstDateOfLastMonth());
   const [transactionsEndDate, setTransactionsEndDate] = useState(getLastDateOfLastMonth());
   const [myShare, setMyShare] = useState(50);
-  const [selectedTransactions, setSelectedTransactions] = useState([]);
+  const [selectedTransactions, setSelectedTransactions] = useState<Transaction[]>([]);
   const [dateToSplitCosts, setDateToSplitCosts] = useState(getLastDateOfLastMonth());
-  const [classifiedTransactions, setClassifiedTransactions] = useState({});
+  const [classifiedTransactions, setClassifiedTransactions] = useState<ClassifiedTransactions>({
+    filteredTransactions: [],
+    sharedAccountErrorTransactions: [],
+    sharedCategoryErrorTransactions: [],
+  });
   const [selectedAccounts, setSelectedAccounts] = useState([]);
   const [selectedParentCategories, setSelectedParentCategories] = useState([]);
   const [iouAccountId, setIouAccountId] = useState('');
-  const [iouAccountTransactions, setIouAccountTransactions] = useState([]);
+  const [iouAccountTransactions, setIouAccountTransactions] = useState<Transaction[]>([]);
   const [isIouTransactionLoading, setIsIouTransactionLoading] = useState(false);
-  const [errorData, setErrorData] = useState(null);
-  const [activeModal, setActiveModal] = useState(modalNames.PRIVACY_POLICY);
+  const [errorData, setErrorData] = useState<ErrorData | null>(null);
+  const [activeModal, setActiveModal] = useState<ModalName | null>(ModalName.PRIVACY_POLICY);
   const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
   const [isSelectAllChecked, setIsSelectAllChecked] = useState(false);
 
-  const {
-    filteredTransactions = [],
-    sharedAccountErrorTransactions = [],
-    sharedCategoryErrorTransactions = [],
-  } = classifiedTransactions;
+  const { filteredTransactions, sharedAccountErrorTransactions, sharedCategoryErrorTransactions } =
+    classifiedTransactions;
 
   const isSplitTransactionDisabled = !selectedTransactions.length || !iouAccountId;
 
@@ -241,7 +242,7 @@ const CostSharingForYnab = () => {
     {
       text: 'Privacy Policy',
       onClick: () => {
-        setActiveModal(modalNames.PRIVACY_POLICY);
+        setActiveModal(ModalName.PRIVACY_POLICY);
       },
       attributes: {
         type: 'button',
@@ -257,21 +258,46 @@ const CostSharingForYnab = () => {
     },
   ];
 
+  const displayErrorMessage = (error: unknown) => {
+    setErrorData({
+      status:
+        typeof error === 'object' &&
+        error !== null &&
+        'response' in error &&
+        typeof error.response === 'object' &&
+        error.response !== null &&
+        'status' in error.response &&
+        typeof error.response.status === 'number'
+          ? error.response.status
+          : 0,
+      message:
+        typeof error === 'object' &&
+        error !== null &&
+        'message' in error &&
+        typeof error.message === 'string'
+          ? error.message
+          : 'Something went wrong',
+    });
+  };
+
   const getBudgetData = async () => {
     try {
       const accounts = await getAccounts();
       const parentCategories = await getParentCategories();
       setBudgetData({ accounts, parentCategories });
     } catch (error) {
-      setErrorData({
-        status: error.response?.status,
-        message: error.message,
-      });
+      displayErrorMessage(error);
     }
   };
 
-  const getClassifiedTransactions = async ({ startDate, endDate }) => {
-    const isTransactionATransfer = (transaction) => !!transaction.transfer_account_id;
+  const getClassifiedTransactions = async ({
+    startDate,
+    endDate,
+  }: {
+    startDate: moment.Moment;
+    endDate: moment.Moment;
+  }) => {
+    const isTransactionATransfer = (transaction: Transaction) => !!transaction.transfer_account_id;
 
     try {
       setAreTransactionsLoading(true);
@@ -284,7 +310,9 @@ const CostSharingForYnab = () => {
             transaction.approved &&
             !isTransactionATransfer(transaction),
         )
-        .sort((a, b) => new Date(b.date) - new Date(a.date));
+        .sort((a, b) =>
+          a.date && b.date ? new Date(b.date).getTime() - new Date(a.date).getTime() : 0,
+        );
 
       setClassifiedTransactions(
         classifyTransactions({
@@ -294,16 +322,13 @@ const CostSharingForYnab = () => {
         }),
       );
     } catch (error) {
-      setErrorData({
-        message: error.message,
-        status: error.response?.status,
-      });
+      displayErrorMessage(error);
     }
     setAreTransactionsLoading(false);
   };
 
   const toggleTransactionSelection = useCallback(
-    ({ isSelected, transaction }) => {
+    ({ isSelected, transaction }: { isSelected: boolean; transaction: Transaction }) => {
       setSelectedTransactions((previousSelected) =>
         isSelected
           ? [...previousSelected, transaction]
@@ -313,17 +338,17 @@ const CostSharingForYnab = () => {
     [setSelectedTransactions],
   );
 
-  const toggleSelectAll = ({ isSelected }) => {
+  const toggleSelectAll = ({ isSelected }: { isSelected: boolean }) => {
     setIsSelectAllChecked(isSelected);
     setSelectedTransactions(isSelected ? [...filteredTransactions] : []);
   };
 
-  const getOwedPercentage = (percentage) => {
+  const getOwedPercentage = (percentage: number) => {
     const owedPercentage = 1 - percentage / 100;
     return owedPercentage;
   };
 
-  const createSplitEntry = async (e) => {
+  const createSplitEntry = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
 
     const categorizedTransactions = _.groupBy(selectedTransactions, 'category_id');
@@ -334,7 +359,7 @@ const CostSharingForYnab = () => {
         accum[categoryId] = _.sumBy(transactions, 'amount');
         return accum;
       },
-      {},
+      {} as Record<string, number>,
     );
 
     const owedCategorizedAmounts = _.reduce(
@@ -343,10 +368,10 @@ const CostSharingForYnab = () => {
         accum[categoryId] = Math.round(amount * getOwedPercentage(myShare));
         return accum;
       },
-      {},
+      {} as Record<string, number>,
     );
 
-    const summaryTransaction = {
+    const summaryTransaction: Transaction = {
       account_id: iouAccountId,
       date: convertDateToString(dateToSplitCosts),
       amount: _.reduce(owedCategorizedAmounts, (sum, amt) => sum - amt, 0),
@@ -370,15 +395,16 @@ const CostSharingForYnab = () => {
     try {
       setIsIouTransactionLoading(true);
       const transaction = await createSplitTransaction(summaryTransaction);
-      setIsConfirmationVisible(true);
-      setIouAccountTransactions([...iouAccountTransactions, transaction]);
-      setSelectedTransactions([]);
-      setIsSelectAllChecked(false);
+      if (transaction) {
+        setIsConfirmationVisible(true);
+        setIouAccountTransactions([...iouAccountTransactions, transaction]);
+        setSelectedTransactions([]);
+        setIsSelectAllChecked(false);
+      } else {
+        displayErrorMessage(null);
+      }
     } catch (error) {
-      setErrorData({
-        status: error.response?.status,
-        message: error.message,
-      });
+      displayErrorMessage(error);
     }
     setIsIouTransactionLoading(false);
   };
@@ -407,12 +433,12 @@ const CostSharingForYnab = () => {
       {activeModal && (
         <Modal
           onClose={() => setActiveModal(null)}
-          buttonText={activeModal === modalNames.TRANSACTION_REVIEW ? 'Exit' : 'OK'}
-          shouldCloseOnOverlayClick={activeModal !== modalNames.PRIVACY_POLICY}
+          buttonText={activeModal === ModalName.TRANSACTION_REVIEW ? 'Exit' : 'OK'}
+          shouldCloseOnOverlayClick={activeModal !== ModalName.PRIVACY_POLICY}
         >
-          {activeModal === modalNames.PRIVACY_POLICY && <PrivacyPolicy />}
+          {activeModal === ModalName.PRIVACY_POLICY && <PrivacyPolicy />}
 
-          {activeModal === modalNames.TRANSACTION_REVIEW && (
+          {activeModal === ModalName.TRANSACTION_REVIEW && (
             <TransactionWindow
               title="Transactions in shared accounts not categorized to shared expense categories"
               description="This list is meant to help you catch misclassified transactions. Recategorize them in YNAB as needed and then refresh the list."
@@ -437,7 +463,7 @@ const CostSharingForYnab = () => {
             />
           )}
 
-          {activeModal === modalNames.INSTRUCTIONS && <Instructions style={{ padding: '20px' }} />}
+          {activeModal === ModalName.INSTRUCTIONS && <Instructions style={{ padding: '20px' }} />}
         </Modal>
       )}
 
@@ -454,7 +480,7 @@ const CostSharingForYnab = () => {
       <Header navMenuItems={navMenuItems} />
 
       <InstructionsButtonContainer>
-        <LinkishButton type="button" onClick={() => setActiveModal(modalNames.INSTRUCTIONS)}>
+        <LinkishButton type="button" onClick={() => setActiveModal(ModalName.INSTRUCTIONS)}>
           Instructions
         </LinkishButton>
       </InstructionsButtonContainer>
@@ -526,7 +552,7 @@ const CostSharingForYnab = () => {
               startDate: transactionsStartDate,
               endDate: transactionsEndDate,
             });
-            document.getElementById('transaction-container').scrollIntoView(true);
+            document.getElementById('transaction-container')?.scrollIntoView(true);
           }}
         >
           Show Transactions
@@ -542,7 +568,7 @@ const CostSharingForYnab = () => {
             Some transactions in shared accounts were not categorized to shared expense categories.
             <ReviewTransactionsButton
               type="button"
-              onClick={() => setActiveModal(modalNames.TRANSACTION_REVIEW)}
+              onClick={() => setActiveModal(ModalName.TRANSACTION_REVIEW)}
             >
               Review
             </ReviewTransactionsButton>
@@ -584,7 +610,7 @@ const CostSharingForYnab = () => {
               min="0"
               max="100"
               value={myShare}
-              onChange={(e) => setMyShare(e.target.value)}
+              onChange={(e) => setMyShare(Number(e.target.value))}
             />
             <input
               type="number"
@@ -592,7 +618,7 @@ const CostSharingForYnab = () => {
               max="100"
               value={myShare}
               onChange={(e) => {
-                const value = Math.max(0, Math.min(100, e.target.value));
+                const value = Math.max(0, Math.min(100, Number(e.target.value)));
                 setMyShare(value);
               }}
               style={{ marginLeft: '10px', width: '50px' }}

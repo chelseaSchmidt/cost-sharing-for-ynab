@@ -45,6 +45,7 @@
     "@babel/preset-env": "^7.11.5",
     "@babel/preset-react": "^7.10.4",
     "@types/express": "^5.0.3",
+    "@types/lodash": "^4.17.20",
     "@types/morgan": "^1.9.10",
     "@types/react": "^19.1.9",
     "@types/react-dom": "^19.1.7",
