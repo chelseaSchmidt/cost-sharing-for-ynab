@@ -10,3 +10,4 @@ artifact-registry-key.json
 client/home/public/assets
 client/app/public/assets
 dist
+.DS_Store
