@@ -53,7 +53,7 @@ Check out the live app here! https://costsharingforynab.com. Cost Sharing for YN
 
 </details>
 
-<details open>
+<details>
 <summary><strong>Prepare image</strong></summary>
 
 - Run the Docker daemon
@@ -71,8 +71,8 @@ Check out the live app here! https://costsharingforynab.com. Cost Sharing for YN
 
 </details>
 
-<details open>
-<summary><strong>Revision deployment:</strong></summary>
+<details>
+<summary><strong>Revision deployment</strong></summary>
 
 - Click the running service in Google Cloud Run
 
@@ -85,7 +85,7 @@ Check out the live app here! https://costsharingforynab.com. Cost Sharing for YN
 </details>
 
 <details>
-<summary><strong>New deployment:</strong></summary>
+<summary><strong>New deployment</strong></summary>
 
 - Click "Deploy container" in Google Cloud Run
 - "Deploy one revision from an existing container image"
