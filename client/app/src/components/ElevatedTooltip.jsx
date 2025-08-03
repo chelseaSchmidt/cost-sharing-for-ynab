@@ -3,7 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 
-const ElevatedTooltip = ({ parent, children, containerStyle = {} }) =>
+const ElevatedTooltip = ({ parent = null, children, containerStyle = {} }) =>
   ReactDOM.createPortal(<div style={containerStyle}>{children}</div>, parent || document.body);
 
 ElevatedTooltip.propTypes = {

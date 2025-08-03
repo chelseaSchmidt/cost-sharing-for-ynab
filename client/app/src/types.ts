@@ -13,6 +13,8 @@ export interface Transaction {
   account_id?: string | number;
   payee_id: string | number | null;
   payee_name: string | null;
+  category_name?: string | null;
+  account_name?: string | null;
   approved?: boolean;
   date?: string;
   amount: number;
