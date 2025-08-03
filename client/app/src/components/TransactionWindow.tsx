@@ -1,10 +1,10 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Transaction from './Transaction';
+import TransactionCard from './Transaction';
 import { Spinner, BaseButton } from './styledComponents';
 import { toId } from './utils/general';
 import breakpoints from '../../../shared/breakpoints';
+import { Transaction } from '../types';
+import { CSSProperties } from 'react';
 
 /* Styled Components */
 
@@ -90,6 +90,25 @@ const TransactionLoadingSpinner = styled(Spinner)`
 
 /* Main Component */
 
+interface Props {
+  loading?: boolean;
+  title?: string;
+  description?: string;
+  transactions: Transaction[];
+  selectedTransactions?: Transaction[];
+  transactionsSharedInOneButNotOther?: Transaction[];
+  toggleTransactionSelection?: (options: { isSelected: boolean; transaction: Transaction }) => void;
+  toggleSelectAll?: (options: { isSelected: boolean }) => void;
+  isSelectAllChecked?: boolean;
+  shouldShowIcon?: boolean;
+  isClickable?: boolean;
+  shouldShowRefreshButton?: boolean;
+  refreshTransactions?: () => void;
+  shouldShowLoadingOverlay?: boolean;
+  containerStyle?: CSSProperties;
+  feedStyle?: CSSProperties;
+}
+
 const TransactionWindow = ({
   loading = false,
   title,
@@ -107,7 +126,7 @@ const TransactionWindow = ({
   shouldShowLoadingOverlay = false,
   containerStyle = {},
   feedStyle = {},
-}) => {
+}: Props) => {
   const isolatedTransactionIds = transactionsSharedInOneButNotOther.map(toId);
   const selectedTransactionIds = selectedTransactions.map(toId);
 
@@ -128,7 +147,7 @@ const TransactionWindow = ({
       {!loading && (
         <>
           <SelectAllCheckboxContainer>
-            {!!transactions.length && isClickable && (
+            {!!transactions.length && isClickable && toggleSelectAll && (
               <SelectAllCheckboxLabel htmlFor="select-all-input">
                 <SelectAllCheckbox
                   type="checkbox"
@@ -144,17 +163,14 @@ const TransactionWindow = ({
           {!!transactions.length && (
             <TransactionFeed style={feedStyle}>
               {transactions.map((transaction) => (
-                <Transaction
+                <TransactionCard
                   key={transaction.id}
                   isClickable={isClickable}
-                  // FIXME: nested loop
                   isSelected={!!selectedTransactionIds.includes(transaction.id)}
                   toggleTransactionSelection={toggleTransactionSelection}
                   transaction={transaction}
-                  // FIXME: nested loop
                   isIsolated={!!isolatedTransactionIds.includes(transaction.id)}
                   shouldShowIcon={shouldShowIcon}
-                  isSelectAllChecked={isSelectAllChecked}
                 />
               ))}
             </TransactionFeed>
@@ -174,25 +190,6 @@ const TransactionWindow = ({
       {!transactions.length && !loading && <em>No transactions</em>}
     </Container>
   );
-};
-
-TransactionWindow.propTypes = {
-  loading: PropTypes.bool,
-  transactions: PropTypes.array.isRequired,
-  selectedTransactions: PropTypes.array,
-  transactionsSharedInOneButNotOther: PropTypes.array,
-  title: PropTypes.string,
-  description: PropTypes.string,
-  toggleTransactionSelection: PropTypes.func,
-  toggleSelectAll: PropTypes.func,
-  isSelectAllChecked: PropTypes.bool,
-  shouldShowIcon: PropTypes.bool,
-  isClickable: PropTypes.bool,
-  containerStyle: PropTypes.object,
-  feedStyle: PropTypes.object,
-  shouldShowRefreshButton: PropTypes.bool,
-  refreshTransactions: PropTypes.func,
-  shouldShowLoadingOverlay: PropTypes.bool,
 };
 
 export default TransactionWindow;

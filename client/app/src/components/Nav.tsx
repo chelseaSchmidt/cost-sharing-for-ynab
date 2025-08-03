@@ -1,8 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import breakpoints from '../../../shared/breakpoints';
-import modalNames from './modalNames';
+import { ModalName } from '../types';
 import { LinkishButton, Hyperlink } from './styledComponents';
 
 const Container = styled.div`
@@ -29,7 +27,11 @@ const MobileSpacer = styled.div`
   }
 `;
 
-const Nav = ({ setActiveModal }) => (
+interface Props {
+  setActiveModal: (modalName: ModalName) => void;
+}
+
+const Nav = ({ setActiveModal }: Props) => (
   <Container>
     <Hyperlink href="mailto:cost.sharing.for.ynab@gmail.com">
       cost.sharing.for.ynab@gmail.com
@@ -43,7 +45,7 @@ const Nav = ({ setActiveModal }) => (
     <DesktopSpacer>·</DesktopSpacer>
     <MobileSpacer />
 
-    <LinkishButton type="button" onClick={() => setActiveModal(modalNames.PRIVACY_POLICY)}>
+    <LinkishButton type="button" onClick={() => setActiveModal(ModalName.PRIVACY_POLICY)}>
       Privacy Policy
     </LinkishButton>
 
@@ -59,9 +61,5 @@ const Nav = ({ setActiveModal }) => (
     </Hyperlink>
   </Container>
 );
-
-Nav.propTypes = {
-  setActiveModal: PropTypes.func.isRequired,
-};
 
 export default Nav;

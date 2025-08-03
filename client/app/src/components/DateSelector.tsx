@@ -1,5 +1,4 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import { CSSProperties } from 'react';
 import styled from 'styled-components';
 import breakpoints from '../../../shared/breakpoints';
 
@@ -33,6 +32,15 @@ const Spacer = styled.div`
 
 /* Main Component */
 
+interface Props {
+  label: string;
+  inputId: string;
+  inputValue: string;
+  inputStyle?: CSSProperties;
+  onChange: (value: number) => void;
+  isLabelVisible?: boolean;
+}
+
 const DateSelector = ({
   label,
   inputId,
@@ -40,7 +48,7 @@ const DateSelector = ({
   inputStyle = {},
   onChange,
   isLabelVisible = true,
-}) => {
+}: Props) => {
   return (
     <Label htmlFor={inputId}>
       {isLabelVisible && label}
@@ -49,21 +57,12 @@ const DateSelector = ({
         type="date"
         id={inputId}
         value={inputValue}
-        onChange={(e) => onChange(e.target.value)}
-        aria-label={isLabelVisible ? null : label}
+        onChange={(e) => onChange(Number(e.target.value))}
+        aria-label={isLabelVisible ? '' : label}
         style={inputStyle}
       />
     </Label>
   );
-};
-
-DateSelector.propTypes = {
-  label: PropTypes.string.isRequired,
-  inputId: PropTypes.string.isRequired,
-  inputValue: PropTypes.string.isRequired,
-  inputStyle: PropTypes.object,
-  onChange: PropTypes.func.isRequired,
-  isLabelVisible: PropTypes.bool,
 };
 
 export default DateSelector;
