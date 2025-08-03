@@ -14,5 +14,13 @@
   "editor.formatOnSaveMode": "file",
   "editor.defaultFormatter": "esbenp.prettier-vscode",
 
-  "cSpell.words": ["Flaticon", "Freepik", "Linkish", "subtransactions", "Ynab"]
+  "cSpell.words": [
+    "Flaticon",
+    "Freepik",
+    "lightgray",
+    "Linkish",
+    "Recategorize",
+    "subtransactions",
+    "Ynab"
+  ]
 }
