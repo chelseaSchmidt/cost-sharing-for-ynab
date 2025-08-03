@@ -36,6 +36,7 @@ import {
 } from './utils/dateHelpers';
 import classifyTransactions from './utils/classifyTransactions';
 import breakpoints from '../../../shared/breakpoints';
+import { MenuItem } from '../../../shared/NavMenu';
 import '../styles/global.css';
 import {
   Account,
@@ -240,7 +241,7 @@ const CostSharingForYnab = () => {
       'Please select shared costs first'
     : 'Please pick an IOU account first';
 
-  const navMenuItems = [
+  const navMenuItems: MenuItem[] = [
     {
       text: 'Home',
       attributes: {
