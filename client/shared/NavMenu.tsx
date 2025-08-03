@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { CSSProperties, useState } from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
-import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { BackgroundOverlay } from '../app/src/components/styledComponents'; // FIXME: move to shared directory
 import breakpoints from './breakpoints';
@@ -48,7 +47,7 @@ const ButtonBar = styled.div`
 
 const menuWidth = '320px';
 
-const Menu = styled.div`
+const Menu = styled.div<{ $isOpen: boolean }>`
   z-index: 6;
   display: flex;
   flex-direction: column;
@@ -120,7 +119,21 @@ const MenuItem = styled.a`
   }
 `;
 
-const NavMenu = ({ menuItems = [] }) => {
+export interface MenuItem {
+  text: string;
+  attributes: React.DetailedHTMLProps<
+    React.AnchorHTMLAttributes<HTMLAnchorElement>,
+    HTMLAnchorElement
+  >;
+  style?: CSSProperties;
+  onClick?: () => void;
+}
+
+interface Props {
+  menuItems: MenuItem[];
+}
+
+const NavMenu = ({ menuItems = [] }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const closeMenu = () => setIsOpen(false);
   const toggleMenu = () => setIsOpen(!isOpen);
@@ -138,7 +151,7 @@ const NavMenu = ({ menuItems = [] }) => {
           <Menu $isOpen={isOpen}>
             <MenuHeader>
               <ExitButton
-                type="button"
+                role="button"
                 aria-label="Exit navigation menu"
                 onClick={closeMenu}
                 tabIndex={0}
@@ -153,7 +166,7 @@ const NavMenu = ({ menuItems = [] }) => {
               return (
                 <React.Fragment key={text}>
                   <MenuItem
-                    {...attributes} // eslint-disable-line react/jsx-props-no-spreading
+                    {...attributes}
                     style={style}
                     onClick={() => {
                       onClick();
@@ -175,17 +188,6 @@ const NavMenu = ({ menuItems = [] }) => {
       </Container>
     </>
   );
-};
-
-NavMenu.propTypes = {
-  menuItems: PropTypes.arrayOf(
-    PropTypes.shape({
-      text: PropTypes.string.isRequired,
-      attributes: PropTypes.object,
-      style: PropTypes.object,
-      onClick: PropTypes.func,
-    }),
-  ),
 };
 
 export default NavMenu;

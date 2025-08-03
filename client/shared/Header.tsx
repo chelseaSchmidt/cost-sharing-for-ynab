@@ -1,9 +1,7 @@
-/* eslint-disable react/jsx-props-no-spreading */
-import React from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import NavMenu from './NavMenu';
+import NavMenu, { MenuItem } from './NavMenu';
 import breakpoints from './breakpoints';
+import { CSSProperties } from 'react';
 
 const Container = styled.header`
   box-sizing: border-box;
@@ -70,7 +68,12 @@ const WorksWithYnabIconSmall = styled.img`
   }
 `;
 
-const Header = ({ style = {}, navMenuItems }) => {
+interface Props {
+  navMenuItems: MenuItem[];
+  style?: CSSProperties;
+}
+
+const Header = ({ style = {}, navMenuItems }: Props) => {
   const ynabIconAttributes = {
     src: 'works_with_ynab.svg',
     alt: 'Works with YNAB',
@@ -89,11 +92,6 @@ const Header = ({ style = {}, navMenuItems }) => {
       {!!navMenuItems?.length && <NavMenu menuItems={navMenuItems} />}
     </Container>
   );
-};
-
-Header.propTypes = {
-  navMenuItems: PropTypes.array,
-  style: PropTypes.object,
 };
 
 export default Header;

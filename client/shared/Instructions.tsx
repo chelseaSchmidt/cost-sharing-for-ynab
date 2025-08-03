@@ -1,5 +1,3 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import breakpoints from './breakpoints';
 
@@ -49,7 +47,7 @@ const Divider = styled.div`
 
 /* Helper Functions */
 
-const parseMarkdownToHtml = (text) => {
+const parseMarkdownToHtml = (text: string) => {
   const boldPattern = /(\*\*)/;
   const italicPattern = /(__)/;
 
@@ -80,8 +78,14 @@ const parseMarkdownToHtml = (text) => {
 
 /* Main Component */
 
+interface ListItem {
+  text: string;
+  subList?: { text: string; isHidden?: boolean }[];
+  isHidden?: boolean;
+}
+
 const Instructions = ({ isHomePage = false, style = {} }) => {
-  const listItemsBasic = [
+  const listItemsBasic: ListItem[] = [
     {
       text: 'Add an **IOU account in YNAB:** this account will track what you are owed from the person sharing a card/account with you.',
       subList: [
@@ -110,7 +114,7 @@ const Instructions = ({ isHomePage = false, style = {} }) => {
     },
   ];
 
-  const listItemsAdvanced = [
+  const listItemsAdvanced: ListItem[] = [
     {
       text: 'This will involve adjusting how you categorize transactions in YNAB. Create a **parent** category in your YNAB budget named something like "Shared Expenses"',
     },
@@ -145,14 +149,9 @@ const Instructions = ({ isHomePage = false, style = {} }) => {
   );
 };
 
-Instructions.propTypes = {
-  isHomePage: PropTypes.bool,
-  style: PropTypes.object,
-};
-
 export default Instructions;
 
-function ListItems({ items }) {
+function ListItems({ items }: { items: ListItem[] }) {
   return items.map(
     (item) =>
       !item.isHidden && (
@@ -173,7 +172,3 @@ function ListItems({ items }) {
       ),
   );
 }
-
-ListItems.propTypes = {
-  items: PropTypes.arrayOf(PropTypes.object),
-};
