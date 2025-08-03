@@ -13,7 +13,7 @@
     "module": "nodenext",
     "moduleResolution": "nodenext",
     "baseUrl": "./",
-    "allowJs": true,
+    "allowJs": false,
     "declaration": true,
     "sourceMap": true,
     "outDir": "dist",
