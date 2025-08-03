@@ -9,11 +9,11 @@ import DateSelector from './DateSelector';
 import TransactionWindow from './TransactionWindow';
 import Confirmation from './Confirmation';
 import Modal from './Modal';
-import Header from '../../shared/Header';
+import Header from '../../../shared/Header';
 import Nav from './Nav';
 import Error from './Error';
-import PrivacyPolicy from '../../shared/PrivacyPolicy';
-import Instructions from '../../shared/Instructions';
+import PrivacyPolicy from '../../../shared/PrivacyPolicy';
+import Instructions from '../../../shared/Instructions';
 import {
   SectionHeader,
   BaseButton,
@@ -37,7 +37,7 @@ import {
 } from './utils/dateHelpers';
 import classifyTransactions from './utils/classifyTransactions';
 import modalNames from './modalNames';
-import breakpoints from '../../shared/breakpoints';
+import breakpoints from '../../../shared/breakpoints';
 import '../styles/global.css';
 
 /* Styled Components */

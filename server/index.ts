@@ -6,8 +6,11 @@ import path from 'path';
 const server = express();
 
 server.use(morgan('dev'));
-server.use(express.static(path.resolve(__dirname, '..', 'client', 'landingPage')));
-server.use('/cost-sharer', express.static(path.resolve(__dirname, '..', 'client', 'app')));
+server.use(express.static(path.resolve(__dirname, '..', 'client', 'landingPage', 'public')));
+server.use(
+  '/cost-sharer',
+  express.static(path.resolve(__dirname, '..', 'client', 'app', 'public')),
+);
 
 const port = process.env['PORT'] || 3000;
 

@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import { BackgroundOverlay } from '../appSrc/components/styledComponents'; // FIXME: move to shared directory
+import { BackgroundOverlay } from '../app/src/components/styledComponents'; // FIXME: move to shared directory
 import breakpoints from './breakpoints';
 
 const Container = styled.div`

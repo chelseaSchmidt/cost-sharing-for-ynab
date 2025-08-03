@@ -1,11 +1,12 @@
 {
   "include": [
-    "client/appSrc/**/*",
-    "client/landingPageSrc/**/*",
+    "client/app/**/*",
+    "client/landingPage/**/*",
     "client/shared/**/*",
     "server/**/*",
     "*.ts"
   ],
+  "exclude": ["client/app/public/**/*", "client/landingPage/public/**/*"],
   "compilerOptions": {
     "target": "esnext",
     "jsx": "react-jsx",
