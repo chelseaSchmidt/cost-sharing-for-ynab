@@ -12,5 +12,6 @@ todo.txt
 start-http.sh
 start-https.sh
 artifact-registry-key.json
-client/landingPage/assets
+client/landingPage/public/assets
+client/app/public/assets
 dist

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import breakpoints from '../../shared/breakpoints';
+import breakpoints from '../../../shared/breakpoints';
 
 /* Styled Components */
 

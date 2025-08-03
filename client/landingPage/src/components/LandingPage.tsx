@@ -1,13 +1,13 @@
 import styled from 'styled-components';
-import PrivacyPolicy from '../shared/PrivacyPolicy';
-import Header from '../shared/Header';
-import Instructions from '../shared/Instructions';
-import { Hyperlink } from '../appSrc/components/styledComponents'; // FIXME: move to shared directory
-import creditCardSrc from './assets/creditCard.png';
-import lightBulbSrc from './assets/lightBulb.png';
-import puzzleIconSrc from './assets/puzzle.png';
-import welcomeIconSrc from './assets/welcome.png';
-import './global.css';
+import PrivacyPolicy from '../../../shared/PrivacyPolicy';
+import Header from '../../../shared/Header';
+import Instructions from '../../../shared/Instructions';
+import { Hyperlink } from '../../../app/src/components/styledComponents'; // FIXME: move to shared directory
+import creditCardSrc from '../assets/creditCard.png';
+import lightBulbSrc from '../assets/lightBulb.png';
+import puzzleIconSrc from '../assets/puzzle.png';
+import welcomeIconSrc from '../assets/welcome.png';
+import '../global.css';
 
 /* Styled Components */
 
