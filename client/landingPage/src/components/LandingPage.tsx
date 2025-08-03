@@ -27,7 +27,7 @@ const CreditCardIcon = styled.img`
   object-fit: contain;
 `;
 
-const Subtitle = styled.p`
+const Subtitle = styled.header`
   margin: 40px 0 40px 0;
   width: 100%;
   min-width: 190px;
@@ -174,34 +174,19 @@ const Footer = styled.footer`
 /* Main Component */
 
 const LandingPage = () => {
-  const currentUrl = window.location.href;
-  const appEndpoint = 'cost-sharer';
-  const ynabAuthScreenLink = `https://app.youneedabudget.com/oauth/authorize?client_id=4ac8ca3c431ac99075e603496136606d7da8102f6178ce2796566b30c4659988&redirect_uri=${currentUrl}${appEndpoint}&response_type=token`;
+  const APP_ENDPOINT = 'cost-sharer';
+
+  const ynabAuthLink = `https://app.youneedabudget.com/oauth/authorize?client_id=4ac8ca3c431ac99075e603496136606d7da8102f6178ce2796566b30c4659988&redirect_uri=${window.location.href}${APP_ENDPOINT}&response_type=token`;
+
   const navMenuItems: MenuItem[] = [
-    {
-      text: 'Start',
-      attributes: {
-        href: ynabAuthScreenLink,
-      },
-      style: {
-        fontWeight: 'bold',
-      },
-    },
-    {
-      text: 'Preview Without a YNAB Account',
-      attributes: {
-        href: `/${appEndpoint}`,
-      },
-    },
+    { text: 'Start', attributes: { href: ynabAuthLink }, style: { fontWeight: 'bold' } },
+    { text: 'Preview Without a YNAB Account', attributes: { href: `/${APP_ENDPOINT}` } },
     {
       text: 'Privacy Policy',
       onClick: () => {
         document.getElementById('privacy-policy-container')?.scrollIntoView(true);
       },
-      attributes: {
-        type: 'button',
-        as: 'button',
-      },
+      attributes: { type: 'button', as: 'button' },
     },
     {
       text: 'GitHub Repo',
@@ -223,37 +208,28 @@ const LandingPage = () => {
         <Subtitle>Conveniently manage a shared credit card in YNAB.</Subtitle>
 
         <Description>
-          <DescriptionSection>
-            <DescriptionIcon src={welcomeIconSrc} alt="Welcome" />
-
-            <DescriptionText>
-              Hi fellow YNABer! If you&apos;re using a shared credit card or bank account for
-              communal expenses, and want to track it in YNAB more easily, you&apos;re in the right
-              place.
-            </DescriptionText>
-          </DescriptionSection>
-
-          <DescriptionSection>
-            <DescriptionIcon src={puzzleIconSrc} alt="The Problem" />
-
-            <DescriptionText>
-              A shared bank account or credit card is difficult to track in YNAB without your
-              expenses appearing inflated. Maybe you&apos;ve resorted to excluding it from YNAB
-              completely. Or, maybe you&apos;re throwing the costs into a blanket &quot;shared
-              expense&quot; category, and later divvying up the total - which fixes the inflation
-              problem, but masks where exactly the dollars are going.
-            </DescriptionText>
-          </DescriptionSection>
-
-          <DescriptionSection>
-            <DescriptionIcon src={lightBulbSrc} alt="The Solution" />
-
-            <DescriptionText>
-              Cost Sharing for YNAB enables you to classify your transactions across any number of
-              categories, and then at the click of a button, remove someone else&apos;s share of the
-              expenses from each category. No more inflated expenses or catch-all category!
-            </DescriptionText>
-          </DescriptionSection>
+          {[
+            {
+              src: welcomeIconSrc,
+              alt: 'Welcome',
+              text: "Hi fellow YNABer! If you're using a shared credit card or bank account for communal expenses, and want to track it in YNAB more easily, you're in the right place.",
+            },
+            {
+              src: puzzleIconSrc,
+              alt: 'The Problem',
+              text: 'A shared bank account or credit card is difficult to track in YNAB without your expenses appearing inflated. Maybe you\'ve resorted to excluding it from YNAB completely. Or, maybe you\'re throwing the costs into a blanket "shared expense" category, and later divvying up the total - which fixes the inflation problem, but masks where exactly the dollars are going.',
+            },
+            {
+              src: lightBulbSrc,
+              alt: 'The Solution',
+              text: "Cost Sharing for YNAB enables you to classify your transactions across any number of categories, and then at the click of a button, remove someone else's share of the expenses from each category. No more inflated expenses or catch-all category!",
+            },
+          ].map(({ src, alt, text }) => (
+            <DescriptionSection>
+              <DescriptionIcon src={src} alt={alt} />
+              <DescriptionText>{text}</DescriptionText>
+            </DescriptionSection>
+          ))}
         </Description>
 
         <Divider />
@@ -264,23 +240,11 @@ const LandingPage = () => {
           <Instructions isHomePage />
         </InstructionsContainer>
 
-        <Button
-          type="button"
-          onClick={(e) => {
-            e.preventDefault();
-            window.location.href = ynabAuthScreenLink;
-          }}
-        >
+        <Button as="a" href={ynabAuthLink}>
           Start
         </Button>
 
-        <Button
-          type="button"
-          onClick={(e) => {
-            e.preventDefault();
-            window.location.href = `/${appEndpoint}`;
-          }}
-        >
+        <Button as="a" href={`/${APP_ENDPOINT}`}>
           Preview without a YNAB account
         </Button>
 
@@ -301,38 +265,26 @@ const LandingPage = () => {
       </ContentContainer>
 
       <Footer>
-        <Hyperlink
-          href="https://www.flaticon.com/search?word=credit%20card&type=icon"
-          title="credit card icons"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Credit card icons created by Freepik - Flaticon
-        </Hyperlink>
-        <Hyperlink
-          href="https://www.flaticon.com/free-icons/welcome"
-          title="welcome icons"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Welcome icons created by Freepik - Flaticon
-        </Hyperlink>
-        <Hyperlink
-          href="https://www.flaticon.com/free-icons/puzzle"
-          title="puzzle icons"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Puzzle icons created by Freepik - Flaticon
-        </Hyperlink>
-        <Hyperlink
-          href="https://www.flaticon.com/free-icons/solution"
-          title="solution icons"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Solution icons created by Freepik - Flaticon
-        </Hyperlink>
+        {[
+          {
+            href: 'https://www.flaticon.com/search?word=credit%20card&type=icon',
+            children: 'Credit card icons created by Freepik - Flaticon',
+          },
+          {
+            href: 'https://www.flaticon.com/free-icons/welcome',
+            children: ' Welcome icons created by Freepik - Flaticon',
+          },
+          {
+            href: 'https://www.flaticon.com/free-icons/puzzle',
+            children: 'Puzzle icons created by Freepik - Flaticon',
+          },
+          {
+            href: 'https://www.flaticon.com/free-icons/solution',
+            children: 'Solution icons created by Freepik - Flaticon',
+          },
+        ].map((props) => (
+          <Hyperlink {...props} target="_blank" rel="noreferrer" />
+        ))}
       </Footer>
     </Container>
   );
