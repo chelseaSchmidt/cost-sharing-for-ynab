@@ -1,5 +1,4 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import { CSSProperties } from 'react';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -60,7 +59,21 @@ const LargeExitButton = styled.button`
   }
 `;
 
-const Popup = ({ onClose, message, buttonText = 'Close', containerStyle, closeButtonStyle }) => (
+interface Props {
+  onClose: () => void;
+  message: string;
+  buttonText?: string;
+  containerStyle?: CSSProperties;
+  closeButtonStyle?: CSSProperties;
+}
+
+const Popup = ({
+  onClose,
+  message,
+  buttonText = 'Close',
+  containerStyle,
+  closeButtonStyle,
+}: Props) => (
   <Container style={containerStyle}>
     <div>
       <Message>{message}</Message>
@@ -73,13 +86,5 @@ const Popup = ({ onClose, message, buttonText = 'Close', containerStyle, closeBu
     </LargeExitButton>
   </Container>
 );
-
-Popup.propTypes = {
-  message: PropTypes.string.isRequired,
-  onClose: PropTypes.func.isRequired,
-  buttonText: PropTypes.string,
-  containerStyle: PropTypes.object,
-  closeButtonStyle: PropTypes.object,
-};
 
 export default Popup;

@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign, camelcase */
 import { useState, useEffect, useCallback } from 'react';
 import _ from 'lodash';
 import styled from 'styled-components';
@@ -30,7 +29,7 @@ import {
 } from './utils/networkRequests';
 import {
   convertDateToString,
-  convertStringToDate,
+  toDate,
   isTransactionBeforeDate,
   getFirstDateOfLastMonth,
   getLastDateOfLastMonth,
@@ -38,7 +37,16 @@ import {
 import classifyTransactions from './utils/classifyTransactions';
 import breakpoints from '../../../shared/breakpoints';
 import '../styles/global.css';
-import { BudgetData, ClassifiedTransactions, ErrorData, ModalName, Transaction } from '../types';
+import {
+  Account,
+  BudgetData,
+  ClassifiedTransactions,
+  DraftTransaction,
+  ErrorData,
+  ModalName,
+  ParentCategory,
+  Transaction,
+} from '../types';
 
 /* Styled Components */
 
@@ -212,8 +220,8 @@ const CostSharingForYnab = () => {
     sharedAccountErrorTransactions: [],
     sharedCategoryErrorTransactions: [],
   });
-  const [selectedAccounts, setSelectedAccounts] = useState([]);
-  const [selectedParentCategories, setSelectedParentCategories] = useState([]);
+  const [selectedAccounts, setSelectedAccounts] = useState<Account[]>([]);
+  const [selectedParentCategories, setSelectedParentCategories] = useState<ParentCategory[]>([]);
   const [iouAccountId, setIouAccountId] = useState('');
   const [iouAccountTransactions, setIouAccountTransactions] = useState<Transaction[]>([]);
   const [isIouTransactionLoading, setIsIouTransactionLoading] = useState(false);
@@ -371,7 +379,7 @@ const CostSharingForYnab = () => {
       {} as Record<string, number>,
     );
 
-    const summaryTransaction: Transaction = {
+    const summaryTransaction: DraftTransaction = {
       account_id: iouAccountId,
       date: convertDateToString(dateToSplitCosts),
       amount: _.reduce(owedCategorizedAmounts, (sum, amt) => sum - amt, 0),
@@ -530,7 +538,7 @@ const CostSharingForYnab = () => {
               inputId="transactions-start-date"
               inputValue={convertDateToString(transactionsStartDate)}
               inputStyle={{ maxWidth: '200px' }}
-              onChange={(value) => setTransactionsStartDate(convertStringToDate(value))}
+              onChange={(value) => setTransactionsStartDate(toDate(value))}
             />
 
             <Spacer />
@@ -540,7 +548,7 @@ const CostSharingForYnab = () => {
               inputId="transactions-end-date"
               inputValue={convertDateToString(transactionsEndDate)}
               inputStyle={{ maxWidth: '200px' }}
-              onChange={(value) => setTransactionsEndDate(convertStringToDate(value, false))}
+              onChange={(value) => setTransactionsEndDate(toDate(value, false))}
             />
           </DateRangeForm>
         </SectionContent>
@@ -634,7 +642,7 @@ const CostSharingForYnab = () => {
               isLabelVisible={false}
               inputId="cost-split-date-selector"
               inputValue={convertDateToString(dateToSplitCosts)}
-              onChange={(value) => setDateToSplitCosts(convertStringToDate(value))}
+              onChange={(value) => setDateToSplitCosts(toDate(value))}
             />
 
             <SplitTransactionsButton

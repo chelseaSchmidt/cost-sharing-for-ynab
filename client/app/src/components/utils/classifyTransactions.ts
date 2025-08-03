@@ -1,15 +1,20 @@
-/* eslint-disable camelcase */
-
+import { Account, ClassifiedTransactions, ParentCategory, Transaction } from '../../types';
 import { toId } from './general';
+
+interface Args {
+  displayedTransactions: Transaction[];
+  selectedAccounts: Account[];
+  selectedParentCategories: ParentCategory[];
+}
 
 const classifyTransactions = ({
   displayedTransactions,
   selectedAccounts,
   selectedParentCategories,
-}) => {
-  const sharedAccountIds = selectedAccounts.map((acct) => acct.accountId);
+}: Args) => {
+  const sharedAccountIds = selectedAccounts.map((acct) => acct.id);
   const sharedCategoryIds = selectedParentCategories
-    .flatMap(({ subCategories }) => subCategories)
+    .flatMap(({ categories }) => categories)
     .map(toId);
 
   // filter by account if no categories selected
@@ -24,7 +29,7 @@ const classifyTransactions = ({
   }
 
   // otherwise, filter by category, and use account info to generate warnings
-  return displayedTransactions.reduce(
+  return displayedTransactions.reduce<ClassifiedTransactions>(
     (accum, transaction) => {
       const { account_id, category_id } = transaction;
 

@@ -1,28 +1,60 @@
 export interface Account {
-  closed: boolean;
+  closed?: boolean;
+  name: string;
+  id: string | number;
+}
+
+export interface Category {
+  id: string | number;
 }
 
 export interface ParentCategory {
-  hidden: boolean;
+  hidden?: boolean;
+  id: string;
+  name: string;
+  categories: Category[];
 }
 
 export interface Transaction {
-  id?: string | number;
-  transfer_account_id?: string | number;
-  category_id: string | number | null;
-  account_id?: string | number;
+  id: string | number;
+  transfer_account_id: string | number;
+  category_id: string | number;
+  account_id: string | number;
   payee_id: string | number | null;
   payee_name: string | null;
-  category_name?: string | null;
-  account_name?: string | null;
-  approved?: boolean;
-  date?: string;
+  category_name: string | null;
+  account_name: string | null;
+  approved: boolean;
+  date: string;
   amount: number;
   memo: string | null;
-  cleared?: string;
-  flag_color?: string | null;
-  import_id?: string | number | null;
-  subtransactions?: Transaction[];
+  cleared: string;
+  flag_color: string | null;
+  import_id: string | number | null;
+  subtransactions: Transaction[];
+}
+
+export interface DraftTransaction {
+  account_id: string | number;
+  date: string;
+  amount: number;
+  payee_id: string | number | null;
+  payee_name: string | null;
+  category_id: string | number | null;
+  memo: string | null;
+  cleared: 'uncleared';
+  approved: boolean;
+  flag_color: string | null;
+  import_id: string | number | null;
+  subtransactions: DraftSubTransaction[];
+}
+
+export interface DraftSubTransaction {
+  amount: number;
+  payee_id: string | number | null;
+  payee_name: string | null;
+  category_id: string | number | null;
+  memo: string | null;
 }
 
 export interface ClassifiedTransactions {

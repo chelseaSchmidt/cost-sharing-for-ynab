@@ -1,6 +1,5 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { Account } from '../types';
 
 /* Styled Components */
 
@@ -16,7 +15,13 @@ const Select = styled.select`
 
 /* Main Component */
 
-const AccountSelector = ({ accounts, setAccountId, optionIdPrefix = '' }) => {
+interface Props {
+  accounts: Account[];
+  setAccountId: (id: string) => void;
+  optionIdPrefix?: string;
+}
+
+const AccountSelector = ({ accounts, setAccountId, optionIdPrefix = '' }: Props) => {
   return (
     <Container>
       <Select onChange={(e) => setAccountId(e.target.value)} defaultValue="none">
@@ -32,12 +37,6 @@ const AccountSelector = ({ accounts, setAccountId, optionIdPrefix = '' }) => {
       </Select>
     </Container>
   );
-};
-
-AccountSelector.propTypes = {
-  accounts: PropTypes.array.isRequired,
-  setAccountId: PropTypes.func.isRequired,
-  optionIdPrefix: PropTypes.string,
 };
 
 export default AccountSelector;
