@@ -3,7 +3,7 @@ WORKDIR /app
 COPY . .
 RUN npm install
 RUN npm run build-prod
-RUN npm run build-landing-page-prod
+RUN npm run build-home-prod
 ARG PORT
 ENV MODE=prod
 ENV PORT=$PORT
