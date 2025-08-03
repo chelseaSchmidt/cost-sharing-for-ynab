@@ -12,14 +12,19 @@ Check out the live app here! https://costsharingforynab.com. Cost Sharing for YN
 ## Run the app in development
 
 - `npm install` in project root
-- Run `nodemon` and `webpack` in watch mode:
+
+- Bundle frontend and start server:
+
   - Terminal 1: `npm run watch-dev`
-  - Terminal 2: `npm run watch-landing-page-dev`
+  - Terminal 2: `npm run watch-home-dev`
   - Terminal 3: `npm start`
+
 - Or, run a local Docker container:
+
   - Run the Docker daemon
   - Build image: `docker build --build-arg PORT=80 -t cs4y .`
   - Run container at port 3000: `docker run -d -p 3000:80 cs4y:latest`
+
 - Navigate to http://localhost:3000
 
 ## Other

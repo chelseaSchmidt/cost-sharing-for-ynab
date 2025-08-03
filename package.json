@@ -7,9 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node server",
     "build-prod": "webpack --config client/app/webpack.prod.js",
-    "build-landing-page-prod": "webpack --config client/landingPage/webpack.prod.js",
+    "build-home-prod": "webpack --config client/home/webpack.prod.js",
     "watch-dev": "webpack -w --config client/app/webpack.dev.js",
-    "watch-landing-page-dev": "webpack --config client/landingPage/webpack.dev.js -w",
+    "watch-home-dev": "webpack --config client/home/webpack.dev.js -w",
     "linter": "npx eslint ./ --ext .js,.jsx"
   },
   "repository": {

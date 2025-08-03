@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-  entry: './client/landingPage/src/index.tsx',
+  entry: './client/home/src/index.tsx',
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'public'),
