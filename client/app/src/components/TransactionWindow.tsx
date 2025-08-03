@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import TransactionCard from './Transaction';
+import TransactionCard from './TransactionCard';
 import { Spinner, BaseButton } from './styledComponents';
 import { toId } from './utils/general';
 import breakpoints from '../../../shared/breakpoints';
@@ -119,8 +119,8 @@ const TransactionWindow = ({
   toggleTransactionSelection,
   toggleSelectAll,
   isSelectAllChecked,
-  shouldShowIcon,
-  isClickable,
+  shouldShowIcon = false,
+  isClickable = false,
   shouldShowRefreshButton = false,
   refreshTransactions = () => {},
   shouldShowLoadingOverlay = false,

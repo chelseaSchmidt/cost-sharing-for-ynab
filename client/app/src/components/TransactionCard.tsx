@@ -1,14 +1,14 @@
 /* eslint-disable camelcase */
-import React, { useState } from 'react';
+import { useState } from 'react';
 import moment from 'moment';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { Transaction } from '../types';
 import ElevatedTooltip from './ElevatedTooltip';
 import { WarningIcon } from './styledComponents';
 
 /* Styled Components */
 
-const Container = styled.div`
+const Container = styled.div<{ $isClickable: boolean }>`
   display: flex;
   align-items: center;
   border: 1px solid lightgray;
@@ -65,26 +65,35 @@ const TransactionWarningIcon = styled(WarningIcon)`
 
 /* Main Component */
 
-const Transaction = ({
+interface Props {
+  isClickable: boolean;
+  isSelected: boolean;
+  toggleTransactionSelection?: (options: { isSelected: boolean; transaction: Transaction }) => void;
+  transaction: Transaction;
+  isIsolated: boolean;
+  shouldShowIcon: boolean;
+}
+
+const TransactionCard = ({
   isClickable,
   isSelected,
   toggleTransactionSelection,
   transaction,
   isIsolated,
   shouldShowIcon,
-}) => {
+}: Props) => {
   const { date, amount, payee_name, category_name, account_name } = transaction;
 
-  const [tooltipCoordinates, setTooltipCoordinates] = useState(null);
+  const [tooltipCoordinates, setTooltipCoordinates] = useState<[number, number] | null>(null);
 
   const onClick = () => {
-    toggleTransactionSelection({
+    toggleTransactionSelection?.({
       isSelected: !isSelected,
       transaction,
     });
   };
 
-  const getElementCoordinates = (element) => [
+  const getElementCoordinates = (element: HTMLElement): [number, number] => [
     element.getBoundingClientRect().x,
     element.getBoundingClientRect().y,
   ];
@@ -125,7 +134,7 @@ const Transaction = ({
 
           {isIsolated && shouldShowIcon && (
             <TransactionWarningIcon
-              onMouseEnter={(e) => setTooltipCoordinates(getElementCoordinates(e.target))}
+              onMouseEnter={(e) => setTooltipCoordinates(getElementCoordinates(e.currentTarget))}
               onMouseLeave={() => setTooltipCoordinates(null)}
               onClick={(e) => e.stopPropagation()}
             >
@@ -145,22 +154,4 @@ const Transaction = ({
   );
 };
 
-Transaction.propTypes = {
-  isClickable: PropTypes.bool,
-  toggleTransactionSelection: PropTypes.func,
-  isIsolated: PropTypes.bool.isRequired,
-  shouldShowIcon: PropTypes.bool,
-  isSelected: PropTypes.bool.isRequired,
-  transaction: PropTypes.shape({
-    date: PropTypes.string,
-    amount: PropTypes.number,
-    memo: PropTypes.string,
-    cleared: PropTypes.string,
-    approved: PropTypes.bool,
-    payee_name: PropTypes.string,
-    category_name: PropTypes.string,
-    account_name: PropTypes.string,
-  }).isRequired,
-};
-
-export default Transaction;
+export default TransactionCard;
