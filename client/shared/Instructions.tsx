@@ -90,7 +90,7 @@ const Instructions = ({ isHomePage = false, style = {} }) => {
       text: 'Add an **IOU account in YNAB:** this account will track what you are owed from the person sharing a card/account with you.',
       subList: [
         { text: 'Click **Add Account** in YNAB' },
-        { text: "Select an account type of **Checking** (or Cash - this doesn't matter so much)" },
+        { text: "Select an account type of **Checking** (or Cash—this doesn't matter so much)" },
         { text: 'Nickname the account something like **"Owed from [__insert person\'s name__]"**' },
       ],
     },
@@ -123,7 +123,7 @@ const Instructions = ({ isHomePage = false, style = {} }) => {
     },
     { text: 'Classify any shared-cost transactions to these categories' },
     {
-      text: 'When using Cost Sharing for YNAB, select your "Shared Expenses" category in the available options.  ',
+      text: 'When using Cost Sharing for YNAB, select your "Shared Expenses" category in the available options.',
       subList: [
         {
           text: 'This will make all transactions in your "Shared Expenses" sub-categories available to split, whether or not they\'re charged to your shared accounts.',

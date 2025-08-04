@@ -211,7 +211,7 @@ const Home = () => {
             {
               src: puzzleIconSrc,
               alt: 'The Problem',
-              text: 'A shared bank account or credit card is difficult to track in YNAB without your expenses appearing inflated. Maybe you\'ve resorted to excluding it from YNAB completely. Or, maybe you\'re throwing the costs into a blanket "shared expense" category, and later divvying up the total - which fixes the inflation problem, but masks where exactly the dollars are going.',
+              text: 'A shared bank account or credit card is difficult to track in YNAB without your expenses appearing inflated. Maybe you\'ve resorted to excluding it from YNAB completely. Or, maybe you\'re throwing the costs into a blanket "shared expense" category, and later divvying up the total—which fixes the inflation problem, but masks where exactly the dollars are going.',
             },
             {
               src: lightBulbSrc,
