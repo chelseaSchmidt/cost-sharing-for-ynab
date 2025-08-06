@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import NavMenu, { MenuItem } from './NavMenu';
 import breakpoints from './breakpoints';
 import { CSSProperties } from 'react';
+import colors from './colors';
 
 const Container = styled.header`
   box-sizing: border-box;
@@ -12,7 +13,7 @@ const Container = styled.header`
   position: sticky;
   top: 0;
   color: white;
-  background-color: #2f73b3;
+  background-color: ${colors.primary};
   margin: 0;
   margin-bottom: 50px;
   padding: 10px 20px;

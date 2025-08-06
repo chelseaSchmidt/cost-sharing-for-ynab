@@ -14,11 +14,3 @@ body {
   flex-direction: column;
   letter-spacing: 0.1px;
 }
-
-button {
-  cursor: pointer;
-}
-
-button:disabled {
-  cursor: not-allowed;
-}

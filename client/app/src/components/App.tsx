@@ -5,6 +5,7 @@ import AccountButtons from './AccountButtons';
 import CategoryButtons from './CategoryButtons';
 import AccountSelector from './AccountSelector';
 import DateSelector from './DateSelector';
+import InfoIcon from './InfoIcon';
 import TransactionWindow from './TransactionWindow';
 import Confirmation from './Confirmation';
 import Modal from './Modal';
@@ -13,7 +14,7 @@ import Nav from './Nav';
 import Error from './Error';
 import PrivacyPolicy from '../../../shared/PrivacyPolicy';
 import Instructions from '../../../shared/Instructions';
-import { SectionHeader, BaseButton, WarningIcon, Tooltip, Spinner } from './styledComponents';
+import { SectionHeader, WarningIcon, Tooltip, Spinner, OptionButton } from './styledComponents';
 import {
   getTransactionsSinceDate,
   getAccounts,
@@ -30,7 +31,7 @@ import {
 import classifyTransactions from './utils/classifyTransactions';
 import breakpoints from '../../../shared/breakpoints';
 import { MenuItem } from '../../../shared/NavMenu';
-import { Hyperlink } from '../../../shared/styledComponents';
+import { Button, Hyperlink } from '../../../shared/styledComponents';
 import '../styles/global.css';
 import {
   Account,
@@ -53,6 +54,7 @@ const Container = styled.div`
 `;
 
 const InstructionsButtonContainer = styled.div`
+  font-size: 14px;
   margin-top: -25px;
   margin-bottom: 25px;
 `;
@@ -69,7 +71,7 @@ const SectionTile = styled.section`
   max-width: 1290px;
   padding: 50px ${desktopLeftRightTilePadding}px;
   margin-bottom: 50px;
-  border-radius: 12px;
+  border-radius: 5px;
   box-shadow: 0 0 3px 0 #9298a2;
   background-color: white;
 
@@ -100,6 +102,10 @@ const Subtitle = styled.p`
   margin-bottom: 20px;
 `;
 
+const SubtitleText = styled.span`
+  margin-right: 5px;
+`;
+
 const RowOrColumn = styled.div`
   display: flex;
   align-items: center;
@@ -114,29 +120,22 @@ const DateRangeForm = styled.form`
   flex-direction: column;
 `;
 
-const ShowTransactionsButton = styled(BaseButton)`
-  margin: 20px 10px 0 10px;
-`;
-
-const ReviewTransactionsButton = styled(BaseButton)`
-  background-color: maroon;
+const ReviewTransactionsButton = styled(Button)`
+  background: rgb(128, 0, 0);
   margin-left: 10px;
-  border: none;
-  box-shadow: 0 0 3px 0 black;
+
+  &:active {
+    background: rgba(128, 0, 0, 0.7);
+  }
 
   &:hover {
-    color: maroon;
+    color: rgb(128, 0, 0);
   }
 `;
 
-const SplitTransactionsButton = styled(BaseButton)`
-  box-sizing: border-box;
+const SplitTransactionsButton = styled(Button)`
   position: relative;
-  height: 35px;
-  width: 250px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  white-space: nowrap;
   margin: 0 10px;
 
   @media (max-width: ${breakpoints.mobile}) {
@@ -158,6 +157,7 @@ const ButtonDisabledPopup = styled(Tooltip)`
   margin-left: -100px;
   padding: 10px 5px;
   font-size: 12px;
+  white-space: normal;
 
   &::after {
     content: '';
@@ -192,6 +192,16 @@ const TransactionWindowContainer = styled.div`
   }
 `;
 
+const TooltipParagraph = styled.p`
+  all: unset;
+  display: block;
+  margin-bottom: 10px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+`;
+
 const Spacer = styled.div`
   height: 20px;
 `;
@@ -201,6 +211,7 @@ const Spacer = styled.div`
 const App = () => {
   const [isPageLoading, setIsPageLoading] = useState(true);
   const [areTransactionsLoading, setAreTransactionsLoading] = useState(false);
+  const [isAdvancedMode, setIsAdvancedMode] = useState(false);
   const [budgetData, setBudgetData] = useState<BudgetData>({
     accounts: [],
     parentCategories: [],
@@ -243,17 +254,23 @@ const App = () => {
       },
     },
     {
-      text: 'Privacy Policy',
-      onClick: () => {
-        setActiveModal(ModalName.PRIVACY_POLICY);
-      },
+      text: 'Guide',
+      onClick: () => setActiveModal(ModalName.INSTRUCTIONS),
       attributes: {
         type: 'button',
         as: 'button',
       },
     },
     {
-      text: 'GitHub Repo',
+      text: 'Privacy Policy',
+      onClick: () => setActiveModal(ModalName.PRIVACY_POLICY),
+      attributes: {
+        type: 'button',
+        as: 'button',
+      },
+    },
+    {
+      text: 'Source Code & Bug Reporting',
       attributes: {
         href: 'https://github.com/chelseaSchmidt/cost-sharing-for-ynab',
         target: '_blank',
@@ -428,6 +445,17 @@ const App = () => {
     }
   }, [areTransactionsLoading]);
 
+  const learnMoreLink = (
+    <Hyperlink
+      as="button"
+      type="button"
+      style={{ color: 'white', margin: 0 }}
+      onClick={() => setActiveModal(ModalName.INSTRUCTIONS)}
+    >
+      Learn more
+    </Hyperlink>
+  );
+
   return isPageLoading ? (
     'Loading...'
   ) : (
@@ -444,7 +472,7 @@ const App = () => {
 
           {activeModal === ModalName.TRANSACTION_REVIEW && (
             <TransactionWindow
-              title="Transactions in shared accounts not categorized to shared expense categories"
+              title="Transactions in shared accounts, but not in shared categories"
               description="This list is meant to help you catch misclassified transactions. Recategorize them in YNAB as needed and then refresh the list."
               loading={areTransactionsLoading}
               shouldShowLoadingOverlay
@@ -485,7 +513,7 @@ const App = () => {
 
       <InstructionsButtonContainer>
         <Hyperlink as="button" type="button" onClick={() => setActiveModal(ModalName.INSTRUCTIONS)}>
-          Instructions
+          Help
         </Hyperlink>
       </InstructionsButtonContainer>
 
@@ -493,7 +521,40 @@ const App = () => {
         <SectionHeader>Choose Accounts and Categories</SectionHeader>
 
         <SectionContent>
-          <Subtitle>Select the credit card(s)/bank account(s) you use for shared expenses</Subtitle>
+          <Subtitle>
+            <SubtitleText>Select where you record shared-cost transactions.</SubtitleText>
+
+            <InfoIcon
+              tooltipContent={
+                <>
+                  "Standard" is recommended for most use cases. The "Advanced" method enables
+                  automatic checking for misclassified transactions, but involves changing how you
+                  record transactions in YNAB. {learnMoreLink}
+                </>
+              }
+            />
+          </Subtitle>
+
+          <OptionButton
+            $selected={!isAdvancedMode}
+            onClick={() => {
+              setIsAdvancedMode(false);
+              setSelectedParentCategories([]);
+            }}
+          >
+            <strong>Standard:</strong> In specific accounts
+          </OptionButton>
+
+          <OptionButton $selected={isAdvancedMode} onClick={() => setIsAdvancedMode(true)}>
+            <strong>Advanced:</strong> In specific accounts and categories
+          </OptionButton>
+        </SectionContent>
+
+        <SectionContent>
+          <Subtitle>
+            <SubtitleText>Select the YNAB accounts you use for shared costs.</SubtitleText>
+            <InfoIcon tooltipContent="This might be one or more shared credit cards or bank accounts." />
+          </Subtitle>
 
           <AccountButtons
             accounts={budgetData.accounts}
@@ -502,21 +563,58 @@ const App = () => {
           />
         </SectionContent>
 
+        {isAdvancedMode && (
+          <SectionContent>
+            <Subtitle>
+              <SubtitleText>
+                Select the YNAB parent categories you use for shared costs.
+              </SubtitleText>
+
+              <InfoIcon
+                tooltipContent={
+                  <>
+                    <TooltipParagraph>
+                      Categories you select here should cumulatively include all your shared costs,
+                      and each one should include only shared costs. If you mix shared and
+                      non-shared transactions in the same categories, switch back to the "Standard"
+                      recording method above.
+                    </TooltipParagraph>
+
+                    <TooltipParagraph>
+                      Otherwise, select all parent categories where you record only shared costs. If
+                      you followed the guide exactly, select the parent category named "Shared
+                      Expenses". {learnMoreLink}
+                    </TooltipParagraph>
+                  </>
+                }
+              />
+            </Subtitle>
+
+            <CategoryButtons
+              parentCategories={budgetData.parentCategories}
+              selectedParentCategories={selectedParentCategories}
+              setSelectedParentCategories={setSelectedParentCategories}
+            />
+          </SectionContent>
+        )}
+
         <SectionContent>
           <Subtitle>
-            (Optional) If you track shared expenses under separate parent categories, select them
-            here. This will turn on cross-checking for misclassified transactions.
+            <SubtitleText>
+              Select the &quot;IOU&quot; account that tracks what you are owed.
+            </SubtitleText>
+
+            <InfoIcon
+              tooltipContent={
+                <>
+                  This account tracks what you are owed from the person sharing an account with you.
+                  To create it in YNAB, click "Add Account", then "Add an Unlinked Account", and
+                  nickname it something like "Owed from [person's name]." The account type should be
+                  Checking, Savings, or Cash.
+                </>
+              }
+            />
           </Subtitle>
-
-          <CategoryButtons
-            parentCategories={budgetData.parentCategories}
-            selectedParentCategories={selectedParentCategories}
-            setSelectedParentCategories={setSelectedParentCategories}
-          />
-        </SectionContent>
-
-        <SectionContent>
-          <Subtitle>Select the &quot;IOU&quot; account that tracks what you are owed</Subtitle>
 
           <AccountSelector
             accounts={budgetData.accounts}
@@ -526,7 +624,10 @@ const App = () => {
         </SectionContent>
 
         <SectionContent>
-          <Subtitle>Select transaction date range</Subtitle>
+          <Subtitle>
+            <SubtitleText>Select transaction date range.</SubtitleText>
+            <InfoIcon tooltipContent="This will limit transactions in your view to the specified date range." />
+          </Subtitle>
 
           <DateRangeForm>
             <DateSelector
@@ -549,7 +650,7 @@ const App = () => {
           </DateRangeForm>
         </SectionContent>
 
-        <ShowTransactionsButton
+        <Button
           type="button"
           onClick={() => {
             getClassifiedTransactions({
@@ -560,7 +661,7 @@ const App = () => {
           }}
         >
           Show Transactions
-        </ShowTransactionsButton>
+        </Button>
       </SectionTile>
 
       <TransactionsTile id="transaction-container">
@@ -606,7 +707,7 @@ const App = () => {
 
           <RowOrColumn>
             <label htmlFor="split-percentage-slider">
-              <b>Select your share of the costs (in percent):</b>
+              <b>Select your share of the costs:</b>
             </label>
             <input
               type="range"
@@ -616,18 +717,20 @@ const App = () => {
               value={myShare}
               onChange={(e) => setMyShare(Number(e.target.value))}
             />
-            <input
-              type="number"
-              min="0"
-              max="100"
-              value={myShare}
-              onChange={(e) => {
-                const value = Math.max(0, Math.min(100, Number(e.target.value)));
-                setMyShare(value);
-              }}
-              style={{ marginLeft: '10px', width: '50px' }}
-            />
-            <span>%</span>
+            <div>
+              <input
+                type="number"
+                min="0"
+                max="100"
+                value={myShare}
+                onChange={(e) => {
+                  const value = Math.max(0, Math.min(100, Number(e.target.value)));
+                  setMyShare(value);
+                }}
+                style={{ marginLeft: '10px', width: '50px' }}
+              />
+              <span>%</span>
+            </div>
           </RowOrColumn>
 
           <Spacer />

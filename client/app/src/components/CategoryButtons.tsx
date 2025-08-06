@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { OptionButton, SelectedOptionButton } from './styledComponents';
-import { Category, ParentCategory } from '../types';
+import { ParentCategory } from '../types';
+import { OptionButton } from './styledComponents';
 
 /* Styled Components */
 
@@ -49,21 +49,20 @@ const CategoryButtons = ({
         const shouldDisplayCategory = !hiddenCategoryNames.includes(name);
 
         if (shouldDisplayCategory) {
-          const isCategorySelected = selectedParentCategories.find((category) =>
+          const isCategorySelected = !!selectedParentCategories.find((category) =>
             doesCategoryHaveId(category, id),
           );
 
-          const Button = isCategorySelected ? SelectedOptionButton : OptionButton;
-
           return (
-            <Button
+            <OptionButton
               type="button"
               key={id}
               id={id}
+              $selected={isCategorySelected}
               onClick={() => toggleSharedCategory({ id, name, categories })}
             >
               {name}
-            </Button>
+            </OptionButton>
           );
         }
 

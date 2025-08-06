@@ -57,7 +57,7 @@ const Nav = ({ setActiveModal }: Props) => (
       target="_blank"
       rel="noreferrer"
     >
-      GitHub Repo
+      Source Code & Bug Reporting
     </Hyperlink>
   </Container>
 );
