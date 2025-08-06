@@ -15,8 +15,7 @@ const Container = styled.div`
   align-items: center;
   box-sizing: border-box;
   width: 100%;
-  margin: 0 10px;
-  padding: 15px;
+  padding: 15px 25px;
 
   @media (max-width: ${breakpoints.tiny}) {
     padding: 5px;

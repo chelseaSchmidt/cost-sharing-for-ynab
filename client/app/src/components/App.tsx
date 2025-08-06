@@ -483,7 +483,8 @@ const App = () => {
               feedStyle={{
                 border: 'unset',
                 padding: 'unset',
-                height: '50vh',
+                minHeight: '20vh',
+                maxHeight: '50vh',
               }}
               shouldShowRefreshButton
               refreshTransactions={() => {
