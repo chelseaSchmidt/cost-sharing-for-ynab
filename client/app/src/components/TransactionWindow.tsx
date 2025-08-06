@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 import TransactionCard from './TransactionCard';
-import { Spinner, BaseButton } from './styledComponents';
+import { Spinner } from './styledComponents';
 import { toId } from './utils/general';
 import breakpoints from '../../../shared/breakpoints';
+import { Button } from '../../../shared/styledComponents';
 import { Transaction } from '../types';
 import { CSSProperties } from 'react';
 
@@ -31,7 +32,7 @@ const RefreshButtonContainer = styled.div`
   width: 100%;
 `;
 
-const RefreshButton = styled(BaseButton)`
+const RefreshButton = styled(Button)`
   margin-top: 20px;
   width: fit-content;
 `;

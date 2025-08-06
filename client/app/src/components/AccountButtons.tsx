@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { OptionButton, SelectedOptionButton } from './styledComponents';
+import { OptionButton } from './styledComponents';
 import { Account } from '../types';
 
 /* Styled Components */
@@ -34,21 +34,20 @@ const AccountButtons = ({ accounts, selectedAccounts, setSelectedAccounts }: Pro
   return (
     <Container>
       {accounts.map(({ name, id }: Account) => {
-        const isAccountSelected = selectedAccounts.find((account) =>
+        const isAccountSelected = !!selectedAccounts.find((account) =>
           doesAccountHaveId(account, id),
         );
 
-        const Button = isAccountSelected ? SelectedOptionButton : OptionButton;
-
         return (
-          <Button
+          <OptionButton
             type="button"
             key={id}
             id={String(id)}
+            $selected={isAccountSelected}
             onClick={() => toggleSharedAccount({ id, name })}
           >
             {name}
-          </Button>
+          </OptionButton>
         );
       })}
     </Container>

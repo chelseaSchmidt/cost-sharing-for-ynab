@@ -1,6 +1,7 @@
-import styled from 'styled-components';
-import { BaseButton, BackgroundOverlay } from './styledComponents';
 import { ReactNode } from 'react';
+import styled from 'styled-components';
+import { Button } from '../../../shared/styledComponents';
+import { BackgroundOverlay } from './styledComponents';
 
 /* Styled Components */
 
@@ -57,9 +58,9 @@ const Modal = ({
     <Container>
       {children}
       <ButtonContainer>
-        <BaseButton type="button" onClick={onClose}>
+        <Button type="button" onClick={onClose}>
           {buttonText}
-        </BaseButton>
+        </Button>
       </ButtonContainer>
     </Container>
   </>

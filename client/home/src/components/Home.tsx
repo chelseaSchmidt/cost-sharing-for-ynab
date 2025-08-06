@@ -1,17 +1,17 @@
 import styled from 'styled-components';
+import colors from '../../../shared/colors';
 import PrivacyPolicy from '../../../shared/PrivacyPolicy';
 import Header from '../../../shared/Header';
 import Instructions from '../../../shared/Instructions';
 import { MenuItem } from '../../../shared/NavMenu';
-import { Hyperlink } from '../../../shared/styledComponents';
+import { Button, Hyperlink } from '../../../shared/styledComponents';
 import creditCardSrc from '../assets/creditCard.png';
 import lightBulbSrc from '../assets/lightBulb.png';
 import puzzleIconSrc from '../assets/puzzle.png';
 import welcomeIconSrc from '../assets/welcome.png';
-import colors from '../styles/colors';
 import '../styles/global.css';
 
-/* Styled Components */
+/* STYLED COMPONENTS */
 
 const Container = styled.div``;
 
@@ -26,10 +26,11 @@ const CreditCardIcon = styled.img`
   width: 100px;
   height: auto;
   object-fit: contain;
+  margin-bottom: 40px;
 `;
 
 const Subtitle = styled.header`
-  margin: 40px 0;
+  margin-bottom: 40px;
   width: 100%;
   min-width: 190px;
   text-align: center;
@@ -42,26 +43,6 @@ const Divider = styled.div`
   width: 100%;
   max-width: 1200px;
   margin: 70px 0;
-`;
-
-const Button = styled.button`
-  box-sizing: border-box;
-  background: ${colors.button};
-  border-radius: 5px;
-  box-shadow: 0 1px 2px 0 #666;
-  padding: 7px 15px;
-  margin: 10px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: white;
-  text-decoration: none;
-
-  &:hover {
-    background: ${colors.lightNeutralAccent};
-  }
-
-  &:active {
-    background: ${colors.buttonActive};
-  }
 `;
 
 const TextContainer = styled.div`
@@ -137,6 +118,14 @@ const DescriptionText = styled.div`
   padding-left: 20px;
 `;
 
+const ButtonsArea = styled.div`
+  margin-top: 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 16px;
+`;
+
 const PrivacyPolicyContainer = styled.div`
   box-sizing: border-box;
   display: flex;
@@ -157,6 +146,7 @@ const Footer = styled.footer`
   width: 100%;
   border-top: 1px solid ${colors.lightNeutralAccent};
   padding: 40px 10px;
+  font-size: 12px;
 
   a {
     margin-bottom: 10px;
@@ -165,7 +155,7 @@ const Footer = styled.footer`
   }
 `;
 
-/* Main Component */
+/* MAIN */
 
 const Home = () => {
   const APP_ENDPOINT = 'cost-sharer';
@@ -183,7 +173,7 @@ const Home = () => {
       attributes: { type: 'button', as: 'button' },
     },
     {
-      text: 'GitHub Repo',
+      text: 'Source Code & Bug Reporting',
       attributes: {
         href: 'https://github.com/chelseaSchmidt/cost-sharing-for-ynab',
         target: '_blank',
@@ -226,21 +216,23 @@ const Home = () => {
           ))}
         </Description>
 
+        <ButtonsArea>
+          <Button as="a" href={ynabAuthLink}>
+            Start
+          </Button>
+
+          <Button as="a" href={`/${APP_ENDPOINT}`}>
+            Preview without a YNAB account
+          </Button>
+        </ButtonsArea>
+
         <Divider />
 
-        <Subtitle>Getting Started</Subtitle>
+        <Subtitle>Guide</Subtitle>
 
         <InstructionsContainer>
           <Instructions isHomePage />
         </InstructionsContainer>
-
-        <Button as="a" href={ynabAuthLink}>
-          Start
-        </Button>
-
-        <Button as="a" href={`/${APP_ENDPOINT}`}>
-          Preview without a YNAB account
-        </Button>
 
         <PrivacyPolicyContainer>
           <TextContainer>
