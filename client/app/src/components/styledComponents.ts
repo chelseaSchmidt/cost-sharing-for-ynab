@@ -76,7 +76,7 @@ export const OptionButton = styled.button<{ $selected: boolean }>`
   border-radius: 8px;
   box-shadow: 0 1px 0 0.5px #c9cdd2;
   color: #464b46;
-  font-size: 13px;
+  font-size: inherit;
   text-align: left;
   background-color: rgb(241, 241, 241);
   cursor: pointer;
