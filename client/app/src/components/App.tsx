@@ -59,6 +59,10 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
+
+  @media (max-width: ${breakpoints.mobile}) {
+    font-size: 16px;
+  }
 `;
 
 const NonModalContent = styled.div`
