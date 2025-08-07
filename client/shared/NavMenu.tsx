@@ -4,13 +4,14 @@ import styled from 'styled-components';
 import _ from 'lodash';
 import { BackgroundOverlay } from '../app/src/components/styledComponents'; // FIXME: move to shared directory
 import breakpoints from './breakpoints';
+import zIndices from './zIndices';
 
 const Container = styled.div`
   position: absolute;
   right: 0;
   top: 50%;
   transform: translate(0, -50%);
-  z-index: 6;
+  z-index: ${zIndices.headerMenuButton};
   font-family: inherit;
 
   @media (max-width: ${breakpoints.mobile}) {
@@ -48,7 +49,7 @@ const ButtonBar = styled.div`
 const menuWidth = '320px';
 
 const Menu = styled.div<{ $isOpen: boolean }>`
-  z-index: 6;
+  z-index: ${zIndices.modal};
   display: flex;
   flex-direction: column;
   position: fixed;

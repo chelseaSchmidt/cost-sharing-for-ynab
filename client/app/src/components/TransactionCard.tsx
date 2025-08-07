@@ -1,6 +1,7 @@
 import { CSSProperties, useState } from 'react';
 import moment from 'moment';
 import styled from 'styled-components';
+import zIndices from '../../../shared/zIndices';
 import { Transaction } from '../types';
 import ElevatedTooltip from './ElevatedTooltip';
 import { WarningIcon } from './styledComponents';
@@ -98,7 +99,7 @@ const TransactionCard = ({
   ];
 
   const tooltipStyle: CSSProperties = {
-    zIndex: 10,
+    zIndex: zIndices.transactionCard,
     position: 'fixed',
     left: tooltipCoordinates?.[0],
     top: tooltipCoordinates?.[1],

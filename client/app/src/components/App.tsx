@@ -1,9 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import _ from 'lodash';
 import styled from 'styled-components';
-import AccountButtons from './AccountButtons';
-import CategoryButtons from './CategoryButtons';
-import AccountSelector from './AccountSelector';
+import BudgetAutocomplete from './BudgetAutocomplete';
 import DateSelector from './DateSelector';
 import InfoIcon from './InfoIcon';
 import TransactionWindow from './TransactionWindow';
@@ -30,8 +28,10 @@ import {
 } from './utils/dateHelpers';
 import classifyTransactions from './utils/classifyTransactions';
 import breakpoints from '../../../shared/breakpoints';
+import colors from '../../../shared/colors';
 import { MenuItem } from '../../../shared/NavMenu';
 import { Button, Hyperlink } from '../../../shared/styledComponents';
+import zIndices from '../../../shared/zIndices';
 import '../styles/global.css';
 import {
   Account,
@@ -44,13 +44,30 @@ import {
   Transaction,
 } from '../types';
 
-/* Styled Components */
+/* CONSTANTS */
+
+const HIDDEN_CATEGORIES = ['Internal Master Category', 'Credit Card Payments', 'Hidden Categories'];
+const TILE_X_PADDING_LG = 75;
+const TILE_X_PADDING_SM = 30;
+const TILE_X_PADDING_XS = 10;
+
+/* STYLED COMPONENTS */
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  width: 100%;
+`;
+
+const NonModalContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  flex: 1;
 `;
 
 const InstructionsButtonContainer = styled.div`
@@ -59,17 +76,13 @@ const InstructionsButtonContainer = styled.div`
   margin-bottom: 25px;
 `;
 
-const desktopLeftRightTilePadding = 75;
-const mobileLeftRightTilePadding = 30;
-const tinyLeftRightTilePadding = 10;
-
 const SectionTile = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 60vw;
   max-width: 1290px;
-  padding: 50px ${desktopLeftRightTilePadding}px;
+  padding: 50px ${TILE_X_PADDING_LG}px;
   margin-bottom: 50px;
   border-radius: 5px;
   box-shadow: 0 0 3px 0 #9298a2;
@@ -78,13 +91,13 @@ const SectionTile = styled.section`
   @media (max-width: ${breakpoints.mobile}) {
     box-sizing: border-box;
     width: calc(100% - 20px);
-    padding: 50px ${mobileLeftRightTilePadding}px;
+    padding: 50px ${TILE_X_PADDING_SM}px;
   }
 
   @media (max-width: ${breakpoints.tiny}) {
     box-sizing: border-box;
     width: calc(100% - 20px);
-    padding: 50px ${tinyLeftRightTilePadding}px;
+    padding: 50px ${TILE_X_PADDING_XS}px;
   }
 `;
 
@@ -93,12 +106,17 @@ const TransactionsTile = styled(SectionTile)`
 `;
 
 const SectionContent = styled.div`
+  position: relative;
   width: 100%;
   margin-bottom: 40px;
+  z-index: 1;
+
+  &:focus-within {
+    z-index: ${zIndices.autocomplete};
+  }
 `;
 
-const Subtitle = styled.p`
-  font-weight: bold;
+const Subtitle = styled.div`
   margin-bottom: 20px;
 `;
 
@@ -106,18 +124,21 @@ const SubtitleText = styled.span`
   margin-right: 5px;
 `;
 
+const Row = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;
+
 const RowOrColumn = styled.div`
   display: flex;
   align-items: center;
+  gap: 10px;
 
   @media (max-width: 645px) {
     flex-direction: column;
+    align-items: unset;
   }
-`;
-
-const DateRangeForm = styled.form`
-  display: flex;
-  flex-direction: column;
 `;
 
 const ReviewTransactionsButton = styled(Button)`
@@ -180,16 +201,24 @@ const TransactionWindowContainer = styled.div`
   display: flex;
   flex-direction: row;
   border-radius: 12px;
-  width: calc(100% + ${desktopLeftRightTilePadding * 2}px);
+  width: calc(100% + ${TILE_X_PADDING_LG * 2}px);
   overflow: auto;
 
   @media (max-width: ${breakpoints.mobile}) {
-    width: calc(100% + ${mobileLeftRightTilePadding * 2}px);
+    width: calc(100% + ${TILE_X_PADDING_SM * 2}px);
   }
 
   @media (max-width: ${breakpoints.tiny}) {
-    width: calc(100% + ${tinyLeftRightTilePadding * 2}px);
+    width: calc(100% + ${TILE_X_PADDING_XS * 2}px);
   }
+`;
+
+const CostPercentInput = styled.input`
+  width: 50px;
+  border: 1px solid ${colors.lightNeutralAccent};
+  border-radius: 5px;
+  padding: 5px;
+  font-size: inherit;
 `;
 
 const TooltipParagraph = styled.p`
@@ -206,7 +235,7 @@ const Spacer = styled.div`
   height: 20px;
 `;
 
-/* Main Component */
+/* MAIN */
 
 const App = () => {
   const [isPageLoading, setIsPageLoading] = useState(true);
@@ -460,8 +489,6 @@ const App = () => {
     'Loading...'
   ) : (
     <Container>
-      {/* Modals */}
-
       {activeModal && (
         <Modal
           onClose={() => setActiveModal(null)}
@@ -500,271 +527,307 @@ const App = () => {
         </Modal>
       )}
 
-      {/* Popup messages */}
+      <NonModalContent inert={!!activeModal}>
+        {isConfirmationVisible && (
+          <Confirmation setIsConfirmationVisible={setIsConfirmationVisible} />
+        )}
 
-      {isConfirmationVisible && (
-        <Confirmation setIsConfirmationVisible={setIsConfirmationVisible} />
-      )}
+        {errorData && <Error errorData={errorData} setErrorData={setErrorData} />}
 
-      {errorData && <Error errorData={errorData} setErrorData={setErrorData} />}
+        <Header navMenuItems={navMenuItems} />
 
-      {/* Main content */}
-
-      <Header navMenuItems={navMenuItems} />
-
-      <InstructionsButtonContainer>
-        <Hyperlink as="button" type="button" onClick={() => setActiveModal(ModalName.INSTRUCTIONS)}>
-          Help
-        </Hyperlink>
-      </InstructionsButtonContainer>
-
-      <SectionTile>
-        <SectionHeader>Choose Accounts and Categories</SectionHeader>
-
-        <SectionContent>
-          <Subtitle>
-            <SubtitleText>Select where you record shared-cost transactions.</SubtitleText>
-
-            <InfoIcon
-              tooltipContent={
-                <>
-                  "Standard" is recommended for most use cases. The "Advanced" method enables
-                  automatic checking for misclassified transactions, but involves changing how you
-                  record transactions in YNAB. {learnMoreLink}
-                </>
-              }
-            />
-          </Subtitle>
-
-          <OptionButton
-            $selected={!isAdvancedMode}
-            onClick={() => {
-              setIsAdvancedMode(false);
-              setSelectedParentCategories([]);
-            }}
+        <InstructionsButtonContainer>
+          <Hyperlink
+            as="button"
+            type="button"
+            onClick={() => setActiveModal(ModalName.INSTRUCTIONS)}
           >
-            <strong>Standard:</strong> In specific accounts
-          </OptionButton>
+            Help
+          </Hyperlink>
+        </InstructionsButtonContainer>
 
-          <OptionButton $selected={isAdvancedMode} onClick={() => setIsAdvancedMode(true)}>
-            <strong>Advanced:</strong> In specific accounts and categories
-          </OptionButton>
-        </SectionContent>
+        <SectionTile>
+          <SectionHeader>Choose Accounts and Categories</SectionHeader>
 
-        <SectionContent>
-          <Subtitle>
-            <SubtitleText>Select the YNAB accounts you use for shared costs.</SubtitleText>
-            <InfoIcon tooltipContent="This might be one or more shared credit cards or bank accounts." />
-          </Subtitle>
-
-          <AccountButtons
-            accounts={budgetData.accounts}
-            selectedAccounts={selectedAccounts}
-            setSelectedAccounts={setSelectedAccounts}
-          />
-        </SectionContent>
-
-        {isAdvancedMode && (
           <SectionContent>
             <Subtitle>
-              <SubtitleText>
-                Select the YNAB parent categories you use for shared costs.
-              </SubtitleText>
+              <SubtitleText>Select where you record shared-cost transactions.</SubtitleText>
 
               <InfoIcon
                 tooltipContent={
                   <>
-                    <TooltipParagraph>
-                      Categories you select here should cumulatively include all your shared costs,
-                      and each one should include only shared costs. If you mix shared and
-                      non-shared transactions in the same categories, switch back to the "Standard"
-                      recording method above.
-                    </TooltipParagraph>
-
-                    <TooltipParagraph>
-                      Otherwise, select all parent categories where you record only shared costs. If
-                      you followed the guide exactly, select the parent category named "Shared
-                      Expenses". {learnMoreLink}
-                    </TooltipParagraph>
+                    "Standard" is recommended for most use cases. The "Advanced" method enables
+                    automatic checking for misclassified transactions, but involves changing how you
+                    record transactions in YNAB. {learnMoreLink}
                   </>
                 }
               />
             </Subtitle>
 
-            <CategoryButtons
-              parentCategories={budgetData.parentCategories}
-              selectedParentCategories={selectedParentCategories}
-              setSelectedParentCategories={setSelectedParentCategories}
-            />
+            <OptionButton
+              $selected={!isAdvancedMode}
+              onClick={() => {
+                setIsAdvancedMode(false);
+                setSelectedParentCategories([]);
+              }}
+            >
+              <strong>Standard:</strong> In specific accounts
+            </OptionButton>
+
+            <OptionButton $selected={isAdvancedMode} onClick={() => setIsAdvancedMode(true)}>
+              <strong>Advanced:</strong> In specific accounts and categories
+            </OptionButton>
           </SectionContent>
-        )}
 
-        <SectionContent>
-          <Subtitle>
-            <SubtitleText>
-              Select the &quot;IOU&quot; account that tracks what you are owed.
-            </SubtitleText>
-
-            <InfoIcon
-              tooltipContent={
-                <>
-                  This account tracks what you are owed from the person sharing an account with you.
-                  To create it in YNAB, click "Add Account", then "Add an Unlinked Account", and
-                  nickname it something like "Owed from [person's name]." The account type should be
-                  Checking, Savings, or Cash.
-                </>
+          <SectionContent>
+            <BudgetAutocomplete
+              limit={budgetData.accounts.length}
+              placeholder={selectedAccounts.length ? 'Add more' : 'Add one or more'}
+              labelText="Select the YNAB accounts you use for shared costs."
+              onSelectionChange={(selected) =>
+                setSelectedAccounts(selected.map(({ data }) => data))
+              }
+              items={budgetData.accounts.map((acct) => ({
+                id: acct.id,
+                displayedContent: acct.name,
+                searchableText: acct.name,
+                data: acct,
+              }))}
+              label={
+                <Subtitle>
+                  <SubtitleText>Select the YNAB accounts you use for shared costs.</SubtitleText>
+                  <InfoIcon tooltipContent="This might be one or more shared credit cards or bank accounts." />
+                </Subtitle>
               }
             />
-          </Subtitle>
+          </SectionContent>
 
-          <AccountSelector
-            accounts={budgetData.accounts}
-            setAccountId={setIouAccountId}
-            optionIdPrefix="iou"
-          />
-        </SectionContent>
+          {isAdvancedMode && (
+            <SectionContent>
+              <BudgetAutocomplete
+                limit={budgetData.parentCategories.length}
+                placeholder={selectedParentCategories.length ? 'Add more' : 'Add one or more'}
+                labelText="Select the YNAB parent categories you use for shared costs."
+                onSelectionChange={(selected) =>
+                  setSelectedParentCategories(selected.map(({ data }) => data))
+                }
+                items={budgetData.parentCategories
+                  .filter((cat) => !HIDDEN_CATEGORIES.includes(cat.name))
+                  .map((cat) => ({
+                    id: cat.id,
+                    displayedContent: cat.name,
+                    searchableText: cat.name,
+                    data: cat,
+                  }))}
+                label={
+                  <Subtitle>
+                    <SubtitleText>
+                      Select the YNAB parent categories you use for shared costs.
+                    </SubtitleText>
 
-        <SectionContent>
-          <Subtitle>
-            <SubtitleText>Select transaction date range.</SubtitleText>
-            <InfoIcon tooltipContent="This will limit transactions in your view to the specified date range." />
-          </Subtitle>
+                    <InfoIcon
+                      tooltipContent={
+                        <>
+                          <TooltipParagraph>
+                            Categories you select here should cumulatively include all your shared
+                            costs, and each one should include only shared costs. If you mix shared
+                            and non-shared transactions in the same categories, switch back to the
+                            "Standard" recording method above.
+                          </TooltipParagraph>
 
-          <DateRangeForm>
-            <DateSelector
-              label="Start date:"
-              inputId="transactions-start-date"
-              inputValue={convertDateToString(transactionsStartDate)}
-              inputStyle={{ maxWidth: '200px' }}
-              onChange={(value) => setTransactionsStartDate(toDate(value))}
+                          <TooltipParagraph>
+                            Otherwise, select all parent categories where you record only shared
+                            costs. If you followed the guide exactly, select the parent category
+                            named "Shared Expenses". {learnMoreLink}
+                          </TooltipParagraph>
+                        </>
+                      }
+                    />
+                  </Subtitle>
+                }
+              />
+            </SectionContent>
+          )}
+
+          <SectionContent>
+            <BudgetAutocomplete
+              limit={1}
+              onSelectionChange={([selectedAccount]) => setIouAccountId(selectedAccount?.id || '')}
+              placeholder="Add one"
+              labelText='Select the "IOU" account that tracks what you are owed.'
+              items={budgetData.accounts.map((acct) => ({
+                id: acct.id,
+                displayedContent: acct.name,
+                searchableText: acct.name,
+                data: acct,
+              }))}
+              label={
+                <Subtitle>
+                  <SubtitleText>
+                    Select the &quot;IOU&quot; account that tracks what you are owed.
+                  </SubtitleText>
+
+                  <InfoIcon
+                    tooltipContent={
+                      <>
+                        This account tracks what you are owed from the person sharing an account
+                        with you. To create it in YNAB, click "Add Account", then "Add an Unlinked
+                        Account", and nickname it something like "Owed from [person's name]." The
+                        account type should be Checking, Savings, or Cash.
+                      </>
+                    }
+                  />
+                </Subtitle>
+              }
             />
+          </SectionContent>
+
+          <SectionContent>
+            <Subtitle>
+              <SubtitleText>Select transaction date range.</SubtitleText>
+              <InfoIcon tooltipContent="This will limit transactions in your view to the specified date range." />
+            </Subtitle>
+
+            <form>
+              <RowOrColumn>
+                <DateSelector
+                  label="Start date:"
+                  inputId="transactions-start-date"
+                  inputValue={convertDateToString(transactionsStartDate)}
+                  inputStyle={{ maxWidth: '200px' }}
+                  onChange={(value) => setTransactionsStartDate(toDate(value))}
+                />
+
+                <DateSelector
+                  label="End date:"
+                  inputId="transactions-end-date"
+                  inputValue={convertDateToString(transactionsEndDate)}
+                  inputStyle={{ maxWidth: '200px' }}
+                  onChange={(value) => setTransactionsEndDate(toDate(value, false))}
+                />
+              </RowOrColumn>
+            </form>
+          </SectionContent>
+
+          <Button
+            type="button"
+            onClick={() => {
+              getClassifiedTransactions({
+                startDate: transactionsStartDate,
+                endDate: transactionsEndDate,
+              });
+              document.getElementById('transaction-container')?.scrollIntoView(true);
+            }}
+          >
+            Show Transactions
+          </Button>
+        </SectionTile>
+
+        <TransactionsTile id="transaction-container">
+          <SectionHeader>Select Shared Costs</SectionHeader>
+
+          {!areTransactionsLoading && !!sharedAccountErrorTransactions.length && (
+            <MissingTransactionsWarning>
+              <WarningIcon>!</WarningIcon>
+              Some transactions in shared accounts were not categorized to shared expense
+              categories.
+              <ReviewTransactionsButton
+                type="button"
+                onClick={() => setActiveModal(ModalName.TRANSACTION_REVIEW)}
+              >
+                Review
+              </ReviewTransactionsButton>
+            </MissingTransactionsWarning>
+          )}
+
+          <TransactionWindowContainer>
+            <TransactionWindow
+              loading={areTransactionsLoading}
+              transactions={filteredTransactions}
+              selectedTransactions={selectedTransactions}
+              transactionsSharedInOneButNotOther={sharedCategoryErrorTransactions}
+              toggleTransactionSelection={toggleTransactionSelection}
+              toggleSelectAll={toggleSelectAll}
+              isSelectAllChecked={isSelectAllChecked}
+              shouldShowIcon
+              isClickable
+            />
+          </TransactionWindowContainer>
+        </TransactionsTile>
+
+        <SectionTile>
+          <form>
+            <SectionHeader>Split the Costs</SectionHeader>
+
+            <p>
+              Select your share of the costs and enter the date on which you want to split them. The
+              percentage owed to you will be moved out of your expenses and into the &quot;IOU&quot;
+              account you selected.
+            </p>
+
+            <RowOrColumn>
+              <label htmlFor="split-percentage-slider">
+                <b>Select your share of the costs:</b>
+              </label>
+
+              <Row>
+                <input
+                  type="range"
+                  id="split-percentage-slider"
+                  min="0"
+                  max="100"
+                  value={myShare}
+                  onChange={(e) => setMyShare(Number(e.target.value))}
+                />
+                <div>
+                  <CostPercentInput
+                    type="number"
+                    id="split-percentage-input"
+                    min="0"
+                    max="100"
+                    value={myShare}
+                    onChange={(e) => {
+                      const value = Math.max(0, Math.min(100, Number(e.target.value)));
+                      setMyShare(value);
+                    }}
+                  />
+                  <span>%</span>
+                </div>
+              </Row>
+            </RowOrColumn>
 
             <Spacer />
 
-            <DateSelector
-              label="End date:"
-              inputId="transactions-end-date"
-              inputValue={convertDateToString(transactionsEndDate)}
-              inputStyle={{ maxWidth: '200px' }}
-              onChange={(value) => setTransactionsEndDate(toDate(value, false))}
-            />
-          </DateRangeForm>
-        </SectionContent>
-
-        <Button
-          type="button"
-          onClick={() => {
-            getClassifiedTransactions({
-              startDate: transactionsStartDate,
-              endDate: transactionsEndDate,
-            });
-            document.getElementById('transaction-container')?.scrollIntoView(true);
-          }}
-        >
-          Show Transactions
-        </Button>
-      </SectionTile>
-
-      <TransactionsTile id="transaction-container">
-        <SectionHeader>Select Shared Costs</SectionHeader>
-
-        {!areTransactionsLoading && !!sharedAccountErrorTransactions.length && (
-          <MissingTransactionsWarning>
-            <WarningIcon>!</WarningIcon>
-            Some transactions in shared accounts were not categorized to shared expense categories.
-            <ReviewTransactionsButton
-              type="button"
-              onClick={() => setActiveModal(ModalName.TRANSACTION_REVIEW)}
-            >
-              Review
-            </ReviewTransactionsButton>
-          </MissingTransactionsWarning>
-        )}
-
-        <TransactionWindowContainer>
-          <TransactionWindow
-            loading={areTransactionsLoading}
-            transactions={filteredTransactions}
-            selectedTransactions={selectedTransactions}
-            transactionsSharedInOneButNotOther={sharedCategoryErrorTransactions}
-            toggleTransactionSelection={toggleTransactionSelection}
-            toggleSelectAll={toggleSelectAll}
-            isSelectAllChecked={isSelectAllChecked}
-            shouldShowIcon
-            isClickable
-          />
-        </TransactionWindowContainer>
-      </TransactionsTile>
-
-      <SectionTile>
-        <form>
-          <SectionHeader>Split the Costs</SectionHeader>
-
-          <p>
-            Select your share of the costs and enter the date on which you want to split them. The
-            percentage owed to you will be moved out of your expenses and into the &quot;IOU&quot;
-            account you selected.
-          </p>
-
-          <RowOrColumn>
-            <label htmlFor="split-percentage-slider">
-              <b>Select your share of the costs:</b>
-            </label>
-            <input
-              type="range"
-              id="split-percentage-slider"
-              min="0"
-              max="100"
-              value={myShare}
-              onChange={(e) => setMyShare(Number(e.target.value))}
-            />
-            <div>
-              <input
-                type="number"
-                min="0"
-                max="100"
-                value={myShare}
-                onChange={(e) => {
-                  const value = Math.max(0, Math.min(100, Number(e.target.value)));
-                  setMyShare(value);
-                }}
-                style={{ marginLeft: '10px', width: '50px' }}
+            <RowOrColumn>
+              <DateSelector
+                label="Select date to split costs"
+                isLabelVisible={false}
+                inputId="cost-split-date-selector"
+                inputValue={convertDateToString(dateToSplitCosts)}
+                onChange={(value) => setDateToSplitCosts(toDate(value))}
               />
-              <span>%</span>
-            </div>
-          </RowOrColumn>
 
-          <Spacer />
+              <SplitTransactionsButton
+                type="submit"
+                onClick={createSplitEntry}
+                disabled={isSplitTransactionDisabled}
+              >
+                {isIouTransactionLoading ? <Spinner /> : 'Split Costs On This Date'}
 
-          <RowOrColumn>
-            <DateSelector
-              label="Select date to split costs"
-              isLabelVisible={false}
-              inputId="cost-split-date-selector"
-              inputValue={convertDateToString(dateToSplitCosts)}
-              onChange={(value) => setDateToSplitCosts(toDate(value))}
-            />
+                <ButtonDisabledPopup>{buttonDisabledMessage}</ButtonDisabledPopup>
+              </SplitTransactionsButton>
+            </RowOrColumn>
+          </form>
 
-            <SplitTransactionsButton
-              type="submit"
-              onClick={createSplitEntry}
-              disabled={isSplitTransactionDisabled}
-            >
-              {isIouTransactionLoading ? <Spinner /> : 'Split Costs On This Date'}
+          <TransactionWindow
+            loading={isIouTransactionLoading}
+            title="IOU Transaction Preview"
+            transactions={iouAccountTransactions}
+          />
+        </SectionTile>
 
-              <ButtonDisabledPopup>{buttonDisabledMessage}</ButtonDisabledPopup>
-            </SplitTransactionsButton>
-          </RowOrColumn>
-        </form>
-
-        <TransactionWindow
-          loading={isIouTransactionLoading}
-          title="IOU Transaction Preview"
-          transactions={iouAccountTransactions}
-        />
-      </SectionTile>
-
-      <Nav setActiveModal={setActiveModal} />
+        <Nav setActiveModal={setActiveModal} />
+      </NonModalContent>
     </Container>
   );
 };
