@@ -31,7 +31,7 @@ export const Li = styled.li<LiProps>`
   }
 
   &:focus-visible {
-    outline: 1px solid blue;
+    background: #ffffe0;
     ${({ $isSelected, $selectedStyle }) =>
       $isSelected ? { ...$selectedStyle?.['&:focus-visible'] } : ''}
   }
