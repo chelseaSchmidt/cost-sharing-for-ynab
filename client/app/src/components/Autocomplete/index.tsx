@@ -90,6 +90,7 @@ export default function Autocomplete<T>({
 
   const inputWrapperRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const interactiveElementsRef = useRef<HTMLDivElement>(null);
 
   const LABEL_ID = `label-${labelText}`;
   const COMBOBOX_ID = `combobox-${labelText}`;
@@ -116,6 +117,21 @@ export default function Autocomplete<T>({
     onSelectionChange(Object.values(selectedItems).filter((item) => !!item));
   }, [selectedItems]);
 
+  useEffect(() => {
+    function maybeCloseMenu(e: FocusEvent) {
+      const isFocusTargetANode = e.relatedTarget instanceof Node;
+      const didFocusMoveToChild =
+        isFocusTargetANode && interactiveElementsRef.current?.contains(e.relatedTarget);
+
+      if (!isFocusTargetANode || !didFocusMoveToChild) {
+        closeMenu();
+      }
+    }
+
+    interactiveElementsRef.current?.addEventListener('focusout', maybeCloseMenu);
+    return () => interactiveElementsRef.current?.removeEventListener('focusout', maybeCloseMenu);
+  }, []);
+
   return (
     <Container
       as={styledComponents.Container}
@@ -128,6 +144,7 @@ export default function Autocomplete<T>({
 
       <InteractiveElements
         as={styledComponents.InteractiveElements}
+        ref={interactiveElementsRef}
         onBlur={(e) => !e.currentTarget.contains(e.relatedTarget) && closeMenu()}
       >
         <InputWrapper as={styledComponents.InputWrapper} ref={inputWrapperRef}>
