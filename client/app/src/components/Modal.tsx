@@ -1,13 +1,14 @@
 import { ReactNode } from 'react';
 import styled from 'styled-components';
 import { Button } from '../../../shared/styledComponents';
+import zIndices from '../../../shared/zIndices';
 import { BackgroundOverlay } from './styledComponents';
 
 /* Styled Components */
 
 const Container = styled.div`
   position: fixed;
-  z-index: 6;
+  z-index: ${zIndices.modal};
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -43,22 +44,15 @@ const Modal = ({
 }: Props) => (
   <>
     <BackgroundOverlay
-      onClick={shouldCloseOnOverlayClick ? onClose : undefined}
+      onClick={() => shouldCloseOnOverlayClick && onClose()}
       role="button"
       aria-label="Modal overlay"
       tabIndex={0}
-      onKeyDown={
-        shouldCloseOnOverlayClick
-          ? (e) => {
-              if (e.key === 'Enter') onClose();
-            }
-          : undefined
-      }
     />
     <Container>
       {children}
       <ButtonContainer>
-        <Button type="button" onClick={onClose}>
+        <Button type="button" onClick={onClose} autoFocus>
           {buttonText}
         </Button>
       </ButtonContainer>

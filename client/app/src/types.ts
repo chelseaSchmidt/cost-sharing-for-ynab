@@ -1,7 +1,7 @@
 export interface Account {
   closed?: boolean;
   name: string;
-  id: string | number;
+  id: string;
 }
 
 export interface Category {
@@ -19,7 +19,7 @@ export interface Transaction {
   id: string | number;
   transfer_account_id: string | number;
   category_id: string | number;
-  account_id: string | number;
+  account_id: string;
   payee_id: string | number | null;
   payee_name: string | null;
   category_name: string | null;

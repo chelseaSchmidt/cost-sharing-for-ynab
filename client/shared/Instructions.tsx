@@ -39,7 +39,7 @@ const Instructions = ({ isHomePage = false, style = {} }) => {
             'Add your shared account in YNAB and sync it with your bank, or add transactions manually.',
         },
       ].map((props) => (
-        <Accordion {...props} />
+        <Accordion {...props} key={props.title} />
       ))}
 
       <Subtitle>Use the app</Subtitle>
@@ -61,7 +61,7 @@ const Instructions = ({ isHomePage = false, style = {} }) => {
       ]
         .filter((props) => props !== null)
         .map((props) => (
-          <Accordion {...props} />
+          <Accordion {...props} key={props.title} />
         ))}
 
       <Subtitle>Record repayments</Subtitle>
@@ -73,7 +73,7 @@ const Instructions = ({ isHomePage = false, style = {} }) => {
             "When you're repaid an owed amount, add it as a transfer in YNAB: an outflow from the IOU account and inflow to the bank or cash account where you deposited the repayment. This will zero out the IOU account, while keeping your bank account perfectly balanced, as all things should be!",
         },
       ].map((props) => (
-        <Accordion {...props} />
+        <Accordion {...props} key={props.title} />
       ))}
 
       <Divider />
@@ -101,7 +101,7 @@ const Instructions = ({ isHomePage = false, style = {} }) => {
             'Switch to the "Advanced" recording method and select your "Shared Expenses" parent category in the available options. This will make all transactions in your "Shared Expenses" categories available to split, whether or not they\'re charged to your shared credit cards or shared accounts. Instead, warnings will display next to transactions charged to non-shared accounts, and a list of warnings will be displayed for transactions charged to a shared account, but not added to a shared category.',
         },
       ].map((props) => (
-        <Accordion {...props} />
+        <Accordion {...props} key={props.title} />
       ))}
     </Container>
   );

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import zIndices from '../../../shared/zIndices';
 
 export const SectionHeader = styled.h1`
   font-size: 25px;
@@ -119,7 +120,7 @@ export const SelectedOptionButton = styled(OptionButton)`
 
 export const BackgroundOverlay = styled.div`
   position: fixed;
-  z-index: 5;
+  z-index: ${zIndices.modalOverlay};
   top: 0;
   width: 100vw;
   height: 100vh;

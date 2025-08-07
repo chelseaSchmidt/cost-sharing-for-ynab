@@ -1,6 +1,7 @@
 import { CSSProperties } from 'react';
 import styled from 'styled-components';
 import breakpoints from '../../../shared/breakpoints';
+import colors from '../../../shared/colors';
 
 /* Styled Components */
 
@@ -16,6 +17,10 @@ const Label = styled.label`
 
 const Input = styled.input`
   cursor: text;
+  border: 1px solid ${colors.lightNeutralAccent};
+  border-radius: 5px;
+  padding: 5px;
+  font-size: inherit;
 
   &::-webkit-calendar-picker-indicator {
     cursor: pointer;

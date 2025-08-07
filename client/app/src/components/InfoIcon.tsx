@@ -1,6 +1,7 @@
 import { ReactNode, useState } from 'react';
 import styled from 'styled-components';
 import colors from '../../../shared/colors';
+import zIndices from '../../../shared/zIndices';
 
 const Container = styled.div<{ $color: string }>`
   position: relative;
@@ -29,6 +30,7 @@ const Tooltip = styled.div<{ $isOpen: boolean }>`
   display: ${({ $isOpen }) => ($isOpen ? 'block' : 'none')};
   box-sizing: border-box;
   position: absolute;
+  z-index: ${zIndices.tooltip};
   top: 100%;
   left: 0;
   width: 300px;

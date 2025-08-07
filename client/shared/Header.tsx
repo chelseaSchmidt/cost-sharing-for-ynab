@@ -3,6 +3,7 @@ import NavMenu, { MenuItem } from './NavMenu';
 import breakpoints from './breakpoints';
 import { CSSProperties } from 'react';
 import colors from './colors';
+import zIndices from './zIndices';
 
 const Container = styled.header`
   box-sizing: border-box;
@@ -18,7 +19,7 @@ const Container = styled.header`
   margin-bottom: 50px;
   padding: 10px 20px;
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.5);
-  z-index: 4;
+  z-index: ${zIndices.header};
 
   @media (max-width: ${breakpoints.mobile}) {
     justify-content: space-between;

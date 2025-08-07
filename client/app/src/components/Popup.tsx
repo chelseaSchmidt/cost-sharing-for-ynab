@@ -1,9 +1,10 @@
 import { CSSProperties } from 'react';
 import styled from 'styled-components';
+import zIndices from '../../../shared/zIndices';
 
 const Container = styled.div`
   position: fixed;
-  z-index: 5;
+  z-index: ${zIndices.popup};
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
