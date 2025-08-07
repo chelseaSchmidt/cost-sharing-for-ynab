@@ -96,14 +96,23 @@ export const PillContent = styled.div`
   white-space: nowrap;
 `;
 
-export const List = styled.ul<{ $top: number | null }>`
+type ListProps = {
+  $shouldOpenUpward: boolean;
+  $top: number | null;
+  $bottom: number | null;
+};
+
+export const List = styled.ul<ListProps>`
   position: absolute;
-  top: 100%;
   left: 0;
   width: 100%;
   border: 1px solid black;
   overflow: auto;
-  min-height: 100px;
 
-  ${({ $top }) => ($top ? `max-height: calc(100vh - ${$top}px - 10px);` : '')}
+  ${({ $shouldOpenUpward, $top, $bottom }) =>
+    $shouldOpenUpward && $bottom !== null
+      ? `bottom: 100%; max-height: calc(100vh - 250px);`
+      : $top !== null
+      ? `top: 100%; max-height: calc(100vh - ${$top}px - 10px);`
+      : ''}
 `;

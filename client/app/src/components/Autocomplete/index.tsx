@@ -82,7 +82,11 @@ export default function Autocomplete<T>({
   const [inputValue, setInputValue] = useState('');
   const [expanded, setExpanded] = useState(false);
   const [selectedItems, setSelectedItems] = useState<SelectedItems<T>>({});
-  const [listboxTop, setListboxTop] = useState<number | null>(null);
+  const [listboxPosition, setListboxPosition] = useState<{
+    shouldOpenUpward: boolean;
+    top: number | null;
+    bottom: number | null;
+  }>({ shouldOpenUpward: false, top: null, bottom: null });
 
   const inputWrapperRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -104,7 +108,7 @@ export default function Autocomplete<T>({
   };
 
   const openMenu = () => {
-    setListboxTop(getListboxTop(inputWrapperRef));
+    setListboxPosition(getListboxPosition(inputWrapperRef));
     setExpanded(true);
   };
 
@@ -190,7 +194,9 @@ export default function Autocomplete<T>({
           as={styledComponents.List}
           id={LISTBOX_ID}
           aria-labelledby={LABEL_ID}
-          $top={listboxTop}
+          $shouldOpenUpward={listboxPosition.shouldOpenUpward}
+          $top={listboxPosition.top}
+          $bottom={listboxPosition.bottom}
           style={{ display: expanded ? undefined : 'none' }}
         >
           {displayedItems.length ? (
@@ -261,6 +267,13 @@ function countSelections<T>(selectedItems: SelectedItems<T>): number {
   }, 0);
 }
 
-function getListboxTop(inputWrapperRef: React.RefObject<HTMLDivElement | null>) {
-  return inputWrapperRef.current?.getBoundingClientRect().bottom || null;
+function getListboxPosition(inputWrapperRef: React.RefObject<HTMLDivElement | null>) {
+  const inputWrapperBounds = inputWrapperRef.current?.getBoundingClientRect();
+  const listboxTop = inputWrapperBounds?.bottom || null;
+
+  return {
+    shouldOpenUpward: (listboxTop || 0) > window.innerHeight - 100,
+    top: listboxTop,
+    bottom: inputWrapperBounds?.top || null,
+  };
 }

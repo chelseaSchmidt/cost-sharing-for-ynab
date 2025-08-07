@@ -109,6 +109,11 @@ const SectionContent = styled.div`
   position: relative;
   width: 100%;
   margin-bottom: 40px;
+  z-index: 1;
+
+  &:focus-within {
+    z-index: ${zIndices.autocomplete};
+  }
 `;
 
 const Subtitle = styled.div`
@@ -544,7 +549,7 @@ const App = () => {
         <SectionTile>
           <SectionHeader>Choose Accounts and Categories</SectionHeader>
 
-          <SectionContent style={{ zIndex: 4 }}>
+          <SectionContent>
             <Subtitle>
               <SubtitleText>Select where you record shared-cost transactions.</SubtitleText>
 
@@ -574,7 +579,7 @@ const App = () => {
             </OptionButton>
           </SectionContent>
 
-          <SectionContent style={{ zIndex: 3 }}>
+          <SectionContent>
             <BudgetAutocomplete
               limit={budgetData.accounts.length}
               placeholder={selectedAccounts.length ? 'Add more' : 'Add one or more'}
@@ -598,7 +603,7 @@ const App = () => {
           </SectionContent>
 
           {isAdvancedMode && (
-            <SectionContent style={{ zIndex: 2 }}>
+            <SectionContent>
               <BudgetAutocomplete
                 limit={budgetData.parentCategories.length}
                 placeholder={selectedParentCategories.length ? 'Add more' : 'Add one or more'}
@@ -644,7 +649,7 @@ const App = () => {
             </SectionContent>
           )}
 
-          <SectionContent style={{ zIndex: 1 }}>
+          <SectionContent>
             <BudgetAutocomplete
               limit={1}
               onSelectionChange={([selectedAccount]) => setIouAccountId(selectedAccount?.id || '')}
