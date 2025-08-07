@@ -169,7 +169,10 @@ export default function Autocomplete<T>({
               aria-expanded={expanded}
               placeholder={selectedItemCount >= Math.max(1, limit) ? undefined : placeholder}
               value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
+              onChange={(e) => {
+                setInputValue(e.target.value);
+                if (e.target.value && !expanded) openMenu();
+              }}
               onFocus={openMenu}
               tabIndex={0}
             />
