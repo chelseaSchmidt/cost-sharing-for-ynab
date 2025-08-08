@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import _ from 'lodash';
 import { BackgroundOverlay } from '../app/src/components/styledComponents'; // FIXME: move to shared directory
 import breakpoints from './breakpoints';
+import colors from './colors';
 import zIndices from './zIndices';
 
 const Container = styled.div`
@@ -122,7 +123,7 @@ const MenuItem = styled.a`
   }
 
   &:focus-visible {
-    outline: 1px solid blue;
+    outline: 1px solid ${colors.primary};
     border-radius: 5px;
   }
 `;

@@ -21,7 +21,7 @@ export const Hyperlink = styled.a`
   }
 
   &:focus-visible {
-    outline: 1px solid blue;
+    outline: 1px solid ${colors.primary};
     border-radius: 5px;
   }
 `;
@@ -53,7 +53,7 @@ export const Button = styled.button`
   }
 
   &:focus-visible {
-    outline: 1px solid blue;
+    outline: 1px solid ${colors.buttonFocusOutline};
   }
 
   &:disabled {
