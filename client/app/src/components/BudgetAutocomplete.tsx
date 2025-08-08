@@ -1,20 +1,9 @@
 import styled from 'styled-components';
 import breakpoints from '../../../shared/breakpoints';
 import colors from '../../../shared/colors';
-import zIndices from '../../../shared/zIndices';
 import Autocomplete, { AutocompleteProps } from './Autocomplete';
 
 /* STYLED COMPONENTS */
-
-const Container = styled.div`
-  position: relative;
-  z-index: ${zIndices.autocomplete};
-`;
-
-const InteractiveElements = styled.div`
-  position: relative;
-  z-index: ${zIndices.listbox};
-`;
 
 const InputWrapper = styled.div`
   border: 1px solid ${colors.lightNeutralAccent};
@@ -101,8 +90,6 @@ export default function BudgetAutocomplete<T>(props: AutocompleteProps<T>) {
         '&:disabled': { background: colors.lightNeutralAccent },
       }}
       styledComponents={{
-        Container,
-        InteractiveElements,
         InputWrapper,
         List,
         ListItem,

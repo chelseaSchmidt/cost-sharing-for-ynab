@@ -6,10 +6,17 @@ import { PSEUDO_CSS_KEYS, PseudoCSSProperties } from './types';
 export const DELETE_BUTTON_CLASS = 'autocomplete-delete-button';
 export const DELETE_ICON_LINE_CLASS = 'autocomplete-delete-icon-line';
 
-export const Container = styled.div<{ $deleteIconLineStyle?: CSSProperties & PseudoCSSProperties }>`
+type ContainerProps = {
+  $expanded: boolean;
+  $deleteIconLineStyle?: CSSProperties & PseudoCSSProperties;
+};
+
+export const Container = styled.div<ContainerProps>`
   position: relative;
   box-sizing: border-box;
   width: 100%;
+
+  ${({ $expanded }) => ($expanded ? 'z-index: 2;' : '')}
 
   * {
     box-sizing: border-box;
