@@ -48,6 +48,7 @@ export interface AutocompleteProps<T> {
   selectedItemStyle?: ListItemProps<T>['selectedStyle'];
   deleteIconLineStyle?: CSSProperties & PseudoCSSProperties;
   deleteIconSize?: number;
+  listboxMargins?: { top?: number; bottom?: number };
   styledComponents?: {
     Container?: typeof Container | typeof StyledContainer;
     Label?: typeof Label | typeof StyledLabel;
@@ -74,6 +75,7 @@ export default function Autocomplete<T>({
   selectedItemStyle,
   deleteIconLineStyle,
   deleteIconSize,
+  listboxMargins,
   styledComponents = {},
   onSelectionChange,
 }: AutocompleteProps<T>) {
@@ -198,6 +200,8 @@ export default function Autocomplete<T>({
           $shouldOpenUpward={listboxPosition.shouldOpenUpward}
           $top={listboxPosition.top}
           $bottom={listboxPosition.bottom}
+          $topMargin={listboxMargins?.top}
+          $bottomMargin={listboxMargins?.bottom}
           style={{ display: expanded ? undefined : 'none' }}
         >
           {displayedItems.length ? (

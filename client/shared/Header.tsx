@@ -5,6 +5,8 @@ import { CSSProperties } from 'react';
 import colors from './colors';
 import zIndices from './zIndices';
 
+export const HEADER_MAX_HEIGHT = 100;
+
 const Container = styled.header`
   box-sizing: border-box;
   display: flex;
@@ -20,6 +22,7 @@ const Container = styled.header`
   padding: 10px 20px;
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.5);
   z-index: ${zIndices.header};
+  max-height: ${HEADER_MAX_HEIGHT}px;
 
   @media (max-width: ${breakpoints.mobile}) {
     justify-content: space-between;

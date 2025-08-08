@@ -111,6 +111,8 @@ type ListProps = {
   $shouldOpenUpward: boolean;
   $top: number | null;
   $bottom: number | null;
+  $topMargin?: number;
+  $bottomMargin?: number;
 };
 
 export const List = styled.ul<ListProps>`
@@ -120,10 +122,10 @@ export const List = styled.ul<ListProps>`
   border: 1px solid black;
   overflow: auto;
 
-  ${({ $shouldOpenUpward, $top, $bottom }) =>
+  ${({ $shouldOpenUpward, $top, $bottom, $topMargin = 10, $bottomMargin = 10 }) =>
     $shouldOpenUpward && $bottom !== null
-      ? `bottom: 100%; max-height: calc(100vh - 250px);`
+      ? `bottom: 100%; max-height: calc(${$bottom}px - ${$topMargin}px);`
       : $top !== null
-      ? `top: 100%; max-height: calc(100vh - ${$top}px - 10px);`
+      ? `top: 100%; max-height: calc(100vh - ${$top}px - ${$bottomMargin}px);`
       : ''}
 `;
