@@ -19,7 +19,6 @@ import {
 import { PseudoCSSProperties } from './types';
 
 const StyledContainer = styled(Container);
-const StyledInteractiveElements = styled(InteractiveElements);
 const StyledInput = styled(Input);
 const StyledInputWrapper = styled(InputWrapper);
 const StyledLabel = styled(Label);
@@ -52,7 +51,6 @@ export interface AutocompleteProps<T> {
   styledComponents?: {
     Container?: typeof Container | typeof StyledContainer;
     Label?: typeof Label | typeof StyledLabel;
-    InteractiveElements?: typeof InteractiveElements | typeof StyledInteractiveElements;
     Input?: typeof Input | typeof StyledInput;
     InputWrapper?: typeof InputWrapper | typeof StyledInputWrapper;
     SelectedInputPill?: typeof SelectedInputPill | typeof StyledSelectedInputPill;
@@ -119,6 +117,7 @@ export default function Autocomplete<T>({
   return (
     <Container
       as={styledComponents.Container}
+      $expanded={expanded}
       $deleteIconLineStyle={deleteIconLineStyle}
       onKeyUp={(e) => e.key === 'Escape' && closeMenu()}
     >
@@ -127,7 +126,6 @@ export default function Autocomplete<T>({
       </Label>
 
       <InteractiveElements
-        as={styledComponents.InteractiveElements}
         onBlur={(e) => !e.currentTarget.contains(e.relatedTarget) && closeMenu()}
       >
         <InputWrapper as={styledComponents.InputWrapper} ref={inputWrapperRef}>

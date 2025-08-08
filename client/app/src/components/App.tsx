@@ -110,14 +110,8 @@ const TransactionsTile = styled(SectionTile)`
 `;
 
 const SectionContent = styled.div`
-  position: relative;
   width: 100%;
   margin-bottom: 40px;
-  z-index: 1;
-
-  &:focus-within {
-    z-index: ${zIndices.autocomplete};
-  }
 `;
 
 const Subtitle = styled.div`
