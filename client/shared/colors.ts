@@ -3,6 +3,7 @@ const colors = {
   primaryLight: 'rgba(47, 115, 179, 0.1)',
   lightNeutralAccent: '#d3d3d3',
   buttonActive: 'rgba(47, 115, 179, 0.7)',
+  buttonFocusOutline: 'purple',
   lightNeutralBg: '#eee',
   infoIcon: '#999',
 } as const;

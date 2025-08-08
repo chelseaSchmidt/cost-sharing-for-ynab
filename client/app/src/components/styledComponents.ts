@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import colors from '../../../shared/colors';
 import zIndices from '../../../shared/zIndices';
 
 export const SectionHeader = styled.h1`
@@ -87,7 +88,7 @@ export const OptionButton = styled.button<{ $selected: boolean }>`
   }
 
   &:focus-visible {
-    outline: 1px solid blue;
+    outline: 1px solid ${colors.buttonFocusOutline};
   }
 
   ${({ $selected }) =>

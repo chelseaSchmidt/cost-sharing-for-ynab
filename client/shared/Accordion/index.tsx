@@ -45,7 +45,7 @@ const HeaderButton = styled.button`
   }
 
   &:focus-visible {
-    outline: 1px solid blue;
+    outline: 1px solid ${colors.primary};
   }
 `;
 
