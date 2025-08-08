@@ -71,12 +71,14 @@ export const InputArea = styled.div`
   display: flex;
   flex: 1;
   flex-wrap: wrap;
+  max-width: 100%;
 `;
 
 export const Input = styled.input`
   display: flex;
   flex: 1;
   min-width: 100px;
+  max-width: 100%;
   padding: 8px;
   border: none;
   font-size: inherit;
@@ -92,7 +94,9 @@ export const SelectedInputsArea = styled.div`
 
 export const SelectedInputPill = styled.div`
   display: flex;
+  align-items: center;
   border: 1px solid black;
+  max-width: 100%;
 `;
 
 export const PillContent = styled.div`
