@@ -31,7 +31,6 @@ import breakpoints from '../../../shared/breakpoints';
 import colors from '../../../shared/colors';
 import { MenuItem } from '../../../shared/NavMenu';
 import { Button, Hyperlink } from '../../../shared/styledComponents';
-import zIndices from '../../../shared/zIndices';
 import '../styles/global.css';
 import {
   Account,
@@ -78,6 +77,10 @@ const InstructionsButtonContainer = styled.div`
   font-size: 14px;
   margin-top: -25px;
   margin-bottom: 25px;
+`;
+
+const PrivacyPolicyContainer = styled.div`
+  padding-right: 20px;
 `;
 
 const SectionTile = styled.section`
@@ -493,7 +496,11 @@ const App = () => {
           buttonText={activeModal === ModalName.TRANSACTION_REVIEW ? 'Exit' : 'OK'}
           shouldCloseOnOverlayClick={activeModal !== ModalName.PRIVACY_POLICY}
         >
-          {activeModal === ModalName.PRIVACY_POLICY && <PrivacyPolicy />}
+          {activeModal === ModalName.PRIVACY_POLICY && (
+            <PrivacyPolicyContainer>
+              <PrivacyPolicy />
+            </PrivacyPolicyContainer>
+          )}
 
           {activeModal === ModalName.TRANSACTION_REVIEW && (
             <TransactionWindow
