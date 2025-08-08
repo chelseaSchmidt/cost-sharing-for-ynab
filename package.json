@@ -10,6 +10,10 @@
     "build-home-prod": "webpack --config client/home/webpack.prod.js",
     "watch-dev": "webpack -w --config client/app/webpack.dev.js",
     "watch-home-dev": "webpack --config client/home/webpack.dev.js -w",
+    "docker-build": "docker build --build-arg PORT=80 -t cs4y .",
+    "docker-build-apple-silicon": "docker build --build-arg PORT=80 --platform linux/amd64 -t cs4y .",
+    "docker-dev": "npm run docker-build && docker run -d -p 3000:80 cs4y:latest",
+    "push-new-docker-image": "npm run docker-build-apple-silicon && docker tag cs4y us-west1-docker.pkg.dev/cost-sharing-for-ynab/cs4y/cs4y && docker push us-west1-docker.pkg.dev/cost-sharing-for-ynab/cs4y/cs4y",
     "linter": "npx eslint ./ --ext .js,.jsx"
   },
   "repository": {

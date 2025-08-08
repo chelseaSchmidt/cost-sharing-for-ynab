@@ -22,8 +22,7 @@ Check out the live app here! https://costsharingforynab.com. Cost Sharing for YN
 - Or, run a local Docker container:
 
   - Run the Docker daemon
-  - Build image: `docker build --build-arg PORT=80 -t cs4y .`
-  - Run container at port 3000: `docker run -d -p 3000:80 cs4y:latest`
+  - `npm run docker-dev`
 
 - Navigate to http://localhost:3000
 
@@ -45,6 +44,7 @@ Check out the live app here! https://costsharingforynab.com. Cost Sharing for YN
   - In Artifact Registry, create new Docker image repository
     - Take note of the repository's host name (such as `us-west1-docker.pkg.dev`)
   - Create a service account with the Artifact Registry Writer role and a private key. Save the private key
+  - Run the Docker daemon
   - Authenticate to the repository
     - Install [Google Cloud CLI](https://cloud.google.com/sdk/docs/install)
     - `source ~/.zshrc`
@@ -55,6 +55,10 @@ Check out the live app here! https://costsharingforynab.com. Cost Sharing for YN
       - `gcloud iam service-accounts list` can be used to get the exact service account name
     - `gcloud auth configure-docker <repository_host_name_from_earlier_step>`
     - `cat <path_to_key_file> | docker login -u _json_key --password-stdin https://<repository_host_name_from_earlier_step>`
+  - Build, tag, and push first image:
+    - `npm run docker-build` or `npm run docker-build-apple-silicon`
+    - `docker tag <image_id_or_name> <repository_host_name_from_earlier_step>/<project_id>/<repository_name>/cs4y`
+    - `docker push <repository_host_name_from_step_1>/<project_id>/<repository_name>/cs4y`
 
 </details>
 
@@ -63,16 +67,9 @@ Check out the live app here! https://costsharingforynab.com. Cost Sharing for YN
 
 - Run the Docker daemon
 
-- Build image: `docker build --build-arg PORT=80 -t cs4y .`
+- `gcloud auth login`
 
-  - OR: `docker build --build-arg PORT=80 --platform linux/amd64 -t cs4y .`
-    - (Apple Silicon or if Google Cloud Run doesn't like the image manifest)
-
-- Tag image: `docker tag <image_id> <repository_host_name_from_earlier_step>/<project_id>/<repository_name>/cs4y`
-
-- Push image:
-  - `gcloud auth login`
-  - `docker push <repository_host_name_from_step_1>/<project_id>/<repository_name>/cs4y`
+- `npm run push-new-docker-image`
 
 </details>
 
