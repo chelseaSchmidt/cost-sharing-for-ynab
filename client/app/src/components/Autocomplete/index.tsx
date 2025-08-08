@@ -217,7 +217,7 @@ export default function Autocomplete<T>({
                     const updatedItems = { ...selectedItems, [item.id]: item };
                     setSelectedItems(updatedItems);
                     setInputValue('');
-                    if (selectedItemCount >= limit) {
+                    if (countSelections(updatedItems) >= limit) {
                       closeMenu();
                     }
                   }
