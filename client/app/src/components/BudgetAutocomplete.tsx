@@ -46,8 +46,6 @@ const ListItem = styled.li`
 `;
 
 const SelectedInputPill = styled.div`
-  display: flex;
-  align-items: center;
   border: none;
   box-sizing: border-box;
   padding: 5px 10px;
