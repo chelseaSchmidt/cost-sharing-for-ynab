@@ -167,7 +167,7 @@ export default function Autocomplete<T>({
               id={COMBOBOX_ID}
               aria-controls={LISTBOX_ID}
               aria-expanded={expanded}
-              placeholder={selectedItemCount >= Math.max(1, limit) ? undefined : placeholder}
+              placeholder={placeholder}
               value={inputValue}
               onChange={(e) => {
                 setInputValue(e.target.value);
@@ -175,6 +175,7 @@ export default function Autocomplete<T>({
               }}
               onFocus={openMenu}
               tabIndex={0}
+              style={selectedItemCount >= Math.max(1, limit) ? { display: 'none' } : {}}
             />
           </InputArea>
 
