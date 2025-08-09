@@ -91,6 +91,7 @@ export default function Switch<T extends string>({ options, selected, onChange }
     <Container>
       {options.map((option) => (
         <OptionContainer
+          key={option.value}
           onClick={() => onChange(option.value)}
           $isSelected={selected === option.value}
         >
