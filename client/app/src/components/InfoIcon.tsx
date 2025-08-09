@@ -43,7 +43,7 @@ const Tooltip = styled.div<{ $isOpen: boolean }>`
 `;
 
 interface Props {
-  tooltipContent: ReactNode;
+  tooltipContent?: ReactNode;
   theme?: 'error' | 'info';
   color?: string;
 }
@@ -62,7 +62,7 @@ export default function InfoIcon({
   return (
     <Container $color={color} onClick={toggleTooltip} onMouseLeave={() => setIsTooltipOpen(false)}>
       {symbol}
-      <Tooltip $isOpen={isTooltipOpen}>{tooltipContent}</Tooltip>
+      {tooltipContent && <Tooltip $isOpen={isTooltipOpen}>{tooltipContent}</Tooltip>}
     </Container>
   );
 }
