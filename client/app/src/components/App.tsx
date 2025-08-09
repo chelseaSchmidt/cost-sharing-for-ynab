@@ -163,7 +163,7 @@ const RowOrColumn = styled.div`
   }
 `;
 
-const NoWrap = styled.div`
+const NoWrap = styled.span`
   white-space: nowrap;
 `;
 
@@ -183,7 +183,6 @@ const ReviewTransactionsButton = styled(Button)`
 const SplitTransactionsButton = styled(Button)`
   position: relative;
   white-space: nowrap;
-  margin: 0 10px;
 
   @media (max-width: ${breakpoints.mobile}) {
     margin: 10px 0 0 0;
@@ -239,11 +238,26 @@ const TransactionWindowContainer = styled.div`
   }
 `;
 
+const CostPercentField = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+`;
+
+const CostPercentLabel = styled.label`
+  text-align: center;
+`;
+
+const CostPercentSlider = styled.input`
+  cursor: pointer;
+`;
+
 const CostPercentInput = styled.input`
   width: 50px;
   border: 1px solid ${colors.lightNeutralAccent};
   border-radius: 5px;
-  padding: 5px;
+  padding: 10px 5px;
   font-size: inherit;
 `;
 
@@ -297,9 +311,9 @@ const App = () => {
   const isSplitTransactionDisabled = !selectedTransactions.length || !iouAccountId;
 
   const buttonDisabledMessage = !selectedTransactions.length
-    ? (!iouAccountId && 'Please select shared costs and pick an IOU account first') ||
-      'Please select shared costs first'
-    : 'Please pick an IOU account first';
+    ? (!iouAccountId && 'Please select shared costs and an IOU account') ||
+      'Please select shared costs'
+    : 'Please select an IOU account';
 
   const navMenuItems: MenuItem[] = [
     {
@@ -802,22 +816,28 @@ const App = () => {
         </TransactionsTile>
 
         <SectionTile>
-          <form>
+          <form style={{ display: 'contents' }}>
             <SectionHeader>Split the Costs</SectionHeader>
 
-            <p>
-              Select your share of the costs and enter the date on which you want to split them. The
-              percentage owed to you will be moved out of your expenses and into the &quot;IOU&quot;
-              account you selected.
-            </p>
-
-            <RowOrColumn>
-              <label htmlFor="split-percentage-slider">
-                <b>Select your share of the costs:</b>
-              </label>
+            <CostPercentField>
+              <CostPercentLabel htmlFor="split-percentage-slider">
+                Enter your share of the{' '}
+                <NoWrap>
+                  costs.{' '}
+                  <InfoIcon
+                    tooltipContent={
+                      <>
+                        The percentage owed to you will be subtracted from your expenses and added
+                        to your &quot;IOU&quot; account, via a single YNAB transaction.{' '}
+                        {learnMoreLink}
+                      </>
+                    }
+                  />
+                </NoWrap>
+              </CostPercentLabel>
 
               <Row>
-                <input
+                <CostPercentSlider
                   type="range"
                   id="split-percentage-slider"
                   min="0"
@@ -841,36 +861,46 @@ const App = () => {
                   <span>%</span>
                 </NoWrap>
               </Row>
-            </RowOrColumn>
+            </CostPercentField>
 
             <Spacer />
 
-            <RowOrColumn>
-              <DateSelector
-                label="Select date to split costs"
-                isLabelVisible={false}
-                inputId="cost-split-date-selector"
-                inputValue={convertDateToString(dateToSplitCosts)}
-                onChange={(value) => setDateToSplitCosts(toDate(value))}
-              />
+            <DateSelector
+              label="Select a transaction date."
+              inputId="cost-split-date-selector"
+              inputValue={convertDateToString(dateToSplitCosts)}
+              onChange={(value) => setDateToSplitCosts(toDate(value))}
+              style={{
+                flexDirection: 'column',
+                gap: '10px',
+                alignItems: 'unset',
+                width: 'fit-content',
+              }}
+            />
 
+            <Spacer />
+
+            <Row>
               <SplitTransactionsButton
                 type="submit"
                 onClick={createSplitEntry}
                 disabled={isSplitTransactionDisabled}
               >
-                {isIouTransactionLoading ? <Spinner /> : 'Split Costs On This Date'}
-
+                {isIouTransactionLoading ? <Spinner /> : 'Split Costs'}
+                &nbsp;
+                {isSplitTransactionDisabled && <InfoIcon color="white" />}
                 <ButtonDisabledPopup>{buttonDisabledMessage}</ButtonDisabledPopup>
               </SplitTransactionsButton>
-            </RowOrColumn>
+            </Row>
           </form>
 
-          <TransactionWindow
-            loading={isIouTransactionLoading}
-            title="IOU Transaction Preview"
-            transactions={iouAccountTransactions}
-          />
+          {!!iouAccountTransactions.length && (
+            <TransactionWindow
+              loading={isIouTransactionLoading}
+              title="Your IOU Transactions:"
+              transactions={iouAccountTransactions}
+            />
+          )}
         </SectionTile>
 
         <Nav setActiveModal={setActiveModal} />

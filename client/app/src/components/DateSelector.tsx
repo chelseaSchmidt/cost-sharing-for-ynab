@@ -1,4 +1,4 @@
-import { CSSProperties } from 'react';
+import { CSSProperties, ReactNode } from 'react';
 import styled from 'styled-components';
 import breakpoints from '../../../shared/breakpoints';
 import colors from '../../../shared/colors';
@@ -19,7 +19,7 @@ const Input = styled.input`
   cursor: text;
   border: 1px solid ${colors.lightNeutralAccent};
   border-radius: 5px;
-  padding: 5px;
+  padding: 10px 5px;
   font-size: inherit;
 
   &::-webkit-calendar-picker-indicator {
@@ -41,6 +41,7 @@ interface Props {
   label: string;
   inputId: string;
   inputValue: string;
+  style?: CSSProperties;
   inputStyle?: CSSProperties;
   onChange: (value: string) => void;
   isLabelVisible?: boolean;
@@ -50,14 +51,20 @@ const DateSelector = ({
   label,
   inputId,
   inputValue,
+  style = {},
   inputStyle = {},
   onChange,
   isLabelVisible = true,
 }: Props) => {
   return (
-    <Label htmlFor={inputId}>
-      {isLabelVisible && label}
-      {isLabelVisible && <Spacer />}
+    <Label htmlFor={inputId} style={style}>
+      {isLabelVisible && (
+        <>
+          {label}
+          <Spacer />
+        </>
+      )}
+
       <Input
         type="date"
         id={inputId}

@@ -40,6 +40,7 @@ const Tooltip = styled.div<{ $isOpen: boolean }>`
   color: white;
   font-size: 12px;
   font-weight: normal;
+  white-space: wrap;
 `;
 
 interface Props {
