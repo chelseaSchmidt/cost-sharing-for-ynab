@@ -41,7 +41,9 @@ const SelectAllCheckboxContainer = styled.div`
   margin-bottom: 15px;
 `;
 
-const SelectAllCheckboxLabel = styled.label``;
+const SelectAllCheckboxLabel = styled.label`
+  cursor: pointer;
+`;
 
 const SelectAllCheckbox = styled.input`
   cursor: pointer;
@@ -57,7 +59,7 @@ const TransactionFeed = styled.div`
   padding: 30px;
 
   @media (max-width: ${breakpoints.mobile}) {
-    padding: 10px;
+    padding: 5px;
   }
 
   @media (max-width: ${breakpoints.tiny}) {
