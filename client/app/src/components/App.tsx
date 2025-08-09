@@ -105,12 +105,13 @@ const SectionTile = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 60vw;
+  box-sizing: border-box;
+  width: 90vw;
   max-width: 1290px;
   padding: 50px ${TILE_X_PADDING_LG}px;
   margin-bottom: 50px;
-  border-radius: 5px;
-  box-shadow: 0 0 3px 0 #9298a2;
+  border-radius: 3px;
+  box-shadow: 0 1px 2px 0 #999, 0 -1px 4px 1px #ddd;
   background-color: white;
 
   @media (max-width: ${breakpoints.mobile}) {
