@@ -7,6 +7,7 @@ import InfoIcon from './InfoIcon';
 import TransactionWindow from './TransactionWindow';
 import Confirmation from './Confirmation';
 import Modal from './Modal';
+import Switch from './Switch';
 import Header from '../../../shared/Header';
 import Nav from './Nav';
 import Error from './Error';
@@ -39,6 +40,7 @@ import {
   DraftTransaction,
   ErrorData,
   ModalName,
+  Mode,
   ParentCategory,
   Transaction,
 } from '../types';
@@ -241,7 +243,7 @@ const Spacer = styled.div`
 const App = () => {
   const [isPageLoading, setIsPageLoading] = useState(true);
   const [areTransactionsLoading, setAreTransactionsLoading] = useState(false);
-  const [isAdvancedMode, setIsAdvancedMode] = useState(false);
+  const [mode, setMode] = useState(Mode.STANDARD);
   const [budgetData, setBudgetData] = useState<BudgetData>({
     accounts: [],
     parentCategories: [],
@@ -569,19 +571,35 @@ const App = () => {
               />
             </Subtitle>
 
-            <OptionButton
-              $selected={!isAdvancedMode}
-              onClick={() => {
-                setIsAdvancedMode(false);
-                setSelectedParentCategories([]);
+            <Switch
+              selected={mode}
+              onChange={(mode) => {
+                setMode(mode);
+                if (mode !== Mode.ADVANCED) {
+                  setSelectedParentCategories([]);
+                }
               }}
-            >
-              <strong>Standard:</strong> In specific accounts
-            </OptionButton>
-
-            <OptionButton $selected={isAdvancedMode} onClick={() => setIsAdvancedMode(true)}>
-              <strong>Advanced:</strong> In specific accounts and categories
-            </OptionButton>
+              options={[
+                {
+                  value: Mode.STANDARD,
+                  displayedContent: (
+                    <>
+                      <strong>Standard:</strong>
+                      <div>In specific accounts</div>
+                    </>
+                  ),
+                },
+                {
+                  value: Mode.ADVANCED,
+                  displayedContent: (
+                    <>
+                      <strong>Advanced:</strong>
+                      <div>In specific accounts and categories</div>
+                    </>
+                  ),
+                },
+              ]}
+            />
           </SectionContent>
 
           <SectionContent>
@@ -607,7 +625,7 @@ const App = () => {
             />
           </SectionContent>
 
-          {isAdvancedMode && (
+          {mode === Mode.ADVANCED && (
             <SectionContent>
               <BudgetAutocomplete
                 limit={budgetData.parentCategories.length}
