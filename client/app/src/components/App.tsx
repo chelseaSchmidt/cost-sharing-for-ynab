@@ -130,18 +130,25 @@ const SubtitleText = styled.span`
 const Row = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
   gap: 10px;
 `;
 
 const RowOrColumn = styled.div`
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 10px;
 
-  @media (max-width: 645px) {
+  @media (max-width: ${breakpoints.mobile}) {
     flex-direction: column;
-    align-items: unset;
+    gap: 20px;
   }
+`;
+
+const NoWrap = styled.div`
+  white-space: nowrap;
 `;
 
 const ReviewTransactionsButton = styled(Button)`
@@ -802,7 +809,8 @@ const App = () => {
                   value={myShare}
                   onChange={(e) => setMyShare(Number(e.target.value))}
                 />
-                <div>
+
+                <NoWrap>
                   <CostPercentInput
                     type="number"
                     id="split-percentage-input"
@@ -815,7 +823,7 @@ const App = () => {
                     }}
                   />
                   <span>%</span>
-                </div>
+                </NoWrap>
               </Row>
             </RowOrColumn>
 
