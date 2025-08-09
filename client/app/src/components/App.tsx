@@ -75,10 +75,26 @@ const NonModalContent = styled.div`
   flex: 1;
 `;
 
-const InstructionsButtonContainer = styled.div`
-  font-size: 14px;
+const HelpButtonContainer = styled.div`
   margin-top: -25px;
   margin-bottom: 25px;
+  color: ${colors.infoIcon};
+
+  button {
+    text-decoration: none;
+    border-bottom: 1px dotted ${colors.infoIcon};
+    padding-bottom: 3px;
+
+    &:hover {
+      color: ${colors.primary};
+      border-color: ${colors.primary};
+
+      * {
+        color: ${colors.primary};
+        border-color: ${colors.primary};
+      }
+    }
+  }
 `;
 
 const PrivacyPolicyContainer = styled.div`
@@ -550,15 +566,15 @@ const App = () => {
 
         <Header navMenuItems={navMenuItems} />
 
-        <InstructionsButtonContainer>
+        <HelpButtonContainer>
           <Hyperlink
             as="button"
             type="button"
             onClick={() => setActiveModal(ModalName.INSTRUCTIONS)}
           >
-            Help
+            <InfoIcon tooltipContent="" /> Help
           </Hyperlink>
-        </InstructionsButtonContainer>
+        </HelpButtonContainer>
 
         <SectionTile>
           <SectionHeader>Choose Accounts and Categories</SectionHeader>
