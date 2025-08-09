@@ -37,9 +37,10 @@ const InputWrapper = styled.div`
 const List = styled.ul`
   display: flex;
   flex-direction: column;
-  border: 1px solid ${colors.lightNeutralAccent};
+  border: none;
   border-radius: 5px;
   background: white;
+  box-shadow: 0 1px 2px 0 #999, 0 -1px 5px 2px #eee;
 `;
 
 const ListItem = styled.li`
