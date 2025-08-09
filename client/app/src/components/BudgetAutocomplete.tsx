@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import breakpoints from '../../../shared/breakpoints';
 import colors from '../../../shared/colors';
+import { HEADER_MAX_HEIGHT } from '../../../shared/Header';
 import Autocomplete, { AutocompleteProps } from './Autocomplete';
 
 /* STYLED COMPONENTS */
@@ -87,6 +88,7 @@ export default function BudgetAutocomplete<T>(props: AutocompleteProps<T>) {
         '&:hover': { background: 'white' },
         '&:disabled': { background: colors.lightNeutralAccent },
       }}
+      listboxMargins={{ top: HEADER_MAX_HEIGHT }}
       styledComponents={{
         InputWrapper,
         List,
