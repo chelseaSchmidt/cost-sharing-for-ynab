@@ -33,7 +33,7 @@ export const Button = styled.button`
   background: ${colors.primary};
   border-radius: 5px;
   box-shadow: 0 1px 2px 0 #666;
-  padding: 7px 15px;
+  padding: 12px 24px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -41,7 +41,7 @@ export const Button = styled.button`
   color: white;
   text-decoration: none;
   text-align: center;
-  letter-spacing: 0.1px;
+  letter-spacing: 0.5px;
   white-space: nowrap;
 
   &:hover {
