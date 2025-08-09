@@ -78,3 +78,8 @@ export enum ModalName {
   TRANSACTION_REVIEW = 'TRANSACTION_REVIEW',
   INSTRUCTIONS = 'INSTRUCTIONS',
 }
+
+export enum Mode {
+  STANDARD = 'STANDARD',
+  ADVANCED = 'ADVANCED',
+}
