@@ -55,6 +55,7 @@ export const Container = styled.div<ContainerProps>`
 export const Label = styled.label`
   display: block;
   width: fit-content;
+  cursor: pointer;
 `;
 
 export const InteractiveElements = styled.div`
