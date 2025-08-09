@@ -8,10 +8,10 @@ import colors from '../../../shared/colors';
 const Label = styled.label`
   display: flex;
   align-items: center;
+  white-space: nowrap;
 
-  @media (max-width: ${breakpoints.mobile}) {
+  @media (max-width: ${breakpoints.tiny}) {
     flex-direction: column;
-    align-items: unset;
   }
 `;
 
