@@ -1,6 +1,8 @@
 import { CSSProperties, useState } from 'react';
 import moment from 'moment';
 import styled from 'styled-components';
+import breakpoints from '../../../shared/breakpoints';
+import colors from '../../../shared/colors';
 import zIndices from '../../../shared/zIndices';
 import { Transaction } from '../types';
 import ElevatedTooltip from './ElevatedTooltip';
@@ -8,13 +10,13 @@ import { WarningIcon } from './styledComponents';
 
 /* Styled Components */
 
-const Container = styled.div<{ $isClickable: boolean }>`
+const Container = styled.div<{ $isClickable: boolean; $isSelected: boolean }>`
   display: flex;
   align-items: center;
-  border: 1px solid lightgray;
-  border-radius: 12px;
-  box-shadow: 0 1px 0 0.5px #f1f2f1;
-  margin: 0 2px 5px 0;
+  border: 1px solid ${colors.lightNeutralAccent};
+  border-radius: 3px;
+  box-shadow: 0 1px 2px 0 ${colors.lightNeutralBg};
+  margin: 0 2px 7px 0;
   padding: 5px;
   background-color: white;
   color: #464b46;
@@ -30,6 +32,12 @@ const Container = styled.div<{ $isClickable: boolean }>`
         background-color: #ddd;
       }
   `}
+
+  ${({ $isSelected }) => ($isSelected ? `background: ${colors.primaryLight};` : '')}
+
+  @media (max-width: ${breakpoints.mobile}) {
+    font-size: 12px;
+  }
 `;
 
 const Checkbox = styled.input`
@@ -39,20 +47,22 @@ const Checkbox = styled.input`
 const Date = styled.div`
   flex: 2;
   color: gray;
-  font-size: 12px;
 `;
 
 const Amount = styled.div`
   flex: 2;
-  font-size: 17px;
+  font-size: 1.4em;
   padding: 0 5px;
 `;
 
 const Details = styled.div`
   flex: 3;
-  font-size: 12px;
   overflow: auto;
   white-space: nowrap;
+
+  @media (max-width: ${breakpoints.mobile}) {
+    padding: 5px 0;
+  }
 `;
 
 const AccountName = styled.div`
@@ -115,7 +125,11 @@ const TransactionCard = ({
   };
 
   return (
-    <Container onClick={isClickable ? onClick : () => {}} $isClickable={isClickable}>
+    <Container
+      onClick={isClickable ? onClick : () => {}}
+      $isClickable={isClickable}
+      $isSelected={isSelected}
+    >
       {isClickable && <Checkbox type="checkbox" checked={isSelected} readOnly />}
 
       <Date>{moment(date).format('MMM DD, YYYY')}</Date>
