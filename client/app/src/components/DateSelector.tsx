@@ -70,7 +70,7 @@ const DateSelector = ({
         id={inputId}
         value={inputValue}
         onChange={(e) => onChange(e.target.value)}
-        aria-label={isLabelVisible ? '' : label}
+        aria-label={label}
         style={inputStyle}
       />
     </Label>

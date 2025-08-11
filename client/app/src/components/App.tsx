@@ -183,7 +183,6 @@ const ReviewTransactionsButton = styled(Button)`
 
 const SplitTransactionsButton = styled(Button)`
   position: relative;
-  white-space: nowrap;
 
   @media (max-width: ${breakpoints.mobile}) {
     margin: 10px 0 0 0;

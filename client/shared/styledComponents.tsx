@@ -42,7 +42,6 @@ export const Button = styled.button`
   text-decoration: none;
   text-align: center;
   letter-spacing: 0.5px;
-  white-space: nowrap;
 
   &:hover {
     background: ${colors.lightNeutralAccent};
