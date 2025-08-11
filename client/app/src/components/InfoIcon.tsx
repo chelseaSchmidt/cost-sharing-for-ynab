@@ -61,6 +61,7 @@ const Tooltip = styled.div<{ $tooltipState: TooltipState }>`
   font-size: 12px;
   font-weight: normal;
   white-space: wrap;
+  overflow: auto;
 
   ${({ $tooltipState: { shouldOpenUpward, positions = {}, margins = {} } }) =>
     shouldOpenUpward && isDefined(positions.bottom)
@@ -93,7 +94,17 @@ const Tooltip = styled.div<{ $tooltipState: TooltipState }>`
   ${({ $tooltipState: { isOpen } }) =>
     isOpen
       ? 'visibility: visible;'
-      : 'visibility: hidden; position: fixed; z-index: 0; top: 0; left: 0; width: 0;'};
+      : `
+          visibility: hidden;
+          position: fixed;
+          z-index: 0;
+          top: 0;
+          left: 0;
+          bottom: unset;
+          right: unset;
+          max-height: 100%;
+          max-width: 100%;
+        `};
 `;
 
 /**
