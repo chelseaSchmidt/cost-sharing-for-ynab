@@ -93,7 +93,7 @@ const Tooltip = styled.div<{ $tooltipState: TooltipState }>`
   ${({ $tooltipState: { isOpen } }) =>
     isOpen
       ? 'visibility: visible;'
-      : 'visibility: hidden; position: fixed; z-index: 0; top: 0; left: 0;'};
+      : 'visibility: hidden; position: fixed; z-index: 0; top: 0; left: 0; width: 0;'};
 `;
 
 /**
