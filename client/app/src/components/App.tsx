@@ -134,6 +134,10 @@ const TransactionsTile = styled(SectionTile)`
 const SectionContent = styled.div`
   width: 100%;
   margin-bottom: 40px;
+
+  @media (max-width: ${breakpoints.mobile}) {
+    margin-bottom: 50px;
+  }
 `;
 
 const Subtitle = styled.div`
