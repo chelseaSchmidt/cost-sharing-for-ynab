@@ -131,11 +131,10 @@ const PrivacyPolicyContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${colors.lightNeutralBg};
   margin: 40px 0 -10px 0;
   padding: 40px;
   border-top: 1px solid ${colors.lightNeutralAccent};
-  width: 100vw;
+  width: 100%;
 `;
 
 const Footer = styled.footer`
@@ -146,6 +145,7 @@ const Footer = styled.footer`
   width: 100%;
   border-top: 1px solid ${colors.lightNeutralAccent};
   padding: 40px 10px;
+  background: ${colors.lightNeutralBg};
   font-size: 12px;
 
   a {
@@ -242,9 +242,7 @@ const Home = () => {
                 textTransform: 'uppercase',
                 textAlign: 'center',
               }}
-              subtitleStyle={{
-                textAlign: 'center',
-              }}
+              subtitleStyle={{ textAlign: 'center' }}
             />
           </TextContainer>
         </PrivacyPolicyContainer>
