@@ -11,6 +11,7 @@ import {
   InputWrapper,
   InteractiveElements,
   Label,
+  LabelContainer,
   List,
   PillContent,
   SelectedInputPill,
@@ -22,6 +23,7 @@ const StyledContainer = styled(Container);
 const StyledInput = styled(Input);
 const StyledInputWrapper = styled(InputWrapper);
 const StyledLabel = styled(Label);
+const StyledLabelContainer = styled(LabelContainer);
 const StyledList = styled(List);
 const StyledSelectedInputPill = styled(SelectedInputPill);
 const RestyledButton = styled(StyledButton);
@@ -37,11 +39,11 @@ const NoItemText = styled.div`
 type SelectedItems<T> = { [key: string]: Item<T> | null };
 
 export interface AutocompleteProps<T> {
-  label: ReactNode;
-  labelText: string;
+  label: string;
   items: Item<T>[];
   limit: number;
   placeholder: string;
+  labelDecoration?: ReactNode;
   shouldHideSelected?: boolean;
   noItemsText?: string;
   disabledItemStyle?: ListItemProps<T>['disabledStyle'];
@@ -52,6 +54,7 @@ export interface AutocompleteProps<T> {
   styledComponents?: {
     Container?: typeof Container | typeof StyledContainer;
     Label?: typeof Label | typeof StyledLabel;
+    LabelContainer?: typeof LabelContainer | typeof StyledLabelContainer;
     Input?: typeof Input | typeof StyledInput;
     InputWrapper?: typeof InputWrapper | typeof StyledInputWrapper;
     SelectedInputPill?: typeof SelectedInputPill | typeof StyledSelectedInputPill;
@@ -65,10 +68,10 @@ export interface AutocompleteProps<T> {
 
 export default function Autocomplete<T>({
   label,
-  labelText,
   items,
   limit,
   placeholder,
+  labelDecoration,
   shouldHideSelected = false,
   noItemsText = 'No matches found',
   disabledItemStyle,
@@ -91,9 +94,9 @@ export default function Autocomplete<T>({
   const inputWrapperRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const LABEL_ID = `label-${labelText}`;
-  const COMBOBOX_ID = `combobox-${labelText}`;
-  const LISTBOX_ID = `listbox-${labelText}`;
+  const LABEL_ID = `label-${label}`;
+  const COMBOBOX_ID = `combobox-${label}`;
+  const LISTBOX_ID = `listbox-${label}`;
 
   const displayedItems = filterItems(items, inputValue, {
     shouldIncludeSelected: !shouldHideSelected,
@@ -123,9 +126,13 @@ export default function Autocomplete<T>({
       $deleteIconLineStyle={deleteIconLineStyle}
       onKeyUp={(e) => e.key === 'Escape' && closeMenu()}
     >
-      <Label as={styledComponents.Label} id={LABEL_ID} htmlFor={COMBOBOX_ID}>
-        {label}
-      </Label>
+      <LabelContainer as={styledComponents.LabelContainer}>
+        <Label as={styledComponents.Label} id={LABEL_ID} htmlFor={COMBOBOX_ID}>
+          {label}
+        </Label>
+        &nbsp;
+        {labelDecoration}
+      </LabelContainer>
 
       <InteractiveElements
         onBlur={(e) => !e.currentTarget.contains(e.relatedTarget) && closeMenu()}
