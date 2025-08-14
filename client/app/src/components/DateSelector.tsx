@@ -72,6 +72,7 @@ const DateSelector = ({
         onChange={(e) => onChange(e.target.value)}
         aria-label={label}
         style={inputStyle}
+        max={new Intl.DateTimeFormat('en-CA').format(new Date()).split('/').join('-')}
       />
     </Label>
   );
