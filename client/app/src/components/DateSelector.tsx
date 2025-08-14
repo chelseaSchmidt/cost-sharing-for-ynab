@@ -1,4 +1,4 @@
-import { CSSProperties, ReactNode } from 'react';
+import { CSSProperties, useEffect } from 'react';
 import styled from 'styled-components';
 import breakpoints from '../../../shared/breakpoints';
 import colors from '../../../shared/colors';
@@ -45,6 +45,8 @@ interface Props {
   inputStyle?: CSSProperties;
   onChange: (value: string) => void;
   isLabelVisible?: boolean;
+  min?: Date;
+  hasError?: boolean;
 }
 
 const DateSelector = ({
@@ -55,7 +57,11 @@ const DateSelector = ({
   inputStyle = {},
   onChange,
   isLabelVisible = true,
+  min,
+  hasError = false,
 }: Props) => {
+  const now = new Date();
+
   return (
     <Label htmlFor={inputId} style={style}>
       {isLabelVisible && (
@@ -71,11 +77,16 @@ const DateSelector = ({
         value={inputValue}
         onChange={(e) => onChange(e.target.value)}
         aria-label={label}
-        style={inputStyle}
-        max={new Intl.DateTimeFormat('en-CA').format(new Date()).split('/').join('-')}
+        style={hasError ? { color: 'red', ...inputStyle } : inputStyle}
+        min={min ? toInputDateFormat(min) : undefined}
+        max={toInputDateFormat(now)}
       />
     </Label>
   );
 };
 
 export default DateSelector;
+
+function toInputDateFormat(date: Date): string {
+  return new Intl.DateTimeFormat('en-CA').format(date).split('/').join('-');
+}

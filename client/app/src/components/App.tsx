@@ -44,6 +44,7 @@ import {
   ParentCategory,
   Transaction,
 } from '../types';
+import moment from 'moment';
 
 /* CONSTANTS */
 
@@ -246,6 +247,11 @@ const TooltipParagraph = styled.p`
   }
 `;
 
+const ErrorMessage = styled.div`
+  color: red;
+  margin-top: 10px;
+`;
+
 const Spacer = styled.div`
   height: 20px;
 `;
@@ -289,6 +295,13 @@ const App = () => {
     ? (!iouAccountId && 'Please select shared costs and an IOU account') ||
       'Please select shared costs'
     : 'Please select an IOU account';
+
+  const dateRangeErrorMessage =
+    transactionsStartDate > transactionsEndDate
+      ? 'End date must be after start date'
+      : transactionsStartDate > moment() || transactionsEndDate > moment()
+      ? 'Dates must be in the past'
+      : null;
 
   const navMenuItems: MenuItem[] = [
     {
@@ -731,6 +744,7 @@ const App = () => {
                   inputValue={convertDateToString(transactionsStartDate)}
                   inputStyle={{ maxWidth: '200px' }}
                   onChange={(value) => setTransactionsStartDate(toDate(value))}
+                  hasError={!!dateRangeErrorMessage}
                 />
 
                 <DateSelector
@@ -739,13 +753,18 @@ const App = () => {
                   inputValue={convertDateToString(transactionsEndDate)}
                   inputStyle={{ maxWidth: '200px' }}
                   onChange={(value) => setTransactionsEndDate(toDate(value, false))}
+                  min={transactionsStartDate.toDate()}
+                  hasError={!!dateRangeErrorMessage}
                 />
               </RowOrColumn>
+
+              {dateRangeErrorMessage && <ErrorMessage>{dateRangeErrorMessage}</ErrorMessage>}
             </form>
           </SectionContent>
 
           <Button
             type="button"
+            disabled={!!dateRangeErrorMessage}
             onClick={() => {
               getClassifiedTransactions({
                 startDate: transactionsStartDate,
