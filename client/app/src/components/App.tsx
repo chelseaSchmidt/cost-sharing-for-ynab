@@ -13,7 +13,7 @@ import Nav from './Nav';
 import Error from './Error';
 import PrivacyPolicy from '../../../shared/PrivacyPolicy';
 import Instructions from '../../../shared/Instructions';
-import { SectionHeader, WarningIcon, Tooltip, Spinner, OptionButton } from './styledComponents';
+import { SectionHeader, WarningIcon, Spinner } from './styledComponents';
 import {
   getTransactionsSinceDate,
   getAccounts,
@@ -186,37 +186,8 @@ const ReviewTransactionsButton = styled(Button)`
 `;
 
 const SplitTransactionsButton = styled(Button)`
-  position: relative;
-
   @media (max-width: ${breakpoints.mobile}) {
     margin: 10px 0 0 0;
-  }
-
-  &:disabled:hover {
-    > * {
-      visibility: visible;
-    }
-  }
-`;
-
-const ButtonDisabledPopup = styled(Tooltip)`
-  bottom: 125%;
-  right: unset;
-  left: 50%;
-  width: 200px;
-  margin-left: -100px;
-  padding: 10px 5px;
-  font-size: 12px;
-  white-space: normal;
-
-  &::after {
-    content: '';
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    margin-left: -5px;
-    border: 5px solid;
-    border-color: #444 transparent transparent transparent;
   }
 `;
 
@@ -892,8 +863,9 @@ const App = () => {
               >
                 {isIouTransactionLoading ? <Spinner /> : 'Split Costs'}
                 &nbsp;
-                {isSplitTransactionDisabled && <InfoIcon color="white" />}
-                <ButtonDisabledPopup>{buttonDisabledMessage}</ButtonDisabledPopup>
+                {isSplitTransactionDisabled && (
+                  <InfoIcon color="white" tooltipContent={buttonDisabledMessage} />
+                )}
               </SplitTransactionsButton>
             </Row>
           </form>
