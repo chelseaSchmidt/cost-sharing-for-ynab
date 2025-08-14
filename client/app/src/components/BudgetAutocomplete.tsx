@@ -6,6 +6,10 @@ import Autocomplete, { AutocompleteProps } from './Autocomplete';
 
 /* STYLED COMPONENTS */
 
+const LabelContainer = styled.div`
+  margin-bottom: 20px;
+`;
+
 const InputWrapper = styled.div`
   border: 1px solid ${colors.lightNeutralAccent};
   border-radius: 5px;
@@ -91,6 +95,7 @@ export default function BudgetAutocomplete<T>(props: AutocompleteProps<T>) {
       }}
       listboxMargins={{ top: HEADER_MAX_HEIGHT }}
       styledComponents={{
+        LabelContainer,
         InputWrapper,
         List,
         ListItem,

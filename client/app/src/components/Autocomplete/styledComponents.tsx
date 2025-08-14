@@ -52,6 +52,11 @@ export const Container = styled.div<ContainerProps>`
   }
 `;
 
+export const LabelContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
 export const Label = styled.label`
   display: block;
   width: fit-content;
