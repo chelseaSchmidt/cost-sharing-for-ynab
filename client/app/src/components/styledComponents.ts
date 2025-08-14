@@ -33,24 +33,6 @@ export const WarningIcon = styled.span`
   }
 `;
 
-export const Tooltip = styled.span`
-  visibility: hidden;
-  z-index: 1;
-
-  position: absolute;
-  bottom: 100%;
-  right: 0;
-  width: 170px;
-
-  background-color: #444;
-  color: white;
-  font-size: 11px;
-  font-weight: normal;
-  text-align: center;
-  padding: 5px;
-  border-radius: 5px;
-`;
-
 // https://www.w3schools.com/howto/howto_css_loader.asp
 export const Spinner = styled.div`
   border: 3px solid #eee;
