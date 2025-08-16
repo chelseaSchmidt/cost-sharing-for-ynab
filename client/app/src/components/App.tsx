@@ -28,6 +28,7 @@ import {
   getLastDateOfLastMonth,
 } from './utils/dateHelpers';
 import classifyTransactions from './utils/classifyTransactions';
+import { hasMessage, hasResponseAndStatus } from './utils/general';
 import breakpoints from '../../../shared/breakpoints';
 import colors from '../../../shared/colors';
 import { MenuItem } from '../../../shared/NavMenu';
@@ -293,27 +294,16 @@ const App = () => {
     : 'Please select an IOU account';
 
   const navMenuItems: MenuItem[] = [
-    {
-      text: 'Home',
-      attributes: {
-        href: '/',
-      },
-    },
+    { text: 'Home', attributes: { href: '/' } },
     {
       text: 'Guide',
       onClick: () => setActiveModal(ModalName.INSTRUCTIONS),
-      attributes: {
-        type: 'button',
-        as: 'button',
-      },
+      attributes: { type: 'button', as: 'button' },
     },
     {
       text: 'Privacy Policy',
       onClick: () => setActiveModal(ModalName.PRIVACY_POLICY),
-      attributes: {
-        type: 'button',
-        as: 'button',
-      },
+      attributes: { type: 'button', as: 'button' },
     },
     {
       text: 'Source Code & Bug Reporting',
@@ -327,23 +317,8 @@ const App = () => {
 
   const displayErrorMessage = (error: unknown) => {
     setErrorData({
-      status:
-        typeof error === 'object' &&
-        error !== null &&
-        'response' in error &&
-        typeof error.response === 'object' &&
-        error.response !== null &&
-        'status' in error.response &&
-        typeof error.response.status === 'number'
-          ? error.response.status
-          : 0,
-      message:
-        typeof error === 'object' &&
-        error !== null &&
-        'message' in error &&
-        typeof error.message === 'string'
-          ? error.message
-          : 'Something went wrong',
+      status: hasResponseAndStatus(error) ? error.response.status : 0,
+      message: hasMessage(error) ? error.message : 'Something went wrong',
     });
   };
 
