@@ -618,7 +618,6 @@ const App = () => {
             <BudgetAutocomplete
               limit={budgetData.accounts.length}
               placeholder={selectedAccounts.length ? 'Add more' : 'Add one or more'}
-              labelText="Select the YNAB accounts you use for shared costs."
               onSelectionChange={(selected) =>
                 setSelectedAccounts(selected.map(({ data }) => data))
               }
@@ -628,11 +627,9 @@ const App = () => {
                 searchableText: acct.name,
                 data: acct,
               }))}
-              label={
-                <Subtitle>
-                  <SubtitleText>Select the YNAB accounts you use for shared costs.</SubtitleText>
-                  <InfoIcon tooltipContent="This might be one or more shared credit cards or bank accounts." />
-                </Subtitle>
+              label={'Select the YNAB accounts you use for shared costs.'}
+              labelDecoration={
+                <InfoIcon tooltipContent="This might be one or more shared credit cards or bank accounts." />
               }
             />
           </SectionContent>
@@ -642,7 +639,6 @@ const App = () => {
               <BudgetAutocomplete
                 limit={budgetData.parentCategories.length}
                 placeholder={selectedParentCategories.length ? 'Add more' : 'Add one or more'}
-                labelText="Select the YNAB parent categories you use for shared costs."
                 onSelectionChange={(selected) =>
                   setSelectedParentCategories(selected.map(({ data }) => data))
                 }
@@ -654,31 +650,26 @@ const App = () => {
                     searchableText: cat.name,
                     data: cat,
                   }))}
-                label={
-                  <Subtitle>
-                    <SubtitleText>
-                      Select the YNAB parent categories you use for shared costs.
-                    </SubtitleText>
+                label={'Select the YNAB parent categories you use for shared costs.'}
+                labelDecoration={
+                  <InfoIcon
+                    tooltipContent={
+                      <>
+                        <TooltipParagraph>
+                          Categories you select here should cumulatively include all your shared
+                          costs, and each one should include only shared costs. If you mix shared
+                          and non-shared transactions in the same categories, switch back to the
+                          "Standard" recording method above.
+                        </TooltipParagraph>
 
-                    <InfoIcon
-                      tooltipContent={
-                        <>
-                          <TooltipParagraph>
-                            Categories you select here should cumulatively include all your shared
-                            costs, and each one should include only shared costs. If you mix shared
-                            and non-shared transactions in the same categories, switch back to the
-                            "Standard" recording method above.
-                          </TooltipParagraph>
-
-                          <TooltipParagraph>
-                            Otherwise, select all parent categories where you record only shared
-                            costs. If you followed the guide exactly, select the parent category
-                            named "Shared Expenses". {learnMoreLink}
-                          </TooltipParagraph>
-                        </>
-                      }
-                    />
-                  </Subtitle>
+                        <TooltipParagraph>
+                          Otherwise, select all parent categories where you record only shared
+                          costs. If you followed the guide exactly, select the parent category named
+                          "Shared Expenses". {learnMoreLink}
+                        </TooltipParagraph>
+                      </>
+                    }
+                  />
                 }
               />
             </SectionContent>
@@ -689,30 +680,24 @@ const App = () => {
               limit={1}
               onSelectionChange={([selectedAccount]) => setIouAccountId(selectedAccount?.id || '')}
               placeholder="Add one"
-              labelText='Select the "IOU" account that tracks what you are owed.'
               items={budgetData.accounts.map((acct) => ({
                 id: acct.id,
                 displayedContent: acct.name,
                 searchableText: acct.name,
                 data: acct,
               }))}
-              label={
-                <Subtitle>
-                  <SubtitleText>
-                    Select the &quot;IOU&quot; account that tracks what you are owed.
-                  </SubtitleText>
-
-                  <InfoIcon
-                    tooltipContent={
-                      <>
-                        This account tracks what you are owed from the person sharing an account
-                        with you. To create it in YNAB, click "Add Account", then "Add an Unlinked
-                        Account", and nickname it something like "Owed from [person's name]." The
-                        account type should be Checking, Savings, or Cash.
-                      </>
-                    }
-                  />
-                </Subtitle>
+              label={'Select the "IOU" account that tracks what you are owed.'}
+              labelDecoration={
+                <InfoIcon
+                  tooltipContent={
+                    <>
+                      This account tracks what you are owed from the person sharing an account with
+                      you. To create it in YNAB, click "Add Account", then "Add an Unlinked
+                      Account", and nickname it something like "Owed from [person's name]." The
+                      account type should be Checking, Savings, or Cash.
+                    </>
+                  }
+                />
               }
             />
           </SectionContent>
