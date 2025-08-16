@@ -141,10 +141,12 @@ const SectionContent = styled.div`
 `;
 
 const Subtitle = styled.div`
+  display: flex;
+  align-items: center;
   margin-bottom: 20px;
 `;
 
-const SubtitleText = styled.span`
+const SubtitleText = styled.div`
   margin-right: 5px;
 `;
 
