@@ -21,6 +21,10 @@ const InputWrapper = styled.div`
 
   input {
     outline: none;
+
+    &:focus {
+      font-size: 16px;
+    }
   }
 
   button {
