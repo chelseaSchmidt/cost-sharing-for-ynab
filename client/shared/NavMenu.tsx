@@ -1,11 +1,13 @@
 import React, { CSSProperties, useState } from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
-import _ from 'lodash';
+import range from 'lodash/range';
 import { BackgroundOverlay } from '../app/src/components/styledComponents'; // FIXME: move to shared directory
 import breakpoints from './breakpoints';
 import colors from './colors';
 import zIndices from './zIndices';
+
+const MENU_WIDTH = '320px';
 
 const Container = styled.div`
   position: absolute;
@@ -47,8 +49,6 @@ const ButtonBar = styled.div`
   width: 30px;
 `;
 
-const menuWidth = '320px';
-
 const Menu = styled.div<{ $isOpen: boolean }>`
   z-index: ${zIndices.modal};
   display: flex;
@@ -56,14 +56,14 @@ const Menu = styled.div<{ $isOpen: boolean }>`
   position: fixed;
   top: 10px;
   box-sizing: border-box;
-  width: ${menuWidth};
+  width: ${MENU_WIDTH};
   max-width: 100vw;
   background-color: white;
   padding: 20px;
   border-radius: 5px 0 0 5px;
 
   // drawer animation
-  right: -${menuWidth};
+  right: -${MENU_WIDTH};
   transition: right 0.4s;
   ${(props) => props.$isOpen && 'right: 0;'}
 `;
@@ -92,12 +92,12 @@ const ExitButton = styled.div`
   cursor: pointer;
 
   &:hover {
-    color: #2f73b3;
+    color: ${colors.primary};
   }
 `;
 
 const Divider = styled.div`
-  border-top: 1px solid lightgray;
+  border-top: 1px solid ${colors.lightNeutralAccent};
   width: 100%;
 `;
 
@@ -105,7 +105,7 @@ const MenuItem = styled.a`
   all: unset;
 
   text-decoration: none;
-  color: #464b46;
+  color: inherit;
   text-align: left;
   padding: 20px 10px;
   border-radius: 2px;
@@ -114,12 +114,12 @@ const MenuItem = styled.a`
 
   &:hover,
   &:visited:hover {
-    color: #2f73b3;
-    background-color: #eee;
+    color: ${colors.primary};
+    background-color: ${colors.lightNeutralBg};
   }
 
   &:visited {
-    color: #464b46;
+    color: inherit;
   }
 
   &:focus-visible {
@@ -149,13 +149,25 @@ const NavMenu = ({ menuItems = [] }: Props) => {
 
   return (
     <>
-      {isOpen && ReactDOM.createPortal(<BackgroundOverlay onClick={closeMenu} />, document.body)}
+      {isOpen &&
+        ReactDOM.createPortal(
+          <BackgroundOverlay
+            onClick={closeMenu}
+            onKeyUp={(e) => e.key === 'Escape' && closeMenu()}
+            role="button"
+            aria-label="Exit"
+            tabIndex={0}
+          />,
+          document.body,
+        )}
+
       <Container>
         <Button onClick={toggleMenu} aria-label="Open navigation menu" tabIndex={0} type="button">
-          {_.range(0, 3).map((value) => (
+          {range(0, 3).map((value) => (
             <ButtonBar key={`btn-bar-${value}`} />
           ))}
         </Button>
+
         {ReactDOM.createPortal(
           <Menu $isOpen={isOpen}>
             <MenuHeader>

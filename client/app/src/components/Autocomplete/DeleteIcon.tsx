@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { DELETE_ICON_LINE_CLASS } from './styledComponents';
 
 const Container = styled.div<{ $size: number }>`
+  box-sizing: border-box;
   position: relative;
   display: flex;
 
@@ -14,6 +15,7 @@ const Container = styled.div<{ $size: number }>`
 `;
 
 const LeftToRightDiagonal = styled.div<{ $length: number }>`
+  box-sizing: border-box;
   position: absolute;
   top: 0;
   left: 0;
@@ -26,6 +28,7 @@ const LeftToRightDiagonal = styled.div<{ $length: number }>`
 `;
 
 const RightToLeftDiagonal = styled.div<{ $length: number }>`
+  box-sizing: border-box;
   position: absolute;
   top: 0;
   right: 0;

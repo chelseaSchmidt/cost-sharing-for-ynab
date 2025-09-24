@@ -30,19 +30,17 @@ const OptionContainer = styled.button<{ $isSelected: boolean }>`
   align-items: center;
   justify-content: center;
   max-width: 300px;
-  border-top: 1px solid ${colors.lightNeutralAccent};
-  border-bottom: 1px solid ${colors.lightNeutralAccent};
-  border-left: 1px solid ${colors.lightNeutralAccent};
+  border: 1px solid ${colors.lightNeutralAccent};
+  border-right: none;
   text-align: center;
 
   @media (max-width: ${breakpoints.mobile}) {
     width: 100%;
   }
 
-  ${({ $isSelected }) => ($isSelected ? SELECTED_STYLE : '')}
-
   &:first-child {
     border-radius: 5px 0 0 5px;
+    ${({ $isSelected }) => ($isSelected ? SELECTED_STYLE : '')}
 
     @media (max-width: ${breakpoints.mobile}) {
       border-right: 1px solid ${colors.lightNeutralAccent};
@@ -54,12 +52,11 @@ const OptionContainer = styled.button<{ $isSelected: boolean }>`
   &:last-child {
     border-radius: 0 5px 5px 0;
     border-right: 1px solid ${colors.lightNeutralAccent};
+    ${({ $isSelected }) => ($isSelected ? SELECTED_STYLE : '')}
 
     @media (max-width: ${breakpoints.mobile}) {
       border-radius: 0 0 5px 5px;
     }
-
-    ${({ $isSelected }) => ($isSelected ? SELECTED_STYLE : '')}
   }
 
   &:hover {
@@ -75,7 +72,7 @@ const OptionContainer = styled.button<{ $isSelected: boolean }>`
   }
 `;
 
-interface Option<T extends string> {
+export interface Option<T extends string> {
   value: T;
   displayedContent: ReactNode;
 }
@@ -92,6 +89,7 @@ export default function Switch<T extends string>({ options, selected, onChange }
       {options.map((option) => (
         <OptionContainer
           key={option.value}
+          type="button"
           onClick={() => onChange(option.value)}
           $isSelected={selected === option.value}
         >

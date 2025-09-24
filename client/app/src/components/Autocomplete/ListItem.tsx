@@ -11,6 +11,7 @@ type LiProps = {
 
 export const Li = styled.li<LiProps>`
   all: unset;
+  box-sizing: border-box;
   display: block;
   cursor: pointer;
   background: white;

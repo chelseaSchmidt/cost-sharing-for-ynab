@@ -27,6 +27,6 @@ body {
 
 input,
 select {
-  font-family: 'Raleway', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #464b46;
+  font-family: inherit;
+  color: inherit;
 }

@@ -34,7 +34,7 @@ export interface Transaction {
   subtransactions: Transaction[];
 }
 
-export interface DraftTransaction {
+export interface TransactionPayload {
   account_id: string | number;
   date: string;
   amount: number;
@@ -57,10 +57,10 @@ export interface DraftSubTransaction {
   memo: string | null;
 }
 
-export interface ClassifiedTransactions {
-  filteredTransactions: Transaction[];
-  sharedAccountErrorTransactions: Transaction[];
-  sharedCategoryErrorTransactions: Transaction[];
+export interface TransactionGroups {
+  transactions: Transaction[];
+  accountFlags: Transaction[];
+  categoryFlags: Transaction[];
 }
 
 export interface BudgetData {
@@ -74,6 +74,7 @@ export interface ErrorData {
 }
 
 export enum ModalName {
+  PRIVACY_POLICY_REQUIRED = 'PRIVACY_POLICY_REQUIRED',
   PRIVACY_POLICY = 'PRIVACY_POLICY',
   TRANSACTION_REVIEW = 'TRANSACTION_REVIEW',
   INSTRUCTIONS = 'INSTRUCTIONS',
