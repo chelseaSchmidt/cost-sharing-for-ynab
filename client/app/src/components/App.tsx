@@ -8,7 +8,6 @@ import TransactionWindow from './TransactionWindow';
 import Confirmation from './Confirmation';
 import Modal from './Modal';
 import Switch from './Switch';
-import Header from '../../../shared/Header';
 import Nav from './Nav';
 import Error from './Error';
 import PrivacyPolicy from '../../../shared/PrivacyPolicy';
@@ -31,7 +30,6 @@ import classifyTransactions from './utils/classifyTransactions';
 import { hasMessage, hasResponseAndStatus } from './utils/general';
 import breakpoints from '../../../shared/breakpoints';
 import colors from '../../../shared/colors';
-import { MenuItem } from '../../../shared/NavMenu';
 import { Button, Hyperlink } from '../../../shared/styledComponents';
 import '../styles/global.css';
 import {
@@ -45,6 +43,7 @@ import {
   ParentCategory,
   Transaction,
 } from '../types';
+import AppHeader from './AppHeader';
 
 /* CONSTANTS */
 
@@ -293,27 +292,7 @@ const App = () => {
       'Please select shared costs'
     : 'Please select an IOU account';
 
-  const navMenuItems: MenuItem[] = [
-    { text: 'Home', attributes: { href: '/' } },
-    {
-      text: 'Guide',
-      onClick: () => setActiveModal(ModalName.INSTRUCTIONS),
-      attributes: { type: 'button', as: 'button' },
-    },
-    {
-      text: 'Privacy Policy',
-      onClick: () => setActiveModal(ModalName.PRIVACY_POLICY),
-      attributes: { type: 'button', as: 'button' },
-    },
-    {
-      text: 'Source Code & Bug Reporting',
-      attributes: {
-        href: 'https://github.com/chelseaSchmidt/cost-sharing-for-ynab',
-        target: '_blank',
-        rel: 'noreferrer',
-      },
-    },
-  ];
+  const handleInfoClick = () => setActiveModal(ModalName.INSTRUCTIONS);
 
   const displayErrorMessage = (error: unknown) => {
     setErrorData({
@@ -530,7 +509,7 @@ const App = () => {
 
         {errorData && <Error errorData={errorData} setErrorData={setErrorData} />}
 
-        <Header navMenuItems={navMenuItems} />
+        <AppHeader setActiveModal={setActiveModal} handleInfoClick={handleInfoClick} />
 
         <HelpButtonContainer>
           <Hyperlink
