@@ -18,14 +18,7 @@ export const Container = styled.div<ContainerProps>`
 
   ${({ $expanded }) => ($expanded ? 'z-index: 2;' : '')}
 
-  * {
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
-  }
-
   .${DELETE_BUTTON_CLASS} {
-    box-sizing: border-box;
     padding: 5px;
 
     &:hover {
@@ -53,27 +46,32 @@ export const Container = styled.div<ContainerProps>`
 `;
 
 export const LabelContainer = styled.div`
+  box-sizing: border-box;
   display: flex;
   align-items: center;
 `;
 
 export const Label = styled.label`
+  box-sizing: border-box;
   display: block;
   width: fit-content;
   cursor: pointer;
 `;
 
 export const InteractiveElements = styled.div`
+  box-sizing: border-box;
   position: relative;
 `;
 
 export const InputWrapper = styled.div`
+  box-sizing: border-box;
   width: 100%;
   display: flex;
   border: 1px solid black;
 `;
 
 export const InputArea = styled.div`
+  box-sizing: border-box;
   display: flex;
   flex: 1;
   flex-wrap: wrap;
@@ -81,17 +79,20 @@ export const InputArea = styled.div`
 `;
 
 export const Input = styled.input`
+  box-sizing: border-box;
   display: flex;
   flex: 1;
   min-width: 100px;
   max-width: 100%;
   padding: 8px;
+  margin: 0;
   border: none;
   font-size: inherit;
   white-space: nowrap;
 `;
 
 export const SelectedInputsArea = styled.div`
+  box-sizing: border-box;
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
@@ -99,6 +100,7 @@ export const SelectedInputsArea = styled.div`
 `;
 
 export const SelectedInputPill = styled.div`
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   border: 1px solid black;
@@ -106,6 +108,7 @@ export const SelectedInputPill = styled.div`
 `;
 
 export const PillContent = styled.div`
+  box-sizing: border-box;
   display: block;
   flex: 1;
   overflow: hidden;
@@ -122,10 +125,13 @@ type ListProps = {
 };
 
 export const List = styled.ul<ListProps>`
+  box-sizing: border-box;
   position: absolute;
   left: 0;
   width: 100%;
   border: 1px solid black;
+  padding: 0;
+  margin: 0;
   overflow: auto;
 
   ${({ $shouldOpenUpward, $top, $bottom, $topMargin = 10, $bottomMargin = 10 }) =>
