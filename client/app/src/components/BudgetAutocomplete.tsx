@@ -4,6 +4,8 @@ import colors from '../../../shared/colors';
 import { HEADER_MAX_HEIGHT } from '../../../shared/Header';
 import Autocomplete, { AutocompleteProps } from './Autocomplete';
 
+const INPUT_HEIGHT = '35px';
+
 /* STYLED COMPONENTS */
 
 const LabelContainer = styled.div`
@@ -20,6 +22,8 @@ const InputWrapper = styled.div`
   }
 
   input {
+    box-sizing: border-box;
+    height: ${INPUT_HEIGHT};
     outline: none;
 
     &:focus {
@@ -58,6 +62,7 @@ const ListItem = styled.li`
 const SelectedInputPill = styled.div`
   border: none;
   box-sizing: border-box;
+  height: ${INPUT_HEIGHT};
   padding: 5px 10px;
   border-radius: 5px;
   max-width: 250px;
