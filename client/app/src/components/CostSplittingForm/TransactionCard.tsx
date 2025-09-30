@@ -1,11 +1,11 @@
 import moment from 'moment';
 import styled from 'styled-components';
-import breakpoints from '../../../shared/breakpoints';
-import colors from '../../../shared/colors';
-import { Transaction } from '../types';
-import Checkbox from './Checkbox';
-import InfoIcon from './InfoIcon';
-import { FlexRow } from './styledComponents';
+import breakpoints from '../../../../shared/breakpoints';
+import colors from '../../../../shared/colors';
+import { Transaction } from '../../types';
+import Checkbox from '../Checkbox';
+import InfoIcon from '../InfoIcon';
+import { FlexRow } from '../styledComponents';
 
 /* Styled Components */
 

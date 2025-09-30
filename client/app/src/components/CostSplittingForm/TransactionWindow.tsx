@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 import TransactionCard from './TransactionCard';
-import { FlexColumnAllCentered, LoadingSpinner, ScrollableArea } from './styledComponents';
-import { toId } from './utils/general';
-import breakpoints from '../../../shared/breakpoints';
-import { Button } from '../../../shared/styledComponents';
-import { Transaction } from '../types';
+import { FlexColumnAllCentered, LoadingSpinner, ScrollableArea } from '../styledComponents';
+import { toId } from '../utils/general';
+import breakpoints from '../../../../shared/breakpoints';
+import { Button } from '../../../../shared/styledComponents';
+import { Transaction } from '../../types';
 import { CSSProperties } from 'react';
-import Checkbox from './Checkbox';
+import Checkbox from '../Checkbox';
 
 const FEED_PADDING_Y_LG = '30px';
 const FEED_PADDING_Y_SM = '10px';

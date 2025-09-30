@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import _ from 'lodash';
 import styled from 'styled-components';
 import InfoIcon from './InfoIcon';
-import TransactionWindow from './TransactionWindow';
 import Modal from './Modal';
 import Nav from './Nav';
 import ErrorPopup from './ErrorPopup';
@@ -110,8 +109,6 @@ const App = () => {
     ModalName.PRIVACY_POLICY_REQUIRED,
   );
 
-  const { categoryFlags } = transactionGroups;
-
   const handleInfoClick = () => setActiveModal(ModalName.INSTRUCTIONS);
 
   const closeModal = () => setActiveModal(null);
@@ -182,34 +179,6 @@ const App = () => {
             <Instructions style={{ padding: '20px' }} />
           </Modal>
         )}
-
-        {activeModal === ModalName.TRANSACTION_REVIEW && (
-          <Modal
-            onClose={closeModal}
-            buttonText="Exit"
-            shouldCloseOnOverlayClick
-            shouldCloseOnEscape
-          >
-            <TransactionWindow
-              title="Transactions in shared accounts, but not in shared categories"
-              description="This list is meant to help you catch misclassified transactions. Recategorize them in YNAB as needed and then refresh the list."
-              loading={areTransactionsLoading}
-              shouldShowLoadingOverlay
-              transactions={categoryFlags}
-              containerStyle={{
-                alignItems: 'unset',
-              }}
-              feedStyle={{
-                border: 'unset',
-                padding: 'unset',
-                minHeight: '20vh',
-                maxHeight: '50vh',
-              }}
-              shouldShowRefreshButton
-              refreshTransactions={handleTransactionSearch}
-            />
-          </Modal>
-        )}
       </Modals>
 
       <NonModalContent inert={!!activeModal}>
@@ -243,7 +212,9 @@ const App = () => {
           {...budgetData}
           {...transactionGroups}
           loading={areTransactionsLoading}
+          searchTransactions={handleTransactionSearch}
           handleError={displayErrorMessage}
+          activeModal={activeModal}
           setActiveModal={setActiveModal}
         />
 
