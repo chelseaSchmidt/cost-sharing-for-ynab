@@ -3,6 +3,22 @@ import breakpoints from '../../../shared/breakpoints';
 import colors from '../../../shared/colors';
 import zIndices from '../../../shared/zIndices';
 
+export const FlexRow = styled.div`
+  display: flex;
+`;
+
+export const FlexRowCenterAligned = styled(FlexRow)`
+  align-items: center;
+`;
+
+export const FlexRowAllCentered = styled(FlexRowCenterAligned)`
+  justify-content: center;
+`;
+
+export const FlexColumnAllCentered = styled(FlexRowAllCentered)`
+  flex-direction: column;
+`;
+
 export const SectionHeader = styled.h1`
   font-size: 25px;
   margin: 0 0 35px 0;

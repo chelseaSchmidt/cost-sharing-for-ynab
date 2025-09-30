@@ -20,7 +20,6 @@ import {
 import {
   convertDateToString,
   toDate,
-  isTransactionBeforeDate,
   getFirstDateOfLastMonth,
   getLastDateOfLastMonth,
 } from './utils/dateHelpers';

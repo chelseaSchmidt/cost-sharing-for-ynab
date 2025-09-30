@@ -1,25 +1,24 @@
 import styled from 'styled-components';
 import TransactionCard from './TransactionCard';
-import { Spinner } from './styledComponents';
+import { FlexColumnAllCentered, ScrollableArea, Spinner } from './styledComponents';
 import { toId } from './utils/general';
 import breakpoints from '../../../shared/breakpoints';
 import { Button } from '../../../shared/styledComponents';
 import { Transaction } from '../types';
 import { CSSProperties } from 'react';
+import Checkbox from './Checkbox';
+
+const FEED_PADDING_Y_LG = '30px';
+const FEED_PADDING_Y_SM = '10px';
 
 /* Styled Components */
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+const Container = styled(FlexColumnAllCentered)`
   box-sizing: border-box;
+  flex: 1;
   width: 100%;
-  padding: 15px 25px;
-
-  @media (max-width: ${breakpoints.tiny}) {
-    padding: 5px;
-  }
+  overflow: hidden;
+  gap: 15px;
 `;
 
 const Title = styled.h3``;
@@ -41,41 +40,25 @@ const SelectAllCheckboxContainer = styled.div`
   margin-bottom: 15px;
 `;
 
-const SelectAllCheckboxLabel = styled.label`
-  cursor: pointer;
-`;
-
-const SelectAllCheckbox = styled.input`
-  cursor: pointer;
-`;
-
-const TransactionFeed = styled.div`
-  box-sizing: border-box;
-  max-height: 60vh;
+const TransactionArea = styled(FlexColumnAllCentered)`
+  position: relative;
+  flex: 1;
   width: 100%;
-  overflow: auto;
-  border-top: 1px solid lightgray;
-  border-bottom: 1px solid lightgray;
-  padding: 30px;
+  overflow: hidden;
+  gap: 15px;
+`;
+
+const TransactionFeed = styled(ScrollableArea)`
+  box-sizing: border-box;
+  width: 100%;
+  padding: ${FEED_PADDING_Y_LG} 30px;
 
   @media (max-width: ${breakpoints.mobile}) {
-    padding: 5px;
+    padding: ${FEED_PADDING_Y_SM} 5px;
   }
 
   @media (max-width: ${breakpoints.tiny}) {
-    padding: 5px;
-  }
-
-  &::-webkit-scrollbar {
-    width: 7px;
-  }
-  &::-webkit-scrollbar-thumb {
-    border-radius: 4px;
-    background-color: rgba(0, 0, 0, 0.5);
-    box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
-  }
-  &::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+    padding: ${FEED_PADDING_Y_SM} 5px;
   }
 `;
 
@@ -147,18 +130,15 @@ const TransactionWindow = ({
       )}
 
       {!loading && (
-        <>
+        <TransactionArea>
           <SelectAllCheckboxContainer>
             {!!transactions.length && isClickable && toggleSelectAll && (
-              <SelectAllCheckboxLabel htmlFor="select-all-input">
-                <SelectAllCheckbox
-                  type="checkbox"
-                  checked={isSelectAllChecked}
-                  onChange={(e) => toggleSelectAll({ isSelected: e.target.checked })}
-                  id="select-all-input"
-                />
-                Select All
-              </SelectAllCheckboxLabel>
+              <Checkbox
+                id="select-all-checkbox"
+                label="Select all"
+                checked={!!isSelectAllChecked}
+                onChange={(isSelected) => toggleSelectAll({ isSelected })}
+              />
             )}
           </SelectAllCheckboxContainer>
 
@@ -177,7 +157,7 @@ const TransactionWindow = ({
               ))}
             </TransactionFeed>
           )}
-        </>
+        </TransactionArea>
       )}
 
       {loading &&

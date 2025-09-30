@@ -3,11 +3,14 @@ import styled from 'styled-components';
 import breakpoints from '../../../shared/breakpoints';
 import colors from '../../../shared/colors';
 import { Transaction } from '../types';
+import Checkbox from './Checkbox';
 import InfoIcon from './InfoIcon';
+import { FlexRow } from './styledComponents';
 
 /* Styled Components */
 
-const Container = styled.div<{ $isClickable: boolean; $isSelected: boolean }>`
+const ContainerButton = styled.button<{ $isSelected?: boolean }>`
+  all: unset;
   display: flex;
   align-items: center;
   border: 1px solid ${colors.lightNeutralAccent};
@@ -16,34 +19,38 @@ const Container = styled.div<{ $isClickable: boolean; $isSelected: boolean }>`
   margin: 0 2px 7px 0;
   padding: 5px;
   background-color: white;
-  color: #464b46;
-
-  ${(props) =>
-    props.$isClickable &&
-    `
-      cursor: pointer;
-      &:hover {
-        background-color: #eee;
-      }
-      &:active {
-        background-color: #ddd;
-      }
-  `}
 
   ${({ $isSelected }) => ($isSelected ? `background: ${colors.primaryLight};` : '')}
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  &:not([disabled]) {
+    cursor: pointer;
+
+    &:hover {
+      background-color: ${colors.lightNeutralBg};
+    }
+
+    &:active {
+      background-color: ${colors.lightNeutralActive};
+    }
+  }
+
+  &:focus-visible {
+    outline: 1px solid ${colors.buttonFocusOutline};
+  }
 
   @media (max-width: ${breakpoints.mobile}) {
     font-size: 12px;
   }
 `;
 
-const Checkbox = styled.input`
-  cursor: pointer;
-`;
-
 const Date = styled.div`
   flex: 2;
-  color: gray;
+  margin-left: 5px;
+  color: ${colors.lightFont};
 `;
 
 const Amount = styled.div`
@@ -58,12 +65,12 @@ const Details = styled.div`
   white-space: nowrap;
 
   @media (max-width: ${breakpoints.mobile}) {
+    /* spacing from maybe-scrollbar */
     padding: 5px 0;
   }
 `;
 
-const AccountName = styled.div`
-  display: flex;
+const AccountName = styled(FlexRow)`
   gap: 3px;
 `;
 
@@ -86,7 +93,13 @@ const TransactionCard = ({
   isIsolated,
   shouldShowIcon,
 }: Props) => {
-  const { date, amount, payee_name, category_name, account_name } = transaction;
+  const {
+    date,
+    amount,
+    payee_name: payeeName,
+    category_name: categoryName,
+    account_name: accountName,
+  } = transaction;
 
   const onClick = () => {
     toggleTransactionSelection?.({
@@ -96,26 +109,32 @@ const TransactionCard = ({
   };
 
   return (
-    <Container
-      onClick={isClickable ? onClick : () => {}}
-      $isClickable={isClickable}
+    <ContainerButton
+      type="button"
+      disabled={!isClickable}
+      onClick={onClick}
       $isSelected={isSelected}
     >
-      {isClickable && <Checkbox type="checkbox" checked={isSelected} readOnly />}
+      {isClickable && (
+        <Checkbox
+          id={`${transaction.id}-checkbox`}
+          label={`${transaction.id}`}
+          isLabelHidden
+          checked={isSelected}
+        />
+      )}
 
       <Date>{moment(date).format('MMM DD, YYYY')}</Date>
 
-      <Amount>
-        {Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount / -1000)}
-      </Amount>
+      <Amount>{toUsd(amount)}</Amount>
 
       <Details>
-        <div>{category_name}</div>
-
-        <div>{payee_name}</div>
+        {[categoryName, payeeName].map((detail) => (
+          <FlexRow key={detail}>{detail}</FlexRow>
+        ))}
 
         <AccountName>
-          {account_name}
+          {accountName}
 
           {isIsolated && shouldShowIcon && (
             <InfoIcon
@@ -125,11 +144,13 @@ const TransactionCard = ({
             />
           )}
         </AccountName>
-
-        {/* TODO: "More" button */}
       </Details>
-    </Container>
+    </ContainerButton>
   );
 };
 
 export default TransactionCard;
+
+function toUsd(amount: number) {
+  return Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount / -1000);
+}
