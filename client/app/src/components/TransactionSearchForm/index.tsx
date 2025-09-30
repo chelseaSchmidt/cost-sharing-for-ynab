@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Moment } from 'moment';
 import { Button } from '../../../../shared/styledComponents';
 import { TRANSACTION_SELECTION_FORM_ID } from '../../constants';
 import { Account, Mode, ParentCategory } from '../../types';
