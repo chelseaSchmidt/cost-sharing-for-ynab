@@ -9,8 +9,10 @@ interface Props {
   transactions: Transaction[];
   accountFlags: Transaction[];
   categoryFlags: Transaction[];
+  searchTransactions: () => void;
   accounts: Account[];
   handleError: (e: unknown) => void;
+  activeModal: ModalName | null;
   setActiveModal: (modalName: ModalName | null) => void;
 }
 
@@ -19,8 +21,10 @@ export default function CostSplittingForm({
   transactions,
   accountFlags,
   categoryFlags,
+  searchTransactions,
   accounts,
   handleError,
+  activeModal,
   setActiveModal,
 }: Props) {
   const [selectedTransactions, setSelectedTransactions] = useState<Transaction[]>([]);
@@ -49,6 +53,8 @@ export default function CostSplittingForm({
         categoryFlags={categoryFlags}
         toggleSelectAll={toggleSelectAll}
         isSelectAllChecked={isSelectAllChecked}
+        refresh={searchTransactions}
+        activeModal={activeModal}
         setActiveModal={setActiveModal}
       />
 

@@ -5,8 +5,9 @@ import { Button } from '../../../../../shared/styledComponents';
 import { TRANSACTION_SELECTION_FORM_ID } from '../../../constants';
 import { ModalName, Transaction } from '../../../types';
 import { SectionHeader, SectionTile } from '../../styledComponents';
+import TransactionWindow from '../TransactionWindow';
 import WarningIcon from '../WarningIcon';
-import TransactionWindow from '../../TransactionWindow';
+import FlaggedTransactionsModal from './FlaggedTransactionsModal';
 
 const TILE_X_PADDING_LG = 75;
 const TILE_X_PADDING_SM = 30;
@@ -61,6 +62,8 @@ interface Props {
   categoryFlags: Transaction[];
   toggleSelectAll: ({ isSelected }: { isSelected: boolean }) => void;
   isSelectAllChecked: boolean;
+  refresh: () => void;
+  activeModal: ModalName | null;
   setActiveModal: (modalName: ModalName | null) => void;
 }
 
@@ -73,6 +76,8 @@ export default function TransactionSelection({
   categoryFlags,
   toggleSelectAll,
   isSelectAllChecked,
+  refresh,
+  activeModal,
   setActiveModal,
 }: Props) {
   const toggleTransactionSelection = useCallback(
@@ -116,6 +121,15 @@ export default function TransactionSelection({
           isClickable
         />
       </TransactionWindowContainer>
+
+      {activeModal === ModalName.TRANSACTION_REVIEW && (
+        <FlaggedTransactionsModal
+          transactions={categoryFlags}
+          loading={loading}
+          refresh={refresh}
+          exit={() => setActiveModal(null)}
+        />
+      )}
     </TransactionsTile>
   );
 }
