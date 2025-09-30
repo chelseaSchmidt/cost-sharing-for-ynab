@@ -6,7 +6,6 @@ import DateSelector from './DateSelector';
 import InfoIcon from './InfoIcon';
 import TransactionWindow from './TransactionWindow';
 import Modal from './Modal';
-import Switch from './Switch';
 import Nav from './Nav';
 import ErrorPopup from './ErrorPopup';
 import PrivacyPolicy from '../../../shared/PrivacyPolicy';
@@ -30,18 +29,13 @@ import { hasMessage, hasResponseAndStatus } from './utils/general';
 import breakpoints from '../../../shared/breakpoints';
 import colors from '../../../shared/colors';
 import { Button, Hyperlink } from '../../../shared/styledComponents';
-import {
-  HIDDEN_CATEGORIES,
-  MODALS_CONTAINER_ID,
-  TRANSACTION_SELECTION_FORM_ID,
-} from '../constants';
+import { MODALS_CONTAINER_ID, TRANSACTION_SELECTION_FORM_ID } from '../constants';
 import '../styles/global.css';
 import {
   Account,
   BudgetData,
   ErrorData,
   ModalName,
-  Mode,
   ParentCategory,
   Transaction,
   TransactionGroups,
@@ -49,6 +43,7 @@ import {
 } from '../types';
 import AppHeader from './AppHeader';
 import Popup from './Popup';
+import TransactionSearchForm from './TransactionSearchForm';
 
 /* CONSTANTS */
 
@@ -142,34 +137,12 @@ const SectionContent = styled.div`
   }
 `;
 
-const Subtitle = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
-`;
-
-const SubtitleText = styled.div`
-  margin-right: 5px;
-`;
-
 const Row = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
   gap: 10px;
-`;
-
-const RowOrColumn = styled.div`
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 10px;
-
-  @media (max-width: ${breakpoints.mobile}) {
-    flex-direction: column;
-    gap: 20px;
-  }
 `;
 
 const NoWrap = styled.span`
@@ -238,16 +211,6 @@ const CostPercentInput = styled.input`
   font-size: inherit;
 `;
 
-const TooltipParagraph = styled.p`
-  all: unset;
-  display: block;
-  margin-bottom: 10px;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-`;
-
 const Spacer = styled.div`
   height: 20px;
 `;
@@ -257,13 +220,10 @@ const Spacer = styled.div`
 const App = () => {
   const [isPageLoading, setIsPageLoading] = useState(true);
   const [areTransactionsLoading, setAreTransactionsLoading] = useState(false);
-  const [mode, setMode] = useState(Mode.STANDARD);
   const [budgetData, setBudgetData] = useState<BudgetData>({
     accounts: [],
     parentCategories: [],
   });
-  const [transactionsStartDate, setTransactionsStartDate] = useState(getFirstDateOfLastMonth());
-  const [transactionsEndDate, setTransactionsEndDate] = useState(getLastDateOfLastMonth());
   const [myShare, setMyShare] = useState(50);
   const [selectedTransactions, setSelectedTransactions] = useState<Transaction[]>([]);
   const [dateToSplitCosts, setDateToSplitCosts] = useState(getLastDateOfLastMonth());
@@ -274,6 +234,10 @@ const App = () => {
   });
   const [selectedAccounts, setSelectedAccounts] = useState<Account[]>([]);
   const [selectedParentCategories, setSelectedParentCategories] = useState<ParentCategory[]>([]);
+  const [dateRange, setDateRange] = useState({
+    start: getFirstDateOfLastMonth(),
+    end: getLastDateOfLastMonth(),
+  });
   const [iouAccountId, setIouAccountId] = useState('');
   const [iouAccountTransactions, setIouAccountTransactions] = useState<Transaction[]>([]);
   const [isIouTransactionLoading, setIsIouTransactionLoading] = useState(false);
@@ -314,33 +278,13 @@ const App = () => {
     }
   };
 
-  const getClassifiedTransactions = async ({
-    startDate,
-    endDate,
-  }: {
-    startDate: moment.Moment;
-    endDate: moment.Moment;
-  }) => {
-    const isTransactionATransfer = (transaction: Transaction) => !!transaction.transfer_account_id;
-
+  const handleTransactionSearch = async () => {
+    setAreTransactionsLoading(true);
     try {
-      setAreTransactionsLoading(true);
-      const transactionsSinceStartDate = await getTransactionsSinceDate(startDate);
-
-      const displayedTransactions = transactionsSinceStartDate
-        .filter(
-          (transaction) =>
-            isTransactionBeforeDate(transaction, endDate) &&
-            transaction.approved &&
-            !isTransactionATransfer(transaction),
-        )
-        .sort((a, b) =>
-          a.date && b.date ? new Date(b.date).getTime() - new Date(a.date).getTime() : 0,
-        );
-
       setTransactionGroups(
         cleanAndGroupTransactions({
-          displayedTransactions,
+          transactionsSinceStartDate: await getTransactionsSinceDate(dateRange.start),
+          endDate: dateRange.end,
           selectedAccounts,
           selectedParentCategories,
         }),
@@ -494,7 +438,7 @@ const App = () => {
               description="This list is meant to help you catch misclassified transactions. Recategorize them in YNAB as needed and then refresh the list."
               loading={areTransactionsLoading}
               shouldShowLoadingOverlay
-              transactions={accountFlags}
+              transactions={categoryFlags}
               containerStyle={{
                 alignItems: 'unset',
               }}
@@ -505,12 +449,7 @@ const App = () => {
                 maxHeight: '50vh',
               }}
               shouldShowRefreshButton
-              refreshTransactions={() => {
-                getClassifiedTransactions({
-                  startDate: transactionsStartDate,
-                  endDate: transactionsEndDate,
-                });
-              }}
+              refreshTransactions={handleTransactionSearch}
             />
           </Modal>
         )}
@@ -540,161 +479,22 @@ const App = () => {
           </Hyperlink>
         </HelpButtonContainer>
 
-        <SectionTile>
-          <SectionHeader>Choose Accounts and Categories</SectionHeader>
-
-          <SectionContent>
-            <Subtitle>
-              <SubtitleText>Select where you record shared-cost transactions.</SubtitleText>
-
-              <InfoIcon
-                tooltipContent={
-                  <>
-                    "Standard" is recommended for most use cases. The "Advanced" method enables
-                    automatic checking for misclassified transactions, but involves changing how you
-                    record transactions in YNAB. {learnMoreLink}
-                  </>
-                }
-              />
-            </Subtitle>
-
-            <Switch
-              selected={mode}
-              onChange={(mode) => {
-                setMode(mode);
-                if (mode !== Mode.ADVANCED) {
-                  setSelectedParentCategories([]);
-                }
-              }}
-              options={[
-                {
-                  value: Mode.STANDARD,
-                  displayedContent: (
-                    <>
-                      <strong>Standard:</strong>
-                      <div>In specific accounts</div>
-                    </>
-                  ),
-                },
-                {
-                  value: Mode.ADVANCED,
-                  displayedContent: (
-                    <>
-                      <strong>Advanced:</strong>
-                      <div>In specific accounts and categories</div>
-                    </>
-                  ),
-                },
-              ]}
-            />
-          </SectionContent>
-
-          <SectionContent>
-            <BudgetAutocomplete
-              limit={budgetData.accounts.length}
-              placeholder={selectedAccounts.length ? 'Add more' : 'Add one or more'}
-              onSelectionChange={(selected) =>
-                setSelectedAccounts(selected.map(({ data }) => data))
-              }
-              items={budgetData.accounts.map((acct) => ({
-                id: acct.id,
-                displayedContent: acct.name,
-                searchableText: acct.name,
-                data: acct,
-              }))}
-              label={'Select the YNAB accounts you use for shared costs.'}
-              labelDecoration={
-                <InfoIcon tooltipContent="This might be one or more shared credit cards or bank accounts." />
-              }
-            />
-          </SectionContent>
-
-          {mode === Mode.ADVANCED && (
-            <SectionContent>
-              <BudgetAutocomplete
-                limit={budgetData.parentCategories.length}
-                placeholder={selectedParentCategories.length ? 'Add more' : 'Add one or more'}
-                onSelectionChange={(selected) =>
-                  setSelectedParentCategories(selected.map(({ data }) => data))
-                }
-                items={budgetData.parentCategories
-                  .filter((cat) => !HIDDEN_CATEGORIES.map(String).includes(cat.name))
-                  .map((cat) => ({
-                    id: cat.id,
-                    displayedContent: cat.name,
-                    searchableText: cat.name,
-                    data: cat,
-                  }))}
-                label={'Select the YNAB parent categories you use for shared costs.'}
-                labelDecoration={
-                  <InfoIcon
-                    tooltipContent={
-                      <>
-                        <TooltipParagraph>
-                          Categories you select here should cumulatively include all your shared
-                          costs, and each one should include only shared costs. If you mix shared
-                          and non-shared transactions in the same categories, switch back to the
-                          "Standard" recording method above.
-                        </TooltipParagraph>
-
-                        <TooltipParagraph>
-                          Otherwise, select all parent categories where you record only shared
-                          costs. If you followed the guide exactly, select the parent category named
-                          "Shared Expenses". {learnMoreLink}
-                        </TooltipParagraph>
-                      </>
-                    }
-                  />
-                }
-              />
-            </SectionContent>
-          )}
-
-          <SectionContent>
-            <Subtitle>
-              <SubtitleText>Select transaction date range.</SubtitleText>
-              <InfoIcon tooltipContent="This will limit transactions in your view to the specified date range." />
-            </Subtitle>
-
-            <form>
-              <RowOrColumn>
-                <DateSelector
-                  label="Start date:"
-                  id="transactions-start-date"
-                  value={convertDateToString(transactionsStartDate)}
-                  inputStyle={{ maxWidth: '200px' }}
-                  onChange={(value) => setTransactionsStartDate(toDate(value))}
-                />
-
-                <DateSelector
-                  label="End date:"
-                  id="transactions-end-date"
-                  value={convertDateToString(transactionsEndDate)}
-                  inputStyle={{ maxWidth: '200px' }}
-                  onChange={(value) => setTransactionsEndDate(toDate(value, false))}
-                />
-              </RowOrColumn>
-            </form>
-          </SectionContent>
-
-          <Button
-            type="button"
-            onClick={() => {
-              getClassifiedTransactions({
-                startDate: transactionsStartDate,
-                endDate: transactionsEndDate,
-              });
-              document.getElementById(TRANSACTION_SELECTION_FORM_ID)?.scrollIntoView(true);
-            }}
-          >
-            Show Transactions
-          </Button>
-        </SectionTile>
+        <TransactionSearchForm
+          {...budgetData}
+          selectedAccounts={selectedAccounts}
+          setSelectedAccounts={setSelectedAccounts}
+          selectedParentCategories={selectedParentCategories}
+          setSelectedParentCategories={setSelectedParentCategories}
+          dateRange={dateRange}
+          setDateRange={setDateRange}
+          onSubmit={handleTransactionSearch}
+          handleInfoClick={handleInfoClick}
+        />
 
         <TransactionsTile id={TRANSACTION_SELECTION_FORM_ID}>
           <SectionHeader>Select Shared Costs</SectionHeader>
 
-          {!areTransactionsLoading && !!accountFlags.length && (
+          {!areTransactionsLoading && !!categoryFlags.length && (
             <MissingTransactionsWarning>
               <WarningIcon>!</WarningIcon>
               Some transactions in shared accounts were not categorized to shared expense
@@ -713,7 +513,7 @@ const App = () => {
               loading={areTransactionsLoading}
               transactions={transactions}
               selectedTransactions={selectedTransactions}
-              transactionsSharedInOneButNotOther={categoryFlags}
+              transactionsSharedInOneButNotOther={accountFlags}
               toggleTransactionSelection={toggleTransactionSelection}
               toggleSelectAll={toggleSelectAll}
               isSelectAllChecked={isSelectAllChecked}

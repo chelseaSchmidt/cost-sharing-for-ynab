@@ -75,7 +75,7 @@ const OptionContainer = styled.button<{ $isSelected: boolean }>`
   }
 `;
 
-interface Option<T extends string> {
+export interface Option<T extends string> {
   value: T;
   displayedContent: ReactNode;
 }
@@ -92,6 +92,7 @@ export default function Switch<T extends string>({ options, selected, onChange }
       {options.map((option) => (
         <OptionContainer
           key={option.value}
+          type="button"
           onClick={() => onChange(option.value)}
           $isSelected={selected === option.value}
         >
