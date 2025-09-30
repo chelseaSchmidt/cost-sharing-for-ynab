@@ -95,9 +95,8 @@ export const Paragraph = styled.p`
   }
 `;
 
-// https://www.w3schools.com/howto/howto_css_loader.asp
-export const Spinner = styled.div`
-  border: 3px solid #eee;
+export const SubmittingSpinner = styled.div`
+  border: 3px solid ${colors.lightNeutralBg};
   border-top: 3px solid #aaa;
   border-radius: 50%;
   width: 12px;
@@ -112,6 +111,13 @@ export const Spinner = styled.div`
       transform: rotate(360deg);
     }
   }
+`;
+
+export const LoadingSpinner = styled(SubmittingSpinner)`
+  width: 50px;
+  height: 50px;
+  border-color: ${colors.primary};
+  border-top-color: ${colors.lightNeutralBg};
 `;
 
 export const BackgroundOverlay = styled.div`
