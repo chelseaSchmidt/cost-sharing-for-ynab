@@ -1,6 +1,6 @@
 import axios from 'axios';
 import moment from 'moment';
-import { Account, DraftTransaction, ParentCategory, Transaction } from '../../types';
+import { Account, ParentCategory, Transaction, TransactionPayload } from '../../types';
 
 const getToken = () => {
   const url = window.location.href;
@@ -46,8 +46,8 @@ export const getParentCategories = async (): Promise<ParentCategory[]> => {
   return result?.data.data.category_groups.filter(({ hidden }: ParentCategory) => !hidden) || [];
 };
 
-export const createSplitTransaction = async (
-  transaction: DraftTransaction,
+export const createTransaction = async (
+  transaction: TransactionPayload,
 ): Promise<Transaction | undefined> => {
   const result = await axios({
     method: 'post',
