@@ -6,8 +6,10 @@ const colors = {
   buttonActive: 'rgba(47, 115, 179, 0.7)',
   buttonFocusOutline: 'purple',
   lightNeutralBg: '#eee',
+  lightNeutralActive: '#ddd',
   infoIcon: '#999',
   tooltip: '#444',
+  lightFont: '#808080',
   errorLight: 'rgba(255, 0, 0, 0.1)',
   success: 'rgb(61 142 64)',
 } as const;
