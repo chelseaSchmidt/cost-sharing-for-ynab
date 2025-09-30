@@ -9,7 +9,6 @@ const colors = {
   lightNeutralActive: '#ddd',
   infoIcon: '#999',
   tooltip: '#444',
-  defaultFont: '#464b46',
   lightFont: '#808080',
   error: 'rgb(128, 0, 0)',
   errorHover: 'rgba(128, 0, 0, 0.8)',
