@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import _ from 'lodash';
 import styled from 'styled-components';
 import breakpoints from '../../../shared/breakpoints';
 import colors from '../../../shared/colors';
@@ -22,7 +21,7 @@ import ErrorPopup from './ErrorPopup';
 import InfoIcon from './InfoIcon';
 import Modal from './Modal';
 import Nav from './Nav';
-import { LoadingSpinner } from './styledComponents';
+import { FlexColumnAllCentered, LoadingSpinner } from './styledComponents';
 import TransactionSearchForm from './TransactionSearchForm';
 import cleanAndGroupTransactions from './utils/cleanAndGroupTransactions';
 import { getFirstDateOfLastMonth, getLastDateOfLastMonth } from './utils/dateHelpers';
@@ -35,11 +34,7 @@ import {
 
 /* STYLED COMPONENTS */
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+const Container = styled(FlexColumnAllCentered)`
   width: 100%;
 
   @media (max-width: ${breakpoints.mobile}) {
@@ -53,11 +48,7 @@ const LoadingContainer = styled(Container)`
 
 const Modals = styled.div``;
 
-const NonModalContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+const NonModalContent = styled(FlexColumnAllCentered)`
   width: 100%;
   flex: 1;
 `;
@@ -87,47 +78,34 @@ const HelpButtonContainer = styled.div`
 /* MAIN */
 
 const App = () => {
-  const [isPageLoading, setIsPageLoading] = useState(true);
-  const [areTransactionsLoading, setAreTransactionsLoading] = useState(false);
-  const [budgetData, setBudgetData] = useState<BudgetData>({
-    accounts: [],
-    parentCategories: [],
-  });
-  const [transactionGroups, setTransactionGroups] = useState<TransactionGroups>({
-    transactions: [],
-    accountFlags: [],
-    categoryFlags: [],
-  });
+  const [loading, setLoading] = useState(true);
+  const [budgetData, setBudgetData] = useState<BudgetData>({ accounts: [], parentCategories: [] });
+  const [errorData, setErrorData] = useState<ErrorData | null>(null);
+  const [activeModal, setActiveModal] = useState<ModalName | null>(
+    ModalName.PRIVACY_POLICY_REQUIRED,
+  );
   const [selectedAccounts, setSelectedAccounts] = useState<Account[]>([]);
   const [selectedParentCategories, setSelectedParentCategories] = useState<ParentCategory[]>([]);
   const [dateRange, setDateRange] = useState({
     start: getFirstDateOfLastMonth(),
     end: getLastDateOfLastMonth(),
   });
-  const [errorData, setErrorData] = useState<ErrorData | null>(null);
-  const [activeModal, setActiveModal] = useState<ModalName | null>(
-    ModalName.PRIVACY_POLICY_REQUIRED,
-  );
+  const [areTransactionsLoading, setAreTransactionsLoading] = useState(false);
+  const [transactionGroups, setTransactionGroups] = useState<TransactionGroups>({
+    transactions: [],
+    accountFlags: [],
+    categoryFlags: [],
+  });
 
   const handleInfoClick = () => setActiveModal(ModalName.INSTRUCTIONS);
 
   const closeModal = () => setActiveModal(null);
 
-  const displayErrorMessage = (error: unknown) => {
+  const handleError = (error: unknown) => {
     setErrorData({
       status: hasResponseAndStatus(error) ? error.response.status : 0,
       message: hasMessage(error) ? error.message : 'Something went wrong',
     });
-  };
-
-  const getBudgetData = async () => {
-    try {
-      const accounts = await getAccounts();
-      const parentCategories = await getParentCategories();
-      setBudgetData({ accounts, parentCategories });
-    } catch (error) {
-      displayErrorMessage(error);
-    }
   };
 
   const handleTransactionSearch = async () => {
@@ -142,20 +120,29 @@ const App = () => {
         }),
       );
     } catch (error) {
-      displayErrorMessage(error);
+      handleError(error);
     }
     setAreTransactionsLoading(false);
   };
 
-  useEffect(() => {
-    getBudgetData();
+  useEffect(function onMount() {
+    const loadBudgetData = async () => {
+      setLoading(true);
+      try {
+        setBudgetData({
+          accounts: await getAccounts(),
+          parentCategories: await getParentCategories(),
+        });
+      } catch (error) {
+        handleError(error);
+      }
+      setLoading(false);
+    };
+
+    loadBudgetData();
   }, []);
 
-  useEffect(() => {
-    if (budgetData) setIsPageLoading(false);
-  }, [budgetData]);
-
-  return isPageLoading ? (
+  return loading ? (
     <LoadingContainer>
       <LoadingSpinner role="progressbar" aria-label="Loading" />
     </LoadingContainer>
@@ -182,16 +169,10 @@ const App = () => {
       </Modals>
 
       <NonModalContent inert={!!activeModal}>
-        {errorData && <ErrorPopup errorData={errorData} setErrorData={setErrorData} />}
-
         <AppHeader setActiveModal={setActiveModal} handleInfoClick={handleInfoClick} />
 
         <HelpButtonContainer>
-          <Hyperlink
-            as="button"
-            type="button"
-            onClick={() => setActiveModal(ModalName.INSTRUCTIONS)}
-          >
+          <Hyperlink as="button" type="button" onClick={handleInfoClick}>
             <InfoIcon tooltipContent="" /> Help
           </Hyperlink>
         </HelpButtonContainer>
@@ -213,12 +194,14 @@ const App = () => {
           {...transactionGroups}
           loading={areTransactionsLoading}
           searchTransactions={handleTransactionSearch}
-          handleError={displayErrorMessage}
+          handleError={handleError}
           activeModal={activeModal}
           setActiveModal={setActiveModal}
         />
 
         <Nav setActiveModal={setActiveModal} />
+
+        {errorData && <ErrorPopup errorData={errorData} setErrorData={setErrorData} />}
       </NonModalContent>
     </Container>
   );
