@@ -95,7 +95,6 @@ export const Paragraph = styled.p`
   }
 `;
 
-// https://www.w3schools.com/howto/howto_css_loader.asp
 export const SubmittingSpinner = styled.div`
   border: 3px solid ${colors.lightNeutralBg};
   border-top: 3px solid #aaa;
