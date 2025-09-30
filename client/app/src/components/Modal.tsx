@@ -1,8 +1,10 @@
 import { ReactNode } from 'react';
+import { createPortal } from 'react-dom';
 import styled from 'styled-components';
 import { Button } from '../../../shared/styledComponents';
 import zIndices from '../../../shared/zIndices';
-import { BackgroundOverlay } from './styledComponents';
+import { MODALS_CONTAINER_ID } from '../constants';
+import { BackgroundOverlay, ScrollableArea } from './styledComponents';
 
 /* Styled Components */
 
@@ -24,41 +26,6 @@ const Container = styled.div`
   overflow: hidden;
 `;
 
-export const ScrollableArea = styled.div`
-  overflow: auto;
-  display: flex;
-  flex-direction: column;
-  flex: 1 1 auto;
-  border-top: 1px solid #eee;
-  border-bottom: 1px solid #eee;
-
-  @supports (scrollbar-color: auto) {
-    scrollbar-width: thin;
-    scrollbar-color: rgb(0 0 0 / 0.1) transparent;
-  }
-
-  /* Chrome */
-  @supports selector(::-webkit-scrollbar) {
-    scrollbar-width: auto;
-    scrollbar-color: auto;
-
-    &::-webkit-scrollbar {
-      background: transparent;
-      height: 7px;
-      width: 7px;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background: rgb(0 0 0 / 0.1);
-      border-radius: 5px;
-
-      &:hover {
-        background: rgb(0 0 0 / 0.3);
-      }
-    }
-  }
-`;
-
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -72,6 +39,7 @@ interface Props {
   buttonText?: string;
   children: ReactNode;
   shouldCloseOnOverlayClick?: boolean;
+  shouldCloseOnEscape?: boolean;
 }
 
 const Modal = ({
@@ -79,24 +47,35 @@ const Modal = ({
   buttonText = 'OK',
   children,
   shouldCloseOnOverlayClick = false,
-}: Props) => (
-  <>
-    <BackgroundOverlay
-      onClick={() => shouldCloseOnOverlayClick && onClose()}
-      role="button"
-      aria-label="Modal overlay"
-      tabIndex={0}
-    />
-    <Container>
-      <ScrollableArea>{children}</ScrollableArea>
+  shouldCloseOnEscape = false,
+}: Props) => {
+  const modalsContainer = document.getElementById(MODALS_CONTAINER_ID);
 
-      <ButtonContainer>
-        <Button type="button" onClick={onClose} autoFocus>
-          {buttonText}
-        </Button>
-      </ButtonContainer>
-    </Container>
-  </>
-);
+  return modalsContainer
+    ? createPortal(
+        <>
+          <BackgroundOverlay
+            onClick={() => shouldCloseOnOverlayClick && onClose()}
+            onKeyUp={(e) => shouldCloseOnOverlayClick && e.key === 'Escape' && onClose()}
+            role="button"
+            aria-label="Exit"
+            tabIndex={0}
+            aria-disabled={!shouldCloseOnOverlayClick}
+          />
+
+          <Container onKeyUp={(e) => shouldCloseOnEscape && e.key === 'Escape' && onClose()}>
+            <ScrollableArea>{children}</ScrollableArea>
+
+            <ButtonContainer>
+              <Button type="button" onClick={onClose} autoFocus>
+                {buttonText}
+              </Button>
+            </ButtonContainer>
+          </Container>
+        </>,
+        modalsContainer,
+      )
+    : null;
+};
 
 export default Modal;
