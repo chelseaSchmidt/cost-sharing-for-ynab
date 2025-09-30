@@ -1,4 +1,4 @@
-import { Account, ClassifiedTransactions, ParentCategory, Transaction } from '../../types';
+import { Account, ParentCategory, Transaction, TransactionGroups } from '../../types';
 import { toId } from './general';
 
 interface Args {
@@ -11,7 +11,7 @@ const classifyTransactions = ({
   displayedTransactions,
   selectedAccounts,
   selectedParentCategories,
-}: Args) => {
+}: Args): TransactionGroups => {
   const sharedAccountIds = selectedAccounts.map((acct) => acct.id);
   const sharedCategoryIds = selectedParentCategories
     .flatMap(({ categories }) => categories)
@@ -20,16 +20,16 @@ const classifyTransactions = ({
   // filter by account if no categories selected
   if (!sharedCategoryIds.length) {
     return {
-      filteredTransactions: displayedTransactions.filter(({ account_id }) => {
+      transactions: displayedTransactions.filter(({ account_id }) => {
         return sharedAccountIds.includes(account_id);
       }),
-      sharedAccountErrorTransactions: [],
-      sharedCategoryErrorTransactions: [],
+      accountFlags: [],
+      categoryFlags: [],
     };
   }
 
   // otherwise, filter by category, and use account info to generate warnings
-  return displayedTransactions.reduce<ClassifiedTransactions>(
+  return displayedTransactions.reduce<TransactionGroups>(
     (accum, transaction) => {
       const { account_id, category_id } = transaction;
 
@@ -38,16 +38,16 @@ const classifyTransactions = ({
       const isInSharedAccountButNotCategory = isInSharedAccount && !isInSharedCategory;
       const isInSharedCategoryButNotAccount = isInSharedCategory && !isInSharedAccount;
 
-      if (isInSharedCategory) accum.filteredTransactions.push(transaction);
-      if (isInSharedAccountButNotCategory) accum.sharedAccountErrorTransactions.push(transaction);
-      if (isInSharedCategoryButNotAccount) accum.sharedCategoryErrorTransactions.push(transaction);
+      if (isInSharedCategory) accum.transactions.push(transaction);
+      if (isInSharedAccountButNotCategory) accum.accountFlags.push(transaction);
+      if (isInSharedCategoryButNotAccount) accum.categoryFlags.push(transaction);
 
       return accum;
     },
     {
-      filteredTransactions: [],
-      sharedAccountErrorTransactions: [],
-      sharedCategoryErrorTransactions: [],
+      transactions: [],
+      accountFlags: [],
+      categoryFlags: [],
     },
   );
 };
