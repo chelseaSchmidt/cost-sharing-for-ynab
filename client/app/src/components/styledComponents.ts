@@ -95,29 +95,6 @@ export const Paragraph = styled.p`
   }
 `;
 
-export const WarningIcon = styled.span`
-  display: flex;
-  position: relative;
-  box-sizing: border-box;
-  border-radius: 50%;
-  align-items: center;
-  justify-content: center;
-  height: 15px;
-  width: 15px;
-  min-width: 15px;
-  border: 1px solid red;
-  font-size: 8px;
-  color: red;
-  font-weight: bold;
-  margin: 0 5px;
-
-  &:hover {
-    > * {
-      visibility: visible;
-    }
-  }
-`;
-
 // https://www.w3schools.com/howto/howto_css_loader.asp
 export const Spinner = styled.div`
   border: 3px solid #eee;
