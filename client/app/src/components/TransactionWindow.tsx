@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import TransactionCard from './TransactionCard';
-import { FlexColumnAllCentered, ScrollableArea, Spinner } from './styledComponents';
+import { FlexColumnAllCentered, LoadingSpinner, ScrollableArea } from './styledComponents';
 import { toId } from './utils/general';
 import breakpoints from '../../../shared/breakpoints';
 import { Button } from '../../../shared/styledComponents';
@@ -35,9 +35,9 @@ const RefreshButton = styled(Button)`
   width: fit-content;
 `;
 
-const SelectAllCheckboxContainer = styled.div`
-  height: 15px;
-  margin-bottom: 15px;
+const SpinnerPositioner = styled(FlexColumnAllCentered)`
+  position: absolute;
+  width: 100%;
 `;
 
 const TransactionArea = styled(FlexColumnAllCentered)`
@@ -60,17 +60,6 @@ const TransactionFeed = styled(ScrollableArea)`
   @media (max-width: ${breakpoints.tiny}) {
     padding: ${FEED_PADDING_Y_SM} 5px;
   }
-`;
-
-const TransactionFeedLoadingOverlay = styled(TransactionFeed)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const TransactionLoadingSpinner = styled(Spinner)`
-  height: 20px;
-  width: 20px;
 `;
 
 /* Main Component */
@@ -129,47 +118,43 @@ const TransactionWindow = ({
         </RefreshButtonContainer>
       )}
 
-      {!loading && (
-        <TransactionArea>
-          <SelectAllCheckboxContainer>
-            {!!transactions.length && isClickable && toggleSelectAll && (
-              <Checkbox
-                id="select-all-checkbox"
-                label="Select all"
-                checked={!!isSelectAllChecked}
-                onChange={(isSelected) => toggleSelectAll({ isSelected })}
-              />
-            )}
-          </SelectAllCheckboxContainer>
+      <TransactionArea>
+        {loading && (
+          <SpinnerPositioner>
+            <LoadingSpinner />
+          </SpinnerPositioner>
+        )}
 
-          {!!transactions.length && (
-            <TransactionFeed style={feedStyle}>
-              {transactions.map((transaction) => (
-                <TransactionCard
-                  key={transaction.id}
-                  isClickable={isClickable}
-                  isSelected={!!selectedTransactionIds.includes(transaction.id)}
-                  toggleTransactionSelection={toggleTransactionSelection}
-                  transaction={transaction}
-                  isIsolated={!!isolatedTransactionIds.includes(transaction.id)}
-                  shouldShowIcon={shouldShowIcon}
-                />
-              ))}
-            </TransactionFeed>
-          )}
-        </TransactionArea>
-      )}
+        {!loading && !!transactions.length && isClickable && toggleSelectAll && (
+          <Checkbox
+            id="select-all-checkbox"
+            label="Select all"
+            checked={!!isSelectAllChecked}
+            onChange={(isSelected) => toggleSelectAll({ isSelected })}
+          />
+        )}
 
-      {loading &&
-        (shouldShowLoadingOverlay ? (
-          <TransactionFeedLoadingOverlay style={feedStyle}>
-            <TransactionLoadingSpinner />
-          </TransactionFeedLoadingOverlay>
-        ) : (
-          <TransactionLoadingSpinner />
-        ))}
+        {!transactions.length && !loading && <em>No transactions</em>}
 
-      {!transactions.length && !loading && <em>No transactions</em>}
+        <TransactionFeed
+          style={{
+            ...feedStyle,
+            visibility: !loading && transactions.length ? 'visible' : 'hidden',
+          }}
+        >
+          {transactions.map((transaction) => (
+            <TransactionCard
+              key={transaction.id}
+              isClickable={isClickable}
+              isSelected={!!selectedTransactionIds.includes(transaction.id)}
+              toggleTransactionSelection={toggleTransactionSelection}
+              transaction={transaction}
+              isIsolated={!!isolatedTransactionIds.includes(transaction.id)}
+              shouldShowIcon={shouldShowIcon}
+            />
+          ))}
+        </TransactionFeed>
+      </TransactionArea>
     </Container>
   );
 };

@@ -10,7 +10,7 @@ import Nav from './Nav';
 import ErrorPopup from './ErrorPopup';
 import PrivacyPolicy from '../../../shared/PrivacyPolicy';
 import Instructions from '../../../shared/Instructions';
-import { SectionHeader, Spinner } from './styledComponents';
+import { LoadingSpinner, SectionHeader, SubmittingSpinner } from './styledComponents';
 import {
   createTransaction,
   getTransactionsSinceDate,
@@ -63,6 +63,10 @@ const Container = styled.div`
   @media (max-width: ${breakpoints.mobile}) {
     font-size: 16px;
   }
+`;
+
+const LoadingContainer = styled(Container)`
+  height: 100vh;
 `;
 
 const Modals = styled.div``;
@@ -404,7 +408,9 @@ const App = () => {
   );
 
   return isPageLoading ? (
-    'Loading...'
+    <LoadingContainer>
+      <LoadingSpinner role="progressbar" aria-label="Loading" />
+    </LoadingContainer>
   ) : (
     <Container>
       <Modals id={MODALS_CONTAINER_ID}>
@@ -622,7 +628,7 @@ const App = () => {
                 onClick={createSplitEntry}
                 disabled={isSplitTransactionDisabled}
               >
-                {isIouTransactionLoading ? <Spinner /> : 'Split Costs'}
+                {isIouTransactionLoading ? <SubmittingSpinner /> : 'Split Costs'}
                 &nbsp;
                 {isSplitTransactionDisabled && (
                   <InfoIcon color="white" tooltipContent={buttonDisabledMessage} />
