@@ -5,7 +5,6 @@ import BudgetAutocomplete from './BudgetAutocomplete';
 import DateSelector from './DateSelector';
 import InfoIcon from './InfoIcon';
 import TransactionWindow from './TransactionWindow';
-import Confirmation from './Confirmation';
 import Modal from './Modal';
 import Switch from './Switch';
 import Nav from './Nav';
@@ -49,6 +48,7 @@ import {
   TransactionPayload,
 } from '../types';
 import AppHeader from './AppHeader';
+import Popup from './Popup';
 
 /* CONSTANTS */
 
@@ -283,7 +283,7 @@ const App = () => {
   const [activeModal, setActiveModal] = useState<ModalName | null>(
     ModalName.PRIVACY_POLICY_REQUIRED,
   );
-  const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
+  const [succeeded, setSucceeded] = useState(false);
   const [isSelectAllChecked, setIsSelectAllChecked] = useState(false);
 
   const { transactions, accountFlags, categoryFlags } = transactionGroups;
@@ -422,7 +422,7 @@ const App = () => {
       setIsIouTransactionLoading(true);
       const transaction = await createTransaction(summaryTransaction);
       if (transaction) {
-        setIsConfirmationVisible(true);
+        setSucceeded(true);
         setIouAccountTransactions([...iouAccountTransactions, transaction]);
         setSelectedTransactions([]);
         setIsSelectAllChecked(false);
@@ -519,8 +519,13 @@ const App = () => {
       </Modals>
 
       <NonModalContent inert={!!activeModal}>
-        {isConfirmationVisible && (
-          <Confirmation setIsConfirmationVisible={setIsConfirmationVisible} />
+        {succeeded && (
+          <Popup
+            message="Transaction created"
+            onClose={() => setSucceeded(false)}
+            containerStyle={{ backgroundColor: colors.success }}
+            closeButtonStyle={{ color: colors.success }}
+          />
         )}
 
         {errorData && <ErrorPopup errorData={errorData} setErrorData={setErrorData} />}
