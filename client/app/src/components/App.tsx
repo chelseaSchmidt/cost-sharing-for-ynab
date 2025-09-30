@@ -31,7 +31,11 @@ import { hasMessage, hasResponseAndStatus } from './utils/general';
 import breakpoints from '../../../shared/breakpoints';
 import colors from '../../../shared/colors';
 import { Button, Hyperlink } from '../../../shared/styledComponents';
-import { HIDDEN_CATEGORIES, TRANSACTION_SELECTION_FORM_ID } from '../constants';
+import {
+  HIDDEN_CATEGORIES,
+  MODALS_CONTAINER_ID,
+  TRANSACTION_SELECTION_FORM_ID,
+} from '../constants';
 import '../styles/global.css';
 import {
   Account,
@@ -66,6 +70,8 @@ const Container = styled.div`
   }
 `;
 
+const Modals = styled.div``;
+
 const NonModalContent = styled.div`
   display: flex;
   flex-direction: column;
@@ -95,10 +101,6 @@ const HelpButtonContainer = styled.div`
       }
     }
   }
-`;
-
-const PrivacyPolicyContainer = styled.div`
-  padding-right: 20px;
 `;
 
 const SectionTile = styled.section`
@@ -278,7 +280,9 @@ const App = () => {
   const [iouAccountTransactions, setIouAccountTransactions] = useState<Transaction[]>([]);
   const [isIouTransactionLoading, setIsIouTransactionLoading] = useState(false);
   const [errorData, setErrorData] = useState<ErrorData | null>(null);
-  const [activeModal, setActiveModal] = useState<ModalName | null>(ModalName.PRIVACY_POLICY);
+  const [activeModal, setActiveModal] = useState<ModalName | null>(
+    ModalName.PRIVACY_POLICY_REQUIRED,
+  );
   const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
   const [isSelectAllChecked, setIsSelectAllChecked] = useState(false);
 
@@ -293,6 +297,8 @@ const App = () => {
     : 'Please select an IOU account';
 
   const handleInfoClick = () => setActiveModal(ModalName.INSTRUCTIONS);
+
+  const closeModal = () => setActiveModal(null);
 
   const displayErrorMessage = (error: unknown) => {
     setErrorData({
@@ -460,19 +466,32 @@ const App = () => {
     'Loading...'
   ) : (
     <Container>
-      {activeModal && (
-        <Modal
-          onClose={() => setActiveModal(null)}
-          buttonText={activeModal === ModalName.TRANSACTION_REVIEW ? 'Exit' : 'OK'}
-          shouldCloseOnOverlayClick={activeModal !== ModalName.PRIVACY_POLICY}
-        >
-          {activeModal === ModalName.PRIVACY_POLICY && (
-            <PrivacyPolicyContainer>
-              <PrivacyPolicy />
-            </PrivacyPolicyContainer>
-          )}
+      <Modals id={MODALS_CONTAINER_ID}>
+        {activeModal === ModalName.PRIVACY_POLICY_REQUIRED && (
+          <Modal onClose={closeModal} buttonText="Acknowledge">
+            <PrivacyPolicy />
+          </Modal>
+        )}
 
-          {activeModal === ModalName.TRANSACTION_REVIEW && (
+        {activeModal === ModalName.PRIVACY_POLICY && (
+          <Modal onClose={closeModal} shouldCloseOnOverlayClick shouldCloseOnEscape>
+            <PrivacyPolicy />
+          </Modal>
+        )}
+
+        {activeModal === ModalName.INSTRUCTIONS && (
+          <Modal onClose={closeModal} shouldCloseOnOverlayClick shouldCloseOnEscape>
+            <Instructions style={{ padding: '20px' }} />
+          </Modal>
+        )}
+
+        {activeModal === ModalName.TRANSACTION_REVIEW && (
+          <Modal
+            onClose={closeModal}
+            buttonText="Exit"
+            shouldCloseOnOverlayClick
+            shouldCloseOnEscape
+          >
             <TransactionWindow
               title="Transactions in shared accounts, but not in shared categories"
               description="This list is meant to help you catch misclassified transactions. Recategorize them in YNAB as needed and then refresh the list."
@@ -496,11 +515,9 @@ const App = () => {
                 });
               }}
             />
-          )}
-
-          {activeModal === ModalName.INSTRUCTIONS && <Instructions style={{ padding: '20px' }} />}
-        </Modal>
-      )}
+          </Modal>
+        )}
+      </Modals>
 
       <NonModalContent inert={!!activeModal}>
         {isConfirmationVisible && (
