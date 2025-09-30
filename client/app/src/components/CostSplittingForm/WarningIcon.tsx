@@ -1,7 +1,7 @@
 import { HTMLAttributes } from 'react';
 import styled from 'styled-components';
-import colors from '../../../shared/colors';
-import { FlexColumnAllCentered } from './styledComponents';
+import colors from '../../../../shared/colors';
+import { FlexColumnAllCentered } from '../styledComponents';
 
 const PADDING = '1px';
 const BORDER_WIDTH = '1px';
