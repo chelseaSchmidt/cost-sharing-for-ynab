@@ -12,7 +12,6 @@ import { FlexRow } from '../../styledComponents';
 const ContainerButton = styled.button<{ $isSelected?: boolean }>`
   all: unset;
   display: flex;
-  flex-direction: row;
   align-items: center;
   border: 1px solid ${colors.lightNeutralAccent};
   border-radius: 3px;
