@@ -9,15 +9,15 @@ export const Hyperlink = styled.a`
   margin: 0 10px;
   cursor: pointer;
   text-decoration: underline;
-  color: #464b46;
+  color: inherit;
 
   &:hover,
   &:visited:hover {
-    color: blue;
+    color: ${colors.primary};
   }
 
   &:visited {
-    color: #464b46;
+    color: inherit;
   }
 
   &:focus-visible {
