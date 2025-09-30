@@ -668,16 +668,16 @@ const App = () => {
               <RowOrColumn>
                 <DateSelector
                   label="Start date:"
-                  inputId="transactions-start-date"
-                  inputValue={convertDateToString(transactionsStartDate)}
+                  id="transactions-start-date"
+                  value={convertDateToString(transactionsStartDate)}
                   inputStyle={{ maxWidth: '200px' }}
                   onChange={(value) => setTransactionsStartDate(toDate(value))}
                 />
 
                 <DateSelector
                   label="End date:"
-                  inputId="transactions-end-date"
-                  inputValue={convertDateToString(transactionsEndDate)}
+                  id="transactions-end-date"
+                  value={convertDateToString(transactionsEndDate)}
                   inputStyle={{ maxWidth: '200px' }}
                   onChange={(value) => setTransactionsEndDate(toDate(value, false))}
                 />
@@ -783,8 +783,8 @@ const App = () => {
 
             <DateSelector
               label="Select a transaction date."
-              inputId="cost-split-date-selector"
-              inputValue={convertDateToString(dateToSplitCosts)}
+              id="cost-split-date-selector"
+              value={convertDateToString(dateToSplitCosts)}
               onChange={(value) => setDateToSplitCosts(toDate(value))}
               style={{
                 flexDirection: 'column',
