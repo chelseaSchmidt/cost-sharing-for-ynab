@@ -14,10 +14,10 @@ import PrivacyPolicy from '../../../shared/PrivacyPolicy';
 import Instructions from '../../../shared/Instructions';
 import { SectionHeader, WarningIcon, Spinner } from './styledComponents';
 import {
+  createTransaction,
   getTransactionsSinceDate,
   getAccounts,
   getParentCategories,
-  createSplitTransaction,
 } from './utils/networkRequests';
 import {
   convertDateToString,
@@ -37,12 +37,12 @@ import {
   Account,
   BudgetData,
   ClassifiedTransactions,
-  DraftTransaction,
   ErrorData,
   ModalName,
   Mode,
   ParentCategory,
   Transaction,
+  TransactionPayload,
 } from '../types';
 import AppHeader from './AppHeader';
 
@@ -392,7 +392,7 @@ const App = () => {
       {} as Record<string, number>,
     );
 
-    const summaryTransaction: DraftTransaction = {
+    const summaryTransaction: TransactionPayload = {
       account_id: iouAccountId,
       date: convertDateToString(dateToSplitCosts),
       amount: _.reduce(owedCategorizedAmounts, (sum, amt) => sum - amt, 0),
@@ -415,7 +415,7 @@ const App = () => {
 
     try {
       setIsIouTransactionLoading(true);
-      const transaction = await createSplitTransaction(summaryTransaction);
+      const transaction = await createTransaction(summaryTransaction);
       if (transaction) {
         setIsConfirmationVisible(true);
         setIouAccountTransactions([...iouAccountTransactions, transaction]);
