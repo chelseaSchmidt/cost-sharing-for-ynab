@@ -1,9 +1,9 @@
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 import { Transaction } from '../../types';
 
 const DATE_STRING_FORMAT = 'YYYY-MM-DD';
 
-export const convertDateToString = (date: moment.Moment) => moment(date).format(DATE_STRING_FORMAT);
+export const convertDateToString = (date: Moment) => moment(date).format(DATE_STRING_FORMAT);
 
 export const toDate = (value: string | number, isStartOfDay = true) =>
   isStartOfDay
@@ -15,7 +15,7 @@ export const toDate = (value: string | number, isStartOfDay = true) =>
         millisecond: 999,
       });
 
-export const isTransactionBeforeDate = (transaction: Transaction, endDate: moment.Moment) =>
+export const isTransactionBeforeDate = (transaction: Transaction, endDate: Moment) =>
   toDate(transaction.date).diff(endDate) < 0;
 
 export const getFirstDateOfLastMonth = () => moment().subtract(1, 'month').startOf('month');
