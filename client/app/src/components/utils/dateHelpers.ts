@@ -3,7 +3,7 @@ import { Transaction } from '../../types';
 
 const DATE_STRING_FORMAT = 'YYYY-MM-DD';
 
-export const convertDateToString = (date: moment.Moment) => moment(date).format(DATE_STRING_FORMAT);
+export const convertDateToString = (date: Moment) => moment(date).format(DATE_STRING_FORMAT);
 
 export const toDate = (value: string | number, isStartOfDay = true) =>
   isStartOfDay
