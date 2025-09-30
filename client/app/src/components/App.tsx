@@ -10,10 +10,10 @@ import '../styles/global.css';
 import {
   Account,
   BudgetData,
-  TransactionGroups,
   ErrorData,
   ModalName,
   ParentCategory,
+  TransactionGroups,
 } from '../types';
 import AppHeader from './AppHeader';
 import CostSplittingForm from './CostSplittingForm';
