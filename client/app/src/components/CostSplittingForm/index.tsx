@@ -1,10 +1,9 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import _ from 'lodash';
 import styled from 'styled-components';
 import breakpoints from '../../../../shared/breakpoints';
 import colors from '../../../../shared/colors';
 import { Button, Hyperlink } from '../../../../shared/styledComponents';
-import { TRANSACTION_SELECTION_FORM_ID } from '../../constants';
 import { Account, ModalName, Transaction, TransactionPayload } from '../../types';
 import BudgetAutocomplete from '../BudgetAutocomplete';
 import DateSelector from '../DateSelector';
@@ -12,17 +11,9 @@ import InfoIcon from '../InfoIcon';
 import Popup from '../Popup';
 import { SectionHeader, SectionTile, SubmittingSpinner } from '../styledComponents';
 import TransactionWindow from '../TransactionWindow';
-import WarningIcon from './WarningIcon';
 import { convertDateToString, getLastDateOfLastMonth, toDate } from '../utils/dateHelpers';
 import { createTransaction } from '../utils/networkRequests';
-
-const TILE_X_PADDING_LG = 75;
-const TILE_X_PADDING_SM = 30;
-const TILE_X_PADDING_XS = 10;
-
-const TransactionsTile = styled(SectionTile)`
-  max-height: 92vh;
-`;
+import TransactionSelection from './TransactionSelection';
 
 const SectionContent = styled.div`
   width: 100%;
@@ -45,45 +36,9 @@ const NoWrap = styled.span`
   white-space: nowrap;
 `;
 
-const ReviewTransactionsButton = styled(Button)`
-  background: rgb(128, 0, 0);
-  margin-left: 10px;
-
-  &:active {
-    background: rgba(128, 0, 0, 0.7);
-  }
-
-  &:hover {
-    color: rgb(128, 0, 0);
-  }
-`;
-
 const SplitTransactionsButton = styled(Button)`
   @media (max-width: ${breakpoints.mobile}) {
     margin: 10px 0 0 0;
-  }
-`;
-
-const MissingTransactionsWarning = styled.div`
-  display: flex;
-  align-items: center;
-  color: red;
-  margin-bottom: 20px;
-`;
-
-const TransactionWindowContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  border-radius: 12px;
-  width: calc(100% + ${TILE_X_PADDING_LG * 2}px);
-  overflow: auto;
-
-  @media (max-width: ${breakpoints.mobile}) {
-    width: calc(100% + ${TILE_X_PADDING_SM * 2}px);
-  }
-
-  @media (max-width: ${breakpoints.tiny}) {
-    width: calc(100% + ${TILE_X_PADDING_XS * 2}px);
   }
 `;
 
@@ -144,17 +99,6 @@ export default function CostSplittingForm({
     const owedPercentage = 1 - percentage / 100;
     return owedPercentage;
   };
-
-  const toggleTransactionSelection = useCallback(
-    ({ isSelected, transaction }: { isSelected: boolean; transaction: Transaction }) => {
-      setSelectedTransactions((previousSelected) =>
-        isSelected
-          ? [...previousSelected, transaction]
-          : previousSelected.filter(({ id }) => id !== transaction.id),
-      );
-    },
-    [setSelectedTransactions],
-  );
 
   const toggleSelectAll = ({ isSelected }: { isSelected: boolean }) => {
     setIsSelectAllChecked(isSelected);
@@ -249,36 +193,17 @@ export default function CostSplittingForm({
 
   return (
     <>
-      <TransactionsTile id={TRANSACTION_SELECTION_FORM_ID}>
-        <SectionHeader>Select Shared Costs</SectionHeader>
-
-        {!loading && !!categoryFlags.length && (
-          <MissingTransactionsWarning>
-            <WarningIcon />
-            Some transactions in shared accounts were not categorized to shared categories.
-            <ReviewTransactionsButton
-              type="button"
-              onClick={() => setActiveModal(ModalName.TRANSACTION_REVIEW)}
-            >
-              Review
-            </ReviewTransactionsButton>
-          </MissingTransactionsWarning>
-        )}
-
-        <TransactionWindowContainer>
-          <TransactionWindow
-            loading={loading}
-            transactions={transactions}
-            selectedTransactions={selectedTransactions}
-            transactionsSharedInOneButNotOther={accountFlags}
-            toggleTransactionSelection={toggleTransactionSelection}
-            toggleSelectAll={toggleSelectAll}
-            isSelectAllChecked={isSelectAllChecked}
-            shouldShowIcon
-            isClickable
-          />
-        </TransactionWindowContainer>
-      </TransactionsTile>
+      <TransactionSelection
+        loading={loading}
+        transactions={transactions}
+        selectedTransactions={selectedTransactions}
+        setSelectedTransactions={setSelectedTransactions}
+        accountFlags={accountFlags}
+        categoryFlags={categoryFlags}
+        toggleSelectAll={toggleSelectAll}
+        isSelectAllChecked={isSelectAllChecked}
+        setActiveModal={setActiveModal}
+      />
 
       <SectionTile style={{ alignItems: 'start' }}>
         <form style={{ display: 'contents' }}>
