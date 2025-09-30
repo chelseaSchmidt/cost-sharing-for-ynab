@@ -10,7 +10,7 @@ import Nav from './Nav';
 import ErrorPopup from './ErrorPopup';
 import PrivacyPolicy from '../../../shared/PrivacyPolicy';
 import Instructions from '../../../shared/Instructions';
-import { SectionHeader, WarningIcon, Spinner } from './styledComponents';
+import { SectionHeader, Spinner } from './styledComponents';
 import {
   createTransaction,
   getTransactionsSinceDate,
@@ -43,6 +43,7 @@ import {
 import AppHeader from './AppHeader';
 import Popup from './Popup';
 import TransactionSearchForm from './TransactionSearchForm';
+import WarningIcon from './WarningIcon';
 
 /* CONSTANTS */
 
@@ -495,9 +496,8 @@ const App = () => {
 
           {!areTransactionsLoading && !!categoryFlags.length && (
             <MissingTransactionsWarning>
-              <WarningIcon>!</WarningIcon>
-              Some transactions in shared accounts were not categorized to shared expense
-              categories.
+              <WarningIcon />
+              Some transactions in shared accounts were not categorized to shared categories.
               <ReviewTransactionsButton
                 type="button"
                 onClick={() => setActiveModal(ModalName.TRANSACTION_REVIEW)}
