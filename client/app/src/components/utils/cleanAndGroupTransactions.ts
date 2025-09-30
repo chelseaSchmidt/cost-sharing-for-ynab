@@ -7,7 +7,7 @@ interface Args {
   selectedParentCategories: ParentCategory[];
 }
 
-const classifyTransactions = ({
+const cleanAndGroupTransactions = ({
   displayedTransactions,
   selectedAccounts,
   selectedParentCategories,
@@ -52,4 +52,4 @@ const classifyTransactions = ({
   );
 };
 
-export default classifyTransactions;
+export default cleanAndGroupTransactions;

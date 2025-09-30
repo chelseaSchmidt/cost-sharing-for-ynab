@@ -26,7 +26,7 @@ import {
   getFirstDateOfLastMonth,
   getLastDateOfLastMonth,
 } from './utils/dateHelpers';
-import classifyTransactions from './utils/classifyTransactions';
+import cleanAndGroupTransactions from './utils/cleanAndGroupTransactions';
 import { hasMessage, hasResponseAndStatus } from './utils/general';
 import breakpoints from '../../../shared/breakpoints';
 import colors from '../../../shared/colors';
@@ -341,7 +341,7 @@ const App = () => {
         );
 
       setTransactionGroups(
-        classifyTransactions({
+        cleanAndGroupTransactions({
           displayedTransactions,
           selectedAccounts,
           selectedParentCategories,
