@@ -157,7 +157,7 @@ const TransactionWindow = ({
         <TransactionFeed
           style={{
             ...feedStyle,
-            visibility: !loading && transactions.length ? 'visible' : 'hidden',
+            visibility: !loading && hasTransactions ? 'visible' : 'hidden',
           }}
         >
           {transactions.map((transaction) => (
