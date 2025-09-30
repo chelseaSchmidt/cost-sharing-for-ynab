@@ -9,7 +9,7 @@ import Confirmation from './Confirmation';
 import Modal from './Modal';
 import Switch from './Switch';
 import Nav from './Nav';
-import Error from './Error';
+import ErrorPopup from './ErrorPopup';
 import PrivacyPolicy from '../../../shared/PrivacyPolicy';
 import Instructions from '../../../shared/Instructions';
 import { SectionHeader, WarningIcon, Spinner } from './styledComponents';
@@ -507,7 +507,7 @@ const App = () => {
           <Confirmation setIsConfirmationVisible={setIsConfirmationVisible} />
         )}
 
-        {errorData && <Error errorData={errorData} setErrorData={setErrorData} />}
+        {errorData && <ErrorPopup errorData={errorData} setErrorData={setErrorData} />}
 
         <AppHeader setActiveModal={setActiveModal} handleInfoClick={handleInfoClick} />
 
