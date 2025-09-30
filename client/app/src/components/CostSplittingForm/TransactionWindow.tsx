@@ -1,6 +1,12 @@
 import styled from 'styled-components';
 import TransactionCard from './TransactionCard';
-import { FlexColumnAllCentered, LoadingSpinner, ScrollableArea } from '../styledComponents';
+import {
+  FlexColumnAllCentered,
+  FlexRowAllCentered,
+  LoadingSpinner,
+  Paragraph,
+  ScrollableArea,
+} from '../styledComponents';
 import { toId } from '../utils/general';
 import breakpoints from '../../../../shared/breakpoints';
 import { Button } from '../../../../shared/styledComponents';
@@ -21,17 +27,21 @@ const Container = styled(FlexColumnAllCentered)`
   gap: 15px;
 `;
 
-const Title = styled.h3``;
+const Title = styled.header`
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.3em;
+`;
 
-const RefreshButtonContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
+const Subtitle = styled(Paragraph)`
+  text-align: center;
+`;
+
+const Controls = styled(FlexRowAllCentered)`
   width: 100%;
 `;
 
 const RefreshButton = styled(Button)`
-  margin-top: 20px;
   width: fit-content;
 `;
 
@@ -62,12 +72,30 @@ const TransactionFeed = styled(ScrollableArea)`
   }
 `;
 
+const TransactionFeedFade = styled.div`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(to top, white, transparent);
+  margin-bottom: 1px;
+  height: ${FEED_PADDING_Y_LG};
+
+  @media (max-width: ${breakpoints.mobile}) {
+    height: ${FEED_PADDING_Y_SM};
+  }
+
+  @media (max-width: ${breakpoints.tiny}) {
+    height: ${FEED_PADDING_Y_SM};
+  }
+`;
+
 /* Main Component */
 
 interface Props {
   loading?: boolean;
   title?: string;
-  description?: string;
+  subtitle?: string;
   transactions: Transaction[];
   selectedTransactions?: Transaction[];
   transactionsSharedInOneButNotOther?: Transaction[];
@@ -78,7 +106,6 @@ interface Props {
   isClickable?: boolean;
   shouldShowRefreshButton?: boolean;
   refreshTransactions?: () => void;
-  shouldShowLoadingOverlay?: boolean;
   containerStyle?: CSSProperties;
   feedStyle?: CSSProperties;
 }
@@ -86,7 +113,7 @@ interface Props {
 const TransactionWindow = ({
   loading = false,
   title,
-  description = '',
+  subtitle = '',
   transactions,
   selectedTransactions = [],
   transactionsSharedInOneButNotOther = [],
@@ -97,25 +124,25 @@ const TransactionWindow = ({
   isClickable = false,
   shouldShowRefreshButton = false,
   refreshTransactions = () => {},
-  shouldShowLoadingOverlay = false,
   containerStyle = {},
   feedStyle = {},
 }: Props) => {
   const isolatedTransactionIds = transactionsSharedInOneButNotOther.map(toId);
   const selectedTransactionIds = selectedTransactions.map(toId);
+  const hasTransactions = !!transactions.length;
 
   return (
     <Container style={containerStyle}>
       {title && <Title>{title}</Title>}
 
-      {description}
+      {subtitle && <Subtitle>{subtitle}</Subtitle>}
 
       {shouldShowRefreshButton && (
-        <RefreshButtonContainer>
+        <Controls>
           <RefreshButton type="button" onClick={refreshTransactions}>
             Refresh
           </RefreshButton>
-        </RefreshButtonContainer>
+        </Controls>
       )}
 
       <TransactionArea>
@@ -125,7 +152,7 @@ const TransactionWindow = ({
           </SpinnerPositioner>
         )}
 
-        {!loading && !!transactions.length && isClickable && toggleSelectAll && (
+        {!loading && hasTransactions && isClickable && toggleSelectAll && (
           <Checkbox
             id="select-all-checkbox"
             label="Select all"
@@ -134,12 +161,12 @@ const TransactionWindow = ({
           />
         )}
 
-        {!transactions.length && !loading && <em>No transactions</em>}
+        {!loading && !hasTransactions && <em>No transactions</em>}
 
         <TransactionFeed
           style={{
             ...feedStyle,
-            visibility: !loading && transactions.length ? 'visible' : 'hidden',
+            visibility: !loading && hasTransactions ? 'visible' : 'hidden',
           }}
         >
           {transactions.map((transaction) => (
@@ -154,6 +181,8 @@ const TransactionWindow = ({
             />
           ))}
         </TransactionFeed>
+
+        {!loading && hasTransactions && <TransactionFeedFade />}
       </TransactionArea>
     </Container>
   );

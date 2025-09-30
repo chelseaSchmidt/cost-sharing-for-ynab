@@ -10,7 +10,9 @@ const colors = {
   infoIcon: '#999',
   tooltip: '#444',
   lightFont: '#808080',
-  error: 'red',
+  error: 'rgb(128, 0, 0)',
+  errorHover: 'rgba(128, 0, 0, 0.8)',
+  errorActive: 'rgba(128, 0, 0, 0.6)',
   errorLight: 'rgba(255, 0, 0, 0.1)',
   success: 'rgb(61 142 64)',
 } as const;
