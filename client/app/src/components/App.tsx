@@ -31,6 +31,7 @@ import { hasMessage, hasResponseAndStatus } from './utils/general';
 import breakpoints from '../../../shared/breakpoints';
 import colors from '../../../shared/colors';
 import { Button, Hyperlink } from '../../../shared/styledComponents';
+import { HIDDEN_CATEGORIES, TRANSACTION_SELECTION_FORM_ID } from '../constants';
 import '../styles/global.css';
 import {
   Account,
@@ -47,7 +48,6 @@ import AppHeader from './AppHeader';
 
 /* CONSTANTS */
 
-const HIDDEN_CATEGORIES = ['Internal Master Category', 'Credit Card Payments', 'Hidden Categories'];
 const TILE_X_PADDING_LG = 75;
 const TILE_X_PADDING_SM = 30;
 const TILE_X_PADDING_XS = 10;
@@ -599,7 +599,7 @@ const App = () => {
                   setSelectedParentCategories(selected.map(({ data }) => data))
                 }
                 items={budgetData.parentCategories
-                  .filter((cat) => !HIDDEN_CATEGORIES.includes(cat.name))
+                  .filter((cat) => !HIDDEN_CATEGORIES.map(String).includes(cat.name))
                   .map((cat) => ({
                     id: cat.id,
                     displayedContent: cat.name,
@@ -692,14 +692,14 @@ const App = () => {
                 startDate: transactionsStartDate,
                 endDate: transactionsEndDate,
               });
-              document.getElementById('transaction-container')?.scrollIntoView(true);
+              document.getElementById(TRANSACTION_SELECTION_FORM_ID)?.scrollIntoView(true);
             }}
           >
             Show Transactions
           </Button>
         </SectionTile>
 
-        <TransactionsTile id="transaction-container">
+        <TransactionsTile id={TRANSACTION_SELECTION_FORM_ID}>
           <SectionHeader>Select Shared Costs</SectionHeader>
 
           {!areTransactionsLoading && !!sharedAccountErrorTransactions.length && (
