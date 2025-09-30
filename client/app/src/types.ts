@@ -57,10 +57,10 @@ export interface SubTransactionPayload {
   memo: string | null;
 }
 
-export interface ClassifiedTransactions {
-  filteredTransactions: Transaction[];
-  sharedAccountErrorTransactions: Transaction[];
-  sharedCategoryErrorTransactions: Transaction[];
+export interface TransactionGroups {
+  transactions: Transaction[];
+  accountFlags: Transaction[];
+  categoryFlags: Transaction[];
 }
 
 export interface BudgetData {

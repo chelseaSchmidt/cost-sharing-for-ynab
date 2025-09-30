@@ -40,12 +40,12 @@ import '../styles/global.css';
 import {
   Account,
   BudgetData,
-  ClassifiedTransactions,
   ErrorData,
   ModalName,
   Mode,
   ParentCategory,
   Transaction,
+  TransactionGroups,
   TransactionPayload,
 } from '../types';
 import AppHeader from './AppHeader';
@@ -269,10 +269,10 @@ const App = () => {
   const [myShare, setMyShare] = useState(50);
   const [selectedTransactions, setSelectedTransactions] = useState<Transaction[]>([]);
   const [dateToSplitCosts, setDateToSplitCosts] = useState(getLastDateOfLastMonth());
-  const [classifiedTransactions, setClassifiedTransactions] = useState<ClassifiedTransactions>({
-    filteredTransactions: [],
-    sharedAccountErrorTransactions: [],
-    sharedCategoryErrorTransactions: [],
+  const [transactionGroups, setTransactionGroups] = useState<TransactionGroups>({
+    transactions: [],
+    accountFlags: [],
+    categoryFlags: [],
   });
   const [selectedAccounts, setSelectedAccounts] = useState<Account[]>([]);
   const [selectedParentCategories, setSelectedParentCategories] = useState<ParentCategory[]>([]);
@@ -286,8 +286,7 @@ const App = () => {
   const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
   const [isSelectAllChecked, setIsSelectAllChecked] = useState(false);
 
-  const { filteredTransactions, sharedAccountErrorTransactions, sharedCategoryErrorTransactions } =
-    classifiedTransactions;
+  const { transactions, accountFlags, categoryFlags } = transactionGroups;
 
   const isSplitTransactionDisabled = !selectedTransactions.length || !iouAccountId;
 
@@ -341,7 +340,7 @@ const App = () => {
           a.date && b.date ? new Date(b.date).getTime() - new Date(a.date).getTime() : 0,
         );
 
-      setClassifiedTransactions(
+      setTransactionGroups(
         classifyTransactions({
           displayedTransactions,
           selectedAccounts,
@@ -367,7 +366,7 @@ const App = () => {
 
   const toggleSelectAll = ({ isSelected }: { isSelected: boolean }) => {
     setIsSelectAllChecked(isSelected);
-    setSelectedTransactions(isSelected ? [...filteredTransactions] : []);
+    setSelectedTransactions(isSelected ? [...transactions] : []);
   };
 
   const getOwedPercentage = (percentage: number) => {
@@ -497,7 +496,7 @@ const App = () => {
               description="This list is meant to help you catch misclassified transactions. Recategorize them in YNAB as needed and then refresh the list."
               loading={areTransactionsLoading}
               shouldShowLoadingOverlay
-              transactions={sharedAccountErrorTransactions}
+              transactions={accountFlags}
               containerStyle={{
                 alignItems: 'unset',
               }}
@@ -719,7 +718,7 @@ const App = () => {
         <TransactionsTile id={TRANSACTION_SELECTION_FORM_ID}>
           <SectionHeader>Select Shared Costs</SectionHeader>
 
-          {!areTransactionsLoading && !!sharedAccountErrorTransactions.length && (
+          {!areTransactionsLoading && !!accountFlags.length && (
             <MissingTransactionsWarning>
               <WarningIcon>!</WarningIcon>
               Some transactions in shared accounts were not categorized to shared expense
@@ -736,9 +735,9 @@ const App = () => {
           <TransactionWindowContainer>
             <TransactionWindow
               loading={areTransactionsLoading}
-              transactions={filteredTransactions}
+              transactions={transactions}
               selectedTransactions={selectedTransactions}
-              transactionsSharedInOneButNotOther={sharedCategoryErrorTransactions}
+              transactionsSharedInOneButNotOther={categoryFlags}
               toggleTransactionSelection={toggleTransactionSelection}
               toggleSelectAll={toggleSelectAll}
               isSelectAllChecked={isSelectAllChecked}
