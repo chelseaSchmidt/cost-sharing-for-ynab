@@ -5,8 +5,7 @@ import breakpoints from '../../../shared/breakpoints';
 import colors from '../../../shared/colors';
 import zIndices from '../../../shared/zIndices';
 import { Transaction } from '../types';
-import ElevatedTooltip from './ElevatedTooltip';
-import { WarningIcon } from './styledComponents';
+import InfoIcon from './InfoIcon';
 
 /* Styled Components */
 
@@ -67,10 +66,7 @@ const Details = styled.div`
 
 const AccountName = styled.div`
   display: flex;
-`;
-
-const TransactionWarningIcon = styled(WarningIcon)`
-  background-color: rgba(255, 0, 0, 0.1);
+  gap: 3px;
 `;
 
 /* Main Component */
@@ -147,18 +143,11 @@ const TransactionCard = ({
           {account_name}
 
           {isIsolated && shouldShowIcon && (
-            <TransactionWarningIcon
-              onMouseEnter={(e) => setTooltipCoordinates(getElementCoordinates(e.currentTarget))}
-              onMouseLeave={() => setTooltipCoordinates(null)}
-              onClick={(e) => e.stopPropagation()}
-            >
-              !
-              {tooltipCoordinates && (
-                <ElevatedTooltip containerStyle={tooltipStyle}>
-                  You did not mark this account as shared
-                </ElevatedTooltip>
-              )}
-            </TransactionWarningIcon>
+            <InfoIcon
+              theme="error"
+              tooltipContent="You did not mark this account as shared"
+              portaled
+            />
           )}
         </AccountName>
 

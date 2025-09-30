@@ -7,6 +7,8 @@ const colors = {
   buttonFocusOutline: 'purple',
   lightNeutralBg: '#eee',
   infoIcon: '#999',
+  tooltip: '#444',
+  errorLight: 'rgba(255, 0, 0, 0.1)',
 } as const;
 
 export default colors;
