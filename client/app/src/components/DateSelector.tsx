@@ -1,17 +1,29 @@
-import { CSSProperties, ReactNode } from 'react';
+import { CSSProperties } from 'react';
 import styled from 'styled-components';
 import breakpoints from '../../../shared/breakpoints';
 import colors from '../../../shared/colors';
 
 /* Styled Components */
 
-const Label = styled.label`
+const Container = styled.div`
   display: flex;
   align-items: center;
-  white-space: nowrap;
+  margin: 0 10px 0 0;
+
+  @media (max-width: ${breakpoints.mobile}) {
+    margin: 0 0 10px 0;
+  }
 
   @media (max-width: ${breakpoints.tiny}) {
     flex-direction: column;
+  }
+`;
+
+const Label = styled.label`
+  margin: 0 5px 0 0;
+
+  @media (max-width: ${breakpoints.tiny}) {
+    margin: 0 0 5px 0;
   }
 `;
 
@@ -27,20 +39,12 @@ const Input = styled.input`
   }
 `;
 
-const Spacer = styled.div`
-  width: 10px;
-
-  @media (max-width: ${breakpoints.mobile}) {
-    height: 10px;
-  }
-`;
-
 /* Main Component */
 
 interface Props {
   label: string;
-  inputId: string;
-  inputValue: string;
+  id: string;
+  value: string;
   style?: CSSProperties;
   inputStyle?: CSSProperties;
   onChange: (value: string) => void;
@@ -49,32 +53,27 @@ interface Props {
 
 const DateSelector = ({
   label,
-  inputId,
-  inputValue,
+  id,
+  value,
   style = {},
   inputStyle = {},
   onChange,
   isLabelVisible = true,
 }: Props) => {
   return (
-    <Label htmlFor={inputId} style={style}>
-      {isLabelVisible && (
-        <>
-          {label}
-          <Spacer />
-        </>
-      )}
+    <Container style={style}>
+      {isLabelVisible && <Label htmlFor={id}>{label}</Label>}
 
       <Input
         type="date"
-        id={inputId}
-        value={inputValue}
+        id={id}
+        value={value}
         onChange={(e) => onChange(e.target.value)}
-        aria-label={label}
+        aria-label={isLabelVisible ? undefined : label}
         style={inputStyle}
         max={new Intl.DateTimeFormat('en-CA').format(new Date()).split('/').join('-')}
       />
-    </Label>
+    </Container>
   );
 };
 
