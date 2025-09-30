@@ -1,6 +1,6 @@
 import axios from 'axios';
 import moment from 'moment';
-import { Account, TransactionPayload, ParentCategory, Transaction } from '../../types';
+import { Account, ParentCategory, Transaction, TransactionPayload } from '../../types';
 
 const getToken = () => {
   const url = window.location.href;

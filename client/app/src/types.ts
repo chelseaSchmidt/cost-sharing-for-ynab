@@ -46,10 +46,10 @@ export interface TransactionPayload {
   approved: boolean;
   flag_color: string | null;
   import_id: string | number | null;
-  subtransactions: DraftSubTransaction[];
+  subtransactions: SubTransactionPayload[];
 }
 
-export interface DraftSubTransaction {
+export interface SubTransactionPayload {
   amount: number;
   payee_id: string | number | null;
   payee_name: string | null;
