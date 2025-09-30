@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import breakpoints from '../../../shared/breakpoints';
 import colors from '../../../shared/colors';
 import zIndices from '../../../shared/zIndices';
 
@@ -8,6 +9,74 @@ export const SectionHeader = styled.h1`
   padding: 0;
   font-weight: 600;
   text-align: center;
+`;
+
+export const SectionTile = styled.section`
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: calc(100% - 80px);
+  max-width: 1290px;
+  padding: 50px 75px;
+  margin-bottom: 50px;
+  border-radius: 3px;
+  box-shadow: 0 1px 2px 0 #999, 0 -1px 4px 1px #ddd;
+  background-color: white;
+
+  @media (max-width: ${breakpoints.mobile}) {
+    box-sizing: border-box;
+    width: calc(100% - 20px);
+    padding: 50px 30px;
+  }
+
+  @media (max-width: ${breakpoints.tiny}) {
+    box-sizing: border-box;
+    width: calc(100% - 20px);
+    padding: 50px 10px;
+  }
+`;
+
+export const RowOrColumn = styled.div`
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  @media (max-width: ${breakpoints.mobile}) {
+    flex-direction: column;
+    gap: 20px;
+  }
+`;
+
+export const FormControlWrapper = styled.div`
+  all: unset; // for use with as=fieldset
+  width: 100%;
+  margin-bottom: 40px;
+
+  @media (max-width: ${breakpoints.mobile}) {
+    margin-bottom: 50px;
+  }
+`;
+
+export const LabelContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+`;
+
+export const Label = styled.label`
+  margin-right: 5px;
+`;
+
+export const Paragraph = styled.p`
+  all: unset;
+  display: block;
+  margin-bottom: 10px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 `;
 
 export const WarningIcon = styled.span`

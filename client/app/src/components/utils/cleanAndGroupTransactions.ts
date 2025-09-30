@@ -1,55 +1,55 @@
-import { Account, ParentCategory, Transaction, TransactionGroups } from '../../types';
+import negate from 'lodash/negate';
+import { Moment } from 'moment';
+import { Account, TransactionGroups, ParentCategory, Transaction } from '../../types';
+import { isTransactionBeforeDate } from './dateHelpers';
 import { toId } from './general';
 
 interface Args {
-  displayedTransactions: Transaction[];
+  transactionsSinceStartDate: Transaction[];
+  endDate: Moment;
   selectedAccounts: Account[];
   selectedParentCategories: ParentCategory[];
 }
 
-const cleanAndGroupTransactions = ({
-  displayedTransactions,
+export default function cleanAndGroupTransactions({
+  transactionsSinceStartDate,
+  endDate,
   selectedAccounts,
   selectedParentCategories,
-}: Args): TransactionGroups => {
-  const sharedAccountIds = selectedAccounts.map((acct) => acct.id);
-  const sharedCategoryIds = selectedParentCategories
-    .flatMap(({ categories }) => categories)
-    .map(toId);
+}: Args) {
+  const result: TransactionGroups = { transactions: [], accountFlags: [], categoryFlags: [] };
 
-  // filter by account if no categories selected
-  if (!sharedCategoryIds.length) {
-    return {
-      transactions: displayedTransactions.filter(({ account_id }) => {
-        return sharedAccountIds.includes(account_id);
-      }),
-      accountFlags: [],
-      categoryFlags: [],
-    };
+  const validAccountIds = new Set(selectedAccounts.map(toId));
+  const validCategoryIds = new Set(selectedParentCategories.flatMap(toCategories).map(toId));
+
+  const inValidCategory = ({ category_id }: Transaction) => validCategoryIds.has(category_id);
+  const inValidAccount = ({ account_id }: Transaction) => validAccountIds.has(account_id);
+
+  const validTransactions = transactionsSinceStartDate
+    .filter((t) => isTransactionBeforeDate(t, endDate) && t.approved && !isTransfer(t))
+    .sort(byDateDescending);
+
+  if (selectedParentCategories.length) {
+    /* If categories selected, filter by category, and use account info to generate warnings */
+    result.transactions = validTransactions.filter(inValidCategory);
+    result.accountFlags = result.transactions.filter(negate(inValidAccount));
+    result.categoryFlags = validTransactions.filter(inValidAccount).filter(negate(inValidCategory));
+  } else {
+    /* Otherwise, filter by account */
+    result.transactions = validTransactions.filter(inValidAccount);
   }
 
-  // otherwise, filter by category, and use account info to generate warnings
-  return displayedTransactions.reduce<TransactionGroups>(
-    (accum, transaction) => {
-      const { account_id, category_id } = transaction;
+  return result;
+}
 
-      const isInSharedAccount = sharedAccountIds.includes(account_id);
-      const isInSharedCategory = sharedCategoryIds.includes(category_id);
-      const isInSharedAccountButNotCategory = isInSharedAccount && !isInSharedCategory;
-      const isInSharedCategoryButNotAccount = isInSharedCategory && !isInSharedAccount;
+function isTransfer(transaction: Transaction) {
+  return !!transaction.transfer_account_id;
+}
 
-      if (isInSharedCategory) accum.transactions.push(transaction);
-      if (isInSharedAccountButNotCategory) accum.accountFlags.push(transaction);
-      if (isInSharedCategoryButNotAccount) accum.categoryFlags.push(transaction);
+function toCategories(parentCategory: ParentCategory) {
+  return parentCategory.categories;
+}
 
-      return accum;
-    },
-    {
-      transactions: [],
-      accountFlags: [],
-      categoryFlags: [],
-    },
-  );
-};
-
-export default cleanAndGroupTransactions;
+function byDateDescending(a: Transaction, b: Transaction) {
+  return new Date(b.date).getTime() - new Date(a.date).getTime();
+}
