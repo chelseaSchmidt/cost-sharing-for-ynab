@@ -1,9 +1,7 @@
-import { CSSProperties, useState } from 'react';
 import moment from 'moment';
 import styled from 'styled-components';
 import breakpoints from '../../../shared/breakpoints';
 import colors from '../../../shared/colors';
-import zIndices from '../../../shared/zIndices';
 import { Transaction } from '../types';
 import InfoIcon from './InfoIcon';
 
@@ -90,34 +88,11 @@ const TransactionCard = ({
 }: Props) => {
   const { date, amount, payee_name, category_name, account_name } = transaction;
 
-  const [tooltipCoordinates, setTooltipCoordinates] = useState<[number, number] | null>(null);
-
   const onClick = () => {
     toggleTransactionSelection?.({
       isSelected: !isSelected,
       transaction,
     });
-  };
-
-  const getElementCoordinates = (element: HTMLElement): [number, number] => [
-    element.getBoundingClientRect().x,
-    element.getBoundingClientRect().y,
-  ];
-
-  const tooltipStyle: CSSProperties = {
-    zIndex: zIndices.transactionCard,
-    position: 'fixed',
-    left: tooltipCoordinates?.[0],
-    top: tooltipCoordinates?.[1],
-    transform: 'translate(calc(-100% + 15px), -105%)',
-    width: '170px',
-    backgroundColor: '#444',
-    color: 'white',
-    fontSize: '11px',
-    fontWeight: 'normal',
-    textAlign: 'center',
-    padding: '5px',
-    borderRadius: '5px',
   };
 
   return (
