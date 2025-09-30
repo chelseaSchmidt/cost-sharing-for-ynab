@@ -1,7 +1,7 @@
 import React, { CSSProperties, useState } from 'react';
+import range from 'lodash/range';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
-import range from 'lodash/range';
 import { BackgroundOverlay } from '../app/src/components/styledComponents'; // FIXME: move to shared directory
 import breakpoints from './breakpoints';
 import colors from './colors';
