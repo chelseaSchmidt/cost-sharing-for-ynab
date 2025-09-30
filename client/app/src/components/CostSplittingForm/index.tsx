@@ -12,7 +12,7 @@ import InfoIcon from '../InfoIcon';
 import Popup from '../Popup';
 import { SectionHeader, SectionTile, SubmittingSpinner } from '../styledComponents';
 import TransactionWindow from '../TransactionWindow';
-import WarningIcon from '../WarningIcon';
+import WarningIcon from './WarningIcon';
 import { convertDateToString, getLastDateOfLastMonth, toDate } from '../utils/dateHelpers';
 import { createTransaction } from '../utils/networkRequests';
 
