@@ -114,55 +114,6 @@ export const Spinner = styled.div`
   }
 `;
 
-export const OptionButton = styled.button<{ $selected: boolean }>`
-  margin: 0 9px 9px 0;
-  padding: 4px 9px;
-  border: none;
-  border-radius: 8px;
-  box-shadow: 0 1px 0 0.5px #c9cdd2;
-  color: #464b46;
-  font-size: inherit;
-  text-align: left;
-  background-color: rgb(241, 241, 241);
-  cursor: pointer;
-
-  &:hover {
-    background-color: #5183b1;
-    color: white;
-  }
-
-  &:focus-visible {
-    outline: 1px solid ${colors.buttonFocusOutline};
-  }
-
-  ${({ $selected }) =>
-    $selected
-      ? `
-        background-color: #2f73b3;
-        box-shadow: 0 1px 0 0.5px #395066;
-        color: white;
-        text-shadow: 0 0 2px #666;
-
-        &:hover {
-          background-color: #0061bd;
-          color: white;
-        }
-      `
-      : ''}
-`;
-
-export const SelectedOptionButton = styled(OptionButton)`
-  background-color: #2f73b3;
-  box-shadow: 0 1px 0 0.5px #395066;
-  color: white;
-  text-shadow: 0 0 2px #666;
-
-  &:hover {
-    background-color: #0061bd;
-    color: white;
-  }
-`;
-
 export const BackgroundOverlay = styled.div`
   position: fixed;
   z-index: ${zIndices.modalOverlay};
