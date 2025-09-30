@@ -13,11 +13,13 @@ export const Icon = styled.div<{ $color: string; $theme: Theme }>`
   --even-size: calc(2 * round(calc(1em / 2), 1px));
   --odd-size: calc(var(--even-size) + 1px);
   --icon-size: var(--odd-size);
+
   width: var(--icon-size);
   height: var(--icon-size);
   min-width: var(--icon-size);
   min-height: var(--icon-size);
   line-height: var(--icon-size);
+
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -25,8 +27,10 @@ export const Icon = styled.div<{ $color: string; $theme: Theme }>`
   border-radius: 50%;
   cursor: pointer;
   font-family: Arial, Helvetica, sans-serif;
+
   border: 1px solid ${({ $color }) => $color};
   color: ${({ $color }) => $color};
+
   ${({ $theme }) =>
     $theme === 'error' &&
     `
@@ -58,6 +62,7 @@ export const LocalTooltip = styled(UnpositionedTooltip)<{ $tooltipState: Tooltip
   position: absolute;
   top: 100%;
   left: 0;
+
   ${({ $tooltipState: { shouldOpenUpward, positions = {} } }) =>
     shouldOpenUpward && isDefined(positions.bottom)
       ? `
@@ -71,6 +76,7 @@ export const LocalTooltip = styled(UnpositionedTooltip)<{ $tooltipState: Tooltip
           max-height: calc(100vh - ${positions.top}px - ${TOOLTIP_MARGIN}px);
         `
       : ''}
+
   ${({ $tooltipState: { shouldOpenLeft, positions = {} } }) =>
     shouldOpenLeft && isDefined(positions.right)
       ? `
@@ -88,6 +94,7 @@ export const LocalTooltip = styled(UnpositionedTooltip)<{ $tooltipState: Tooltip
 
 export const PortaledTooltip = styled(UnpositionedTooltip)<{ $tooltipState: TooltipState }>`
   position: fixed;
+
   ${({ $tooltipState: { shouldOpenUpward, positions = {} } }) =>
     shouldOpenUpward && isDefined(positions.bottom)
       ? `
@@ -100,6 +107,7 @@ export const PortaledTooltip = styled(UnpositionedTooltip)<{ $tooltipState: Tool
           max-height: calc(100vh - ${positions.top}px - ${TOOLTIP_MARGIN}px);
         `
       : 'display: none;'}
+
   ${({ $tooltipState: { shouldOpenLeft, positions = {} } }) =>
     shouldOpenLeft && isDefined(positions.right)
       ? `
