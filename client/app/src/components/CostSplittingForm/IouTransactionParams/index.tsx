@@ -276,6 +276,8 @@ export default function IouTransactionParams({
         </Row>
       </form>
 
+      <Spacer />
+
       {!!iouAccountTransactions.length && (
         <TransactionWindow
           loading={isIouTransactionLoading}

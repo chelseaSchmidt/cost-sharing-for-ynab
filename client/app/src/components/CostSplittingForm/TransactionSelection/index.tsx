@@ -1,55 +1,52 @@
 import { useCallback } from 'react';
 import styled from 'styled-components';
+import colors from '../../../../../shared/colors';
 import breakpoints from '../../../../../shared/breakpoints';
+import { HEADER_MAX_HEIGHT } from '../../../../../shared/Header';
 import { Button } from '../../../../../shared/styledComponents';
 import { TRANSACTION_SELECTION_FORM_ID } from '../../../constants';
 import { ModalName, Transaction } from '../../../types';
-import { SectionHeader, SectionTile } from '../../styledComponents';
+import { FlexRowAllCentered, SectionHeader, SectionTile } from '../../styledComponents';
 import TransactionWindow from '../TransactionWindow';
 import WarningIcon from '../WarningIcon';
 import FlaggedTransactionsModal from './FlaggedTransactionsModal';
 
-const TILE_X_PADDING_LG = 75;
-const TILE_X_PADDING_SM = 30;
-const TILE_X_PADDING_XS = 10;
-
-const TransactionsTile = styled(SectionTile)`
-  max-height: 92vh;
-`;
-
-const ReviewTransactionsButton = styled(Button)`
-  background: rgb(128, 0, 0);
-  margin-left: 10px;
-
-  &:active {
-    background: rgba(128, 0, 0, 0.7);
-  }
-
-  &:hover {
-    color: rgb(128, 0, 0);
-  }
-`;
-
-const MissingTransactionsWarning = styled.div`
-  display: flex;
-  align-items: center;
-  color: red;
-  margin-bottom: 20px;
-`;
-
-const TransactionWindowContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  border-radius: 12px;
-  width: calc(100% + ${TILE_X_PADDING_LG * 2}px);
-  overflow: auto;
-
-  @media (max-width: ${breakpoints.mobile}) {
-    width: calc(100% + ${TILE_X_PADDING_SM * 2}px);
-  }
+const Container = styled(SectionTile)`
+  max-height: calc(100vh - ${HEADER_MAX_HEIGHT}px - 20px);
+  min-height: 400px;
+  padding-left: 25px;
+  padding-right: 25px;
 
   @media (max-width: ${breakpoints.tiny}) {
-    width: calc(100% + ${TILE_X_PADDING_XS * 2}px);
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+`;
+
+const Alert = styled(FlexRowAllCentered)`
+  margin-bottom: 15px;
+  border-left: 3px solid red;
+  border-radius: 2px 5px 5px 2px;
+  padding: 10px 20px;
+  gap: 10px;
+  background: ${colors.errorLight};
+  color: ${colors.error};
+
+  @media (max-width: ${breakpoints.mobile}) {
+    flex-direction: column;
+    padding: 20px;
+  }
+`;
+
+const ReviewButton = styled(Button)`
+  background: ${colors.error};
+
+  &:hover {
+    background: ${colors.errorHover};
+  }
+
+  &:active {
+    background: ${colors.errorActive};
   }
 `;
 
@@ -92,35 +89,33 @@ export default function TransactionSelection({
   );
 
   return (
-    <TransactionsTile id={TRANSACTION_SELECTION_FORM_ID}>
+    <Container id={TRANSACTION_SELECTION_FORM_ID}>
       <SectionHeader>Select Shared Costs</SectionHeader>
 
       {!loading && !!categoryFlags.length && (
-        <MissingTransactionsWarning>
-          <WarningIcon />
-          Some transactions in shared accounts were not categorized to shared categories.
-          <ReviewTransactionsButton
-            type="button"
-            onClick={() => setActiveModal(ModalName.TRANSACTION_REVIEW)}
-          >
+        <Alert>
+          <FlexRowAllCentered>
+            <WarningIcon />
+            Some transactions in shared accounts were not categorized to shared categories.
+          </FlexRowAllCentered>
+
+          <ReviewButton type="button" onClick={() => setActiveModal(ModalName.TRANSACTION_REVIEW)}>
             Review
-          </ReviewTransactionsButton>
-        </MissingTransactionsWarning>
+          </ReviewButton>
+        </Alert>
       )}
 
-      <TransactionWindowContainer>
-        <TransactionWindow
-          loading={loading}
-          transactions={transactions}
-          selectedTransactions={selectedTransactions}
-          transactionsSharedInOneButNotOther={accountFlags}
-          toggleTransactionSelection={toggleTransactionSelection}
-          toggleSelectAll={toggleSelectAll}
-          isSelectAllChecked={isSelectAllChecked}
-          shouldShowIcon
-          isClickable
-        />
-      </TransactionWindowContainer>
+      <TransactionWindow
+        loading={loading}
+        transactions={transactions}
+        selectedTransactions={selectedTransactions}
+        transactionsSharedInOneButNotOther={accountFlags}
+        toggleTransactionSelection={toggleTransactionSelection}
+        toggleSelectAll={toggleSelectAll}
+        isSelectAllChecked={isSelectAllChecked}
+        shouldShowIcon
+        isClickable
+      />
 
       {activeModal === ModalName.TRANSACTION_REVIEW && (
         <FlaggedTransactionsModal
@@ -130,6 +125,6 @@ export default function TransactionSelection({
           exit={() => setActiveModal(null)}
         />
       )}
-    </TransactionsTile>
+    </Container>
   );
 }
