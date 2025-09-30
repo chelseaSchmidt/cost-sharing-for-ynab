@@ -1,23 +1,10 @@
 import { useState, useEffect } from 'react';
 import _ from 'lodash';
 import styled from 'styled-components';
-import InfoIcon from './InfoIcon';
-import Modal from './Modal';
-import Nav from './Nav';
-import ErrorPopup from './ErrorPopup';
-import PrivacyPolicy from '../../../shared/PrivacyPolicy';
-import Instructions from '../../../shared/Instructions';
-import { LoadingSpinner } from './styledComponents';
-import {
-  getTransactionsSinceDate,
-  getAccounts,
-  getParentCategories,
-} from './utils/networkRequests';
-import { getFirstDateOfLastMonth, getLastDateOfLastMonth } from './utils/dateHelpers';
-import cleanAndGroupTransactions from './utils/cleanAndGroupTransactions';
-import { hasMessage, hasResponseAndStatus } from './utils/general';
 import breakpoints from '../../../shared/breakpoints';
 import colors from '../../../shared/colors';
+import Instructions from '../../../shared/Instructions';
+import PrivacyPolicy from '../../../shared/PrivacyPolicy';
 import { Hyperlink } from '../../../shared/styledComponents';
 import { MODALS_CONTAINER_ID } from '../constants';
 import '../styles/global.css';
@@ -31,7 +18,20 @@ import {
 } from '../types';
 import AppHeader from './AppHeader';
 import CostSplittingForm from './CostSplittingForm';
+import ErrorPopup from './ErrorPopup';
+import InfoIcon from './InfoIcon';
+import Modal from './Modal';
+import Nav from './Nav';
+import { LoadingSpinner } from './styledComponents';
 import TransactionSearchForm from './TransactionSearchForm';
+import cleanAndGroupTransactions from './utils/cleanAndGroupTransactions';
+import { getFirstDateOfLastMonth, getLastDateOfLastMonth } from './utils/dateHelpers';
+import { hasMessage, hasResponseAndStatus } from './utils/general';
+import {
+  getTransactionsSinceDate,
+  getAccounts,
+  getParentCategories,
+} from './utils/networkRequests';
 
 /* STYLED COMPONENTS */
 
