@@ -220,13 +220,11 @@ const TransactionWindowContainer = styled.div`
 const CostPercentField = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: start;
   gap: 20px;
 `;
 
-const CostPercentLabel = styled.label`
-  text-align: center;
-`;
+const CostPercentLabel = styled.label``;
 
 const CostPercentSlider = styled.input`
   cursor: pointer;
@@ -653,33 +651,6 @@ const App = () => {
           )}
 
           <SectionContent>
-            <BudgetAutocomplete
-              limit={1}
-              onSelectionChange={([selectedAccount]) => setIouAccountId(selectedAccount?.id || '')}
-              placeholder="Add one"
-              items={budgetData.accounts.map((acct) => ({
-                id: acct.id,
-                displayedContent: acct.name,
-                searchableText: acct.name,
-                data: acct,
-              }))}
-              label={'Select the "IOU" account that tracks what you are owed.'}
-              labelDecoration={
-                <InfoIcon
-                  tooltipContent={
-                    <>
-                      This account tracks what you are owed from the person sharing an account with
-                      you. To create it in YNAB, click "Add Account", then "Add an Unlinked
-                      Account", and nickname it something like "Owed from [person's name]." The
-                      account type should be Checking, Savings, or Cash.
-                    </>
-                  }
-                />
-              }
-            />
-          </SectionContent>
-
-          <SectionContent>
             <Subtitle>
               <SubtitleText>Select transaction date range.</SubtitleText>
               <InfoIcon tooltipContent="This will limit transactions in your view to the specified date range." />
@@ -752,9 +723,38 @@ const App = () => {
           </TransactionWindowContainer>
         </TransactionsTile>
 
-        <SectionTile>
+        <SectionTile style={{ alignItems: 'start' }}>
           <form style={{ display: 'contents' }}>
-            <SectionHeader>Split the Costs</SectionHeader>
+            <SectionHeader style={{ width: '100%' }}>Split the Costs</SectionHeader>
+
+            <SectionContent>
+              <BudgetAutocomplete
+                limit={1}
+                onSelectionChange={([selectedAccount]) =>
+                  setIouAccountId(selectedAccount?.id || '')
+                }
+                placeholder="Add one"
+                items={budgetData.accounts.map((acct) => ({
+                  id: acct.id,
+                  displayedContent: acct.name,
+                  searchableText: acct.name,
+                  data: acct,
+                }))}
+                label={'Select the "IOU" account that tracks what you are owed.'}
+                labelDecoration={
+                  <InfoIcon
+                    tooltipContent={
+                      <>
+                        This account tracks what you are owed from the person sharing an account
+                        with you. To create it in YNAB, click "Add Account", then "Add an Unlinked
+                        Account", and nickname it something like "Owed from [person's name]." The
+                        account type should be Checking, Savings, or Cash.
+                      </>
+                    }
+                  />
+                }
+              />
+            </SectionContent>
 
             <CostPercentField>
               <CostPercentLabel htmlFor="split-percentage-slider">
@@ -817,7 +817,7 @@ const App = () => {
 
             <Spacer />
 
-            <Row>
+            <Row style={{ width: '100%' }}>
               <SplitTransactionsButton
                 type="submit"
                 onClick={createSplitEntry}
