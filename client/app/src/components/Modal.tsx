@@ -1,6 +1,8 @@
-import { ReactNode } from 'react';
+import { CSSProperties, ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import styled from 'styled-components';
+import breakpoints from '../../../shared/breakpoints';
+import colors from '../../../shared/colors';
 import { BackgroundOverlay, Button } from '../../../shared/styledComponents';
 import zIndices from '../../../shared/zIndices';
 import { MODALS_CONTAINER_ID } from '../constants';
@@ -10,23 +12,29 @@ import { ScrollableArea } from './styledComponents';
 
 const Container = styled.div`
   position: fixed;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   z-index: ${zIndices.modal};
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 80vw;
+  width: calc(100vw - 60px);
+  height: calc(100vh - 60px);
   max-width: 1100px;
-  max-height: 80vh;
-  border-radius: 12px;
-  box-shadow: 0 0 5px 0 #4c4c4c;
+  max-height: 700px;
+  border-radius: 5px;
+  box-shadow: 0 0 5px 0 ${colors.shadow1};
   padding: 20px;
-  background-color: white;
+  background: white;
   overflow: hidden;
+
+  @media (max-width: ${breakpoints.mobile}) {
+    width: calc(100% - 20px);
+  }
 `;
 
-const ButtonContainer = styled.div`
+const Controls = styled.div`
   display: flex;
   justify-content: center;
   padding-top: 20px;
@@ -40,6 +48,7 @@ interface Props {
   children: ReactNode;
   shouldCloseOnOverlayClick?: boolean;
   shouldCloseOnEscape?: boolean;
+  style?: CSSProperties;
 }
 
 export default function Modal({
@@ -48,6 +57,7 @@ export default function Modal({
   children,
   shouldCloseOnOverlayClick = false,
   shouldCloseOnEscape = false,
+  style,
 }: Props) {
   const modalsContainer = document.getElementById(MODALS_CONTAINER_ID);
 
@@ -63,14 +73,17 @@ export default function Modal({
             aria-disabled={!shouldCloseOnOverlayClick}
           />
 
-          <Container onKeyUp={(e) => shouldCloseOnEscape && e.key === 'Escape' && onClose()}>
+          <Container
+            onKeyUp={(e) => shouldCloseOnEscape && e.key === 'Escape' && onClose()}
+            style={style}
+          >
             <ScrollableArea>{children}</ScrollableArea>
 
-            <ButtonContainer>
+            <Controls>
               <Button type="button" onClick={onClose} autoFocus>
                 {buttonText}
               </Button>
-            </ButtonContainer>
+            </Controls>
           </Container>
         </>,
         modalsContainer,

@@ -11,7 +11,13 @@ interface Props {
 
 export default function FlaggedTransactionsModal({ transactions, loading, refresh, exit }: Props) {
   return (
-    <Modal onClose={exit} buttonText="Exit" shouldCloseOnOverlayClick shouldCloseOnEscape>
+    <Modal
+      onClose={exit}
+      buttonText="Exit"
+      shouldCloseOnOverlayClick
+      shouldCloseOnEscape
+      style={{ height: 'fit-content', maxHeight: 'calc(100vh - 60px)' }}
+    >
       <TransactionWindow
         title="Transactions in shared accounts, but not in shared categories"
         subtitle="This list can help you catch misclassified transactions. Recategorize them in YNAB as needed and then refresh the list to continue reviewing."
