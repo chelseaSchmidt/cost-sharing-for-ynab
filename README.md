@@ -1,5 +1,6 @@
 <div align="center">
   <h1>Cost Sharing for YNAB</h1> 
+  <h3>Conveniently manage a shared credit card in YNAB.</h3>
   <br />
   <img width="147" height="58.5" alt="image" src="https://github.com/user-attachments/assets/aa7ec5ed-2b8f-40af-9d9c-810ca0644796" />
   <br />
@@ -18,23 +19,22 @@
       <td>Express</td>
     </tr>
   </table>
-  Conveniently manage a shared credit card in YNAB.
 </div>
-
-<br />
 
 **Cost Sharing for YNAB** is a free and open-source web application that integrates with [YNAB](https://www.ynab.com) (You Need a Budget) via their [API](https://api.ynab.com). YNAB doesn't natively support tracking of shared payment accounts, such as credit cards or bank accounts shared between partners or family members. With this companion app, YNAB users can incorporate a shared account into their personal budget without making their expenses look inflated. Users authenticate with their existing YNAB credentials via OAuth.
 
 Developer contributions at any experience level are very welcome!
 
-## System requirements
+## Develop
+
+### Prerequisites
 
 - Node
 - npm
 - Prettier
 - Docker (if you're Chelsea)
 
-## Run the app in development
+### Run the app locally
 
 - `npm install` in project root
 
