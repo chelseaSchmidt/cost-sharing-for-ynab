@@ -98,6 +98,7 @@ export default function IouTransactionParams({
           loading={submitting}
           title="Your IOU Transactions:"
           transactions={createdTransactions}
+          containerStyle={{ marginTop: '40px' }}
         />
       )}
 
