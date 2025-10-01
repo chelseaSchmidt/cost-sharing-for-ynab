@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import colors from './colors';
+import zIndices from './zIndices';
 
 export const Hyperlink = styled.a`
   all: unset;
@@ -59,4 +60,17 @@ export const Button = styled.button`
     background: #999;
     cursor: not-allowed;
   }
+`;
+
+export const BackgroundOverlay = styled.div`
+  position: fixed;
+  z-index: ${zIndices.modalOverlay};
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+  opacity: 50%;
 `;

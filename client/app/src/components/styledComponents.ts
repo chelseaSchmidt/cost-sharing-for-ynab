@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import breakpoints from '../../../shared/breakpoints';
 import colors from '../../../shared/colors';
-import zIndices from '../../../shared/zIndices';
 
 export const FlexRow = styled.div`
   display: flex;
@@ -20,6 +19,7 @@ export const FlexColumnAllCentered = styled(FlexRowAllCentered)`
 `;
 
 export const SectionHeader = styled.h1`
+  all: unset;
   font-size: 25px;
   margin: 0 0 35px 0;
   padding: 0;
@@ -118,19 +118,6 @@ export const LoadingSpinner = styled(SubmittingSpinner)`
   height: 50px;
   border-color: ${colors.primary};
   border-top-color: ${colors.lightNeutralBg};
-`;
-
-export const BackgroundOverlay = styled.div`
-  position: fixed;
-  z-index: ${zIndices.modalOverlay};
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  background-color: black;
-  opacity: 50%;
 `;
 
 export const ScrollableArea = styled.div`
