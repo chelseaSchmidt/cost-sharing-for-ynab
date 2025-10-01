@@ -18,9 +18,9 @@ import {
 import AppHeader from './AppHeader';
 import CostSplittingForm from './CostSplittingForm';
 import ErrorPopup from './ErrorPopup';
+import FooterNav from './FooterNav';
 import InfoIcon from './InfoIcon';
 import Modal from './Modal';
-import Nav from './Nav';
 import { FlexColumnAllCentered, LoadingSpinner } from './styledComponents';
 import TransactionSearchForm from './TransactionSearchForm';
 import cleanAndGroupTransactions from './utils/cleanAndGroupTransactions';
@@ -200,7 +200,7 @@ const App = () => {
           setActiveModal={setActiveModal}
         />
 
-        <Nav setActiveModal={setActiveModal} />
+        <FooterNav setActiveModal={setActiveModal} />
 
         {errorData && <ErrorPopup errorData={errorData} setErrorData={setErrorData} />}
       </NonModalContent>
