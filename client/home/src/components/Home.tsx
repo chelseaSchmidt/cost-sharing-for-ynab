@@ -1,36 +1,46 @@
 import styled from 'styled-components';
 import colors from '../../../shared/colors';
-import PrivacyPolicy from '../../../shared/PrivacyPolicy';
 import Instructions from '../../../shared/Instructions';
-import { Button, Hyperlink } from '../../../shared/styledComponents';
+import PrivacyPolicy from '../../../shared/PrivacyPolicy';
+import {
+  Button,
+  FlexColumn,
+  FlexColumnCentered,
+  Hyperlink,
+  Paragraph,
+} from '../../../shared/styledComponents';
 import creditCardSrc from '../assets/creditCard.png';
 import lightBulbSrc from '../assets/lightBulb.png';
 import puzzleIconSrc from '../assets/puzzle.png';
 import welcomeIconSrc from '../assets/welcome.png';
+import { APP_ENDPOINT, APP_LINK, CLIENT_ID } from '../constants';
 import '../styles/global.css';
 import HomeHeader from './HomeHeader';
 
 /* CONSTANTS */
 
-const CLIENT_ID = '4ac8ca3c431ac99075e603496136606d7da8102f6178ce2796566b30c4659988';
-const APP_ENDPOINT = 'cost-sharer';
-const APP_LINK = `/${APP_ENDPOINT}`;
+const COLUMN_LAYOUT_BREAKPOINT = '650px';
+const TINY_BREAKPOINT = '450px';
 
 /* STYLED COMPONENTS */
 
 const Container = styled.div``;
 
-const ContentContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 30px 40px 10px 40px;
-  align-items: center;
+const MainContent = styled(FlexColumnCentered)`
+  padding: 30px 50px 10px;
+
+  @media (max-width: ${TINY_BREAKPOINT}) {
+    padding: 30px 30px 10px;
+  }
 `;
 
-const CreditCardIcon = styled.img`
-  width: 100px;
+const EmphasisIcon = styled.img`
   height: auto;
   object-fit: contain;
+`;
+
+const SubtitleIcon = styled(EmphasisIcon)`
+  width: 100px;
   margin-bottom: 40px;
 `;
 
@@ -40,8 +50,42 @@ const Subtitle = styled.header`
   min-width: 190px;
   text-align: center;
   font-size: 30px;
-  text-shadow: 0 3px 11px ${colors.lightNeutralAccent};
+  text-shadow: 0 1px 3px ${colors.lightNeutralAccent};
 `;
+
+const Intro = styled.div`
+  max-width: 650px;
+  min-width: 200px;
+  margin: 10px;
+  font-size: 16px;
+`;
+
+const IntroParagraph = styled(Paragraph)`
+  display: flex;
+  align-items: center;
+  margin-bottom: 75px;
+  gap: 20px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  @media (max-width: ${COLUMN_LAYOUT_BREAKPOINT}) {
+    flex-direction: column;
+  }
+`;
+
+const IntroIcon = styled(EmphasisIcon)`
+  flex-grow: 0;
+  flex-shrink: 0;
+  width: 70px;
+
+  @media (max-width: ${COLUMN_LAYOUT_BREAKPOINT}) {
+    width: 60px;
+  }
+`;
+
+const IntroText = styled.span``;
 
 const Divider = styled.div`
   border-top: 1px solid ${colors.lightNeutralAccent};
@@ -50,96 +94,29 @@ const Divider = styled.div`
   margin: 70px 0;
 `;
 
-const TextContainer = styled.div`
-  width: 65%;
-  max-width: 950px;
-  min-width: 200px;
-  margin: 10px;
-
-  @media (max-width: 880px) {
-    width: 680px;
-  }
-
-  @media (max-width: 770px) {
-    width: 95%;
-  }
-`;
-
-const InstructionsContainer = styled(TextContainer)`
-  margin: unset;
-  max-width: 650px;
-
-  ol {
-    margin: 10px;
-  }
-`;
-
-const Description = styled.div`
-  width: 65%;
-  max-width: 650px;
-  min-width: 200px;
-  margin: 10px;
-  font-size: 16px;
-
-  @media (max-width: 880px) {
-    width: 80%;
-  }
-
-  @media (max-width: 450px) {
-    text-align: unset;
-    width: 100%;
-  }
-`;
-
-const DescriptionSection = styled.section`
-  display: flex;
-  align-items: center;
-  margin-bottom: 75px;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-
-  @media (max-width: 650px) {
-    flex-direction: column;
-  }
-`;
-
-const DescriptionIcon = styled.img`
-  flex-grow: 0;
-  flex-shrink: 0;
-  width: 70px;
-  height: auto;
-  object-fit: contain;
-
-  @media (max-width: 650px) {
-    width: 50px;
-    margin-bottom: 20px;
-  }
-`;
-
-const DescriptionText = styled.div`
-  box-sizing: border-box;
-  padding-left: 20px;
-`;
-
-const ButtonsArea = styled.div`
+const Controls = styled(FlexColumn)`
   margin-top: 60px;
-  display: flex;
-  flex-direction: column;
   gap: 10px;
   font-size: 16px;
 `;
 
-const PrivacyPolicyContainer = styled.div`
+const Appendix = styled.div`
   box-sizing: border-box;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 40px 0 -10px 0;
-  padding: 40px;
-  border-top: 1px solid ${colors.lightNeutralAccent};
   width: 100%;
+  min-width: 200px;
+`;
+
+const InstructionsContainer = styled(Appendix)`
+  max-width: 650px;
+`;
+
+const PrivacyContainer = styled(Appendix)`
+  max-width: 950px;
+  padding: 0 40px;
+
+  @media (max-width: ${TINY_BREAKPOINT}) {
+    padding: 0;
+  }
 `;
 
 const Footer = styled.footer`
@@ -157,6 +134,10 @@ const Footer = styled.footer`
     margin-bottom: 10px;
     overflow-wrap: anywhere;
     text-align: center;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 `;
 
@@ -167,14 +148,14 @@ export default function Home() {
 
   return (
     <Container>
-      <HomeHeader authLink={authLink} appLink={APP_LINK} />
+      <HomeHeader authLink={authLink} />
 
-      <ContentContainer>
-        <CreditCardIcon src={creditCardSrc} alt="credit card" />
+      <MainContent>
+        <SubtitleIcon src={creditCardSrc} alt="credit card" />
 
         <Subtitle>Conveniently manage a shared credit card in YNAB.</Subtitle>
 
-        <Description>
+        <Intro>
           {[
             {
               src: welcomeIconSrc,
@@ -192,22 +173,21 @@ export default function Home() {
               text: "Cost Sharing for YNAB enables you to classify your transactions across any number of categories, and then at the click of a button, remove someone else's share of the expenses from each category. No more inflated expenses or catch-all category!",
             },
           ].map(({ src, alt, text }) => (
-            <DescriptionSection key={alt}>
-              <DescriptionIcon src={src} alt={alt} />
-              <DescriptionText>{text}</DescriptionText>
-            </DescriptionSection>
+            <IntroParagraph key={alt}>
+              <IntroIcon src={src} alt={alt} />
+              <IntroText>{text}</IntroText>
+            </IntroParagraph>
           ))}
-        </Description>
+        </Intro>
 
-        <ButtonsArea>
-          <Button as="a" href={authLink}>
-            Start
-          </Button>
-
-          <Button as="a" href={APP_LINK}>
-            Preview without a YNAB account
-          </Button>
-        </ButtonsArea>
+        <Controls>
+          {[
+            { href: authLink, children: 'Start' },
+            { href: APP_LINK, children: 'Preview without a YNAB account' },
+          ].map((props) => (
+            <Button key={props.href} as="a" target="_blank" rel="noreferrer" {...props} />
+          ))}
+        </Controls>
 
         <Divider />
 
@@ -217,19 +197,15 @@ export default function Home() {
           <Instructions isHomePage />
         </InstructionsContainer>
 
-        <PrivacyPolicyContainer>
-          <TextContainer>
-            <PrivacyPolicy
-              headerStyle={{
-                marginBottom: '10px',
-                textTransform: 'uppercase',
-                textAlign: 'center',
-              }}
-              subtitleStyle={{ textAlign: 'center' }}
-            />
-          </TextContainer>
-        </PrivacyPolicyContainer>
-      </ContentContainer>
+        <Divider />
+
+        <PrivacyContainer>
+          <PrivacyPolicy
+            subtitleStyle={{ textAlign: 'center' }}
+            headerStyle={{ marginBottom: '10px', textTransform: 'uppercase', textAlign: 'center' }}
+          />
+        </PrivacyContainer>
+      </MainContent>
 
       <Footer>
         {[
@@ -250,7 +226,7 @@ export default function Home() {
             children: 'Solution icons created by Freepik - Flaticon',
           },
         ].map((props) => (
-          <Hyperlink {...props} key={props.href} target="_blank" rel="noreferrer" />
+          <Hyperlink key={props.href} target="_blank" rel="noreferrer" {...props} />
         ))}
       </Footer>
     </Container>

@@ -2,9 +2,9 @@ import { ReactNode } from 'react';
 import styled from 'styled-components';
 import breakpoints from '../../../shared/breakpoints';
 import colors from '../../../shared/colors';
+import { FlexColumnAllCentered } from '../../../shared/styledComponents';
 import zIndices from '../../../shared/zIndices';
 import DeleteIcon from './icons/DeleteIcon';
-import { FlexColumnAllCentered } from './styledComponents';
 
 type Theme = 'success' | 'default';
 

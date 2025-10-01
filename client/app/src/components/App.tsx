@@ -4,7 +4,7 @@ import breakpoints from '../../../shared/breakpoints';
 import colors from '../../../shared/colors';
 import Instructions from '../../../shared/Instructions';
 import PrivacyPolicy from '../../../shared/PrivacyPolicy';
-import { Hyperlink } from '../../../shared/styledComponents';
+import { FlexColumnAllCentered, Hyperlink } from '../../../shared/styledComponents';
 import { MODALS_CONTAINER_ID } from '../constants';
 import '../styles/global.css';
 import {
@@ -21,7 +21,7 @@ import ErrorPopup from './ErrorPopup';
 import FooterNav from './FooterNav';
 import InfoIcon from './InfoIcon';
 import Modal from './Modal';
-import { FlexColumnAllCentered, LoadingSpinner } from './styledComponents';
+import { LoadingSpinner } from './styledComponents';
 import TransactionSearchForm from './TransactionSearchForm';
 import cleanAndGroupTransactions from './utils/cleanAndGroupTransactions';
 import { getFirstDateOfLastMonth, getLastDateOfLastMonth } from './utils/dateHelpers';

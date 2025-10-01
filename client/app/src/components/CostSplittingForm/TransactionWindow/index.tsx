@@ -1,16 +1,15 @@
 import { CSSProperties } from 'react';
 import styled from 'styled-components';
 import breakpoints from '../../../../../shared/breakpoints';
-import { Button } from '../../../../../shared/styledComponents';
-import { Transaction } from '../../../types';
-import Checkbox from '../../Checkbox';
 import {
+  Button,
   FlexColumnAllCentered,
   FlexRowAllCentered,
-  LoadingSpinner,
   Paragraph,
-  ScrollableArea,
-} from '../../styledComponents';
+} from '../../../../../shared/styledComponents';
+import { Transaction } from '../../../types';
+import Checkbox from '../../Checkbox';
+import { LoadingSpinner, ScrollableArea } from '../../styledComponents';
 import { toId } from '../../utils/general';
 import TransactionCard from './TransactionCard';
 

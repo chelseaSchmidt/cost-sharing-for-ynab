@@ -2,6 +2,40 @@ import styled from 'styled-components';
 import colors from './colors';
 import zIndices from './zIndices';
 
+export const FlexRow = styled.div`
+  display: flex;
+`;
+
+export const FlexRowCenterAligned = styled(FlexRow)`
+  align-items: center;
+`;
+
+export const FlexRowAllCentered = styled(FlexRowCenterAligned)`
+  justify-content: center;
+`;
+
+export const FlexColumn = styled(FlexRow)`
+  flex-direction: column;
+`;
+
+export const FlexColumnCentered = styled(FlexColumn)`
+  align-items: center;
+`;
+
+export const FlexColumnAllCentered = styled(FlexColumnCentered)`
+  justify-content: center;
+`;
+
+export const Paragraph = styled.p`
+  all: unset;
+  display: block;
+  margin-bottom: 10px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+`;
+
 export const Hyperlink = styled.a`
   all: unset;
 
