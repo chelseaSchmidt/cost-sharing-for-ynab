@@ -4,7 +4,6 @@ import map from 'lodash/map';
 import reduce from 'lodash/reduce';
 import sumBy from 'lodash/sumBy';
 import { Moment } from 'moment';
-import colors from '../../../../../shared/colors';
 import { Account, TransactionPayload, Transaction } from '../../../types';
 import Popup from '../../Popup';
 import { SectionHeader, SectionTile } from '../../styledComponents';
@@ -103,12 +102,9 @@ export default function IouTransactionParams({
       )}
 
       {succeeded && (
-        <Popup
-          message="Transaction created"
-          onClose={() => setSucceeded(false)}
-          containerStyle={{ backgroundColor: colors.success }}
-          closeButtonStyle={{ color: colors.success }}
-        />
+        <Popup theme="success" onClose={() => setSucceeded(false)}>
+          Success! Your IOU transaction was created.
+        </Popup>
       )}
     </SectionTile>
   );
