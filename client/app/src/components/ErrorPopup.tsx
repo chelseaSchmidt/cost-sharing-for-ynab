@@ -1,4 +1,3 @@
-import colors from '../../../shared/colors';
 import Popup from './Popup';
 
 const DEFAULT_MESSAGE =
@@ -15,12 +14,9 @@ interface Props {
 
 const ErrorPopup = ({ errorData, setErrorData }: Props) => {
   return (
-    <Popup
-      onClose={() => setErrorData(null)}
-      message={ERROR_MESSAGES[errorData.status] || DEFAULT_MESSAGE}
-      containerStyle={{ backgroundColor: colors.primary }}
-      closeButtonStyle={{ color: colors.primary }}
-    />
+    <Popup onClose={() => setErrorData(null)}>
+      {ERROR_MESSAGES[errorData.status] || DEFAULT_MESSAGE}
+    </Popup>
   );
 };
 

@@ -1,91 +1,109 @@
-import { CSSProperties } from 'react';
+import { ReactNode } from 'react';
 import styled from 'styled-components';
+import breakpoints from '../../../shared/breakpoints';
+import colors from '../../../shared/colors';
 import zIndices from '../../../shared/zIndices';
+import DeleteIcon from './icons/DeleteIcon';
+import { FlexColumnAllCentered } from './styledComponents';
 
-const Container = styled.div`
+type Theme = 'success' | 'default';
+
+const ACCENT_COLOR = 'white';
+
+const Container = styled(FlexColumnAllCentered)`
   position: fixed;
   z-index: ${zIndices.popup};
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   box-sizing: border-box;
-  width: 100vw;
+  width: calc(100% - 10px);
+  max-width: 1500px;
+  box-shadow: 0 0 5px 0 ${colors.shadow1};
+  border-radius: 2px;
   padding: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 0 5px 0 #4c4c4c;
-  background-color: black;
-  opacity: 95%;
-  color: white;
+  opacity: 90%;
+  color: ${ACCENT_COLOR};
   text-align: center;
   letter-spacing: 1px;
   font-size: 16px;
+
+  @media (max-width: ${breakpoints.tiny}) {
+    text-align: left;
+    font-size: 14px;
+  }
 `;
 
 const Message = styled.div`
-  margin: 10px 30px;
+  margin: 10px 40px;
+
+  @media (max-width: ${breakpoints.mobile}) {
+    margin: 30px 5px 5px 5px;
+  }
 `;
 
-const SmallExitButton = styled.button`
-  background: none;
-  border: none;
-  box-sizing: border-box;
-  height: fit-content;
-  font-weight: bold;
-  color: white;
-  font-size: 16px;
+const CornerExitButton = styled.button`
+  all: unset;
+  cursor: pointer;
   position: absolute;
   right: 0;
   top: 0;
   margin: 10px 20px;
+  border-radius: 5px;
+  padding: 5px;
 
   &:hover {
-    cursor: pointer;
+    background: ${colors.mediumNeutralBg};
   }
 `;
 
-const LargeExitButton = styled.button`
+const MainExitButton = styled.button`
+  all: unset;
+  cursor: pointer;
   box-sizing: border-box;
-  background-color: white;
-  border: none;
-  border-radius: 12px;
-  width: 100px;
-  padding: 5px;
+  background: ${ACCENT_COLOR};
+  border-radius: 5px;
+  padding: 5px 20px;
   margin: 10px;
+  font-size: 14px;
+  font-weight: bold;
+
+  @media (max-width: ${breakpoints.tiny}) {
+    font-size: 12px;
+  }
 
   &:hover {
-    cursor: pointer;
+    background: ${colors.lightNeutralBg};
+  }
+
+  &:active {
+    background: ${colors.lightNeutralActive};
   }
 `;
 
 interface Props {
-  onClose: () => void;
-  message: string;
+  children: ReactNode;
+  theme?: Theme;
   buttonText?: string;
-  containerStyle?: CSSProperties;
-  closeButtonStyle?: CSSProperties;
+  onClose: () => void;
 }
 
-const Popup = ({
-  onClose,
-  message,
-  buttonText = 'Close',
-  containerStyle,
-  closeButtonStyle,
-}: Props) => (
-  <Container style={containerStyle}>
-    <div>
-      <Message>{message}</Message>
+const Popup = ({ children, theme = 'default', buttonText = 'Dismiss', onClose }: Props) => {
+  const mainColor = theme === 'success' ? colors.success : colors.primary;
 
-      <SmallExitButton onClick={onClose}>X</SmallExitButton>
-    </div>
+  return (
+    <Container style={{ background: mainColor }}>
+      <Message>{children}</Message>
 
-    <LargeExitButton onClick={onClose} style={closeButtonStyle}>
-      {buttonText}
-    </LargeExitButton>
-  </Container>
-);
+      <CornerExitButton onClick={onClose} type="button">
+        <DeleteIcon color={ACCENT_COLOR} />
+      </CornerExitButton>
+
+      <MainExitButton onClick={onClose} style={{ color: mainColor }} type="button">
+        {buttonText}
+      </MainExitButton>
+    </Container>
+  );
+};
 
 export default Popup;
