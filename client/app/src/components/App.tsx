@@ -194,6 +194,7 @@ const App = () => {
           {...transactionGroups}
           loading={areTransactionsLoading}
           searchTransactions={handleTransactionSearch}
+          handleInfoClick={handleInfoClick}
           handleError={handleError}
           activeModal={activeModal}
           setActiveModal={setActiveModal}

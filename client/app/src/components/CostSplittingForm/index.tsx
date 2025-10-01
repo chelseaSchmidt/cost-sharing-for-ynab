@@ -11,6 +11,7 @@ interface Props {
   categoryFlags: Transaction[];
   searchTransactions: () => void;
   accounts: Account[];
+  handleInfoClick: () => void;
   handleError: (e: unknown) => void;
   activeModal: ModalName | null;
   setActiveModal: (modalName: ModalName | null) => void;
@@ -23,6 +24,7 @@ export default function CostSplittingForm({
   categoryFlags,
   searchTransactions,
   accounts,
+  handleInfoClick,
   handleError,
   activeModal,
   setActiveModal,
@@ -72,8 +74,8 @@ export default function CostSplittingForm({
         accounts={accounts}
         transactions={transactions}
         selectedIds={selectedIds}
+        handleInfoClick={handleInfoClick}
         handleError={handleError}
-        setActiveModal={setActiveModal}
         resetForm={resetSelections}
       />
     </>
