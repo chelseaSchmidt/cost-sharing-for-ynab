@@ -71,8 +71,8 @@ interface Props {
   transactions: Transaction[];
   selectedIds: Set<string | number>;
   resetForm: () => void;
+  handleInfoClick: () => void;
   handleError: (e: unknown) => void;
-  setActiveModal: (modalName: ModalName | null) => void;
 }
 
 export default function IouTransactionParams({
@@ -80,8 +80,8 @@ export default function IouTransactionParams({
   transactions,
   selectedIds,
   resetForm,
+  handleInfoClick,
   handleError,
-  setActiveModal,
 }: Props) {
   const [myShare, setMyShare] = useState(50);
   const [dateToSplitCosts, setDateToSplitCosts] = useState(getLastDateOfLastMonth());
@@ -164,7 +164,7 @@ export default function IouTransactionParams({
       as="button"
       type="button"
       style={{ color: 'white', margin: 0 }}
-      onClick={() => setActiveModal(ModalName.INSTRUCTIONS)}
+      onClick={handleInfoClick}
     >
       Learn more
     </Hyperlink>
