@@ -14,7 +14,7 @@ export default function FlaggedTransactionsModal({ transactions, loading, refres
     <Modal onClose={exit} buttonText="Exit" shouldCloseOnOverlayClick shouldCloseOnEscape>
       <TransactionWindow
         title="Transactions in shared accounts, but not in shared categories"
-        subtitle="This list is meant to help you catch misclassified transactions. Recategorize them in YNAB as needed and then refresh the list."
+        subtitle="This list can help you catch misclassified transactions. Recategorize them in YNAB as needed and then refresh the list to continue reviewing."
         loading={loading}
         transactions={transactions}
         containerStyle={{ padding: '15px', alignItems: 'unset' }}
