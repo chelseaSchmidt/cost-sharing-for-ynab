@@ -1,18 +1,18 @@
+import { CSSProperties } from 'react';
 import styled from 'styled-components';
-import TransactionCard from './TransactionCard';
+import breakpoints from '../../../../../shared/breakpoints';
+import { Button } from '../../../../../shared/styledComponents';
+import { Transaction } from '../../../types';
+import Checkbox from '../../Checkbox';
 import {
   FlexColumnAllCentered,
   FlexRowAllCentered,
   LoadingSpinner,
   Paragraph,
   ScrollableArea,
-} from '../styledComponents';
-import { toId } from '../utils/general';
-import breakpoints from '../../../../shared/breakpoints';
-import { Button } from '../../../../shared/styledComponents';
-import { Transaction } from '../../types';
-import { CSSProperties } from 'react';
-import Checkbox from '../Checkbox';
+} from '../../styledComponents';
+import { toId } from '../../utils/general';
+import TransactionCard from './TransactionCard';
 
 const FEED_PADDING_Y_LG = '30px';
 const FEED_PADDING_Y_SM = '10px';
@@ -97,38 +97,29 @@ interface Props {
   title?: string;
   subtitle?: string;
   transactions: Transaction[];
-  selectedTransactions?: Transaction[];
-  transactionsSharedInOneButNotOther?: Transaction[];
-  toggleTransactionSelection?: (options: { isSelected: boolean; transaction: Transaction }) => void;
-  toggleSelectAll?: (options: { isSelected: boolean }) => void;
-  isSelectAllChecked?: boolean;
-  shouldShowIcon?: boolean;
-  isClickable?: boolean;
-  shouldShowRefreshButton?: boolean;
-  refreshTransactions?: () => void;
+  accountFlags?: Transaction[];
   containerStyle?: CSSProperties;
   feedStyle?: CSSProperties;
+  refreshTransactions?: () => void;
+  formControlProps?: {
+    selectedIds: Set<string | number>;
+    isSelectAllChecked: boolean;
+    toggleTransaction: (transaction: Transaction) => void;
+    toggleSelectAll: (isSelected: boolean) => void;
+  };
 }
 
 const TransactionWindow = ({
   loading = false,
   title,
-  subtitle = '',
+  subtitle,
   transactions,
-  selectedTransactions = [],
-  transactionsSharedInOneButNotOther = [],
-  toggleTransactionSelection,
-  toggleSelectAll,
-  isSelectAllChecked,
-  shouldShowIcon = false,
-  isClickable = false,
-  shouldShowRefreshButton = false,
-  refreshTransactions = () => {},
-  containerStyle = {},
-  feedStyle = {},
+  accountFlags = [],
+  containerStyle,
+  feedStyle,
+  refreshTransactions,
+  formControlProps,
 }: Props) => {
-  const isolatedTransactionIds = transactionsSharedInOneButNotOther.map(toId);
-  const selectedTransactionIds = selectedTransactions.map(toId);
   const hasTransactions = !!transactions.length;
 
   return (
@@ -137,7 +128,7 @@ const TransactionWindow = ({
 
       {subtitle && <Subtitle>{subtitle}</Subtitle>}
 
-      {shouldShowRefreshButton && (
+      {refreshTransactions && (
         <Controls>
           <RefreshButton type="button" onClick={refreshTransactions}>
             Refresh
@@ -152,12 +143,12 @@ const TransactionWindow = ({
           </SpinnerPositioner>
         )}
 
-        {!loading && hasTransactions && isClickable && toggleSelectAll && (
+        {!loading && hasTransactions && formControlProps && (
           <Checkbox
             id="select-all-checkbox"
             label="Select all"
-            checked={!!isSelectAllChecked}
-            onChange={(isSelected) => toggleSelectAll({ isSelected })}
+            checked={formControlProps.isSelectAllChecked}
+            onChange={formControlProps.toggleSelectAll}
           />
         )}
 
@@ -172,12 +163,16 @@ const TransactionWindow = ({
           {transactions.map((transaction) => (
             <TransactionCard
               key={transaction.id}
-              isClickable={isClickable}
-              isSelected={!!selectedTransactionIds.includes(transaction.id)}
-              toggleTransactionSelection={toggleTransactionSelection}
               transaction={transaction}
-              isIsolated={!!isolatedTransactionIds.includes(transaction.id)}
-              shouldShowIcon={shouldShowIcon}
+              isFlagged={accountFlags.map(toId).includes(transaction.id)}
+              formControlProps={
+                formControlProps
+                  ? {
+                      isSelected: formControlProps.selectedIds.has(transaction.id),
+                      toggleTransaction: formControlProps.toggleTransaction,
+                    }
+                  : undefined
+              }
             />
           ))}
         </TransactionFeed>
