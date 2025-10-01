@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react';
-import _ from 'lodash';
+import { useEffect, useState } from 'react';
 import { Account, ModalName, Transaction } from '../../types';
 import { toId } from '../utils/general';
 import IouTransactionParams from './IouTransactionParams';
