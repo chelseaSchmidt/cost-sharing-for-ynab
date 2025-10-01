@@ -1,15 +1,42 @@
-# Cost Sharing for YNAB
+<div align="center">
+  <h1>Cost Sharing for YNAB</h1> 
+  <h3>Conveniently manage a shared credit card in YNAB.</h3>
+  <br />
+  <img width="147" height="58.5" alt="image" src="https://github.com/user-attachments/assets/aa7ec5ed-2b8f-40af-9d9c-810ca0644796" />
+  <br />
+  <br />
+  <a href="https://costsharingforynab.com">costsharingforynab.com</a> • <a href="https://api.ynab.com/#works-with-ynab">Works with YNAB</a>
+  <br />
+  <br />
+  <table>
+    <tr>
+      <td>TypeScript</td>
+      <td>React</td>
+      <td>React Hooks</td>
+      <td>Styled Components</td>
+      <td>Webpack</td>
+      <td>Node</td>
+      <td>Express</td>
+    </tr>
+  </table>
+</div>
 
-Check out the live app here! https://costsharingforynab.com. Cost Sharing for YNAB is an open-source React web application built to work with YNAB (You Need a Budget), integrating with the YNAB API. Since YNAB, a popular budgeting software, doesn't natively support tracking of a shared credit card account (such as a communal expense credit card shared between partners), YNAB members can use this add-on app to incorporate a shared credit card into their personal budget without making their expenses look inflated. Members authenticate with their existing YNAB credentials via OAuth, allowing the app to connect securely to their account. I'm excited to contribute this add-on feature to the YNAB community!
+<br />
 
-## System requirements
+**Cost Sharing for YNAB** is a free and open-source web application that integrates with [YNAB](https://www.ynab.com) (You Need a Budget) via their [API](https://api.ynab.com). YNAB doesn't natively support tracking of shared payment accounts, such as credit cards or bank accounts shared between partners or family members. With this companion app, YNAB users can incorporate a shared account into their personal budget without making their expenses look inflated. Users authenticate with their existing YNAB credentials via OAuth.
+
+Developer contributions at any experience level are very welcome!
+
+## Develop
+
+### Prerequisites
 
 - Node
 - npm
 - Prettier
 - Docker (if you're Chelsea)
 
-## Run the app in development
+### Run the app locally
 
 - `npm install` in project root
 
@@ -25,11 +52,6 @@ Check out the live app here! https://costsharingforynab.com. Cost Sharing for YN
   - `npm run docker-dev`
 
 - Navigate to http://localhost:3000
-
-## Other
-
-- Run ESLint
-  - `npm run linter`
 
 ## Prod deployment (if you're Chelsea)
 
@@ -111,11 +133,19 @@ Check out the live app here! https://costsharingforynab.com. Cost Sharing for YN
 
 </details>
 
-## Helpful commands
+<details>
+<summary><strong>Helpful commands</strong></summary>
 
 - `docker images` | List images
+
 - `docker container ps` | Get running container names
+
 - `docker exec -it <container_name> sh` | Explore container filesystem
+
 - `docker container stop <container_name>` | Stop container
+
 - `docker container prune` | Delete stopped containers
+
 - `docker rmi <image_name_or_id>` | Delete an image
+
+</details>
