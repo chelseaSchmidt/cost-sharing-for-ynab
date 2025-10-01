@@ -1,14 +1,6 @@
-import styled from 'styled-components';
-import breakpoints from '../../../../../shared/breakpoints';
 import { Button } from '../../../../../shared/styledComponents';
 import InfoIcon from '../../InfoIcon';
 import { SubmittingSpinner } from '../../styledComponents';
-
-const StyledButton = styled(Button)`
-  @media (max-width: ${breakpoints.mobile}) {
-    margin: 10px 0 0 0;
-  }
-`;
 
 interface Props {
   submitting: boolean;
@@ -26,7 +18,7 @@ export default function SubmitButton({
   accountId,
 }: Props) {
   return (
-    <StyledButton type="submit" onClick={submit} disabled={disabled}>
+    <Button type="submit" onClick={submit} disabled={disabled}>
       {submitting ? (
         <SubmittingSpinner role="progressbar" aria-label="Submitting" />
       ) : disabled ? (
@@ -37,7 +29,7 @@ export default function SubmitButton({
       ) : (
         'Split Costs'
       )}
-    </StyledButton>
+    </Button>
   );
 }
 

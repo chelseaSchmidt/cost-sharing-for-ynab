@@ -19,12 +19,7 @@ export default function IouAccountSelector({ accounts, setAccountId }: Props) {
         labelDecoration={
           <InfoIcon
             tooltipContent={
-              <>
-                This account tracks what you are owed from the person sharing an account with you.
-                To create it in YNAB, click "Add Account", then "Add an Unlinked Account", and
-                nickname it something like "Owed from [person's name]." The account type should be
-                Checking, Savings, or Cash.
-              </>
+              'This account tracks what you are owed from the person sharing an account with you. To create it in YNAB, click "Add Account", then "Add an Unlinked Account", and nickname it something like "Owed from [person\'s name]." The account type should be Checking, Savings, or Cash.'
             }
           />
         }
