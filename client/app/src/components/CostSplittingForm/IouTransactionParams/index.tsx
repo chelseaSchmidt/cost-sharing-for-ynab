@@ -68,20 +68,20 @@ const Spacer = styled.div`
 
 interface Props {
   accounts: Account[];
-  selectedTransactions: Transaction[];
-  setSelectedTransactions: React.Dispatch<React.SetStateAction<Transaction[]>>;
+  transactions: Transaction[];
+  selectedIds: Set<string | number>;
+  resetForm: () => void;
   handleError: (e: unknown) => void;
   setActiveModal: (modalName: ModalName | null) => void;
-  setIsSelectAllChecked: (checked: boolean) => void;
 }
 
 export default function IouTransactionParams({
   accounts,
-  selectedTransactions,
-  setSelectedTransactions,
+  transactions,
+  selectedIds,
+  resetForm,
   handleError,
   setActiveModal,
-  setIsSelectAllChecked,
 }: Props) {
   const [myShare, setMyShare] = useState(50);
   const [dateToSplitCosts, setDateToSplitCosts] = useState(getLastDateOfLastMonth());
@@ -89,6 +89,8 @@ export default function IouTransactionParams({
   const [isIouTransactionLoading, setIsIouTransactionLoading] = useState(false);
   const [iouAccountId, setIouAccountId] = useState('');
   const [succeeded, setSucceeded] = useState(false);
+
+  const selectedTransactions = transactions.filter(({ id }) => selectedIds.has(id));
 
   const createSplitEntry = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
@@ -140,8 +142,7 @@ export default function IouTransactionParams({
       if (transaction) {
         setSucceeded(true);
         setIouAccountTransactions([...iouAccountTransactions, transaction]);
-        setSelectedTransactions([]);
-        setIsSelectAllChecked(false);
+        resetForm();
       } else {
         handleError(null);
       }

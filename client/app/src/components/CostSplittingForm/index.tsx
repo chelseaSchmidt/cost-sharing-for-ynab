@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import _ from 'lodash';
 import { Account, ModalName, Transaction } from '../../types';
+import { toId } from '../utils/general';
 import IouTransactionParams from './IouTransactionParams';
 import TransactionSelection from './TransactionSelection';
 
@@ -27,19 +28,29 @@ export default function CostSplittingForm({
   activeModal,
   setActiveModal,
 }: Props) {
-  const [selectedTransactions, setSelectedTransactions] = useState<Transaction[]>([]);
+  const [selectedIds, setSelectedIds] = useState<Set<string | number>>(new Set());
   const [isSelectAllChecked, setIsSelectAllChecked] = useState(false);
 
-  const toggleSelectAll = ({ isSelected }: { isSelected: boolean }) => {
+  const resetSelections = () => {
+    setSelectedIds(new Set());
+    setIsSelectAllChecked(false);
+  };
+
+  const toggleSelectAll = (isSelected: boolean) => {
     setIsSelectAllChecked(isSelected);
-    setSelectedTransactions(isSelected ? [...transactions] : []);
+    setSelectedIds(isSelected ? new Set(transactions.map(toId)) : new Set());
+  };
+
+  const toggleTransaction = (transaction: Transaction) => {
+    setSelectedIds((previousIds) => {
+      const newIds = new Set(previousIds);
+      newIds[previousIds.has(transaction.id) ? 'delete' : 'add'](transaction.id);
+      return newIds;
+    });
   };
 
   useEffect(() => {
-    if (loading) {
-      setSelectedTransactions([]);
-      setIsSelectAllChecked(false);
-    }
+    if (loading) resetSelections();
   }, [loading]);
 
   return (
@@ -47,10 +58,10 @@ export default function CostSplittingForm({
       <TransactionSelection
         loading={loading}
         transactions={transactions}
-        selectedTransactions={selectedTransactions}
-        setSelectedTransactions={setSelectedTransactions}
+        selectedIds={selectedIds}
         accountFlags={accountFlags}
         categoryFlags={categoryFlags}
+        toggleTransaction={toggleTransaction}
         toggleSelectAll={toggleSelectAll}
         isSelectAllChecked={isSelectAllChecked}
         refresh={searchTransactions}
@@ -60,11 +71,11 @@ export default function CostSplittingForm({
 
       <IouTransactionParams
         accounts={accounts}
-        selectedTransactions={selectedTransactions}
-        setSelectedTransactions={setSelectedTransactions}
+        transactions={transactions}
+        selectedIds={selectedIds}
         handleError={handleError}
         setActiveModal={setActiveModal}
-        setIsSelectAllChecked={setIsSelectAllChecked}
+        resetForm={resetSelections}
       />
     </>
   );

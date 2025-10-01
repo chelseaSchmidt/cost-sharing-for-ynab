@@ -1,11 +1,11 @@
 import moment from 'moment';
 import styled from 'styled-components';
-import breakpoints from '../../../../shared/breakpoints';
-import colors from '../../../../shared/colors';
-import { Transaction } from '../../types';
-import Checkbox from '../Checkbox';
-import InfoIcon from '../InfoIcon';
-import { FlexRow } from '../styledComponents';
+import breakpoints from '../../../../../shared/breakpoints';
+import colors from '../../../../../shared/colors';
+import { Transaction } from '../../../types';
+import Checkbox from '../../Checkbox';
+import InfoIcon from '../../InfoIcon';
+import { FlexRow } from '../../styledComponents';
 
 /* Styled Components */
 
@@ -77,22 +77,15 @@ const AccountName = styled(FlexRow)`
 /* Main Component */
 
 interface Props {
-  isClickable: boolean;
-  isSelected: boolean;
-  toggleTransactionSelection?: (options: { isSelected: boolean; transaction: Transaction }) => void;
   transaction: Transaction;
-  isIsolated: boolean;
-  shouldShowIcon: boolean;
+  isFlagged: boolean;
+  formControlProps?: {
+    isSelected: boolean;
+    toggleTransaction: (transaction: Transaction) => void;
+  };
 }
 
-const TransactionCard = ({
-  isClickable,
-  isSelected,
-  toggleTransactionSelection,
-  transaction,
-  isIsolated,
-  shouldShowIcon,
-}: Props) => {
+const TransactionCard = ({ transaction, isFlagged, formControlProps }: Props) => {
   const {
     date,
     amount,
@@ -101,26 +94,19 @@ const TransactionCard = ({
     account_name: accountName,
   } = transaction;
 
-  const onClick = () => {
-    toggleTransactionSelection?.({
-      isSelected: !isSelected,
-      transaction,
-    });
-  };
-
   return (
     <ContainerButton
       type="button"
-      disabled={!isClickable}
-      onClick={onClick}
-      $isSelected={isSelected}
+      disabled={!formControlProps}
+      onClick={() => formControlProps?.toggleTransaction(transaction)}
+      $isSelected={formControlProps?.isSelected}
     >
-      {isClickable && (
+      {formControlProps && (
         <Checkbox
           id={`${transaction.id}-checkbox`}
           label={`${transaction.id}`}
           isLabelHidden
-          checked={isSelected}
+          checked={formControlProps.isSelected}
         />
       )}
 
@@ -136,7 +122,7 @@ const TransactionCard = ({
         <AccountName>
           {accountName}
 
-          {isIsolated && shouldShowIcon && (
+          {isFlagged && (
             <InfoIcon
               theme="error"
               tooltipContent="You did not mark this account as shared"

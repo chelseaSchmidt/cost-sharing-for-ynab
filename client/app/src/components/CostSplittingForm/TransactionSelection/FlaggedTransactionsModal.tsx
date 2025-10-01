@@ -19,7 +19,6 @@ export default function FlaggedTransactionsModal({ transactions, loading, refres
         transactions={transactions}
         containerStyle={{ padding: '15px', alignItems: 'unset' }}
         feedStyle={{ border: 'unset' }}
-        shouldShowRefreshButton
         refreshTransactions={refresh}
       />
     </Modal>

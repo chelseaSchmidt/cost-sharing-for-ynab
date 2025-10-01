@@ -1,4 +1,3 @@
-import { useCallback } from 'react';
 import styled from 'styled-components';
 import colors from '../../../../../shared/colors';
 import breakpoints from '../../../../../shared/breakpoints';
@@ -53,12 +52,12 @@ const ReviewButton = styled(Button)`
 interface Props {
   loading: boolean;
   transactions: Transaction[];
-  selectedTransactions: Transaction[];
-  setSelectedTransactions: React.Dispatch<React.SetStateAction<Transaction[]>>;
+  selectedIds: Set<string | number>;
   accountFlags: Transaction[];
   categoryFlags: Transaction[];
-  toggleSelectAll: ({ isSelected }: { isSelected: boolean }) => void;
+  toggleSelectAll: (isSelected: boolean) => void;
   isSelectAllChecked: boolean;
+  toggleTransaction: (transaction: Transaction) => void;
   refresh: () => void;
   activeModal: ModalName | null;
   setActiveModal: (modalName: ModalName | null) => void;
@@ -67,27 +66,16 @@ interface Props {
 export default function TransactionSelection({
   loading,
   transactions,
-  selectedTransactions,
-  setSelectedTransactions,
+  selectedIds,
   accountFlags,
   categoryFlags,
   toggleSelectAll,
   isSelectAllChecked,
+  toggleTransaction,
   refresh,
   activeModal,
   setActiveModal,
 }: Props) {
-  const toggleTransactionSelection = useCallback(
-    ({ isSelected, transaction }: { isSelected: boolean; transaction: Transaction }) => {
-      setSelectedTransactions((previousSelected) =>
-        isSelected
-          ? [...previousSelected, transaction]
-          : previousSelected.filter(({ id }) => id !== transaction.id),
-      );
-    },
-    [setSelectedTransactions],
-  );
-
   return (
     <Container id={TRANSACTION_SELECTION_FORM_ID}>
       <SectionHeader>Select Shared Costs</SectionHeader>
@@ -108,13 +96,8 @@ export default function TransactionSelection({
       <TransactionWindow
         loading={loading}
         transactions={transactions}
-        selectedTransactions={selectedTransactions}
-        transactionsSharedInOneButNotOther={accountFlags}
-        toggleTransactionSelection={toggleTransactionSelection}
-        toggleSelectAll={toggleSelectAll}
-        isSelectAllChecked={isSelectAllChecked}
-        shouldShowIcon
-        isClickable
+        accountFlags={accountFlags}
+        formControlProps={{ selectedIds, isSelectAllChecked, toggleTransaction, toggleSelectAll }}
       />
 
       {activeModal === ModalName.TRANSACTION_REVIEW && (
