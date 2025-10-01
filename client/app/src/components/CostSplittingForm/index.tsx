@@ -55,7 +55,7 @@ export default function CostSplittingForm({
   }, [loading]);
 
   return (
-    <>
+    <form style={{ display: 'contents' }}>
       <TransactionSelection
         loading={loading}
         transactions={transactions}
@@ -78,6 +78,6 @@ export default function CostSplittingForm({
         handleError={handleError}
         resetForm={resetSelections}
       />
-    </>
+    </form>
   );
 }
