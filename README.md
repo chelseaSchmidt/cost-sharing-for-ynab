@@ -1,6 +1,17 @@
 # Cost Sharing for YNAB
 
-Check out the live app here! https://costsharingforynab.com. Cost Sharing for YNAB is an open-source React web application built to work with YNAB (You Need a Budget), integrating with the YNAB API. Since YNAB, a popular budgeting software, doesn't natively support tracking of a shared credit card account (such as a communal expense credit card shared between partners), YNAB members can use this add-on app to incorporate a shared credit card into their personal budget without making their expenses look inflated. Members authenticate with their existing YNAB credentials via OAuth, allowing the app to connect securely to their account. I'm excited to contribute this add-on feature to the YNAB community!
+<p align="center">
+  <img width="196" height="78" alt="image" src="https://github.com/user-attachments/assets/aa7ec5ed-2b8f-40af-9d9c-810ca0644796" />
+  <br />
+  <a href="https://costsharingforynab.com" target="_blank" rel="noreferrer">
+    costsharingforynab.com
+  </a>
+</p>
+
+- Free to use with your existing YNAB account.
+- Developer contributions are very welcome.
+
+Cost Sharing for YNAB is an open-source React web application built to work with YNAB (You Need a Budget), integrating with the YNAB API. Since YNAB, a popular budgeting software, doesn't natively support tracking of a shared credit card account (such as a communal expense credit card shared between partners), YNAB members can use this add-on app to incorporate a shared credit card into their personal budget without making their expenses look inflated. Members authenticate with their existing YNAB credentials via OAuth, allowing the app to connect securely to their account.
 
 ## System requirements
 
