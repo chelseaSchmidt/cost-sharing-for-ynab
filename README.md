@@ -7,9 +7,6 @@
   <a href="https://costsharingforynab.com">costsharingforynab.com</a> • <a href="https://api.ynab.com/#works-with-ynab">Works with YNAB</a>
   <br />
   <br />
-  <strong>Conveniently manage a shared credit card in YNAB.</strong>
-  <br />
-  <br />
   <table>
     <tr>
       <td>TypeScript</td>
@@ -21,7 +18,10 @@
       <td>Express</td>
     </tr>
   </table>
+  Conveniently manage a shared credit card in YNAB.
 </div>
+
+<br />
 
 **Cost Sharing for YNAB** is a free and open-source web application that integrates with [YNAB](https://www.ynab.com) (You Need a Budget) via their [API](https://api.ynab.com). YNAB doesn't natively support tracking of shared payment accounts, such as credit cards or bank accounts shared between partners or family members. With this companion app, YNAB users can incorporate a shared account into their personal budget without making their expenses look inflated. Users authenticate with their existing YNAB credentials via OAuth.
 
