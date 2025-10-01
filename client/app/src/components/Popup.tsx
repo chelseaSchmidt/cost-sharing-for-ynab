@@ -88,7 +88,12 @@ interface Props {
   onClose: () => void;
 }
 
-const Popup = ({ children, theme = 'default', buttonText = 'Dismiss', onClose }: Props) => {
+export default function Popup({
+  children,
+  theme = 'default',
+  buttonText = 'Dismiss',
+  onClose,
+}: Props) {
   const mainColor = theme === 'success' ? colors.success : colors.primary;
 
   return (
@@ -104,6 +109,4 @@ const Popup = ({ children, theme = 'default', buttonText = 'Dismiss', onClose }:
       </MainExitButton>
     </Container>
   );
-};
-
-export default Popup;
+}

@@ -85,7 +85,7 @@ interface Props {
   };
 }
 
-const TransactionCard = ({ transaction, isFlagged, formControlProps }: Props) => {
+export default function TransactionCard({ transaction, isFlagged, formControlProps }: Props) {
   const {
     date,
     amount,
@@ -133,9 +133,7 @@ const TransactionCard = ({ transaction, isFlagged, formControlProps }: Props) =>
       </Details>
     </ContainerButton>
   );
-};
-
-export default TransactionCard;
+}
 
 function toUsd(amount: number) {
   return Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount / -1000);

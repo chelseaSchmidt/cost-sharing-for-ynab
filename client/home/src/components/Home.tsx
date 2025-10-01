@@ -157,7 +157,7 @@ const Footer = styled.footer`
 
 /* MAIN */
 
-const Home = () => {
+export default function Home() {
   const APP_ENDPOINT = 'cost-sharer';
 
   const ynabAuthLink = `https://app.youneedabudget.com/oauth/authorize?client_id=4ac8ca3c431ac99075e603496136606d7da8102f6178ce2796566b30c4659988&redirect_uri=${window.location.href}${APP_ENDPOINT}&response_type=token`;
@@ -272,6 +272,4 @@ const Home = () => {
       </Footer>
     </Container>
   );
-};
-
-export default Home;
+}

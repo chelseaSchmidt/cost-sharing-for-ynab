@@ -51,7 +51,7 @@ interface Props {
   isLabelVisible?: boolean;
 }
 
-const DateSelector = ({
+export default function DateSelector({
   label,
   id,
   value,
@@ -59,7 +59,7 @@ const DateSelector = ({
   inputStyle = {},
   onChange,
   isLabelVisible = true,
-}: Props) => {
+}: Props) {
   return (
     <Container style={style}>
       {isLabelVisible && <Label htmlFor={id}>{label}</Label>}
@@ -75,6 +75,4 @@ const DateSelector = ({
       />
     </Container>
   );
-};
-
-export default DateSelector;
+}

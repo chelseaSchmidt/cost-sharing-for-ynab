@@ -22,7 +22,7 @@ const Divider = styled.div`
 
 /* MAIN */
 
-const Instructions = ({ isHomePage = false, style = {} }) => {
+export default function Instructions({ isHomePage = false, style = {} }) {
   return (
     <Container style={style}>
       <Subtitle>Prepare your YNAB budget</Subtitle>
@@ -105,6 +105,4 @@ const Instructions = ({ isHomePage = false, style = {} }) => {
       ))}
     </Container>
   );
-};
-
-export default Instructions;
+}

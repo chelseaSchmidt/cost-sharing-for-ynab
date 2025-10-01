@@ -109,7 +109,7 @@ interface Props {
   };
 }
 
-const TransactionWindow = ({
+export default function TransactionWindow({
   loading = false,
   title,
   subtitle,
@@ -119,7 +119,7 @@ const TransactionWindow = ({
   feedStyle,
   refreshTransactions,
   formControlProps,
-}: Props) => {
+}: Props) {
   const hasTransactions = !!transactions.length;
 
   return (
@@ -181,6 +181,4 @@ const TransactionWindow = ({
       </TransactionArea>
     </Container>
   );
-};
-
-export default TransactionWindow;
+}

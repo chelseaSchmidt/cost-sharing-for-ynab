@@ -12,12 +12,10 @@ interface Props {
   setErrorData: (data: Props['errorData'] | null) => void;
 }
 
-const ErrorPopup = ({ errorData, setErrorData }: Props) => {
+export default function ErrorPopup({ errorData, setErrorData }: Props) {
   return (
     <Popup onClose={() => setErrorData(null)}>
       {ERROR_MESSAGES[errorData.status] || DEFAULT_MESSAGE}
     </Popup>
   );
-};
-
-export default ErrorPopup;
+}

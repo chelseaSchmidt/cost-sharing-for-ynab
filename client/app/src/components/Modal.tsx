@@ -42,13 +42,13 @@ interface Props {
   shouldCloseOnEscape?: boolean;
 }
 
-const Modal = ({
+export default function Modal({
   onClose,
   buttonText = 'OK',
   children,
   shouldCloseOnOverlayClick = false,
   shouldCloseOnEscape = false,
-}: Props) => {
+}: Props) {
   const modalsContainer = document.getElementById(MODALS_CONTAINER_ID);
 
   return modalsContainer
@@ -76,6 +76,4 @@ const Modal = ({
         modalsContainer,
       )
     : null;
-};
-
-export default Modal;
+}
