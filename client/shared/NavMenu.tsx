@@ -142,7 +142,7 @@ interface Props {
   menuItems: MenuItem[];
 }
 
-const NavMenu = ({ menuItems = [] }: Props) => {
+export default function NavMenu({ menuItems = [] }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const closeMenu = () => setIsOpen(false);
   const toggleMenu = () => setIsOpen(!isOpen);
@@ -209,6 +209,4 @@ const NavMenu = ({ menuItems = [] }: Props) => {
       </Container>
     </>
   );
-};
-
-export default NavMenu;
+}

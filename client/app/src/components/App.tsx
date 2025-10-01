@@ -77,7 +77,7 @@ const HelpButtonContainer = styled.div`
 
 /* MAIN */
 
-const App = () => {
+export default function App() {
   const [loading, setLoading] = useState(true);
   const [budgetData, setBudgetData] = useState<BudgetData>({ accounts: [], parentCategories: [] });
   const [errorData, setErrorData] = useState<ErrorData | null>(null);
@@ -206,6 +206,4 @@ const App = () => {
       </NonModalContent>
     </Container>
   );
-};
-
-export default App;
+}

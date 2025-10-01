@@ -78,7 +78,7 @@ interface Props {
   style?: CSSProperties;
 }
 
-const Header = ({ style = {}, navMenuItems }: Props) => {
+export default function Header({ style = {}, navMenuItems }: Props) {
   const ynabIconAttributes = {
     src: 'works_with_ynab.svg',
     alt: 'Works with YNAB',
@@ -97,6 +97,4 @@ const Header = ({ style = {}, navMenuItems }: Props) => {
       {!!navMenuItems?.length && <NavMenu menuItems={navMenuItems} />}
     </Container>
   );
-};
-
-export default Header;
+}
