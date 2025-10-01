@@ -79,22 +79,19 @@ interface Props {
 }
 
 export default function Header({ style = {}, navMenuItems }: Props) {
-  const ynabIconAttributes = {
-    src: 'works_with_ynab.svg',
-    alt: 'Works with YNAB',
-  };
+  const iconAttributes = { src: 'works_with_ynab.svg', alt: 'Works with YNAB' };
 
   return (
     <Container style={style}>
       <MainContent>
-        <WorksWithYnabIconSmall {...ynabIconAttributes} />
+        <WorksWithYnabIconSmall {...iconAttributes} />
 
         <Title>Cost Sharing for YNAB</Title>
 
-        <WorksWithYnabIconLarge {...ynabIconAttributes} />
+        <WorksWithYnabIconLarge {...iconAttributes} />
       </MainContent>
 
-      {!!navMenuItems?.length && <NavMenu menuItems={navMenuItems} />}
+      {!!navMenuItems.length && <NavMenu menuItems={navMenuItems} />}
     </Container>
   );
 }

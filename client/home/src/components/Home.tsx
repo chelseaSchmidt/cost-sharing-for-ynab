@@ -1,15 +1,20 @@
 import styled from 'styled-components';
 import colors from '../../../shared/colors';
 import PrivacyPolicy from '../../../shared/PrivacyPolicy';
-import Header from '../../../shared/Header';
 import Instructions from '../../../shared/Instructions';
-import { MenuItem } from '../../../shared/NavMenu';
 import { Button, Hyperlink } from '../../../shared/styledComponents';
 import creditCardSrc from '../assets/creditCard.png';
 import lightBulbSrc from '../assets/lightBulb.png';
 import puzzleIconSrc from '../assets/puzzle.png';
 import welcomeIconSrc from '../assets/welcome.png';
 import '../styles/global.css';
+import HomeHeader from './HomeHeader';
+
+/* CONSTANTS */
+
+const CLIENT_ID = '4ac8ca3c431ac99075e603496136606d7da8102f6178ce2796566b30c4659988';
+const APP_ENDPOINT = 'cost-sharer';
+const APP_LINK = `/${APP_ENDPOINT}`;
 
 /* STYLED COMPONENTS */
 
@@ -158,33 +163,11 @@ const Footer = styled.footer`
 /* MAIN */
 
 export default function Home() {
-  const APP_ENDPOINT = 'cost-sharer';
-
-  const ynabAuthLink = `https://app.youneedabudget.com/oauth/authorize?client_id=4ac8ca3c431ac99075e603496136606d7da8102f6178ce2796566b30c4659988&redirect_uri=${window.location.href}${APP_ENDPOINT}&response_type=token`;
-
-  const navMenuItems: MenuItem[] = [
-    { text: 'Start', attributes: { href: ynabAuthLink }, style: { fontWeight: 'bold' } },
-    { text: 'Preview Without a YNAB Account', attributes: { href: `/${APP_ENDPOINT}` } },
-    {
-      text: 'Privacy Policy',
-      onClick: () => {
-        document.getElementById('privacy-policy-container')?.scrollIntoView(true);
-      },
-      attributes: { type: 'button', as: 'button' },
-    },
-    {
-      text: 'Source Code & Bug Reporting',
-      attributes: {
-        href: 'https://github.com/chelseaSchmidt/cost-sharing-for-ynab',
-        target: '_blank',
-        rel: 'noreferrer',
-      },
-    },
-  ];
+  const authLink = `https://app.youneedabudget.com/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${window.location.href}${APP_ENDPOINT}&response_type=token`;
 
   return (
     <Container>
-      <Header navMenuItems={navMenuItems} style={{ marginBottom: '15px' }} />
+      <HomeHeader authLink={authLink} appLink={APP_LINK} />
 
       <ContentContainer>
         <CreditCardIcon src={creditCardSrc} alt="credit card" />
@@ -217,11 +200,11 @@ export default function Home() {
         </Description>
 
         <ButtonsArea>
-          <Button as="a" href={ynabAuthLink}>
+          <Button as="a" href={authLink}>
             Start
           </Button>
 
-          <Button as="a" href={`/${APP_ENDPOINT}`}>
+          <Button as="a" href={APP_LINK}>
             Preview without a YNAB account
           </Button>
         </ButtonsArea>
@@ -256,7 +239,7 @@ export default function Home() {
           },
           {
             href: 'https://www.flaticon.com/free-icons/welcome',
-            children: ' Welcome icons created by Freepik - Flaticon',
+            children: 'Welcome icons created by Freepik - Flaticon',
           },
           {
             href: 'https://www.flaticon.com/free-icons/puzzle',
