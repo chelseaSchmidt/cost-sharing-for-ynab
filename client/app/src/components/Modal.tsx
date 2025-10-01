@@ -1,10 +1,10 @@
 import { ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import styled from 'styled-components';
-import { Button } from '../../../shared/styledComponents';
+import { BackgroundOverlay, Button } from '../../../shared/styledComponents';
 import zIndices from '../../../shared/zIndices';
 import { MODALS_CONTAINER_ID } from '../constants';
-import { BackgroundOverlay, ScrollableArea } from './styledComponents';
+import { ScrollableArea } from './styledComponents';
 
 /* Styled Components */
 
