@@ -1,17 +1,31 @@
-# Cost Sharing for YNAB
-
-<p align="center">
-  <img width="196" height="78" alt="image" src="https://github.com/user-attachments/assets/aa7ec5ed-2b8f-40af-9d9c-810ca0644796" />
+<div align="center">
+  <h1>Cost Sharing for YNAB</h1> 
   <br />
-  <a href="https://costsharingforynab.com" target="_blank" rel="noreferrer">
-    costsharingforynab.com
-  </a>
-</p>
+  <img width="147" height="58.5" alt="image" src="https://github.com/user-attachments/assets/aa7ec5ed-2b8f-40af-9d9c-810ca0644796" />
+  <br />
+  <br />
+  <a href="https://costsharingforynab.com">costsharingforynab.com</a> • <a href="https://api.ynab.com/#works-with-ynab">Works with YNAB</a>
+  <br />
+  <br />
+  <strong>Conveniently manage a shared credit card in YNAB.</strong>
+  <br />
+  <br />
+  <table>
+    <tr>
+      <td>TypeScript</td>
+      <td>React</td>
+      <td>React Hooks</td>
+      <td>Styled Components</td>
+      <td>Webpack</td>
+      <td>Node</td>
+      <td>Express</td>
+    </tr>
+  </table>
+</div>
 
-- Free to use with your existing YNAB account.
-- Developer contributions are very welcome.
+**Cost Sharing for YNAB** is a free and open-source web application that integrates with [YNAB](https://www.ynab.com) (You Need a Budget) via their [API](https://api.ynab.com). YNAB doesn't natively support tracking of shared payment accounts, such as credit cards or bank accounts shared between partners or family members. With this companion app, YNAB users can incorporate a shared account into their personal budget without making their expenses look inflated. Users authenticate with their existing YNAB credentials via OAuth.
 
-Cost Sharing for YNAB is an open-source React web application built to work with YNAB (You Need a Budget), integrating with the YNAB API. Since YNAB, a popular budgeting software, doesn't natively support tracking of a shared credit card account (such as a communal expense credit card shared between partners), YNAB members can use this add-on app to incorporate a shared credit card into their personal budget without making their expenses look inflated. Members authenticate with their existing YNAB credentials via OAuth, allowing the app to connect securely to their account.
+Developer contributions at any experience level are very welcome!
 
 ## System requirements
 
@@ -36,11 +50,6 @@ Cost Sharing for YNAB is an open-source React web application built to work with
   - `npm run docker-dev`
 
 - Navigate to http://localhost:3000
-
-## Other
-
-- Run ESLint
-  - `npm run linter`
 
 ## Prod deployment (if you're Chelsea)
 
@@ -122,11 +131,19 @@ Cost Sharing for YNAB is an open-source React web application built to work with
 
 </details>
 
-## Helpful commands
+<details>
+<summary><strong>Helpful commands</strong></summary>
 
 - `docker images` | List images
+
 - `docker container ps` | Get running container names
+
 - `docker exec -it <container_name> sh` | Explore container filesystem
+
 - `docker container stop <container_name>` | Stop container
+
 - `docker container prune` | Delete stopped containers
+
 - `docker rmi <image_name_or_id>` | Delete an image
+
+</details>
