@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 import colors from '../../../shared/colors';
 import Instructions from '../../../shared/Instructions';
+import Link from '../../../shared/Link';
 import PrivacyPolicy from '../../../shared/PrivacyPolicy';
 import {
   Button,
   FlexColumn,
   FlexColumnCentered,
-  Hyperlink,
   Paragraph,
 } from '../../../shared/styledComponents';
 import creditCardSrc from '../assets/creditCard.png';
@@ -27,10 +27,10 @@ const TINY_BREAKPOINT = '450px';
 const Container = styled.div``;
 
 const MainContent = styled(FlexColumnCentered)`
-  padding: 30px 50px 10px;
+  padding: 30px 50px 40px;
 
   @media (max-width: ${TINY_BREAKPOINT}) {
-    padding: 30px 30px 10px;
+    padding: 30px 30px 40px;
   }
 `;
 
@@ -200,10 +200,7 @@ export default function Home() {
         <Divider />
 
         <PrivacyContainer>
-          <PrivacyPolicy
-            subtitleStyle={{ textAlign: 'center' }}
-            headerStyle={{ marginBottom: '10px', textTransform: 'uppercase', textAlign: 'center' }}
-          />
+          <PrivacyPolicy areHeadingsCentered />
         </PrivacyContainer>
       </MainContent>
 
@@ -226,7 +223,7 @@ export default function Home() {
             children: 'Solution icons created by Freepik - Flaticon',
           },
         ].map((props) => (
-          <Hyperlink key={props.href} target="_blank" rel="noreferrer" {...props} />
+          <Link key={props.href} theme="subtle" {...props} />
         ))}
       </Footer>
     </Container>

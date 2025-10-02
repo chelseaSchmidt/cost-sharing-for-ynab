@@ -31,33 +31,8 @@ export const Paragraph = styled.p`
   display: block;
   margin-bottom: 10px;
 
-  &:last-child {
+  &:last-of-type {
     margin-bottom: 0;
-  }
-`;
-
-export const Hyperlink = styled.a`
-  all: unset;
-
-  text-align: left;
-  padding: 0;
-  margin: 0 10px;
-  cursor: pointer;
-  text-decoration: underline;
-  color: inherit;
-
-  &:hover,
-  &:visited:hover {
-    color: ${colors.primary};
-  }
-
-  &:visited {
-    color: inherit;
-  }
-
-  &:focus-visible {
-    outline: 1px solid ${colors.primary};
-    border-radius: 5px;
   }
 `;
 
