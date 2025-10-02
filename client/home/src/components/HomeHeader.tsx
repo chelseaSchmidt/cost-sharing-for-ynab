@@ -1,16 +1,16 @@
 import Header from '../../../shared/Header';
+import { APP_LINK } from '../constants';
 
 interface Props {
   authLink: string;
-  appLink: string;
 }
 
-export default function HomeHeader({ authLink, appLink }: Props) {
+export default function HomeHeader({ authLink }: Props) {
   return (
     <Header
       navMenuItems={[
         { text: 'Start', attributes: { href: authLink }, style: { fontWeight: 'bold' } },
-        { text: 'Preview Without a YNAB Account', attributes: { href: appLink } },
+        { text: 'Preview Without a YNAB Account', attributes: { href: APP_LINK } },
         {
           text: 'Privacy Policy',
           onClick: () => {

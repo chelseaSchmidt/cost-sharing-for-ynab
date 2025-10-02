@@ -1,6 +1,5 @@
 import styled from 'styled-components';
-import { Hyperlink } from '../../../shared/styledComponents';
-import { Paragraph } from './styledComponents';
+import { Hyperlink, Paragraph } from '../../../shared/styledComponents';
 
 const StyledLink = styled(Hyperlink)`
   color: white;

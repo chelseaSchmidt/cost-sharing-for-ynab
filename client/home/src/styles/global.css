@@ -13,4 +13,5 @@ body {
   display: flex;
   flex-direction: column;
   letter-spacing: 0.1px;
+  min-width: 230px;
 }

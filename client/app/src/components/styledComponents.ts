@@ -2,22 +2,6 @@ import styled from 'styled-components';
 import breakpoints from '../../../shared/breakpoints';
 import colors from '../../../shared/colors';
 
-export const FlexRow = styled.div`
-  display: flex;
-`;
-
-export const FlexRowCenterAligned = styled(FlexRow)`
-  align-items: center;
-`;
-
-export const FlexRowAllCentered = styled(FlexRowCenterAligned)`
-  justify-content: center;
-`;
-
-export const FlexColumnAllCentered = styled(FlexRowAllCentered)`
-  flex-direction: column;
-`;
-
 export const SectionHeader = styled.h1`
   all: unset;
   font-size: 25px;
@@ -83,16 +67,6 @@ export const LabelContainer = styled.div`
 
 export const Label = styled.label`
   margin-right: 5px;
-`;
-
-export const Paragraph = styled.p`
-  all: unset;
-  display: block;
-  margin-bottom: 10px;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
 `;
 
 export const SubmittingSpinner = styled.div`

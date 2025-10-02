@@ -1,9 +1,10 @@
+import { Paragraph } from '../../../../shared/styledComponents';
 import { HIDDEN_CATEGORIES } from '../../constants';
 import { ParentCategory } from '../../types';
 import BudgetAutocomplete from '../BudgetAutocomplete';
 import InfoIcon from '../InfoIcon';
 import LearnMoreParagraph from '../LearnMoreParagraph';
-import { FormControlWrapper, Paragraph } from '../styledComponents';
+import { FormControlWrapper } from '../styledComponents';
 
 interface Props {
   parentCategories: ParentCategory[];
