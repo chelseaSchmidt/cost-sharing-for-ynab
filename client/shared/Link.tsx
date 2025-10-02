@@ -10,6 +10,7 @@ export const Hyperlink = styled.a<{ $theme: Theme }>`
   all: unset;
   cursor: pointer;
   text-decoration: underline;
+  overflow-wrap: anywhere;
   color: var(--link-color);
 
   &:hover,
