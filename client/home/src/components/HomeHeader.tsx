@@ -1,3 +1,4 @@
+import { PRIVACY_CONTAINER_ID } from '../../../shared/constants';
 import Header from '../../../shared/Header';
 import { APP_LINK } from '../constants';
 
@@ -8,14 +9,20 @@ interface Props {
 export default function HomeHeader({ authLink }: Props) {
   return (
     <Header
-      navMenuItems={[
-        { text: 'Start', attributes: { href: authLink }, style: { fontWeight: 'bold' } },
-        { text: 'Preview Without a YNAB Account', attributes: { href: APP_LINK } },
+      style={{ marginBottom: '15px' }}
+      menuItems={[
+        {
+          text: 'Start',
+          attributes: { href: authLink, target: '_blank', rel: 'noreferrer' },
+          style: { fontWeight: 'bold' },
+        },
+        {
+          text: 'Preview Without a YNAB Account',
+          attributes: { href: APP_LINK, target: '_blank', rel: 'noreferrer' },
+        },
         {
           text: 'Privacy Policy',
-          onClick: () => {
-            document.getElementById('privacy-policy-container')?.scrollIntoView(true);
-          },
+          onClick: scrollToPrivacy,
           attributes: { type: 'button', as: 'button' },
         },
         {
@@ -27,7 +34,10 @@ export default function HomeHeader({ authLink }: Props) {
           },
         },
       ]}
-      style={{ marginBottom: '15px' }}
     />
   );
+}
+
+function scrollToPrivacy() {
+  document.getElementById(PRIVACY_CONTAINER_ID)?.scrollIntoView(true);
 }
