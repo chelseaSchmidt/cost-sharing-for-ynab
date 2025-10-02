@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import breakpoints from './breakpoints';
 import colors from './colors';
+import DeleteIcon from './icons/DeleteIcon';
 import { BackgroundOverlay } from './styledComponents';
 import zIndices from './zIndices';
 
@@ -72,8 +73,6 @@ const MenuHeader = styled.div`
   display: flex;
   justify-content: flex-end;
   width: 100%;
-  height: 18px;
-  font-size: 18px;
 `;
 
 const MenuFooter = styled.div`
@@ -82,17 +81,23 @@ const MenuFooter = styled.div`
   height: 18px;
 `;
 
-const ExitButton = styled.div`
-  display: flex;
-  justify-content: right;
-  padding-left: 20px;
-  font-family: Arial;
-  color: black;
-  opacity: 50%;
+const ExitButton = styled.button`
+  all: unset;
   cursor: pointer;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  width: 30px;
+  border-radius: 5px;
 
   &:hover {
-    color: ${colors.primary};
+    background: ${colors.lightNeutralBg};
+  }
+
+  &:focus-visible {
+    outline: 1px solid ${colors.primary};
   }
 `;
 
@@ -171,13 +176,8 @@ export default function NavMenu({ menuItems = [] }: Props) {
         {ReactDOM.createPortal(
           <Menu $isOpen={isOpen}>
             <MenuHeader>
-              <ExitButton
-                role="button"
-                aria-label="Exit navigation menu"
-                onClick={closeMenu}
-                tabIndex={0}
-              >
-                X
+              <ExitButton type="button" aria-label="Exit" onClick={closeMenu}>
+                <DeleteIcon size={14} />
               </ExitButton>
             </MenuHeader>
 
