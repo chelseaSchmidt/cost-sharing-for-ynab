@@ -2,9 +2,9 @@ import { ReactNode } from 'react';
 import styled from 'styled-components';
 import breakpoints from '../../../shared/breakpoints';
 import colors from '../../../shared/colors';
+import DeleteIcon from '../../../shared/icons/DeleteIcon';
 import { FlexColumnAllCentered } from '../../../shared/styledComponents';
 import zIndices from '../../../shared/zIndices';
-import DeleteIcon from './icons/DeleteIcon';
 
 type Theme = 'success' | 'default';
 
@@ -55,6 +55,10 @@ const CornerExitButton = styled.button`
   &:hover {
     background: ${colors.mediumNeutralBg};
   }
+
+  &:focus-visible {
+    outline: 1px solid ${colors.buttonFocusOutline};
+  }
 `;
 
 const MainExitButton = styled.button`
@@ -78,6 +82,10 @@ const MainExitButton = styled.button`
 
   &:active {
     background: ${colors.lightNeutralActive};
+  }
+
+  &:focus-visible {
+    outline: 1px solid ${colors.buttonFocusOutline};
   }
 `;
 
