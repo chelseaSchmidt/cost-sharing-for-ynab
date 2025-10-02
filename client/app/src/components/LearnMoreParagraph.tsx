@@ -1,10 +1,5 @@
-import styled from 'styled-components';
-import { Hyperlink, Paragraph } from '../../../shared/styledComponents';
-
-const StyledLink = styled(Hyperlink)`
-  color: white;
-  margin: 0;
-`;
+import Link from '../../../shared/Link';
+import { Paragraph } from '../../../shared/styledComponents';
 
 interface Props {
   prefix?: string;
@@ -16,9 +11,9 @@ export default function LearnMoreParagraph({ prefix, suffix, handleInfoClick }: 
   return (
     <Paragraph>
       {prefix ? `${prefix} ` : ''}
-      <StyledLink as="button" type="button" onClick={handleInfoClick}>
+      <Link asButton onClick={handleInfoClick} style={{ color: 'white', margin: 0 }}>
         Learn more
-      </StyledLink>
+      </Link>
       {suffix ? ` ${suffix}` : ''}
     </Paragraph>
   );

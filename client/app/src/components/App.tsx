@@ -3,8 +3,9 @@ import styled from 'styled-components';
 import breakpoints from '../../../shared/breakpoints';
 import colors from '../../../shared/colors';
 import Instructions from '../../../shared/Instructions';
+import Link from '../../../shared/Link';
 import PrivacyPolicy from '../../../shared/PrivacyPolicy';
-import { FlexColumnAllCentered, Hyperlink } from '../../../shared/styledComponents';
+import { FlexColumnAllCentered } from '../../../shared/styledComponents';
 import { MODALS_CONTAINER_ID } from '../constants';
 import '../styles/global.css';
 import {
@@ -151,13 +152,13 @@ export default function App() {
       <Modals id={MODALS_CONTAINER_ID}>
         {activeModal === ModalName.PRIVACY_POLICY_REQUIRED && (
           <Modal onClose={closeModal} buttonText="Acknowledge">
-            <PrivacyPolicy />
+            <PrivacyPolicy style={{ padding: '20px' }} />
           </Modal>
         )}
 
         {activeModal === ModalName.PRIVACY_POLICY && (
           <Modal onClose={closeModal} shouldCloseOnOverlayClick shouldCloseOnEscape>
-            <PrivacyPolicy />
+            <PrivacyPolicy style={{ padding: '20px' }} />
           </Modal>
         )}
 
@@ -172,9 +173,9 @@ export default function App() {
         <AppHeader setActiveModal={setActiveModal} handleInfoClick={handleInfoClick} />
 
         <HelpButtonContainer>
-          <Hyperlink as="button" type="button" onClick={handleInfoClick}>
+          <Link asButton theme="subtle" onClick={handleInfoClick}>
             <InfoIcon tooltipContent="" /> Help
-          </Hyperlink>
+          </Link>
         </HelpButtonContainer>
 
         <TransactionSearchForm
