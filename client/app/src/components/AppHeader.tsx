@@ -9,7 +9,7 @@ interface Props {
 export default function AppHeader({ handleInfoClick, setActiveModal }: Props) {
   return (
     <Header
-      navMenuItems={[
+      menuItems={[
         { text: 'Home', attributes: { href: '/' } },
         {
           text: 'Guide',

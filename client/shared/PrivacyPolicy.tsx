@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { PRIVACY_CONTAINER_ID } from './constants';
 
 const Container = styled.div``;
 
@@ -16,7 +17,7 @@ const InLineLink = styled.a`
 `;
 
 const PrivacyPolicy = ({ headerStyle = {}, subtitleStyle = {} }) => (
-  <Container id="privacy-policy-container">
+  <Container id={PRIVACY_CONTAINER_ID}>
     <Subtitle style={subtitleStyle}>Last updated: April 6th, 2025</Subtitle>
     <Header style={headerStyle}>Privacy Policy</Header>
     <p>

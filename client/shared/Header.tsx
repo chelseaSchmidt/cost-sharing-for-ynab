@@ -74,11 +74,11 @@ const WorksWithYnabIconSmall = styled.img`
 `;
 
 interface Props {
-  navMenuItems: MenuItem[];
+  menuItems: MenuItem[];
   style?: CSSProperties;
 }
 
-export default function Header({ style = {}, navMenuItems }: Props) {
+export default function Header({ style = {}, menuItems }: Props) {
   const iconAttributes = { src: 'works_with_ynab.svg', alt: 'Works with YNAB' };
 
   return (
@@ -91,7 +91,7 @@ export default function Header({ style = {}, navMenuItems }: Props) {
         <WorksWithYnabIconLarge {...iconAttributes} />
       </MainContent>
 
-      {!!navMenuItems.length && <NavMenu menuItems={navMenuItems} />}
+      <NavMenu menuItems={menuItems} />
     </Container>
   );
 }
