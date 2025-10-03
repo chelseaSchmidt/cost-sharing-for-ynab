@@ -1,4 +1,4 @@
-import { Button } from '../../../../../shared/styledComponents';
+import Button from '../../../../../shared/Button';
 import InfoIcon from '../../InfoIcon';
 import { SubmittingSpinner } from '../../styledComponents';
 

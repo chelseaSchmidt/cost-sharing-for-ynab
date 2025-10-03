@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 import breakpoints from '../../../../../shared/breakpoints';
+import Button from '../../../../../shared/Button';
 import colors from '../../../../../shared/colors';
 import { HEADER_MAX_HEIGHT } from '../../../../../shared/Header';
-import { Button, FlexRowAllCentered } from '../../../../../shared/styledComponents';
+import { FlexRowAllCentered } from '../../../../../shared/styledComponents';
 import { TRANSACTION_SELECTION_FORM_ID } from '../../../constants';
 import { ModalName, Transaction } from '../../../types';
 import { SectionHeader, SectionTile } from '../../styledComponents';
@@ -87,7 +88,7 @@ export default function TransactionSelection({
             Some transactions in shared accounts were not categorized to shared categories.
           </FlexRowAllCentered>
 
-          <ReviewButton type="button" onClick={() => setActiveModal(ModalName.TRANSACTION_REVIEW)}>
+          <ReviewButton onClick={() => setActiveModal(ModalName.TRANSACTION_REVIEW)}>
             Review
           </ReviewButton>
         </Alert>

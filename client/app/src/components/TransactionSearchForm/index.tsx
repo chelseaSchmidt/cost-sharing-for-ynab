@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button } from '../../../../shared/styledComponents';
+import Button from '../../../../shared/Button';
 import { TRANSACTION_SELECTION_FORM_ID } from '../../constants';
 import { Account, Mode, ParentCategory } from '../../types';
 import { SectionHeader, SectionTile } from '../styledComponents';
