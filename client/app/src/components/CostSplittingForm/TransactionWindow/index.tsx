@@ -1,8 +1,8 @@
 import { CSSProperties } from 'react';
 import styled from 'styled-components';
 import breakpoints from '../../../../../shared/breakpoints';
+import Button from '../../../../../shared/Button';
 import {
-  Button,
   FlexColumnAllCentered,
   FlexRowAllCentered,
   Paragraph,
@@ -38,10 +38,6 @@ const Subtitle = styled(Paragraph)`
 
 const Controls = styled(FlexRowAllCentered)`
   width: 100%;
-`;
-
-const RefreshButton = styled(Button)`
-  width: fit-content;
 `;
 
 const SpinnerPositioner = styled(FlexColumnAllCentered)`
@@ -129,9 +125,7 @@ export default function TransactionWindow({
 
       {refreshTransactions && (
         <Controls>
-          <RefreshButton type="button" onClick={refreshTransactions}>
-            Refresh
-          </RefreshButton>
+          <Button onClick={refreshTransactions}>Refresh</Button>
         </Controls>
       )}
 

@@ -2,8 +2,9 @@ import { CSSProperties, ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import styled from 'styled-components';
 import breakpoints from '../../../shared/breakpoints';
+import Button from '../../../shared/Button';
 import colors from '../../../shared/colors';
-import { BackgroundOverlay, Button } from '../../../shared/styledComponents';
+import { BackgroundOverlay } from '../../../shared/styledComponents';
 import zIndices from '../../../shared/zIndices';
 import { MODALS_CONTAINER_ID } from '../constants';
 import { ScrollableArea } from './styledComponents';
@@ -80,7 +81,7 @@ export default function Modal({
             <ScrollableArea>{children}</ScrollableArea>
 
             <Controls>
-              <Button type="button" onClick={onClose} autoFocus>
+              <Button onClick={onClose} autoFocus>
                 {buttonText}
               </Button>
             </Controls>

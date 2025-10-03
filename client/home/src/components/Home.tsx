@@ -1,14 +1,10 @@
 import styled from 'styled-components';
+import Button from '../../../shared/Button';
 import colors from '../../../shared/colors';
 import Instructions from '../../../shared/Instructions';
 import Link from '../../../shared/Link';
 import PrivacyPolicy from '../../../shared/PrivacyPolicy';
-import {
-  Button,
-  FlexColumn,
-  FlexColumnCentered,
-  Paragraph,
-} from '../../../shared/styledComponents';
+import { FlexColumn, FlexColumnCentered, Paragraph } from '../../../shared/styledComponents';
 import creditCardSrc from '../assets/creditCard.png';
 import lightBulbSrc from '../assets/lightBulb.png';
 import puzzleIconSrc from '../assets/puzzle.png';
@@ -185,7 +181,7 @@ export default function Home() {
             { href: authLink, children: 'Start' },
             { href: APP_LINK, children: 'Preview without a YNAB account' },
           ].map((props) => (
-            <Button key={props.href} as="a" target="_blank" rel="noreferrer" {...props} />
+            <Button key={props.href} asLink external {...props} />
           ))}
         </Controls>
 
