@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import breakpoints from '../../../shared/breakpoints';
 import Button from '../../../shared/Button';
 import colors from '../../../shared/colors';
+import useEscapeListener from '../../../shared/hooks/useEscapeListener';
 import { BackgroundOverlay } from '../../../shared/styledComponents';
 import zIndices from '../../../shared/zIndices';
 import { MODALS_CONTAINER_ID } from '../constants';
@@ -62,22 +63,20 @@ export default function Modal({
 }: Props) {
   const modalsContainer = document.getElementById(MODALS_CONTAINER_ID);
 
+  useEscapeListener(() => shouldCloseOnEscape && onClose());
+
   return modalsContainer
     ? createPortal(
         <>
           <BackgroundOverlay
             onClick={() => shouldCloseOnOverlayClick && onClose()}
-            onKeyUp={(e) => shouldCloseOnOverlayClick && e.key === 'Escape' && onClose()}
             role="button"
             aria-label="Exit"
             tabIndex={0}
             aria-disabled={!shouldCloseOnOverlayClick}
           />
 
-          <Container
-            onKeyUp={(e) => shouldCloseOnEscape && e.key === 'Escape' && onClose()}
-            style={style}
-          >
+          <Container style={style}>
             <ScrollableArea>{children}</ScrollableArea>
 
             <Controls>

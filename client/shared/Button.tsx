@@ -39,7 +39,7 @@ const StyledButton = styled.button`
 
 const RestyledButton = styled(Button)``;
 
-interface Props extends React.ComponentProps<'button'> {
+export interface ButtonProps extends React.ComponentProps<'button'> {
   asLink?: boolean;
   external?: boolean;
   styledComponent?: typeof StyledButton | typeof RestyledButton;
@@ -50,7 +50,7 @@ export default function Button({
   external = false,
   styledComponent,
   ...props
-}: Props) {
+}: ButtonProps) {
   const externalProps = asLink && external ? { target: '_blank', rel: 'noreferrer' } : {};
 
   return (

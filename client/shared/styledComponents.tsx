@@ -44,6 +44,5 @@ export const BackgroundOverlay = styled.div`
   align-items: center;
   width: 100vw;
   height: 100vh;
-  background-color: black;
-  opacity: 50%;
+  background: rgba(0, 0, 0, 0.5);
 `;

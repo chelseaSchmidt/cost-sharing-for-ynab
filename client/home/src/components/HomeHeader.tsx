@@ -1,36 +1,36 @@
 import { PRIVACY_CONTAINER_ID } from '../../../shared/constants';
-import Header from '../../../shared/Header';
+import Header, { HeaderProps } from '../../../shared/Header';
 import { APP_LINK } from '../constants';
 
-interface Props {
-  authLink: string;
-}
+type Props = { authLink: string } & Omit<HeaderProps, 'menuItems'>;
 
-export default function HomeHeader({ authLink }: Props) {
+export default function HomeHeader({ authLink, style, ...props }: Props) {
   return (
     <Header
-      style={{ marginBottom: '15px' }}
+      {...props}
+      style={{ marginBottom: '15px', ...style }}
       menuItems={[
         {
-          text: 'Start',
-          attributes: { href: authLink, target: '_blank', rel: 'noreferrer' },
-          style: { fontWeight: 'bold' },
+          type: 'link',
+          key: 'start',
+          props: { children: 'Start', href: authLink, style: { fontWeight: 'bold' } },
         },
         {
-          text: 'Preview Without a YNAB Account',
-          attributes: { href: APP_LINK, target: '_blank', rel: 'noreferrer' },
+          type: 'link',
+          key: 'preview',
+          props: { children: 'Preview Without a YNAB Account', href: APP_LINK },
         },
         {
-          text: 'Privacy Policy',
-          onClick: scrollToPrivacy,
-          attributes: { type: 'button', as: 'button' },
+          type: 'button',
+          key: 'privacy',
+          props: { children: 'Privacy Policy', onClick: scrollToPrivacy },
         },
         {
-          text: 'Source Code & Bug Reporting',
-          attributes: {
+          type: 'link',
+          key: 'github',
+          props: {
+            children: 'Source Code & Bug Reporting',
             href: 'https://github.com/chelseaSchmidt/cost-sharing-for-ynab',
-            target: '_blank',
-            rel: 'noreferrer',
           },
         },
       ]}
