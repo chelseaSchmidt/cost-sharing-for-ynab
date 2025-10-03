@@ -30,7 +30,7 @@ export const Hyperlink = styled.a<{ $theme: Theme }>`
 
 const StyledHyperlink = styled(Hyperlink);
 
-interface Props extends React.ComponentProps<'a'> {
+export interface LinkProps extends React.ComponentProps<'a'> {
   asButton?: boolean;
   internal?: boolean;
   theme?: Theme;
@@ -43,7 +43,7 @@ export default function Link({
   theme = 'default',
   styledComponent,
   ...props
-}: Props) {
+}: LinkProps) {
   const defaultProps = asButton
     ? { as: 'button', type: 'button' }
     : internal

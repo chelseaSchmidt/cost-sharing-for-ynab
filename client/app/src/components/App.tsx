@@ -82,6 +82,7 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [budgetData, setBudgetData] = useState<BudgetData>({ accounts: [], parentCategories: [] });
   const [errorData, setErrorData] = useState<ErrorData | null>(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeModal, setActiveModal] = useState<ModalName | null>(
     ModalName.PRIVACY_POLICY_REQUIRED,
   );
@@ -169,8 +170,13 @@ export default function App() {
         )}
       </Modals>
 
-      <NonModalContent inert={!!activeModal}>
-        <AppHeader setActiveModal={setActiveModal} handleInfoClick={handleInfoClick} />
+      <NonModalContent inert={!!activeModal || isMenuOpen}>
+        <AppHeader
+          setActiveModal={setActiveModal}
+          handleInfoClick={handleInfoClick}
+          isMenuOpen={isMenuOpen}
+          setIsMenuOpen={setIsMenuOpen}
+        />
 
         <HelpButtonContainer>
           <Link asButton theme="subtle" onClick={handleInfoClick}>

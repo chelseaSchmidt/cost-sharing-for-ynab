@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import Button from '../../../shared/Button';
 import colors from '../../../shared/colors';
@@ -140,13 +141,15 @@ const Footer = styled.footer`
 /* MAIN */
 
 export default function Home() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   const authLink = `https://app.youneedabudget.com/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${window.location.href}${APP_ENDPOINT}&response_type=token`;
 
   return (
     <Container>
-      <HomeHeader authLink={authLink} />
+      <HomeHeader authLink={authLink} isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
 
-      <MainContent>
+      <MainContent inert={isMenuOpen}>
         <SubtitleIcon src={creditCardSrc} alt="credit card" />
 
         <Subtitle>Conveniently manage a shared credit card in YNAB.</Subtitle>
@@ -200,7 +203,7 @@ export default function Home() {
         </PrivacyContainer>
       </MainContent>
 
-      <Footer>
+      <Footer inert={isMenuOpen}>
         {[
           {
             href: 'https://www.flaticon.com/search?word=credit%20card&type=icon',

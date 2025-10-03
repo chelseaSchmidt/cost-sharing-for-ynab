@@ -1,32 +1,36 @@
-import Header from '../../../shared/Header';
+import Header, { HeaderProps } from '../../../shared/Header';
 import { ModalName } from '../types';
 
-interface Props {
+type Props = {
   handleInfoClick: () => void;
   setActiveModal: (modalName: ModalName) => void;
-}
+} & Omit<HeaderProps, 'menuItems'>;
 
-export default function AppHeader({ handleInfoClick, setActiveModal }: Props) {
+export default function AppHeader({ handleInfoClick, setActiveModal, ...props }: Props) {
   return (
     <Header
+      {...props}
       menuItems={[
-        { text: 'Home', attributes: { href: '/' } },
+        { type: 'link', key: 'home', props: { children: 'Home', href: '/' } },
         {
-          text: 'Guide',
-          onClick: handleInfoClick,
-          attributes: { type: 'button', as: 'button' },
+          type: 'button',
+          key: 'guide',
+          props: { children: 'Guide', onClick: handleInfoClick },
         },
         {
-          text: 'Privacy Policy',
-          onClick: () => setActiveModal(ModalName.PRIVACY_POLICY),
-          attributes: { type: 'button', as: 'button' },
+          type: 'button',
+          key: 'privacy',
+          props: {
+            children: 'Privacy Policy',
+            onClick: () => setActiveModal(ModalName.PRIVACY_POLICY),
+          },
         },
         {
-          text: 'Source Code & Bug Reporting',
-          attributes: {
+          type: 'link',
+          key: 'github',
+          props: {
+            children: 'Source Code & Bug Reporting',
             href: 'https://github.com/chelseaSchmidt/cost-sharing-for-ynab',
-            target: '_blank',
-            rel: 'noreferrer',
           },
         },
       ]}
