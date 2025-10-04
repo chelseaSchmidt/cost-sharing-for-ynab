@@ -40,7 +40,7 @@ interface Props {
   color?: string;
 }
 
-export default function DeleteIcon({ size = 12, color = 'black' }: Props) {
+export default function ExitIcon({ size = 12, color = 'black' }: Props) {
   const hypotenuse = Math.sqrt(size ** 2 + size ** 2);
 
   return (

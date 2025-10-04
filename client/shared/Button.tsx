@@ -33,7 +33,7 @@ const StyledButton = styled.button`
   }
 
   &:focus-visible {
-    outline: 1px solid ${colors.buttonFocusOutline};
+    outline: 2px solid ${colors.buttonFocusOutline};
   }
 `;
 

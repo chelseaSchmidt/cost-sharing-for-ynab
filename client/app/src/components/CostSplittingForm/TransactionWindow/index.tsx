@@ -6,10 +6,11 @@ import {
   FlexColumnAllCentered,
   FlexRowAllCentered,
   Paragraph,
+  ScrollableArea,
 } from '../../../../../shared/styledComponents';
 import { Transaction } from '../../../types';
 import Checkbox from '../../Checkbox';
-import { LoadingSpinner, ScrollableArea } from '../../styledComponents';
+import { LoadingSpinner } from '../../styledComponents';
 import { toId } from '../../utils/general';
 import TransactionCard from './TransactionCard';
 
@@ -26,7 +27,8 @@ const Container = styled(FlexColumnAllCentered)`
   gap: 15px;
 `;
 
-const Title = styled.header`
+const Title = styled.h1`
+  all: unset;
   text-align: center;
   font-weight: bold;
   font-size: 1.3em;
@@ -118,7 +120,7 @@ export default function TransactionWindow({
   const hasTransactions = !!transactions.length;
 
   return (
-    <Container style={containerStyle}>
+    <Container as="section" style={containerStyle}>
       {title && <Title>{title}</Title>}
 
       {subtitle && <Subtitle>{subtitle}</Subtitle>}

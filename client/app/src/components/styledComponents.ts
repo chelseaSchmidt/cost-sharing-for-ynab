@@ -32,7 +32,6 @@ export const SectionTile = styled.section`
 
   @media (max-width: ${breakpoints.tiny}) {
     box-sizing: border-box;
-    width: calc(100% - 20px);
     padding: 50px 10px;
   }
 `;
@@ -92,39 +91,4 @@ export const LoadingSpinner = styled(SubmittingSpinner)`
   height: 50px;
   border-color: ${colors.primary};
   border-top-color: ${colors.lightNeutralBg};
-`;
-
-export const ScrollableArea = styled.div`
-  overflow: auto;
-  display: flex;
-  flex-direction: column;
-  flex: 1 1 auto;
-  border-top: 1px solid ${colors.lightNeutralBg};
-  border-bottom: 1px solid ${colors.lightNeutralBg};
-
-  @supports (scrollbar-color: auto) {
-    scrollbar-width: thin;
-    scrollbar-color: rgb(0 0 0 / 0.1) transparent;
-  }
-
-  /* Chrome */
-  @supports selector(::-webkit-scrollbar) {
-    scrollbar-width: auto;
-    scrollbar-color: auto;
-
-    &::-webkit-scrollbar {
-      background: transparent;
-      height: 7px;
-      width: 7px;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background: rgb(0 0 0 / 0.1);
-      border-radius: 5px;
-
-      &:hover {
-        background: rgb(0 0 0 / 0.3);
-      }
-    }
-  }
 `;

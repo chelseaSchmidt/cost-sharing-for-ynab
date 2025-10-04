@@ -2,10 +2,16 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import Button from '../../../shared/Button';
 import colors from '../../../shared/colors';
+import { APP_MIN_WIDTH } from '../../../shared/constants';
 import Instructions from '../../../shared/Instructions';
 import Link from '../../../shared/Link';
 import PrivacyPolicy from '../../../shared/PrivacyPolicy';
-import { FlexColumn, FlexColumnCentered, Paragraph } from '../../../shared/styledComponents';
+import {
+  FlexColumn,
+  FlexColumnCentered,
+  Paragraph,
+  ScrollableArea,
+} from '../../../shared/styledComponents';
 import creditCardSrc from '../assets/creditCard.png';
 import lightBulbSrc from '../assets/lightBulb.png';
 import puzzleIconSrc from '../assets/puzzle.png';
@@ -21,9 +27,23 @@ const TINY_BREAKPOINT = '450px';
 
 /* STYLED COMPONENTS */
 
-const Container = styled.div``;
+const Container = styled(FlexColumn)`
+  box-sizing: border-box;
+  height: 100vh;
+  overflow: hidden;
+`;
+
+const ScrollArea = styled(ScrollableArea)`
+  border: unset;
+`;
+
+const MinWidthContainer = styled(FlexColumnCentered)`
+  min-width: ${APP_MIN_WIDTH};
+`;
 
 const MainContent = styled(FlexColumnCentered)`
+  box-sizing: border-box;
+  max-width: 100%;
   padding: 30px 50px 40px;
 
   @media (max-width: ${TINY_BREAKPOINT}) {
@@ -36,12 +56,13 @@ const EmphasisIcon = styled.img`
   object-fit: contain;
 `;
 
-const SubtitleIcon = styled(EmphasisIcon)`
+const HeadingIcon = styled(EmphasisIcon)`
   width: 100px;
   margin-bottom: 40px;
 `;
 
-const Subtitle = styled.header`
+const Heading = styled.h1`
+  all: unset;
   margin-bottom: 40px;
   width: 100%;
   min-width: 190px;
@@ -149,82 +170,86 @@ export default function Home() {
     <Container>
       <HomeHeader authLink={authLink} isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
 
-      <MainContent inert={isMenuOpen}>
-        <SubtitleIcon src={creditCardSrc} alt="credit card" />
+      <ScrollArea>
+        <MinWidthContainer>
+          <MainContent as="section" inert={isMenuOpen}>
+            <HeadingIcon src={creditCardSrc} alt="credit card" />
 
-        <Subtitle>Conveniently manage a shared credit card in YNAB.</Subtitle>
+            <Heading>Conveniently manage a shared credit card in YNAB.</Heading>
 
-        <Intro>
-          {[
-            {
-              src: welcomeIconSrc,
-              alt: 'Welcome',
-              text: "Hi fellow YNABer! If you're using a shared credit card or bank account for communal expenses, and want to track it in YNAB more easily, you're in the right place.",
-            },
-            {
-              src: puzzleIconSrc,
-              alt: 'The Problem',
-              text: 'A shared bank account or credit card is difficult to track in YNAB without your expenses appearing inflated. Maybe you\'ve resorted to excluding it from YNAB completely. Or, maybe you\'re throwing the costs into a blanket "shared expense" category, and later divvying up the total—which fixes the inflation problem, but masks where exactly the dollars are going.',
-            },
-            {
-              src: lightBulbSrc,
-              alt: 'The Solution',
-              text: "Cost Sharing for YNAB enables you to classify your transactions across any number of categories, and then at the click of a button, remove someone else's share of the expenses from each category. No more inflated expenses or catch-all category!",
-            },
-          ].map(({ src, alt, text }) => (
-            <IntroParagraph key={alt}>
-              <IntroIcon src={src} alt={alt} />
-              <IntroText>{text}</IntroText>
-            </IntroParagraph>
-          ))}
-        </Intro>
+            <Intro>
+              {[
+                {
+                  src: welcomeIconSrc,
+                  alt: 'Welcome',
+                  text: "Hi fellow YNABer! If you're using a shared credit card or bank account for communal expenses, and want to track it in YNAB more easily, you're in the right place.",
+                },
+                {
+                  src: puzzleIconSrc,
+                  alt: 'The Problem',
+                  text: 'A shared bank account or credit card is difficult to track in YNAB without your expenses appearing inflated. Maybe you\'ve resorted to excluding it from YNAB completely. Or, maybe you\'re throwing the costs into a blanket "shared expense" category, and later divvying up the total—which fixes the inflation problem, but masks where exactly the dollars are going.',
+                },
+                {
+                  src: lightBulbSrc,
+                  alt: 'The Solution',
+                  text: "Cost Sharing for YNAB enables you to classify your transactions across any number of categories, and then at the click of a button, remove someone else's share of the expenses from each category. No more inflated expenses or catch-all category!",
+                },
+              ].map(({ src, alt, text }) => (
+                <IntroParagraph key={alt}>
+                  <IntroIcon src={src} alt={alt} />
+                  <IntroText>{text}</IntroText>
+                </IntroParagraph>
+              ))}
+            </Intro>
 
-        <Controls>
-          {[
-            { href: authLink, children: 'Start' },
-            { href: APP_LINK, children: 'Preview without a YNAB account' },
-          ].map((props) => (
-            <Button key={props.href} asLink external {...props} />
-          ))}
-        </Controls>
+            <Controls>
+              {[
+                { href: authLink, children: 'Start' },
+                { href: APP_LINK, children: 'Preview without a YNAB account' },
+              ].map((props) => (
+                <Button key={props.href} asLink external {...props} />
+              ))}
+            </Controls>
 
-        <Divider />
+            <Divider />
 
-        <Subtitle>Guide</Subtitle>
+            <Heading>Guide</Heading>
 
-        <InstructionsContainer>
-          <Instructions isHomePage />
-        </InstructionsContainer>
+            <InstructionsContainer>
+              <Instructions isHomePage />
+            </InstructionsContainer>
 
-        <Divider />
+            <Divider />
 
-        <PrivacyContainer>
-          <PrivacyPolicy areHeadingsCentered />
-        </PrivacyContainer>
-      </MainContent>
+            <PrivacyContainer>
+              <PrivacyPolicy areHeadingsCentered />
+            </PrivacyContainer>
+          </MainContent>
 
-      <Footer inert={isMenuOpen}>
-        {[
-          {
-            href: 'https://www.flaticon.com/search?word=credit%20card&type=icon',
-            children: 'Credit card icons created by Freepik - Flaticon',
-          },
-          {
-            href: 'https://www.flaticon.com/free-icons/welcome',
-            children: 'Welcome icons created by Freepik - Flaticon',
-          },
-          {
-            href: 'https://www.flaticon.com/free-icons/puzzle',
-            children: 'Puzzle icons created by Freepik - Flaticon',
-          },
-          {
-            href: 'https://www.flaticon.com/free-icons/solution',
-            children: 'Solution icons created by Freepik - Flaticon',
-          },
-        ].map((props) => (
-          <Link key={props.href} theme="subtle" {...props} />
-        ))}
-      </Footer>
+          <Footer inert={isMenuOpen}>
+            {[
+              {
+                href: 'https://www.flaticon.com/search?word=credit%20card&type=icon',
+                children: 'Credit card icons created by Freepik - Flaticon',
+              },
+              {
+                href: 'https://www.flaticon.com/free-icons/welcome',
+                children: 'Welcome icons created by Freepik - Flaticon',
+              },
+              {
+                href: 'https://www.flaticon.com/free-icons/puzzle',
+                children: 'Puzzle icons created by Freepik - Flaticon',
+              },
+              {
+                href: 'https://www.flaticon.com/free-icons/solution',
+                children: 'Solution icons created by Freepik - Flaticon',
+              },
+            ].map((props) => (
+              <Link key={props.href} theme="subtle" {...props} />
+            ))}
+          </Footer>
+        </MinWidthContainer>
+      </ScrollArea>
     </Container>
   );
 }

@@ -1,8 +1,9 @@
 import { ReactNode } from 'react';
 import styled from 'styled-components';
 import breakpoints from '../../../shared/breakpoints';
+import Button from '../../../shared/Button';
 import colors from '../../../shared/colors';
-import DeleteIcon from '../../../shared/icons/DeleteIcon';
+import ExitIcon from '../../../shared/icons/ExitIcon';
 import { FlexColumnAllCentered } from '../../../shared/styledComponents';
 import zIndices from '../../../shared/zIndices';
 
@@ -18,7 +19,6 @@ const Container = styled(FlexColumnAllCentered)`
   transform: translate(-50%, -50%);
   box-sizing: border-box;
   width: calc(100% - 10px);
-  max-width: 1500px;
   box-shadow: 0 0 5px 0 ${colors.shadow1};
   border-radius: 2px;
   padding: 10px;
@@ -42,35 +42,30 @@ const Message = styled.div`
   }
 `;
 
-const CornerExitButton = styled.button`
-  all: unset;
-  cursor: pointer;
+const CornerExitButton = styled(Button)`
+  box-shadow: unset;
+  background: unset;
   position: absolute;
   right: 0;
   top: 0;
   margin: 10px 20px;
-  border-radius: 5px;
   padding: 5px;
 
   &:hover {
     background: ${colors.mediumNeutralBg};
   }
 
-  &:focus-visible {
-    outline: 1px solid ${colors.buttonFocusOutline};
+  &:active {
+    background: ${colors.lightNeutralActive};
   }
 `;
 
-const MainExitButton = styled.button`
-  all: unset;
-  cursor: pointer;
-  box-sizing: border-box;
+const MainExitButton = styled(Button)`
+  box-shadow: unset;
   background: ${ACCENT_COLOR};
-  border-radius: 5px;
   padding: 5px 20px;
   margin: 10px;
   font-size: 14px;
-  font-weight: bold;
 
   @media (max-width: ${breakpoints.tiny}) {
     font-size: 12px;
@@ -82,10 +77,6 @@ const MainExitButton = styled.button`
 
   &:active {
     background: ${colors.lightNeutralActive};
-  }
-
-  &:focus-visible {
-    outline: 1px solid ${colors.buttonFocusOutline};
   }
 `;
 
@@ -108,11 +99,11 @@ export default function Popup({
     <Container style={{ background: mainColor }}>
       <Message>{children}</Message>
 
-      <CornerExitButton onClick={onClose} type="button">
-        <DeleteIcon color={ACCENT_COLOR} />
+      <CornerExitButton onClick={onClose}>
+        <ExitIcon color={ACCENT_COLOR} />
       </CornerExitButton>
 
-      <MainExitButton onClick={onClose} style={{ color: mainColor }} type="button">
+      <MainExitButton onClick={onClose} style={{ color: mainColor }}>
         {buttonText}
       </MainExitButton>
     </Container>

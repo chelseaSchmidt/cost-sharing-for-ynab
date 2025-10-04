@@ -2,10 +2,15 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import breakpoints from '../../../shared/breakpoints';
 import colors from '../../../shared/colors';
+import { APP_MIN_WIDTH } from '../../../shared/constants';
 import Instructions from '../../../shared/Instructions';
 import Link from '../../../shared/Link';
 import PrivacyPolicy from '../../../shared/PrivacyPolicy';
-import { FlexColumnAllCentered } from '../../../shared/styledComponents';
+import {
+  FlexColumnAllCentered,
+  FlexColumnCentered,
+  ScrollableArea,
+} from '../../../shared/styledComponents';
 import { MODALS_CONTAINER_ID } from '../constants';
 import '../styles/global.css';
 import {
@@ -50,17 +55,30 @@ const LoadingContainer = styled(Container)`
 const Modals = styled.div``;
 
 const NonModalContent = styled(FlexColumnAllCentered)`
+  box-sizing: border-box;
+  height: 100vh;
   width: 100%;
-  flex: 1;
+  overflow: hidden;
+`;
+
+const ScrollArea = styled(ScrollableArea)`
+  --scroll-track-color: rgb(255 255 255 / 50%);
+  border: unset;
+  width: 100%;
+`;
+
+const MinWidthContainer = styled(FlexColumnCentered)`
+  box-sizing: border-box;
+  width: 100%;
+  min-width: ${APP_MIN_WIDTH};
 `;
 
 const HelpButtonContainer = styled.div`
-  margin-top: -25px;
-  margin-bottom: 25px;
-  color: ${colors.infoIcon};
+  margin: 25px 0;
 
   button {
     text-decoration: none;
+    color: ${colors.infoIcon};
     border-bottom: 1px dotted ${colors.infoIcon};
     padding-bottom: 3px;
 
@@ -178,36 +196,40 @@ export default function App() {
           setIsMenuOpen={setIsMenuOpen}
         />
 
-        <HelpButtonContainer>
-          <Link asButton theme="subtle" onClick={handleInfoClick}>
-            <InfoIcon tooltipContent="" /> Help
-          </Link>
-        </HelpButtonContainer>
+        <ScrollArea>
+          <MinWidthContainer>
+            <HelpButtonContainer>
+              <Link asButton theme="subtle" onClick={handleInfoClick}>
+                <InfoIcon tooltipContent="" /> Help
+              </Link>
+            </HelpButtonContainer>
 
-        <TransactionSearchForm
-          {...budgetData}
-          selectedAccounts={selectedAccounts}
-          setSelectedAccounts={setSelectedAccounts}
-          selectedParentCategories={selectedParentCategories}
-          setSelectedParentCategories={setSelectedParentCategories}
-          dateRange={dateRange}
-          setDateRange={setDateRange}
-          onSubmit={handleTransactionSearch}
-          handleInfoClick={handleInfoClick}
-        />
+            <TransactionSearchForm
+              {...budgetData}
+              selectedAccounts={selectedAccounts}
+              setSelectedAccounts={setSelectedAccounts}
+              selectedParentCategories={selectedParentCategories}
+              setSelectedParentCategories={setSelectedParentCategories}
+              dateRange={dateRange}
+              setDateRange={setDateRange}
+              onSubmit={handleTransactionSearch}
+              handleInfoClick={handleInfoClick}
+            />
 
-        <CostSplittingForm
-          {...budgetData}
-          {...transactionGroups}
-          loading={areTransactionsLoading}
-          searchTransactions={handleTransactionSearch}
-          handleInfoClick={handleInfoClick}
-          handleError={handleError}
-          activeModal={activeModal}
-          setActiveModal={setActiveModal}
-        />
+            <CostSplittingForm
+              {...budgetData}
+              {...transactionGroups}
+              loading={areTransactionsLoading}
+              searchTransactions={handleTransactionSearch}
+              handleInfoClick={handleInfoClick}
+              handleError={handleError}
+              activeModal={activeModal}
+              setActiveModal={setActiveModal}
+            />
 
-        <FooterNav setActiveModal={setActiveModal} />
+            <FooterNav setActiveModal={setActiveModal} />
+          </MinWidthContainer>
+        </ScrollArea>
 
         {errorData && <ErrorPopup errorData={errorData} setErrorData={setErrorData} />}
       </NonModalContent>

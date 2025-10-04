@@ -1,6 +1,7 @@
 import moment from 'moment';
 import styled from 'styled-components';
 import breakpoints from '../../../../../shared/breakpoints';
+import Button from '../../../../../shared/Button';
 import colors from '../../../../../shared/colors';
 import { FlexRow } from '../../../../../shared/styledComponents';
 import { Transaction } from '../../../types';
@@ -9,16 +10,19 @@ import InfoIcon from '../../InfoIcon';
 
 /* Styled Components */
 
-const ContainerButton = styled.button<{ $isSelected?: boolean }>`
-  all: unset;
-  display: flex;
-  align-items: center;
+const ContainerButton = styled(Button)<{ $isSelected?: boolean }>`
+  cursor: unset;
+  text-align: unset;
+  letter-spacing: unset;
+  color: inherit;
+  font-family: inherit;
+
   border: 1px solid ${colors.lightNeutralAccent};
   border-radius: 3px;
   box-shadow: 0 1px 2px 0 ${colors.lightNeutralBg};
   margin: 0 2px 7px 0;
   padding: 5px;
-  background-color: white;
+  background: white;
 
   ${({ $isSelected }) => ($isSelected ? `background: ${colors.primaryLight};` : '')}
 
@@ -30,16 +34,17 @@ const ContainerButton = styled.button<{ $isSelected?: boolean }>`
     cursor: pointer;
 
     &:hover {
-      background-color: ${colors.lightNeutralBg};
+      background: ${colors.lightNeutralBg};
     }
 
     &:active {
-      background-color: ${colors.lightNeutralActive};
+      background: ${colors.lightNeutralActive};
     }
   }
 
-  &:focus-visible {
-    outline: 1px solid ${colors.buttonFocusOutline};
+  &:disabled {
+    cursor: unset;
+    background: unset;
   }
 
   @media (max-width: ${breakpoints.mobile}) {
@@ -96,7 +101,6 @@ export default function TransactionCard({ transaction, isFlagged, formControlPro
 
   return (
     <ContainerButton
-      type="button"
       disabled={!formControlProps}
       onClick={() => formControlProps?.toggleTransaction(transaction)}
       $isSelected={formControlProps?.isSelected}

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import colors from './colors';
 import zIndices from './zIndices';
 
 export const FlexRow = styled.div`
@@ -45,4 +46,43 @@ export const BackgroundOverlay = styled.div`
   width: 100vw;
   height: 100vh;
   background: rgba(0, 0, 0, 0.5);
+`;
+
+export const ScrollableArea = styled.div`
+  --scroll-track-color: rgb(0 0 0 / 3%);
+  --scroll-button-color: rgb(0 0 0 / 15%);
+  --scroll-button-hover-color: rgb(0 0 0 / 25%);
+
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  border-top: 1px solid ${colors.lightNeutralBg};
+  border-bottom: 1px solid ${colors.lightNeutralBg};
+
+  @supports (scrollbar-color: auto) {
+    scrollbar-width: thin;
+    scrollbar-color: var(--scroll-button-color) var(--scroll-track-color);
+  }
+
+  /* Chrome */
+  @supports selector(::-webkit-scrollbar) {
+    scrollbar-width: auto;
+    scrollbar-color: auto;
+
+    &::-webkit-scrollbar {
+      background: var(--scroll-track-color);
+      height: 7px;
+      width: 7px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: var(--scroll-button-color);
+      border-radius: 5px;
+
+      &:hover {
+        background: var(--scroll-button-hover-color);
+      }
+    }
+  }
 `;
