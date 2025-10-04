@@ -29,7 +29,7 @@ const TINY_BREAKPOINT = '450px';
 
 const Container = styled(FlexColumn)`
   box-sizing: border-box;
-  height: 100vh;
+  height: 100%;
   overflow: hidden;
 `;
 

@@ -44,7 +44,7 @@ export const BackgroundOverlay = styled.div`
   display: flex;
   align-items: center;
   width: 100vw;
-  height: 100vh;
+  height: 100%;
   background: rgba(0, 0, 0, 0.5);
 `;
 

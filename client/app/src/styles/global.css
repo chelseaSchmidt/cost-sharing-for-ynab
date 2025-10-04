@@ -8,6 +8,11 @@ GENERAL
 
 html {
   scroll-behavior: smooth;
+  height: 100%;
+}
+
+#app {
+  height: 100%;
 }
 
 body {
@@ -22,6 +27,7 @@ body {
   flex-direction: column;
   align-items: stretch;
   letter-spacing: 0.1px;
+  height: 100%;
 }
 
 input,
