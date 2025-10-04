@@ -188,6 +188,10 @@ export default function App() {
         )}
       </Modals>
 
+      {!activeModal && errorData && (
+        <ErrorPopup errorData={errorData} setErrorData={setErrorData} />
+      )}
+
       <NonModalContent inert={!!activeModal || isMenuOpen}>
         <AppHeader
           setActiveModal={setActiveModal}
@@ -230,8 +234,6 @@ export default function App() {
             <FooterNav setActiveModal={setActiveModal} />
           </MinWidthContainer>
         </ScrollArea>
-
-        {errorData && <ErrorPopup errorData={errorData} setErrorData={setErrorData} />}
       </NonModalContent>
     </Container>
   );

@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import breakpoints from '../../../shared/breakpoints';
 import Button from '../../../shared/Button';
@@ -11,27 +11,48 @@ type Theme = 'success' | 'default';
 
 const ACCENT_COLOR = 'white';
 
-const Container = styled(FlexColumnAllCentered)`
+const Container = styled(FlexColumnAllCentered)<{ $revealed: boolean }>`
+  --popup-width: 400px;
+  --popup-max-height: 400px;
+
   position: fixed;
   z-index: ${zIndices.popup};
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  bottom: 10px;
+  right: calc(var(--popup-width) * -1);
+
+  width: var(--popup-width);
+  max-width: calc(100% - 10px);
+  max-height: var(--popup-max-height);
+  overflow: auto;
+
   box-sizing: border-box;
-  width: calc(100% - 10px);
   box-shadow: 0 0 5px 0 ${colors.shadow1};
   border-radius: 2px;
   padding: 10px;
-  opacity: 90%;
+  opacity: 95%;
   color: ${ACCENT_COLOR};
-  text-align: center;
   letter-spacing: 1px;
   font-size: 16px;
 
+  @media (max-width: ${breakpoints.mobile}) {
+    bottom: calc(var(--popup-max-height) * -1);
+    left: 50%;
+    transform: translateX(-50%);
+
+    /* SLIDE-UP ANIMATION */
+    transition: bottom 0.4s;
+    ${(props) => props.$revealed && 'bottom: 120px;'}
+  }
+
   @media (max-width: ${breakpoints.tiny}) {
+    overflow-wrap: anywhere;
     text-align: left;
     font-size: 14px;
   }
+
+  /* SLIDE-OUT ANIMATION */
+  transition: right 0.4s;
+  ${(props) => props.$revealed && 'right: 10px;'}
 `;
 
 const Message = styled.div`
@@ -93,10 +114,16 @@ export default function Popup({
   buttonText = 'Dismiss',
   onClose,
 }: Props) {
+  const [revealed, setRevealed] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => setRevealed(true), 50);
+  }, []);
+
   const mainColor = theme === 'success' ? colors.success : colors.primary;
 
   return (
-    <Container style={{ background: mainColor }}>
+    <Container $revealed={revealed} style={{ background: mainColor }}>
       <Message>{children}</Message>
 
       <CornerExitButton onClick={onClose}>
