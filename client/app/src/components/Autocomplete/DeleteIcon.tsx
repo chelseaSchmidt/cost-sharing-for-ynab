@@ -14,30 +14,26 @@ const Container = styled.div<{ $size: number }>`
   `}
 `;
 
-const LeftToRightDiagonal = styled.div<{ $length: number }>`
+const Diagonal = styled.div<{ $length: number }>`
   box-sizing: border-box;
   position: absolute;
   top: 0;
+  height: 1px;
+  border-radius: 1px;
+  background: black;
+  width: ${({ $length }) => $length}px;
+`;
+
+const LeftToRightDiagonal = styled(Diagonal)`
   left: 0;
   transform: rotate(45deg);
   transform-origin: top left;
-  height: 1px;
-  width: ${({ $length }) => $length}px;
-  background: black;
-  border-radius: 1px;
 `;
 
-const RightToLeftDiagonal = styled.div<{ $length: number }>`
-  box-sizing: border-box;
-  position: absolute;
-  top: 0;
+const RightToLeftDiagonal = styled(Diagonal)`
   right: 0;
   transform: rotate(-45deg);
   transform-origin: top right;
-  height: 1px;
-  width: ${({ $length }) => $length}px;
-  background: black;
-  border-radius: 1px;
 `;
 
 interface Props {

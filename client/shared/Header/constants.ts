@@ -1,3 +1,5 @@
-export const LEFT_ALIGN_BREAKPOINT = '520px';
-
-export const NO_LOGO_BREAKPOINT = '410px';
+export const headerBreakpoints = {
+  sm: '520px',
+  xs: '420px',
+  xxs: '270px',
+} as const;

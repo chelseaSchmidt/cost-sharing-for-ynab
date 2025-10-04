@@ -4,11 +4,11 @@ import styled from 'styled-components';
 import breakpoints from '../../../shared/breakpoints';
 import Button from '../../../shared/Button';
 import colors from '../../../shared/colors';
+import { APP_MIN_WIDTH } from '../../../shared/constants';
 import useEscapeListener from '../../../shared/hooks/useEscapeListener';
-import { BackgroundOverlay } from '../../../shared/styledComponents';
+import { BackgroundOverlay, ScrollableArea } from '../../../shared/styledComponents';
 import zIndices from '../../../shared/zIndices';
 import { MODALS_CONTAINER_ID } from '../constants';
-import { ScrollableArea } from './styledComponents';
 
 /* Styled Components */
 
@@ -40,6 +40,10 @@ const Controls = styled.div`
   display: flex;
   justify-content: center;
   padding-top: 20px;
+`;
+
+const MinWidthContainer = styled.div`
+  min-width: ${APP_MIN_WIDTH};
 `;
 
 /* Main Component */
@@ -76,8 +80,10 @@ export default function Modal({
             aria-disabled={!shouldCloseOnOverlayClick}
           />
 
-          <Container style={style}>
-            <ScrollableArea>{children}</ScrollableArea>
+          <Container style={style} role="dialog" aria-modal="true">
+            <ScrollableArea>
+              <MinWidthContainer>{children}</MinWidthContainer>
+            </ScrollableArea>
 
             <Controls>
               <Button onClick={onClose} autoFocus>

@@ -4,11 +4,10 @@ import { APP_LINK } from '../constants';
 
 type Props = { authLink: string } & Omit<HeaderProps, 'menuItems'>;
 
-export default function HomeHeader({ authLink, style, ...props }: Props) {
+export default function HomeHeader({ authLink, ...props }: Props) {
   return (
     <Header
       {...props}
-      style={{ marginBottom: '15px', ...style }}
       menuItems={[
         {
           type: 'link',

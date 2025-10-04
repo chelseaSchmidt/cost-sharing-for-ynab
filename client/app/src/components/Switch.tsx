@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import styled from 'styled-components';
 import breakpoints from '../../../shared/breakpoints';
+import Button from '../../../shared/Button';
 import colors from '../../../shared/colors';
 
 const SELECTED_STYLE = `
@@ -20,19 +21,18 @@ const Container = styled.div`
   }
 `;
 
-const OptionContainer = styled.button<{ $isSelected: boolean }>`
-  all: unset;
-  cursor: pointer;
-  box-sizing: border-box;
+const OptionButton = styled(Button)<{ $isSelected: boolean }>`
+  background: unset;
+  box-shadow: unset;
+  border-radius: unset;
+  font-family: inherit;
+  color: inherit;
+  letter-spacing: unset;
   padding: 15px 10px;
-  display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
   max-width: 300px;
   border: 1px solid ${colors.lightNeutralAccent};
   border-right: none;
-  text-align: center;
 
   @media (max-width: ${breakpoints.mobile}) {
     width: 100%;
@@ -62,14 +62,6 @@ const OptionContainer = styled.button<{ $isSelected: boolean }>`
   &:hover {
     background: ${colors.primaryMedium};
   }
-
-  &:active {
-    background: ${colors.buttonActive};
-  }
-
-  &:focus-visible {
-    outline: 1px solid ${colors.buttonFocusOutline};
-  }
 `;
 
 export interface Option<T extends string> {
@@ -87,14 +79,13 @@ export default function Switch<T extends string>({ options, selected, onChange }
   return (
     <Container>
       {options.map((option) => (
-        <OptionContainer
+        <OptionButton
           key={option.value}
-          type="button"
           onClick={() => onChange(option.value)}
           $isSelected={selected === option.value}
         >
           {option.displayedContent}
-        </OptionContainer>
+        </OptionButton>
       ))}
     </Container>
   );

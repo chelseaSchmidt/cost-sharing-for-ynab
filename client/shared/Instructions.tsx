@@ -1,21 +1,24 @@
 import styled from 'styled-components';
 import Accordion from './Accordion';
+import colors from './colors';
 
 /* STYLED COMPONENTS */
 
-const Container = styled.div``;
+const Container = styled.section``;
 
-const Subtitle = styled.header`
+const Heading = styled.h2`
+  all: unset;
+  display: block;
   width: 100%;
   font-weight: bold;
   font-size: 20px;
   margin: 20px 0;
   text-align: center;
-  color: #2f73b3;
+  color: ${colors.primary};
 `;
 
 const Divider = styled.div`
-  border-top: 1px solid lightgray;
+  border-top: 1px solid ${colors.lightNeutralAccent};
   margin: 70px 0;
   width: 100%;
 `;
@@ -25,7 +28,7 @@ const Divider = styled.div`
 export default function Instructions({ isHomePage = false, style = {} }) {
   return (
     <Container style={style}>
-      <Subtitle>Prepare your YNAB budget</Subtitle>
+      <Heading>Prepare your YNAB budget</Heading>
 
       {[
         {
@@ -42,7 +45,7 @@ export default function Instructions({ isHomePage = false, style = {} }) {
         <Accordion {...props} key={props.title} />
       ))}
 
-      <Subtitle>Use the app</Subtitle>
+      <Heading>Use the app</Heading>
 
       {[
         isHomePage
@@ -64,7 +67,7 @@ export default function Instructions({ isHomePage = false, style = {} }) {
           <Accordion {...props} key={props.title} />
         ))}
 
-      <Subtitle>Record repayments</Subtitle>
+      <Heading>Record repayments</Heading>
 
       {[
         {
@@ -78,7 +81,7 @@ export default function Instructions({ isHomePage = false, style = {} }) {
 
       <Divider />
 
-      <Subtitle>Advanced: Automate checking for misclassified transactions</Subtitle>
+      <Heading>Advanced: Automate checking for misclassified transactions</Heading>
 
       {[
         {

@@ -1,20 +1,19 @@
-import { Dispatch, SetStateAction } from 'react';
-import range from 'lodash/range';
+import { CSSProperties, Dispatch, SetStateAction } from 'react';
 import { createPortal } from 'react-dom';
 import styled from 'styled-components';
-import breakpoints from '../breakpoints';
-import Button, { ButtonProps } from '../Button';
-import colors from '../colors';
-import useEscapeListener from '../hooks/useEscapeListener';
-import DeleteIcon from '../icons/DeleteIcon';
-import Link, { LinkProps } from '../Link';
-import { BackgroundOverlay, FlexColumn, FlexRow } from '../styledComponents';
-import zIndices from '../zIndices';
-import { LEFT_ALIGN_BREAKPOINT } from './constants';
+import Button, { ButtonProps } from '../../Button';
+import colors from '../../colors';
+import useEscapeListener from '../../hooks/useEscapeListener';
+import ExitIcon from '../../icons/ExitIcon';
+import Link, { LinkProps } from '../../Link';
+import { BackgroundOverlay, FlexColumn, FlexRow } from '../../styledComponents';
+import zIndices from '../../zIndices';
+import { headerBreakpoints } from '../constants';
+import IconButton from './IconButton';
 
 const ITEM_CLASS = 'menu-item';
 
-const IconContainer = styled.nav`
+const Container = styled.nav`
   z-index: ${zIndices.headerMenuButton};
   position: absolute;
   box-sizing: border-box;
@@ -26,61 +25,22 @@ const IconContainer = styled.nav`
   height: 100%;
   margin-right: 10px;
 
-  @media (max-width: ${LEFT_ALIGN_BREAKPOINT}) {
+  @media (max-width: ${headerBreakpoints.sm}) {
     position: relative;
     top: unset;
     right: unset;
-    margin: 0 0 0 10px;
+    margin: 0;
   }
-`;
-
-const IconButton = styled.button`
-  box-sizing: unset;
-  box-shadow: unset;
-  background: unset;
-
-  --default-size: 30px;
-  --mobile-size: 20px;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: var(--default-size);
-  padding: 20px;
-
-  div {
-    height: 5px;
-    width: var(--default-size);
-  }
-
-  @media (max-width: ${breakpoints.mobile}) {
-    height: var(--mobile-size);
-    padding: 10px;
-
-    div {
-      height: 4px;
-      width: var(--mobile-size);
-    }
-  }
-
-  &:hover {
-    div {
-      background: ${colors.primary};
-    }
-  }
-`;
-
-const IconBar = styled.div`
-  background: white;
-  border-radius: 5px;
 `;
 
 const Menu = styled(FlexColumn)<{ $isOpen: boolean }>`
+  --menu-width: 320px;
+
   z-index: ${zIndices.modal};
   position: fixed;
   box-sizing: border-box;
   top: 0;
-  width: 320px;
+  width: var(--menu-width);
   max-width: 100vw;
   background-color: white;
   padding: 10px 20px 40px;
@@ -119,7 +79,7 @@ const Menu = styled(FlexColumn)<{ $isOpen: boolean }>`
   }
 
   /* DRAWER ANIMATION */
-  right: -100%;
+  right: calc(var(--menu-width) * -1);
   transition: right 0.4s;
   ${(props) => props.$isOpen && 'right: 0;'}
 `;
@@ -129,7 +89,7 @@ const MenuControls = styled(FlexRow)`
   width: 100%;
 `;
 
-const ExitButton = styled.button`
+const ExitButton = styled(Button)`
   box-shadow: unset;
   background: unset;
   height: 30px;
@@ -165,22 +125,12 @@ export interface MenuProps {
 
 export default function DrawerMenu({ menuItems, isMenuOpen, setIsMenuOpen }: MenuProps) {
   const closeMenu = () => setIsMenuOpen(false);
-  const toggleMenu = () => setIsMenuOpen((prev) => !prev);
 
   useEscapeListener(closeMenu, isMenuOpen);
 
   return (
-    <IconContainer>
-      <Button
-        onClick={toggleMenu}
-        aria-label="Open menu"
-        styledComponent={IconButton}
-        inert={isMenuOpen}
-      >
-        {range(0, 3).map((bar) => (
-          <IconBar key={bar} />
-        ))}
-      </Button>
+    <Container>
+      <IconButton toggleMenu={() => setIsMenuOpen((prev) => !prev)} isMenuOpen={isMenuOpen} />
 
       {createPortal(
         <>
@@ -194,13 +144,16 @@ export default function DrawerMenu({ menuItems, isMenuOpen, setIsMenuOpen }: Men
 
           <Menu $isOpen={isMenuOpen}>
             <MenuControls>
-              <Button aria-label="Exit menu" onClick={closeMenu} styledComponent={ExitButton}>
-                <DeleteIcon size={14} />
-              </Button>
+              <ExitButton aria-label="Exit menu" onClick={closeMenu}>
+                <ExitIcon size={14} />
+              </ExitButton>
             </MenuControls>
 
             {menuItems.map(({ type, key, props }) => {
+              const style: CSSProperties = { textAlign: 'left', ...props.style };
+
               const requiredProps = {
+                style,
                 className: ITEM_CLASS,
                 onClick: () => {
                   props?.onClick?.();
@@ -218,6 +171,6 @@ export default function DrawerMenu({ menuItems, isMenuOpen, setIsMenuOpen }: Men
         </>,
         document.body,
       )}
-    </IconContainer>
+    </Container>
   );
 }

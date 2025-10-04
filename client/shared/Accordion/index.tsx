@@ -11,9 +11,10 @@ import ExpandIcon from './ExpandIcon';
 
 const HEIGHT_TRANSITION_MS = 200;
 
-const Container = styled.div``;
+const Container = styled.section``;
 
-const Header = styled.header`
+const Header = styled.h2`
+  all: unset;
   display: flex;
   align-items: center;
 `;
@@ -140,6 +141,7 @@ const Accordion = ({ title, subtitle = '', icon, contentStyle = {}, children }: 
       {/* https://www.w3.org/WAI/ARIA/apg/patterns/accordion/examples/accordion/ */}
       <Header>
         <HeaderButton
+          type="button"
           id={buttonId}
           aria-expanded={expanded}
           aria-controls={contentId}
