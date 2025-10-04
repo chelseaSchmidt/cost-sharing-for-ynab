@@ -27,21 +27,36 @@ export default function InfoIcon({
 
   const iconRef = useRef<HTMLDivElement>(null);
 
+  const closeTooltip = () => {
+    if (tooltipContent) setTooltipState((prev) => ({ ...prev, isOpen: false }));
+  };
+
+  const openTooltip = () => {
+    if (tooltipContent)
+      setTooltipState((prev) => ({ ...prev, isOpen: true, ...getTooltipLocation(iconRef) }));
+  };
+
+  const toggleTooltip = () => {
+    if (tooltipContent)
+      setTooltipState((prev) => {
+        const isOpen = !prev.isOpen;
+        return { ...prev, isOpen, ...(isOpen ? getTooltipLocation(iconRef) : {}) };
+      });
+  };
+
   return (
     <Icon
       $theme={theme}
       $color={color}
       ref={iconRef}
-      onMouseLeave={() => setTooltipState((prev) => ({ ...prev, isOpen: false }))}
-      onMouseEnter={() =>
-        setTooltipState((prev) => ({ ...prev, isOpen: true, ...getTooltipLocation(iconRef) }))
-      }
+      onMouseEnter={openTooltip}
+      onMouseLeave={closeTooltip}
       onClick={(e) => {
-        e.stopPropagation();
-        setTooltipState((prev) => {
-          const isOpen = !prev.isOpen;
-          return { ...prev, isOpen, ...(isOpen ? getTooltipLocation(iconRef) : {}) };
-        });
+        if (tooltipContent) e.stopPropagation();
+      }}
+      onTouchStart={(e) => {
+        if (tooltipContent) e.stopPropagation();
+        toggleTooltip();
       }}
     >
       <IconSymbol>{theme === 'error' ? '!' : '?'}</IconSymbol>
