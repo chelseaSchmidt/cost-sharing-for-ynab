@@ -44,6 +44,7 @@ export const RowOrColumn = styled.div`
 
   @media (max-width: ${breakpoints.mobile}) {
     flex-direction: column;
+    align-items: unset;
     gap: 20px;
   }
 `;

@@ -16,6 +16,7 @@ const Container = styled.div`
 
   @media (max-width: ${breakpoints.tiny}) {
     flex-direction: column;
+    align-items: unset;
   }
 `;
 

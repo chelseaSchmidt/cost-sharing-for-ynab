@@ -17,7 +17,7 @@ export default function FlaggedTransactionsModal({ transactions, loading, refres
       shouldCloseOnOverlayClick
       shouldCloseOnEscape
       shouldDisableScroll
-      style={{ height: 'fit-content', maxHeight: 'calc(100vh - 60px)' }}
+      style={{ height: 'fit-content', maxHeight: 'calc(100vh - 120px)' }}
     >
       <TransactionWindow
         title="Transactions in shared accounts, but not in shared categories"
