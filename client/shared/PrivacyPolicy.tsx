@@ -24,7 +24,7 @@ const Subtitle = styled.h2`
 `;
 
 const PrivacyParagraph = styled(Paragraph)`
-  margin-bottom: 15px;
+  margin-bottom: 13px;
 `;
 
 const LastUpdated = styled(Paragraph)`
