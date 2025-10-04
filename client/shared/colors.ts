@@ -18,6 +18,7 @@ const colors = {
   errorActive: 'rgba(128, 0, 0, 0.6)',
   errorLight: 'rgba(255, 0, 0, 0.1)',
   success: 'rgb(61 142 64)',
+  successLight: 'rgb(222 249 223)',
   shadow1: '#555',
 } as const;
 

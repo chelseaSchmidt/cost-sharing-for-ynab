@@ -21,3 +21,5 @@ export const isTransactionBeforeDate = (transaction: Transaction, endDate: Momen
 export const getFirstDateOfLastMonth = () => moment().subtract(1, 'month').startOf('month');
 
 export const getLastDateOfLastMonth = () => moment().subtract(1, 'month').endOf('month');
+
+export const stringToReadableDate = (date: string) => moment(date).format('MMM DD, YYYY');
