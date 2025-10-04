@@ -41,6 +41,7 @@ import {
 /* STYLED COMPONENTS */
 
 const Container = styled(FlexColumnAllCentered)`
+  height: 100%;
   width: 100%;
 
   @media (max-width: ${breakpoints.mobile}) {
@@ -49,14 +50,14 @@ const Container = styled(FlexColumnAllCentered)`
 `;
 
 const LoadingContainer = styled(Container)`
-  height: 100vh;
+  height: 100%;
 `;
 
 const Modals = styled.div``;
 
 const NonModalContent = styled(FlexColumnAllCentered)`
   box-sizing: border-box;
-  height: 100vh;
+  height: 100%;
   width: 100%;
   overflow: hidden;
 `;

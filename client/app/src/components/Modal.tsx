@@ -21,8 +21,8 @@ const Container = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: calc(100vw - 60px);
-  height: calc(100vh - 60px);
+  width: calc(100% - 60px);
+  height: calc(100% - 60px);
   max-width: 1100px;
   max-height: 700px;
   border-radius: 5px;
@@ -32,7 +32,7 @@ const Container = styled.div`
   overflow: hidden;
 
   @media (max-width: ${breakpoints.mobile}) {
-    height: calc(100vh - 120px);
+    height: calc(100% - 120px);
     width: calc(100% - 20px);
   }
 `;

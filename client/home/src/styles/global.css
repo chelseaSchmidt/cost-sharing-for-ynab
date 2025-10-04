@@ -2,6 +2,11 @@
 
 html {
   scroll-behavior: smooth;
+  height: 100%;
+}
+
+#app {
+  height: 100%;
 }
 
 body {
@@ -13,4 +18,5 @@ body {
   display: flex;
   flex-direction: column;
   letter-spacing: 0.1px;
+  height: 100%;
 }
