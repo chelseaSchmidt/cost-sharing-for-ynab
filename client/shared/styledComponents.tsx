@@ -49,11 +49,12 @@ export const BackgroundOverlay = styled.div`
 `;
 
 export const ScrollableArea = styled.div`
-  --scroll-track-color: rgb(0 0 0 / 3%);
-  --scroll-button-color: rgb(0 0 0 / 15%);
-  --scroll-button-hover-color: rgb(0 0 0 / 25%);
+  --scroll-track-color: rgb(0 0 0 / 7%);
+  --scroll-button-color: rgb(0 0 0 / 25%);
+  --scroll-button-hover-color: rgb(0 0 0 / 35%);
 
   overflow: auto;
+  scroll-behavior: smooth;
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
@@ -72,8 +73,8 @@ export const ScrollableArea = styled.div`
 
     &::-webkit-scrollbar {
       background: var(--scroll-track-color);
-      height: 7px;
-      width: 7px;
+      height: 10px;
+      width: 10px;
     }
 
     &::-webkit-scrollbar-thumb {

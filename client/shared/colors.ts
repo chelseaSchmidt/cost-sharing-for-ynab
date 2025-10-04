@@ -2,7 +2,6 @@ const colors = {
   primary: 'rgb(47, 115, 179)',
   primaryLight: 'rgba(47, 115, 179, 0.1)',
   primaryMedium: 'rgba(47, 115, 179, 0.5)',
-  primaryMediumHover: 'rgba(47, 115, 179, 0.7)',
   lightNeutralAccent: '#d3d3d3',
   buttonActive: 'rgba(47, 115, 179, 0.7)',
   buttonFocusOutline: '#ff7d00',
