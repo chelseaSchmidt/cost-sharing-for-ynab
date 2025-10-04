@@ -16,6 +16,7 @@ export default function FlaggedTransactionsModal({ transactions, loading, refres
       buttonText="Exit"
       shouldCloseOnOverlayClick
       shouldCloseOnEscape
+      shouldDisableScroll
       style={{ height: 'fit-content', maxHeight: 'calc(100vh - 60px)' }}
     >
       <TransactionWindow

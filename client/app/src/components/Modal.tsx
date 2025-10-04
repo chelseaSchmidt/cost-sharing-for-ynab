@@ -6,7 +6,7 @@ import Button from '../../../shared/Button';
 import colors from '../../../shared/colors';
 import { APP_MIN_WIDTH } from '../../../shared/constants';
 import useEscapeListener from '../../../shared/hooks/useEscapeListener';
-import { BackgroundOverlay, ScrollableArea } from '../../../shared/styledComponents';
+import { BackgroundOverlay, FlexColumn, ScrollableArea } from '../../../shared/styledComponents';
 import zIndices from '../../../shared/zIndices';
 import { MODALS_CONTAINER_ID } from '../constants';
 
@@ -42,7 +42,7 @@ const Controls = styled.div`
   padding-top: 20px;
 `;
 
-const MinWidthContainer = styled.div`
+const MinWidthContainer = styled(FlexColumn)`
   min-width: ${APP_MIN_WIDTH};
 `;
 
@@ -54,6 +54,7 @@ interface Props {
   children: ReactNode;
   shouldCloseOnOverlayClick?: boolean;
   shouldCloseOnEscape?: boolean;
+  shouldDisableScroll?: boolean;
   style?: CSSProperties;
 }
 
@@ -63,6 +64,7 @@ export default function Modal({
   children,
   shouldCloseOnOverlayClick = false,
   shouldCloseOnEscape = false,
+  shouldDisableScroll = false,
   style,
 }: Props) {
   const modalsContainer = document.getElementById(MODALS_CONTAINER_ID);
@@ -82,7 +84,9 @@ export default function Modal({
 
           <Container style={style} role="dialog" aria-modal="true">
             <ScrollableArea>
-              <MinWidthContainer>{children}</MinWidthContainer>
+              <MinWidthContainer style={shouldDisableScroll ? { overflow: 'hidden' } : {}}>
+                {children}
+              </MinWidthContainer>
             </ScrollableArea>
 
             <Controls>
