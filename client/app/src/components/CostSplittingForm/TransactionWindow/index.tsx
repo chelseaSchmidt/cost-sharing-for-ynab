@@ -29,6 +29,7 @@ const Container = styled(FlexColumnAllCentered)`
 
 const Title = styled.h1`
   all: unset;
+  display: block;
   text-align: center;
   font-weight: bold;
   font-size: 1.3em;
