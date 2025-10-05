@@ -33,15 +33,9 @@ export default function InfoIcon({
 
   const openTooltip = () => {
     if (tooltipContent)
-      setTooltipState((prev) => ({ ...prev, isOpen: true, ...getTooltipLocation(iconRef) }));
-  };
-
-  const toggleTooltip = () => {
-    if (tooltipContent)
-      setTooltipState((prev) => {
-        const isOpen = !prev.isOpen;
-        return { ...prev, isOpen, ...(isOpen ? getTooltipLocation(iconRef) : {}) };
-      });
+      setTooltipState((prev) =>
+        prev.isOpen ? prev : { ...prev, isOpen: true, ...getTooltipLocation(iconRef) },
+      );
   };
 
   return (
@@ -56,7 +50,7 @@ export default function InfoIcon({
       }}
       onTouchStart={(e) => {
         if (tooltipContent) e.stopPropagation();
-        toggleTooltip();
+        openTooltip();
       }}
     >
       <IconSymbol>{theme === 'error' ? '!' : '?'}</IconSymbol>
