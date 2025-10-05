@@ -1,4 +1,3 @@
-import moment from 'moment';
 import styled from 'styled-components';
 import breakpoints from '../../../../../shared/breakpoints';
 import Button from '../../../../../shared/Button';
@@ -7,6 +6,8 @@ import { FlexRow } from '../../../../../shared/styledComponents';
 import { Transaction } from '../../../types';
 import Checkbox from '../../Checkbox';
 import InfoIcon from '../../InfoIcon';
+import { stringToReadableDate } from '../../utils/dateHelpers';
+import { toUsd } from '../../utils/general';
 
 /* Styled Components */
 
@@ -114,7 +115,7 @@ export default function TransactionCard({ transaction, isFlagged, formControlPro
         />
       )}
 
-      <Date>{moment(date).format('MMM DD, YYYY')}</Date>
+      <Date>{stringToReadableDate(date)}</Date>
 
       <Amount>{toUsd(amount)}</Amount>
 
@@ -137,8 +138,4 @@ export default function TransactionCard({ transaction, isFlagged, formControlPro
       </Details>
     </ContainerButton>
   );
-}
-
-function toUsd(amount: number) {
-  return Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount / -1000);
 }

@@ -56,10 +56,12 @@ const Container = styled(FlexColumnAllCentered)<{ $revealed: boolean }>`
 `;
 
 const Message = styled.div`
-  margin: 10px 40px;
+  box-sizing: border-box;
+  max-width: 100%;
+  padding: 10px 40px;
 
   @media (max-width: ${breakpoints.mobile}) {
-    margin: 30px 5px 5px 5px;
+    padding: 30px 5px 5px 5px;
   }
 `;
 

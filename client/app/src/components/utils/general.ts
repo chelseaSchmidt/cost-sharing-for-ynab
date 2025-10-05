@@ -21,3 +21,7 @@ export const hasResponseAndStatus = <T>(
 
 export const hasMessage = <T>(value: T): value is T & { message: string } =>
   isNonNullObject(value) && 'message' in value && typeof value.message === 'string';
+
+export const toUsd = (amount: number) => {
+  return Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount / -1000);
+};

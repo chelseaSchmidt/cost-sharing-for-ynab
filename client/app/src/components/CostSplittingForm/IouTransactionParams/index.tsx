@@ -4,18 +4,55 @@ import map from 'lodash/map';
 import reduce from 'lodash/reduce';
 import sumBy from 'lodash/sumBy';
 import { Moment } from 'moment';
+import styled from 'styled-components';
+import colors from '../../../../../shared/colors';
+import { FlexColumnCentered } from '../../../../../shared/styledComponents';
 import { Account, TransactionPayload, Transaction } from '../../../types';
 import Popup from '../../Popup';
 import { SectionHeader, SectionTile } from '../../styledComponents';
-import { convertDateToString, getLastDateOfLastMonth } from '../../utils/dateHelpers';
+import {
+  convertDateToString,
+  getLastDateOfLastMonth,
+  stringToReadableDate,
+} from '../../utils/dateHelpers';
+import { toUsd } from '../../utils/general';
 import { createTransaction } from '../../utils/networkRequests';
-import TransactionWindow from '../TransactionWindow';
 import IouAccountSelector from './IouAccountSelector';
 import IouDateSelector from './IouDateSelector';
 import RetainedPercentInputs from './RetainedPercentInputs';
 import SubmitButton from './SubmitButton';
 
 type CategorySums = Record<string, number>;
+
+const TransactionDetails = styled(FlexColumnCentered)`
+  box-sizing: border-box;
+  width: 100%;
+  margin-top: 10px;
+  border-radius: 3px;
+  box-shadow: 0 0 2px white;
+  color: ${colors.defaultFont};
+`;
+
+const Detail = styled.div`
+  box-sizing: border-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+  border-bottom: 1px solid white;
+  padding: 5px 20px;
+  background: ${colors.successLight};
+
+  &:first-of-type {
+    font-weight: bold;
+    border-radius: 3px 3px 0 0%;
+  }
+
+  &:last-of-type {
+    border-bottom: none;
+    border-radius: 0 0 3px 3px;
+  }
+`;
 
 interface Props {
   accounts: Account[];
@@ -38,8 +75,7 @@ export default function IouTransactionParams({
   const [accountId, setAccountId] = useState('');
   const [transactionDate, setTransactionDate] = useState(getLastDateOfLastMonth());
   const [retainedPercent, setRetainedPercent] = useState(50);
-  const [createdTransactions, setCreatedTransactions] = useState<Transaction[]>([]);
-  const [succeeded, setSucceeded] = useState(false);
+  const [createdTransaction, setCreatedTransaction] = useState<Transaction | null>(null);
 
   const isSubmitDisabled = !selectedIds.size || !accountId;
 
@@ -57,8 +93,7 @@ export default function IouTransactionParams({
       );
 
       if (createdTransaction) {
-        setSucceeded(true);
-        setCreatedTransactions([...createdTransactions, createdTransaction]);
+        setCreatedTransaction(createdTransaction);
         resetForm();
       } else {
         handleError(null);
@@ -92,18 +127,16 @@ export default function IouTransactionParams({
         accountId={accountId}
       />
 
-      {!!createdTransactions.length && (
-        <TransactionWindow
-          loading={submitting}
-          title="Your IOU Transactions:"
-          transactions={createdTransactions}
-          containerStyle={{ marginTop: '40px' }}
-        />
-      )}
-
-      {succeeded && (
-        <Popup theme="success" onClose={() => setSucceeded(false)}>
+      {createdTransaction && (
+        <Popup theme="success" onClose={() => setCreatedTransaction(null)}>
           Success! Your IOU transaction was created.
+          <TransactionDetails>
+            {[
+              toUsd(createdTransaction.amount * -1),
+              stringToReadableDate(createdTransaction.date),
+              createdTransaction.account_name,
+            ].map((detail) => detail && <Detail key={detail}>{detail}</Detail>)}
+          </TransactionDetails>
         </Popup>
       )}
     </SectionTile>
