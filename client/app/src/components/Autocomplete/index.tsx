@@ -1,5 +1,6 @@
 import { CSSProperties, ReactNode, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+import { isDefined } from '../utils/general';
 import Button, { StyledButton } from './Button';
 import DeleteIcon from './DeleteIcon';
 import ListItem, { Item, Li, ListItemProps } from './ListItem';
@@ -85,6 +86,7 @@ export default function Autocomplete<T>({
   const [inputValue, setInputValue] = useState('');
   const [expanded, setExpanded] = useState(false);
   const [selectedItems, setSelectedItems] = useState<SelectedItems<T>>({});
+  const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
   const [listboxPosition, setListboxPosition] = useState<{
     shouldOpenUpward: boolean;
     top: number | null;
@@ -180,6 +182,15 @@ export default function Autocomplete<T>({
                 setInputValue(e.target.value);
                 if (e.target.value && !expanded) openMenu();
               }}
+              // FIXME: also set the focusedIndex on tabbing to list item
+              // and reset the focusedIndex to null after exiting list
+              onKeyDown={(e) => {
+                if (e.key === 'ArrowDown' && displayedItems.length > 0) {
+                  e.stopPropagation();
+                  e.preventDefault();
+                  setFocusedIndex(0);
+                }
+              }}
               onFocus={openMenu}
               tabIndex={0}
               style={selectedItemCount >= Math.max(1, limit) ? { display: 'none' } : {}}
@@ -211,9 +222,26 @@ export default function Autocomplete<T>({
           $topMargin={listboxMargins?.top}
           $bottomMargin={listboxMargins?.bottom}
           style={{ display: expanded ? undefined : 'none' }}
+          onKeyDown={(e) => {
+            if (
+              isDefined(focusedIndex) &&
+              (e.key === 'ArrowDown' || e.key === 'ArrowUp') &&
+              displayedItems.length > 0
+            ) {
+              e.stopPropagation();
+              e.preventDefault();
+              handleArrowNavigation({
+                key: e.key,
+                focusedIndex,
+                setFocusedIndex,
+                lastIndex: displayedItems.length - 1,
+                inputRef,
+              });
+            }
+          }}
         >
           {displayedItems.length ? (
-            displayedItems.map((item) => (
+            displayedItems.map((item, i) => (
               <ListItem
                 key={item.id}
                 item={item}
@@ -222,6 +250,7 @@ export default function Autocomplete<T>({
                 styledComponents={styledComponents}
                 disabledStyle={disabledItemStyle}
                 selectedStyle={selectedItemStyle}
+                isFocused={i === focusedIndex}
                 select={(item) => {
                   if (selectedItems[item.id]) {
                     setSelectedItems({ ...selectedItems, [item.id]: null });
@@ -289,4 +318,28 @@ function getListboxPosition(inputWrapperRef: React.RefObject<HTMLDivElement | nu
     top: listboxTop,
     bottom: inputWrapperBounds?.top || null,
   };
+}
+
+interface HandleArrowNavigationArgs {
+  key: 'ArrowDown' | 'ArrowUp';
+  focusedIndex: number;
+  setFocusedIndex: (idx: number) => void;
+  lastIndex: number;
+  inputRef: React.RefObject<HTMLInputElement | null>;
+}
+
+function handleArrowNavigation({
+  key,
+  focusedIndex,
+  setFocusedIndex,
+  lastIndex,
+  inputRef,
+}: HandleArrowNavigationArgs) {
+  if (focusedIndex >= 0 && lastIndex >= 0 && focusedIndex <= lastIndex) {
+    if (focusedIndex === 0 || focusedIndex === lastIndex) {
+      inputRef.current?.focus();
+    } else {
+      setFocusedIndex(key === 'ArrowDown' ? focusedIndex + 1 : focusedIndex - 1);
+    }
+  }
 }
