@@ -5,7 +5,7 @@ import { Account, Mode, ParentCategory } from '../../types';
 import { SectionHeader, SectionTile } from '../styledComponents';
 import AccountSelector from './AccountSelector';
 import CategorySelector from './CategorySelector';
-import DateRangeSelector, { DateRange } from './DateRangeSelector';
+import DateRangeSelector, { DateError, DateRange } from './DateRangeSelector';
 import ModeSelector from './ModeSelector';
 
 interface Props {
@@ -34,6 +34,7 @@ export default function TransactionSearchForm({
   onSubmit,
 }: Props) {
   const [mode, setMode] = useState(Mode.STANDARD);
+  const [dateError, setDateError] = useState<DateError>(null);
 
   return (
     <SectionTile as="form">
@@ -63,10 +64,16 @@ export default function TransactionSearchForm({
         />
       )}
 
-      <DateRangeSelector dateRange={dateRange} setDateRange={setDateRange} />
+      <DateRangeSelector
+        dateRange={dateRange}
+        setDateRange={setDateRange}
+        dateError={dateError}
+        setDateError={setDateError}
+      />
 
       <Button
         type="submit"
+        disabled={!!dateError}
         onClick={(e) => {
           e.preventDefault();
           onSubmit();
