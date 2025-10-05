@@ -32,7 +32,6 @@ const Container = styled.div`
   overflow: hidden;
 
   @media (max-width: ${breakpoints.mobile}) {
-    height: calc(100% - 120px);
     width: calc(100% - 20px);
   }
 `;

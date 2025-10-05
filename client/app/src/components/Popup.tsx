@@ -21,7 +21,7 @@ const Container = styled(FlexColumnAllCentered)<{ $revealed: boolean }>`
   right: calc(var(--popup-width) * -1);
 
   width: var(--popup-width);
-  max-width: calc(100% - 10px);
+  max-width: calc(100% - 20px);
   max-height: var(--popup-max-height);
   overflow: auto;
 
@@ -41,7 +41,7 @@ const Container = styled(FlexColumnAllCentered)<{ $revealed: boolean }>`
 
     /* SLIDE-UP ANIMATION */
     transition: bottom 0.4s;
-    ${(props) => props.$revealed && 'bottom: 120px;'}
+    ${(props) => props.$revealed && 'bottom: 10px;'}
   }
 
   @media (max-width: ${breakpoints.tiny}) {
