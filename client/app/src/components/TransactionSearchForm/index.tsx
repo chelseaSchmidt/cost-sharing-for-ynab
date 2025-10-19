@@ -6,6 +6,7 @@ import { SectionHeader, SectionTile } from '../styledComponents';
 import AccountSelector from './AccountSelector';
 import CategorySelector from './CategorySelector';
 import DateRangeSelector, { DateError, DateRange } from './DateRangeSelector';
+import IouAccountSelector from './IouAccountSelector';
 import ModeSelector from './ModeSelector';
 
 interface Props {
@@ -15,6 +16,8 @@ interface Props {
   parentCategories: ParentCategory[];
   selectedParentCategories: ParentCategory[];
   setSelectedParentCategories: (p: ParentCategory[]) => void;
+  iouAccountId: string;
+  setIouAccountId: (id: string) => void;
   dateRange: DateRange;
   setDateRange: (d: DateRange) => void;
   handleInfoClick: () => void;
@@ -28,6 +31,8 @@ export default function TransactionSearchForm({
   parentCategories,
   selectedParentCategories,
   setSelectedParentCategories,
+  iouAccountId,
+  setIouAccountId,
   dateRange,
   setDateRange,
   handleInfoClick,
@@ -64,6 +69,8 @@ export default function TransactionSearchForm({
         />
       )}
 
+      <IouAccountSelector accounts={accounts} setAccountId={setIouAccountId} />
+
       <DateRangeSelector
         dateRange={dateRange}
         setDateRange={setDateRange}
@@ -73,7 +80,7 @@ export default function TransactionSearchForm({
 
       <Button
         type="submit"
-        disabled={!!dateError}
+        disabled={!!dateError || !iouAccountId || !selectedAccounts.length}
         onClick={(e) => {
           e.preventDefault();
           onSubmit();

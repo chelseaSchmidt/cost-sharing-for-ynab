@@ -1,9 +1,9 @@
-import { Transaction } from '../../../types';
+import { MixedTransaction } from '../../../types';
 import Modal from '../../Modal';
 import TransactionWindow from '../TransactionWindow';
 
 interface Props {
-  transactions: Transaction[];
+  transactions: MixedTransaction[];
   loading: boolean;
   refresh: () => void;
   exit: () => void;

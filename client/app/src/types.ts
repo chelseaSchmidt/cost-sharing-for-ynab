@@ -5,7 +5,7 @@ export interface Account {
 }
 
 export interface Category {
-  id: string | number;
+  id: string;
 }
 
 export interface ParentCategory {
@@ -15,52 +15,58 @@ export interface ParentCategory {
   categories: Category[];
 }
 
-export interface Transaction {
-  id: string | number;
-  transfer_account_id: string | number;
-  category_id: string | number;
-  account_id: string;
-  payee_id: string | number | null;
-  payee_name: string | null;
-  category_name: string | null;
-  account_name: string | null;
-  approved: boolean;
-  date: string;
+export interface SubTransactionPayload {
   amount: number;
+  payee_id: string | null;
+  payee_name: string | null;
+  category_id: Category['id'] | null;
   memo: string | null;
-  cleared: string;
-  flag_color: string | null;
-  import_id: string | number | null;
-  subtransactions: Transaction[];
 }
 
-export interface TransactionPayload {
-  account_id: string | number;
+export interface TransactionPayload extends SubTransactionPayload {
+  account_id: string;
   date: string;
-  amount: number;
-  payee_id: string | number | null;
-  payee_name: string | null;
-  category_id: string | number | null;
-  memo: string | null;
   cleared: 'uncleared';
   approved: boolean;
   flag_color: string | null;
-  import_id: string | number | null;
+  import_id: string | null;
   subtransactions: SubTransactionPayload[];
 }
 
-export interface SubTransactionPayload {
-  amount: number;
-  payee_id: string | number | null;
-  payee_name: string | null;
-  category_id: string | number | null;
-  memo: string | null;
+export interface SubTransaction extends SubTransactionPayload {
+  id: string;
+  category_name: string | null;
+  deleted: boolean;
+  transaction_id: string;
+  transfer_account_id: string | null;
+  transfer_transaction_id: string | null;
 }
 
+export interface ProcessedSubTransaction extends SubTransaction {
+  isSub: true;
+  date: string;
+  account_id: string;
+  account_name: string | null;
+}
+
+export interface Transaction extends SubTransaction {
+  isSub?: never;
+  account_id: string;
+  account_name: string | null;
+  approved: boolean;
+  date: string;
+  cleared: string;
+  flag_color: string | null;
+  import_id: string | null;
+  subtransactions: SubTransaction[];
+}
+
+export type MixedTransaction = Transaction | ProcessedSubTransaction;
+
 export interface TransactionGroups {
-  transactions: Transaction[];
-  accountFlags: Transaction[];
-  categoryFlags: Transaction[];
+  transactions: MixedTransaction[];
+  accountFlags: MixedTransaction[];
+  categoryFlags: MixedTransaction[];
 }
 
 export interface BudgetData {

@@ -8,7 +8,7 @@ import {
   Paragraph,
   ScrollableArea,
 } from '../../../../../shared/styledComponents';
-import { Transaction } from '../../../types';
+import { MixedTransaction } from '../../../types';
 import Checkbox from '../../Checkbox';
 import { LoadingSpinner } from '../../styledComponents';
 import { toId } from '../../utils/general';
@@ -94,15 +94,15 @@ interface Props {
   loading?: boolean;
   title?: string;
   subtitle?: string;
-  transactions: Transaction[];
-  accountFlags?: Transaction[];
+  transactions: MixedTransaction[];
+  accountFlags?: MixedTransaction[];
   containerStyle?: CSSProperties;
   feedStyle?: CSSProperties;
   refreshTransactions?: () => void;
   formControlProps?: {
-    selectedIds: Set<string | number>;
+    selectedIds: Set<string>;
     isSelectAllChecked: boolean;
-    toggleTransaction: (transaction: Transaction) => void;
+    toggleTransaction: (transaction: MixedTransaction) => void;
     toggleSelectAll: (isSelected: boolean) => void;
   };
 }
@@ -119,6 +119,7 @@ export default function TransactionWindow({
   formControlProps,
 }: Props) {
   const hasTransactions = !!transactions.length;
+  const accountFlagIds = new Set(accountFlags.map(toId));
 
   return (
     <Container as="section" style={containerStyle}>
@@ -160,7 +161,7 @@ export default function TransactionWindow({
             <TransactionCard
               key={transaction.id}
               transaction={transaction}
-              isFlagged={accountFlags.map(toId).includes(transaction.id)}
+              isFlagged={accountFlagIds.has(transaction.id)}
               formControlProps={
                 formControlProps
                   ? {

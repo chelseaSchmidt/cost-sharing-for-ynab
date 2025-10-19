@@ -6,7 +6,7 @@ interface Props {
   submitting: boolean;
   submit: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => Promise<void>;
   disabled: boolean;
-  selectedIds: Set<string | number>;
+  selectedIds: Set<string>;
   accountId: string;
 }
 
@@ -33,7 +33,7 @@ export default function SubmitButton({
   );
 }
 
-function getTooltip(selectedIds: Set<string | number>, accountId: string): string {
+function getTooltip(selectedIds: Set<string>, accountId: string): string {
   return !selectedIds.size && !accountId
     ? 'Please select an IOU account and at least one transaction to split'
     : !selectedIds.size

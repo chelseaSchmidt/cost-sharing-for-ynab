@@ -2,14 +2,16 @@ import styled from 'styled-components';
 import breakpoints from '../../../../../shared/breakpoints';
 import Button from '../../../../../shared/Button';
 import colors from '../../../../../shared/colors';
-import { FlexRow } from '../../../../../shared/styledComponents';
-import { Transaction } from '../../../types';
+import { FlexColumnAllCentered, FlexRow } from '../../../../../shared/styledComponents';
+import { MixedTransaction } from '../../../types';
 import Checkbox from '../../Checkbox';
 import InfoIcon from '../../InfoIcon';
 import { stringToReadableDate } from '../../utils/dateHelpers';
 import { toUsd } from '../../utils/general';
 
 /* Styled Components */
+
+const BORDER_RADIUS = '3px';
 
 const ContainerButton = styled(Button)<{ $isSelected?: boolean }>`
   cursor: unset;
@@ -18,11 +20,12 @@ const ContainerButton = styled(Button)<{ $isSelected?: boolean }>`
   color: inherit;
   font-family: inherit;
 
+  position: relative;
   border: 1px solid ${colors.lightNeutralAccent};
-  border-radius: 3px;
+  border-radius: ${BORDER_RADIUS};
   box-shadow: 0 1px 2px 0 ${colors.lightNeutralBg};
   margin: 0 2px 7px 0;
-  padding: 5px;
+  padding: 5px 5px 5px 14px;
   background: white;
 
   ${({ $isSelected }) => ($isSelected ? `background: ${colors.primaryLight};` : '')}
@@ -50,6 +53,28 @@ const ContainerButton = styled(Button)<{ $isSelected?: boolean }>`
 
   @media (max-width: ${breakpoints.mobile}) {
     font-size: 12px;
+  }
+`;
+
+const SubTransactionAccent = styled(FlexColumnAllCentered)`
+  box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  border-right: 1px dashed ${colors.primaryMedium};
+  border-radius: ${BORDER_RADIUS} 0 0 ${BORDER_RADIUS};
+  background: ${colors.primaryLight};
+  font-size: 16px;
+  text-decoration: underline;
+
+  > * {
+    border-radius: unset;
+    border: none;
+    height: 100%;
+    max-width: unset;
+    min-width: unset;
+    width: 13px;
   }
 `;
 
@@ -83,16 +108,17 @@ const AccountName = styled(FlexRow)`
 /* Main Component */
 
 interface Props {
-  transaction: Transaction;
+  transaction: MixedTransaction;
   isFlagged: boolean;
   formControlProps?: {
     isSelected: boolean;
-    toggleTransaction: (transaction: Transaction) => void;
+    toggleTransaction: (transaction: MixedTransaction) => void;
   };
 }
 
 export default function TransactionCard({ transaction, isFlagged, formControlProps }: Props) {
   const {
+    isSub = false,
     date,
     amount,
     payee_name: payeeName,
@@ -105,7 +131,16 @@ export default function TransactionCard({ transaction, isFlagged, formControlPro
       disabled={!formControlProps}
       onClick={() => formControlProps?.toggleTransaction(transaction)}
       $isSelected={formControlProps?.isSelected}
+      style={isSub ? { borderStyle: 'dashed', borderColor: colors.primaryMedium } : undefined}
     >
+      {isSub && (
+        <SubTransactionAccent>
+          <InfoIcon color={colors.primary} tooltipContent="Part of a split transaction" portaled>
+            s
+          </InfoIcon>
+        </SubTransactionAccent>
+      )}
+
       {formControlProps && (
         <Checkbox
           id={`${transaction.id}-checkbox`}

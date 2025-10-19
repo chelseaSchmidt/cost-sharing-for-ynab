@@ -10,13 +10,15 @@ interface Props {
   theme?: Theme;
   color?: string;
   portaled?: boolean;
+  children?: ReactNode;
 }
 
 export default function InfoIcon({
   tooltipContent,
-  theme = 'info',
+  theme = 'help',
   color = colors.infoIcon,
   portaled = false,
+  children,
 }: Props) {
   const [tooltipState, setTooltipState] = useState<TooltipState>({
     isOpen: false,
@@ -53,7 +55,9 @@ export default function InfoIcon({
         openTooltip();
       }}
     >
-      <IconSymbol>{theme === 'error' ? '!' : '?'}</IconSymbol>
+      <IconSymbol>
+        {children || (theme === 'error' ? '!' : theme === 'info' ? 'i' : '?')}
+      </IconSymbol>
 
       {tooltipState.isOpen &&
         tooltipContent &&

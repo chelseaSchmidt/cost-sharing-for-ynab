@@ -5,7 +5,7 @@ import colors from '../../../../../shared/colors';
 import { HEADER_MAX_HEIGHT } from '../../../../../shared/Header';
 import { FlexRowAllCentered } from '../../../../../shared/styledComponents';
 import { TRANSACTION_SELECTION_FORM_ID } from '../../../constants';
-import { ModalName, Transaction } from '../../../types';
+import { MixedTransaction, ModalName, TransactionGroups } from '../../../types';
 import { SectionHeader, SectionTile } from '../../styledComponents';
 import TransactionWindow from '../TransactionWindow';
 import WarningIcon from '../WarningIcon';
@@ -50,15 +50,12 @@ const ReviewButton = styled(Button)`
   }
 `;
 
-interface Props {
+interface Props extends TransactionGroups {
   loading: boolean;
-  transactions: Transaction[];
-  selectedIds: Set<string | number>;
-  accountFlags: Transaction[];
-  categoryFlags: Transaction[];
+  selectedIds: Set<string>;
   toggleSelectAll: (isSelected: boolean) => void;
   isSelectAllChecked: boolean;
-  toggleTransaction: (transaction: Transaction) => void;
+  toggleTransaction: (transaction: MixedTransaction) => void;
   refresh: () => void;
   activeModal: ModalName | null;
   setActiveModal: (modalName: ModalName | null) => void;

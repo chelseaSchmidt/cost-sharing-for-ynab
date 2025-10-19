@@ -7,7 +7,7 @@ import { Moment } from 'moment';
 import styled from 'styled-components';
 import colors from '../../../../../shared/colors';
 import { FlexColumnCentered } from '../../../../../shared/styledComponents';
-import { Account, TransactionPayload, Transaction } from '../../../types';
+import { MixedTransaction, Transaction, TransactionPayload } from '../../../types';
 import Popup from '../../Popup';
 import { SectionHeader, SectionTile } from '../../styledComponents';
 import {
@@ -17,7 +17,6 @@ import {
 } from '../../utils/dateHelpers';
 import { toUsd } from '../../utils/general';
 import { createTransaction } from '../../utils/networkRequests';
-import IouAccountSelector from './IouAccountSelector';
 import IouDateSelector from './IouDateSelector';
 import RetainedPercentInputs from './RetainedPercentInputs';
 import SubmitButton from './SubmitButton';
@@ -55,16 +54,16 @@ const Detail = styled.div`
 `;
 
 interface Props {
-  accounts: Account[];
-  transactions: Transaction[];
-  selectedIds: Set<string | number>;
+  accountId: string;
+  transactions: MixedTransaction[];
+  selectedIds: Set<string>;
   resetForm: () => void;
   handleInfoClick: () => void;
   handleError: (e: unknown) => void;
 }
 
 export default function IouTransactionParams({
-  accounts,
+  accountId,
   transactions,
   selectedIds,
   resetForm,
@@ -72,7 +71,6 @@ export default function IouTransactionParams({
   handleError,
 }: Props) {
   const [submitting, setSubmitting] = useState(false);
-  const [accountId, setAccountId] = useState('');
   const [transactionDate, setTransactionDate] = useState(getLastDateOfLastMonth());
   const [retainedPercent, setRetainedPercent] = useState(50);
   const [createdTransaction, setCreatedTransaction] = useState<Transaction | null>(null);
@@ -109,8 +107,6 @@ export default function IouTransactionParams({
     <SectionTile>
       <SectionHeader>Split the Costs</SectionHeader>
 
-      <IouAccountSelector accounts={accounts} setAccountId={setAccountId} />
-
       <RetainedPercentInputs
         retainedPercent={retainedPercent}
         setRetainedPercent={setRetainedPercent}
@@ -144,8 +140,8 @@ export default function IouTransactionParams({
 }
 
 function groupOwedAmountsByCategory(
-  transactions: Transaction[],
-  selectedIds: Set<string | number>,
+  transactions: MixedTransaction[],
+  selectedIds: Set<string>,
   retainedPercent: number,
 ): CategorySums {
   return reduce<CategorySums, CategorySums>(
@@ -158,11 +154,8 @@ function groupOwedAmountsByCategory(
   );
 }
 
-function sumCategories(
-  transactions: Transaction[],
-  selectedIds: Set<string | number>,
-): CategorySums {
-  return reduce<{ [k: string]: Transaction[] }, CategorySums>(
+function sumCategories(transactions: MixedTransaction[], selectedIds: Set<string>): CategorySums {
+  return reduce<{ [k: string]: MixedTransaction[] }, CategorySums>(
     groupByCategory(filterOutUnselected(transactions, selectedIds)),
     (accum, categoryTransactions, categoryId) => {
       accum[categoryId] = sumBy(categoryTransactions, 'amount');
@@ -172,11 +165,11 @@ function sumCategories(
   );
 }
 
-function groupByCategory(transactions: Transaction[]): Record<string, Transaction[]> {
+function groupByCategory(transactions: MixedTransaction[]): Record<string, MixedTransaction[]> {
   return groupBy(transactions, 'category_id');
 }
 
-function filterOutUnselected(transactions: Transaction[], selectedIds: Set<string | number>) {
+function filterOutUnselected(transactions: MixedTransaction[], selectedIds: Set<string>) {
   return transactions.filter(({ id }) => selectedIds.has(id));
 }
 
