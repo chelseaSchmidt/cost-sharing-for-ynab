@@ -107,6 +107,7 @@ export default function App() {
   );
   const [selectedAccounts, setSelectedAccounts] = useState<Account[]>([]);
   const [selectedParentCategories, setSelectedParentCategories] = useState<ParentCategory[]>([]);
+  const [iouAccountId, setIouAccountId] = useState('');
   const [dateRange, setDateRange] = useState({
     start: getFirstDateOfLastMonth(),
     end: getLastDateOfLastMonth(),
@@ -138,6 +139,7 @@ export default function App() {
           endDate: dateRange.end,
           selectedAccounts,
           selectedParentCategories,
+          iouAccountId,
         }),
       );
     } catch (error) {
@@ -215,6 +217,8 @@ export default function App() {
               setSelectedAccounts={setSelectedAccounts}
               selectedParentCategories={selectedParentCategories}
               setSelectedParentCategories={setSelectedParentCategories}
+              iouAccountId={iouAccountId}
+              setIouAccountId={setIouAccountId}
               dateRange={dateRange}
               setDateRange={setDateRange}
               onSubmit={handleTransactionSearch}
@@ -224,6 +228,7 @@ export default function App() {
             <CostSplittingForm
               {...budgetData}
               {...transactionGroups}
+              accountId={iouAccountId}
               loading={areTransactionsLoading}
               searchTransactions={handleTransactionSearch}
               handleInfoClick={handleInfoClick}

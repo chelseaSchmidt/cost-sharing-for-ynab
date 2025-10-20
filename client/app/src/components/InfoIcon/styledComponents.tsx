@@ -4,7 +4,7 @@ import zIndices from '../../../../shared/zIndices';
 import { isDefined } from '../utils/general';
 import { TooltipState } from './types';
 
-export type Theme = 'error' | 'info';
+export type Theme = 'error' | 'info' | 'help';
 
 const TOOLTIP_WIDTH = 200;
 const TOOLTIP_MARGIN = 20;

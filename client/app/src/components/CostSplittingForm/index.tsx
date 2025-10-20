@@ -1,16 +1,13 @@
 import { useEffect, useState } from 'react';
-import { Account, ModalName, Transaction } from '../../types';
+import { MixedTransaction, ModalName, TransactionGroups } from '../../types';
 import { toId } from '../utils/general';
 import IouTransactionParams from './IouTransactionParams';
 import TransactionSelection from './TransactionSelection';
 
-interface Props {
+interface Props extends TransactionGroups {
   loading: boolean;
-  transactions: Transaction[];
-  accountFlags: Transaction[];
-  categoryFlags: Transaction[];
   searchTransactions: () => void;
-  accounts: Account[];
+  accountId: string;
   handleInfoClick: () => void;
   handleError: (e: unknown) => void;
   activeModal: ModalName | null;
@@ -23,13 +20,13 @@ export default function CostSplittingForm({
   accountFlags,
   categoryFlags,
   searchTransactions,
-  accounts,
+  accountId,
   handleInfoClick,
   handleError,
   activeModal,
   setActiveModal,
 }: Props) {
-  const [selectedIds, setSelectedIds] = useState<Set<string | number>>(new Set());
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [isSelectAllChecked, setIsSelectAllChecked] = useState(false);
 
   const resetSelections = () => {
@@ -42,7 +39,7 @@ export default function CostSplittingForm({
     setSelectedIds(isSelected ? new Set(transactions.map(toId)) : new Set());
   };
 
-  const toggleTransaction = (transaction: Transaction) => {
+  const toggleTransaction = (transaction: MixedTransaction) => {
     setSelectedIds((previousIds) => {
       const newIds = new Set(previousIds);
       newIds[previousIds.has(transaction.id) ? 'delete' : 'add'](transaction.id);
@@ -71,7 +68,7 @@ export default function CostSplittingForm({
       />
 
       <IouTransactionParams
-        accounts={accounts}
+        accountId={accountId}
         transactions={transactions}
         selectedIds={selectedIds}
         handleInfoClick={handleInfoClick}

@@ -2,10 +2,12 @@ import { useState } from 'react';
 import Button from '../../../../shared/Button';
 import { TRANSACTION_SELECTION_FORM_ID } from '../../constants';
 import { Account, Mode, ParentCategory } from '../../types';
+import InfoIcon from '../InfoIcon';
 import { SectionHeader, SectionTile } from '../styledComponents';
 import AccountSelector from './AccountSelector';
 import CategorySelector from './CategorySelector';
 import DateRangeSelector, { DateError, DateRange } from './DateRangeSelector';
+import IouAccountSelector from './IouAccountSelector';
 import ModeSelector from './ModeSelector';
 
 interface Props {
@@ -15,6 +17,8 @@ interface Props {
   parentCategories: ParentCategory[];
   selectedParentCategories: ParentCategory[];
   setSelectedParentCategories: (p: ParentCategory[]) => void;
+  iouAccountId: string;
+  setIouAccountId: (id: string) => void;
   dateRange: DateRange;
   setDateRange: (d: DateRange) => void;
   handleInfoClick: () => void;
@@ -28,6 +32,8 @@ export default function TransactionSearchForm({
   parentCategories,
   selectedParentCategories,
   setSelectedParentCategories,
+  iouAccountId,
+  setIouAccountId,
   dateRange,
   setDateRange,
   handleInfoClick,
@@ -35,6 +41,8 @@ export default function TransactionSearchForm({
 }: Props) {
   const [mode, setMode] = useState(Mode.STANDARD);
   const [dateError, setDateError] = useState<DateError>(null);
+
+  const isSubmitDisabled = !!dateError || !iouAccountId || !selectedAccounts.length;
 
   return (
     <SectionTile as="form">
@@ -64,6 +72,8 @@ export default function TransactionSearchForm({
         />
       )}
 
+      <IouAccountSelector accounts={accounts} setAccountId={setIouAccountId} />
+
       <DateRangeSelector
         dateRange={dateRange}
         setDateRange={setDateRange}
@@ -73,14 +83,21 @@ export default function TransactionSearchForm({
 
       <Button
         type="submit"
-        disabled={!!dateError}
+        disabled={isSubmitDisabled}
         onClick={(e) => {
           e.preventDefault();
           onSubmit();
           document.getElementById(TRANSACTION_SELECTION_FORM_ID)?.scrollIntoView(true);
         }}
       >
-        Find transactions
+        {isSubmitDisabled ? (
+          <>
+            Find transactions&nbsp;
+            <InfoIcon color="white" tooltipContent="Fill out the fields above to enable" />
+          </>
+        ) : (
+          'Find transactions'
+        )}
       </Button>
     </SectionTile>
   );

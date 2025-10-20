@@ -1,7 +1,7 @@
-import { Account } from '../../../types';
-import BudgetAutocomplete from '../../BudgetAutocomplete';
-import InfoIcon from '../../InfoIcon';
-import { FormControlWrapper } from '../../styledComponents';
+import { Account } from '../../types';
+import BudgetAutocomplete from '../BudgetAutocomplete';
+import InfoIcon from '../InfoIcon';
+import { FormControlWrapper } from '../styledComponents';
 
 interface Props {
   accounts: Account[];
