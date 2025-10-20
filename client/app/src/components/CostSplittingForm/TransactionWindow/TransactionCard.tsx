@@ -25,8 +25,10 @@ const ContainerButton = styled(Button)<{ $isSelected?: boolean }>`
   border-radius: ${BORDER_RADIUS};
   box-shadow: 0 1px 2px 0 ${colors.lightNeutralBg};
   margin: 0 2px 7px 0;
-  padding: 5px 5px 5px 14px;
   background: white;
+
+  /* leaves space for sub-transaction info accent */
+  padding: 5px 5px 5px 14px;
 
   ${({ $isSelected }) => ($isSelected ? `background: ${colors.primaryLight};` : '')}
 
