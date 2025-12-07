@@ -35,8 +35,8 @@
     "moment": "^2.29.0",
     "morgan": "^1.10.0",
     "path": "^0.12.7",
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1",
+    "react": "^19.2.1",
+    "react-dom": "^19.2.1",
     "react-router-dom": "^7.7.1",
     "style-loader": "^1.2.1",
     "styled-components": "^6.1.19"
