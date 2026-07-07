@@ -1,5 +1,5 @@
 <div align="center">
-  <h1>Cost Sharing for YNAB</h1> 
+  <h1>Cost Sharing for YNAB</h1>
   <h3>Conveniently manage a shared credit card in YNAB.</h3>
   <br />
   <img width="147" height="58.5" alt="image" src="https://github.com/user-attachments/assets/aa7ec5ed-2b8f-40af-9d9c-810ca0644796" />
@@ -23,9 +23,24 @@
 
 <br />
 
-**Cost Sharing for YNAB** is a free and open-source web application that integrates with [YNAB](https://www.ynab.com) (You Need a Budget) via their [API](https://api.ynab.com). YNAB doesn't natively support tracking of shared payment accounts, such as credit cards or bank accounts shared between partners or family members. With this companion app, YNAB users can incorporate a shared account into their personal budget without making their expenses look inflated. Users authenticate with their existing YNAB credentials via OAuth.
+**Cost Sharing for YNAB** is a free and open-source web application that integrates with [YNAB](https://www.ynab.com) (You Need a Budget) via their [API](https://api.ynab.com). Cost Sharing for YNAB exists because YNAB doesn't natively support tracking of shared payment accounts, such as credit cards or bank accounts shared between partners or family members. With this companion app, YNAB users can incorporate a shared account into their personal budget without making their expenses look inflated. Users authenticate with their existing YNAB credentials via OAuth.
+
+## Release Notices
+
+<table>
+  <tr>
+    <td><strong>July 2, 2026</strong></td>
+    <td>
+      One of CS4Y's contributors <a href="https://github.com/RelicCornhusk">@RelicCornhusk</a> released an open-source project inspired by this one, called <a href="https://github.com/RelicCornhusk/partner-split-for-ynab">partner-split-for-ynab</a>! It runs an automated process in the background instead of taking the user through a guided web interface. I haven't checked it out myself yet, but I plan on doing so soon, and wanted to post it here in case it interests any Docker-savvy folks!
+    </td>
+  </tr>
+</table>
+
+## Contribute
 
 Developer contributions at any experience level are very welcome!
+
+Please follow the `Develop` instructions below to get your local environment set up. If you run into problems, don't hesitate to tag Chelsea in a comment somewhere and/or open an issue with the `dx` tag to get help.
 
 ## Develop
 
