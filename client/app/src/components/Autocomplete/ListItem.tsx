@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useRef } from 'react';
 import omit from 'lodash/omit';
 import styled, { CSSProperties } from 'styled-components';
 import { PSEUDO_CSS_KEYS, PseudoCSSProperties } from './types';
@@ -63,6 +63,7 @@ export interface ListItemProps<T> {
   disabled: boolean;
   disabledStyle?: CSSProperties;
   selectedStyle?: CSSProperties & PseudoCSSProperties;
+  isFocused?: boolean;
   styledComponents?: {
     ListItem?: typeof Li | typeof StyledLi;
   };
@@ -77,8 +78,15 @@ export default function ListItem<T>({
   styledComponents = {},
   disabledStyle,
   selectedStyle,
+  isFocused,
   select,
 }: ListItemProps<T>) {
+  const itemRef = useRef<HTMLLIElement>(null);
+
+  useEffect(() => {
+    if (isFocused) itemRef.current?.focus();
+  }, [isFocused]);
+
   return (
     <Li
       role="option"
@@ -91,6 +99,7 @@ export default function ListItem<T>({
       $disabledStyle={disabledStyle}
       as={styledComponents.ListItem}
       tabIndex={0}
+      ref={itemRef}
     >
       {children}
     </Li>
